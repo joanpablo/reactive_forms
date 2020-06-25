@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # RxDart adds additional capabilities to Dart Streams and StreamControllers.
+  rxdart: ^0.24.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,13 +1,162 @@
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/form_control.dart';
+import 'package:reactive_forms/form_group.dart';
+import 'package:reactive_forms/validators/validators.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
-    expect(() => calculator.addOne(null), throwsNoSuchMethodError);
+  group('Form Group', () {
+    test('FormGroup is valid by default', () {
+      final form = FormGroup({});
+
+      expect(form.valid, true);
+    });
+
+    test('FormGroup is valid if FormControl is valid', () {
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      expect(form.valid, true);
+    });
+
+    test('FormGroup is invalid if FormControl is invalid', () {
+      final form = FormGroup({
+        'name': FormControl(validators: [Validators.required]),
+      });
+
+      expect(form.valid, false);
+    });
+
+    test('FormGroup is valid if required FormControl has default value', () {
+      final form = FormGroup({
+        'name': FormControl(
+          defaultValue: 'hello',
+          validators: [Validators.required],
+        ),
+      });
+
+      expect(form.valid, true);
+    });
+
+    test('FormGroup is invalid if set invalid value to FormControl', () {
+      final form = FormGroup({
+        'name': FormControl(
+          defaultValue: 'hello',
+          validators: [Validators.required],
+        ),
+      });
+
+      form.formControl('name').value = null;
+
+      expect(form.valid, false);
+    });
+
+    test('FormGroup is valid if set valid value to FormControl', () {
+      final form = FormGroup({
+        'name': FormControl(
+          validators: [Validators.required],
+        ),
+      });
+
+      form.formControl('name').value = 'hello';
+
+      expect(form.valid, true);
+    });
+
+    test('FormGroup is invalid if all FormControl are invalid', () {
+      final form = FormGroup({
+        'name': FormControl(validators: [Validators.required]),
+        'email': FormControl(validators: [Validators.email]),
+      });
+
+      expect(form.valid, false);
+    });
+
+    test('FormGroup is invalid if at least one FormControl is invalid', () {
+      final form = FormGroup({
+        'name': FormControl(
+          defaultValue: 'hello',
+          validators: [Validators.required],
+        ),
+        'email': FormControl(validators: [
+          Validators.required,
+          Validators.email,
+        ]),
+      });
+
+      expect(form.valid, false);
+    });
+
+    test('FormControl has no errors by default', () {
+      final formControl = FormControl(
+        defaultValue: 'hello',
+        validators: [Validators.required],
+      );
+
+      expect(formControl.errors.length, 0);
+    });
+
+    test('FormControl has no errors if is valid', () {
+      final formControl = FormControl(
+        validators: [Validators.required],
+      );
+
+      formControl.value = 'hello';
+
+      expect(formControl.errors.length, 0);
+    });
+
+    test('FormControl errors contains error', () {
+      final formControl = FormControl(
+        defaultValue: 'hello',
+        validators: [Validators.required],
+      );
+
+      formControl.value = null;
+
+      expect(formControl.errors.containsKey('required'), true);
+    });
+
+    test('FormControl.errors contains all errors', () {
+      final formControl = FormControl(
+        defaultValue: 'hi',
+        validators: [
+          Validators.email,
+          Validators.minLength(5),
+        ],
+      );
+
+      expect(formControl.errors.keys.length, 2);
+      expect(formControl.errors['email'], true, reason: 'mail');
+      expect(formControl.errors['minLength'] != null, true,
+          reason: 'minLength');
+    });
+
+    test('FormControl.errors contains all matching errors', () {
+      final formControl = FormControl(
+        validators: [
+          Validators.required,
+          Validators.minLength(5),
+        ],
+      );
+
+      formControl.value = 'hi';
+
+      expect(formControl.errors.keys.length, 1);
+      expect(formControl.errors['minLength'] != null, true);
+    });
+
+    test('FormControl with default value contains all matching errors', () {
+      final formControl = FormControl(
+        defaultValue: 'hi',
+        validators: [
+          Validators.required,
+          Validators.minLength(5),
+        ],
+      );
+
+      expect(formControl.errors.keys.length, 1);
+      expect(formControl.errors['minLength'] != null, true);
+    });
   });
 }
