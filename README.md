@@ -1,6 +1,6 @@
-# reactive_forms
+# Reactive Forms
 
-This is a model-driven approach to handling form inputs and validations, heavily inspired in Angular's Reactive Forms
+This is a model driven approach to handling form inputs and validations, heavily inspired in Angular's Reactive Forms
 
 ## Getting Started
 
