@@ -10,9 +10,10 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
   bool touched;
   bool _focused = false;
   String _value;
+  String defaultValue;
 
   FormControl({
-    String defaultValue,
+    this.defaultValue,
     this.validators = const [],
     this.touched = false,
   }) : _value = defaultValue {
@@ -60,6 +61,10 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
     if (prevStatus != this.valid) {
       _onStatusChangedSubject.add(this.valid);
     }
+  }
+
+  void reset() {
+    this.value = this.defaultValue;
   }
 
   void _validate() {

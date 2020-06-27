@@ -158,5 +158,35 @@ void main() {
       expect(formControl.errors.keys.length, 1);
       expect(formControl.errors['minLength'] != null, true);
     });
+
+    test('Reset a control restore default value', () {
+      final defaultValue = 'john doe';
+      final formControl = FormControl(
+        defaultValue: defaultValue,
+      );
+
+      formControl.value = 'hello john';
+
+      formControl.reset();
+
+      expect(formControl.value, defaultValue);
+    });
+
+    test('Reset FormGroup restore default value of all controls', () {
+      final defaultName = 'john doe';
+      final defaultEmail = 'johndoe@reactiveforms.com';
+      final formGroup = FormGroup({
+        'name': FormControl(defaultValue: defaultName),
+        'email': FormControl(defaultValue: defaultEmail),
+      });
+
+      formGroup.formControl('name').value = 'hello john';
+      formGroup.formControl('email').value = 'john@reactiveforms.com';
+
+      formGroup.reset();
+
+      expect(formGroup.formControl('name').value, defaultName);
+      expect(formGroup.formControl('email').value, defaultEmail);
+    });
   });
 }

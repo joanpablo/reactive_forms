@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/models/form_control.dart';
@@ -114,6 +116,9 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
   FocusNode _focusNode = FocusNode();
   String _errorText;
 
+  StreamSubscription _onStatusChangedSubscription;
+  StreamSubscription _onFocusChangedSubscription;
+
   @override
   void initState() {
     final form = ReactiveForm.of(context, listen: false);
@@ -121,11 +126,23 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
     _textController = TextEditingController(text: _control.value);
 
     _focusNode.addListener(_onFocusChanged);
-    _control.onStatusChanged.listen((_) => _touch());
-    _control.onFocusChanged.listen((_) => _onFormControlFocusChanged());
+    _onStatusChangedSubscription =
+        _control.onStatusChanged.listen(_onFormControlStatusChanged);
+    _onFocusChangedSubscription =
+        _control.onFocusChanged.listen(_onFormControlFocusChanged);
     _control.addListener(_onFormControlValueChanged);
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChanged);
+    _control.removeListener(_onFormControlValueChanged);
+    _onStatusChangedSubscription.cancel();
+    _onFocusChangedSubscription.cancel();
+
+    super.dispose();
   }
 
   void _onChanged(String value) {
@@ -134,6 +151,8 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
       _validate();
     }
   }
+
+  void _onFormControlStatusChanged(_) => _touch();
 
   void _onFormControlValueChanged() {
     if (_textController.text == _control.value) {
@@ -144,7 +163,7 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
     _touch();
   }
 
-  void _onFormControlFocusChanged() {
+  void _onFormControlFocusChanged(_) {
     if (_control.focused && !_focusNode.hasFocus) {
       _focusNode.requestFocus();
     } else if (!_control.focused && _focusNode.hasFocus) {

@@ -28,6 +28,21 @@ class FormGroup extends ChangeNotifier {
     return this._controls[name];
   }
 
+  Map<String, dynamic> get value {
+    final map = Map<String, dynamic>();
+    this._controls.forEach((key, formControl) {
+      map[key] = formControl.value;
+    });
+
+    return map;
+  }
+
+  void reset() {
+    this._controls.forEach((key, formControl) {
+      formControl.reset();
+    });
+  }
+
   void _validate() {
     final validity =
         this.validators.any((validator) => validator(this) != null);
