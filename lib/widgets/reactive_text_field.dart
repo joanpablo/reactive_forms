@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/models/form_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/widgets/provider.dart';
 
 typedef ReactiveFieldBuilder = Widget Function(_ReactiveTextFieldState state);
 
@@ -117,7 +116,7 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
 
   @override
   void initState() {
-    final form = Provider.of<FormGroup>(context, rebuildContext: false);
+    final form = ReactiveForm.of(context, rebuildContext: false);
     _control = form.formControl(widget.formControlName);
     _textController = TextEditingController(text: _control.value);
 
