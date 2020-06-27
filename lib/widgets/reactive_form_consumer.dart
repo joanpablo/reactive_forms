@@ -12,9 +12,8 @@ class ReactiveFormConsumer extends StatelessWidget {
   const ReactiveFormConsumer({
     Key key,
     @required this.builder,
-    @required this.child,
+    this.child,
   })  : assert(builder != null),
-        assert(child != null),
         super(key: key);
 
   @override

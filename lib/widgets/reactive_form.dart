@@ -24,7 +24,7 @@ class ReactiveForm extends StatefulWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static FormGroup of(BuildContext context, {bool listen: true}) {
+  static FormGroup of(BuildContext context, {bool listen = true}) {
     if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormGroupInheritedNotifier>()
@@ -42,16 +42,17 @@ class ReactiveForm extends StatefulWidget {
 
 class _ReactiveFormState extends State<ReactiveForm> {
   @override
+  void dispose() {
+    print('_ReactiveFormState dispose');
+    widget.formGroup.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FormGroupInheritedNotifier(
       formGroup: widget.formGroup,
       child: widget.child,
     );
-  }
-
-  @override
-  void dispose() {
-    widget.formGroup.dispose();
-    super.dispose();
   }
 }

@@ -8,10 +8,12 @@ typedef ReactiveFieldBuilder = Widget Function(_ReactiveTextFieldState state);
 class ReactiveTextField extends StatefulWidget {
   ReactiveFieldBuilder _builder;
   final String formControlName;
+  final Map<String, String> validationMessages;
 
   ReactiveTextField({
     Key key,
-    this.formControlName,
+    @required this.formControlName,
+    this.validationMessages = const {},
     InputDecoration decoration = const InputDecoration(),
     TextInputType keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -35,11 +37,7 @@ class ReactiveTextField extends StatefulWidget {
     int minLines,
     bool expands = false,
     int maxLength,
-    ValueChanged<String> onChanged,
     GestureTapCallback onTap,
-    VoidCallback onEditingComplete,
-    ValueChanged<String> onFieldSubmitted,
-    FormFieldSetter<String> onSaved,
     FormFieldValidator<String> validator,
     List<TextInputFormatter> inputFormatters,
     bool enabled = true,
@@ -51,7 +49,9 @@ class ReactiveTextField extends StatefulWidget {
     bool enableInteractiveSelection = true,
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
-  }) : _builder = ((_ReactiveTextFieldState state) {
+  })  : assert(formControlName != null),
+        assert(validationMessages != null),
+        _builder = ((_ReactiveTextFieldState state) {
           final InputDecoration effectiveDecoration =
               (decoration ?? const InputDecoration())
                   .applyDefaults(Theme.of(state.context).inputDecorationTheme);
@@ -91,8 +91,6 @@ class ReactiveTextField extends StatefulWidget {
             maxLength: maxLength,
             onChanged: state._onChanged,
             onTap: onTap,
-            onEditingComplete: onEditingComplete,
-            onSubmitted: onFieldSubmitted,
             inputFormatters: inputFormatters,
             enabled: enabled,
             cursorWidth: cursorWidth,
@@ -171,13 +169,19 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
     _validate();
   }
 
+  String _validator() {
+    if (_control.valid) {
+      return null;
+    }
+
+    return widget.validationMessages.containsKey(_control.errors.keys.first)
+        ? widget.validationMessages[_control.errors.keys.first]
+        : _control.errors.keys.first;
+  }
+
   void _validate() {
     setState(() {
-      if (_control.errors.keys.length > 0) {
-        _errorText = _control.errors.keys.first;
-      } else {
-        _errorText = null;
-      }
+      _errorText = _validator();
     });
   }
 
