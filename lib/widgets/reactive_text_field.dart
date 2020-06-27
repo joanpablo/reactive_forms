@@ -116,7 +116,7 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
 
   @override
   void initState() {
-    final form = ReactiveForm.of(context, rebuildContext: false);
+    final form = ReactiveForm.of(context, listen: false);
     _control = form.formControl(widget.formControlName);
     _textController = TextEditingController(text: _control.value);
 

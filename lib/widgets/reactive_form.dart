@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/widgets/form_group_inherited_notifier.dart';
-import 'package:reactive_forms/widgets/form_group_provider.dart';
 
 ///This class is responsible for create an [FormGroupInheritedNotifier] for
 ///exposing a [FormGroup] to all descendants widgets. It also
 ///brings a mechanism to dispose when the [ReactiveForm] disposes itself.
-class ReactiveForm extends StatelessWidget {
+class ReactiveForm extends StatefulWidget {
   final Widget child;
   final FormGroup formGroup;
 
@@ -20,13 +19,13 @@ class ReactiveForm extends StatelessWidget {
 
   /// Returns the nearest model up its widget tree
   ///
-  /// If [rebuildContext] is `true` (default value), all the dependents widgets
+  /// If [listen] is `true` (default value), all the dependents widgets
   /// will rebuild
   ///
   /// `rebuildContext: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static FormGroup of(BuildContext context, {bool rebuildContext: true}) {
-    if (rebuildContext) {
+  static FormGroup of(BuildContext context, {bool listen: true}) {
+    if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormGroupInheritedNotifier>()
           .notifier;
@@ -38,10 +37,21 @@ class ReactiveForm extends StatelessWidget {
   }
 
   @override
+  _ReactiveFormState createState() => _ReactiveFormState();
+}
+
+class _ReactiveFormState extends State<ReactiveForm> {
+  @override
+  void dispose() {
+    widget.formGroup.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FormGroupProvider(
-      formGroup: this.formGroup,
-      child: this.child,
+    return FormGroupInheritedNotifier(
+      notifier: widget.formGroup,
+      child: widget.child,
     );
   }
 }
