@@ -1,4 +1,4 @@
-import 'package:reactive_forms/form_group.dart';
+import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/validators/email_validator.dart';
 import 'package:reactive_forms/validators/max_length_validator.dart';
 import 'package:reactive_forms/validators/min_length_validator.dart';

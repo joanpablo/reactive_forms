@@ -6,7 +6,10 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
   final List<ValidatorFunction> validators;
   final Map<String, dynamic> errors = {};
   final PublishSubject _onStatusChangedSubject = PublishSubject();
+  final PublishSubject _onFocusChangedSubject = PublishSubject();
   bool touched;
+  bool _focused = false;
+  String _value;
 
   FormControl({
     String defaultValue,
@@ -18,7 +21,8 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
 
   @override
   String get value => _value;
-  String _value;
+
+  bool get focused => _focused;
 
   set value(String newValue) {
     if (_value == newValue) return;
@@ -30,10 +34,13 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
   @override
   void dispose() {
     this._onStatusChangedSubject.close();
+    this._onFocusChangedSubject.close();
     super.dispose();
   }
 
   Stream get onStatusChanged => _onStatusChangedSubject.stream;
+
+  Stream get onFocusChanged => _onFocusChangedSubject.stream;
 
   bool get valid => this.errors.keys.length == 0;
 
@@ -63,5 +70,19 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
         this.errors.addAll(error);
       }
     });
+  }
+
+  void unfocus() {
+    if (this._focused) {
+      this._focused = false;
+      this._onFocusChangedSubject.add(this._focused);
+    }
+  }
+
+  void focus() {
+    if (!this._focused) {
+      this._focused = true;
+      this._onFocusChangedSubject.add(this._focused);
+    }
   }
 }

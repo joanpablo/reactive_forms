@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reactive_forms/form_control.dart';
-import 'package:reactive_forms/form_group.dart';
+import 'package:reactive_forms/models/form_control.dart';
+import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/validators/validators.dart';
 
 void main() {
