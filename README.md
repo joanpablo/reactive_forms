@@ -368,7 +368,7 @@ void _onSubmit() {
 
 ## Focus/Unfocus from **FormControl**
 
-There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()**.
+There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()** methods.
 
 ```dart
 final form = FromGroup({
