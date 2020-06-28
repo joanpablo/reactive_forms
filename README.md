@@ -234,7 +234,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-Now lets see the implementation of the **MySignInSubmitButton** custom widget:
+Now lets see the implementation of the **MySubmitButton** custom widget:
 
 ```dart
 class MySubmitButton extends StatelessWidget {
