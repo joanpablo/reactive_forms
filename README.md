@@ -296,7 +296,7 @@ Widget build(BuildContext context) {
           builder: (context, form, child) {
             return RaisedButton(
               child: Text('Submit'),
-              onPressed: form.invalid ? null : _onPressed,
+              onPressed: form.invalid ? null : _onSubmit,
             );
           },
         ),
@@ -305,7 +305,7 @@ Widget build(BuildContext context) {
   );
 }
 
-void _onPressed() {
+void _onSubmit() {
   print('Hello Reactive Forms!!!');
 }
 ```
