@@ -1,6 +1,6 @@
 # Reactive Forms
 
-This is a model driven approach to handling form inputs and validations, heavily inspired in Angular's Reactive Forms.
+This is a model driven approach to handling form inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
 ## Getting Started
 
@@ -211,6 +211,11 @@ Widget build(BuildContext context) {
 
 For a better User Experience some times we want to enable/disable the *Submit* button based on the validity of the *Form*. Getting this behavior, even in such a great framework as Flutter, some times can be hard and can lead to have individual implementations for each *Form* of the same application plus boilerplate code.  
 
+We will show you two different ways to accomplish this very easely:
+1. Separating Submit Button in a different Widget.
+2. Using **ReactiveFormConsumer** widget.
+
+### Separating Submit Button in a different Widget:
 Lets add a submit button to our *Form*:
 
 ```dart
@@ -234,7 +239,9 @@ Widget build(BuildContext context) {
 }
 ```
 
-Now lets see the implementation of the **MySubmitButton** custom widget:
+> The above is a simple sign-in form with *email*, *password*, and a *submit* button.
+
+Now lets see the implementation of the **MySubmitButton** widget:
 
 ```dart
 class MySubmitButton extends StatelessWidget {
@@ -255,4 +262,50 @@ class MySubmitButton extends StatelessWidget {
 
 > Notice the use of ***ReactiveForm.of(context)*** to get access to the nearest **FormGroup** up the widget's tree.
 
-In the previous example we have separate the implementation of the *submit* button in a different widget. The reason behind that is that we want to re-build the *submit* button each time the *validity* of the **FormGroup** changes, not the entire *Form*, but just the button.
+In the previous example we have separate the implementation of the *submit* button in a different widget. The reasons behind this is that we want to re-build the *submit* button each time the *validity* of the **FormGroup** changes. We don't want to rebuild the entire *Form*, but just the button.
+
+How is that possible? Well, the answer is in the expression:
+
+> ReactiveForm.of(context);
+
+The expression above have two important responsabilities:
+- Obtains the nearest **FormGroup** up the widget's tree.
+- Register the current **context** with the changes in the **FormGroup** so that if the validity of the **FormGroup** change then the current **context** is *rebuilt*.
+
+The **ReactiveForm** widget has this behavior because is implemented using the [**InheritedNotifier**](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html).
+
+### Using **ReactiveFormConsumer**:
+
+**ReactiveFormConsumer** is a wrapped widget around the **ReactiveForm.of(context)** expression so that we can reimplement the previous example as follows:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: Columns(
+      children: <Widget>[
+        ReactiveTextField(
+          formControlName: 'email',
+        ),
+        ReactiveTextField(
+          formControlName: 'password',
+          obscureText: true,
+        ),
+        ReactiveFormConsumer(
+          builder: (context, form, child) {
+            return RaisedButton(
+              child: Text('Submit'),
+              onPressed: form.invalid ? null : _onPressed,
+            );
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+void _onPressed() {
+  print('Hello Reactive Forms!!!');
+}
+```
