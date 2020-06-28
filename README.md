@@ -169,9 +169,9 @@ final form = FromGroup({
 ]);
 ```
 
-## Flutter Reactive Widgets
+## Reactive Forms Widgets
 
-So far we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Widgets is the answer ;)
+So far we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Forms Widgets is the answer ;)
 
 Lets see an example:
 
