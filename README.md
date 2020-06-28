@@ -88,7 +88,7 @@ There are special validators that can be attached to **FormGroup**. In the Next 
 
 ## What about Password and PasswordConfirmation?
 
-There are some cases where we want to implement a Form where a validation of a field depends on the value of another field, For example a sign-up form with *email* and *emailConfirmation* or *password* and *passwordConfirmation*.
+There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with *email* and *emailConfirmation* or *password* and *passwordConfirmation*.
 
 For that cases we must implement a custom validator and attach it to the **FormGroup**, lets see an example:
 
@@ -120,4 +120,17 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
     return null;
   };
 }
+```
+
+Fortunly you don't have to implement a custom *must match* validator because we have already included it into the implementation of the **reactive_forms** package so you could reuse it. The previous example will become:
+
+```dart
+final form = FromGroup({
+  'name': FormControl(validators: [Validators.required]),
+  'email': FormControl(validators: [Validators.required, Validators.email]),
+  'password': FormControl(validators: [Validators.required, Validators.minLenght(8)]),
+  'passwordConfirmation': FormControl(validators: [Validators.required]),
+}, validators: [
+  FormGroupValidators.mustMatch('password', 'passwordConfirmation'),
+]);
 ```

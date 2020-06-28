@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/models/form_control.dart';
-import 'package:reactive_forms/validators/validators.dart';
+import 'package:reactive_forms/validators/form_group_validators.dart';
 
 class FormGroup extends ChangeNotifier {
   final Map<String, FormControl> _controls;
