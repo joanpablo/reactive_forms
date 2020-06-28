@@ -377,7 +377,7 @@ final form = FromGroup({
 
 final formControl = form.formControl('name');
 
-formControl.focus(); // text field will get focused in UI and the device keyboard will popup
+formControl.focus(); // UI text field will get focus and the device keyboard will pop up
 
-formControl.unfocus(); // text field in UI will lose focus
+formControl.unfocus(); // UI text field will lose focus
 ```
