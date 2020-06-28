@@ -1,6 +1,6 @@
 # Reactive Forms
 
-This is a model driven approach to handling form inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
+This is a model driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
 ## Getting Started
 
@@ -39,6 +39,35 @@ final form = FromGroup({
 ## Default Values
 
 Notice in the example above that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
+
+## How to get Form data
+You can get the value of a single **FormControl** as simple as:
+
+```dart
+String get name() => this.form.formControl('name').value;
+```
+
+But you can alse get the complete *Form* data as follows:
+
+```dart
+final form = FromGroup({
+  'name': FormControl(defaultValue: 'John Doe'),
+  'email': FormControl(defaultValue: 'johndoe@email.com'),
+});
+
+print(form.value);
+```
+
+The previous code prints the following output:
+
+```json
+{
+  "name": "John Doe",
+  "email": "johndoe@email.com"
+}
+```
+
+> **FormGroup.value** returns an instance of **Map<String, dynamic>** for each field and its value.
 
 ## What about Validators?
 
