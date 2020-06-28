@@ -364,4 +364,20 @@ void _onSubmit() {
 }
 ```
 
+> It is entirely up to you to decide wich of the above two methods to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
+
 ## Focus/Unfocus from **FormControl**
+
+There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()**.
+
+```dart
+final form = FromGroup({
+  'name': FormControl(defaultValue: 'John Doe'),
+});
+
+final formControl = form.formControl('name');
+
+formControl.focus(); // text field will get focused in UI and the device keyboard will popup
+
+formControl.unfocus(); // text field in UI will lose focus
+```
