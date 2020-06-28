@@ -42,7 +42,7 @@ Notice that in the above example that in the case of the *name* we have also set
 
 ## What about Validators?
 
-You can add validators to the FormControl as follows:
+You can add validators to a **FormControl** as follows:
 
 ```dart
 final form = FromGroup({
