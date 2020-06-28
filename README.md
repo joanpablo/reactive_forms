@@ -209,3 +209,46 @@ Widget build(BuildContext context) {
 
 ## Enable/Disable Submit button
 
+For a better User Experience some times we want to enable/disable the *Submit* button based on the validity of the *Form*. Getting this behavior, even in such a great framework as Flutter, some times can be hard and can lead to have individual implementations for each *Form* of the same application plus boilerplate code.  
+
+Lets add a submit button to our *Form*:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: Columns(
+      children: <Widget>[
+        ReactiveTextField(
+          formControlName: 'email',
+        ),
+        ReactiveTextField(
+          formControlName: 'password',
+          obscureText: true,
+        ),
+        MySubmitButton(),
+      ],
+    ),
+  );
+}
+```
+
+Now lets see the implementation of the **MySignInSubmitButton** custom widget:
+
+```dart
+class MySubmitButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final formGroup = ReactiveForm.of(context);
+    return RaisedButton(
+      child: Text('Submit'),
+      onPressed: formGroup.invalid ? null : _onPressed,
+    );
+  }
+
+  void _onPressed() {
+    print('Hello Reactive Forms!!!');
+  }
+}
+```
