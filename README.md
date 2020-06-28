@@ -78,12 +78,46 @@ Map<String, dynamic> _emptyWhiteSpaces(String value) {
   }
 ```
 
-A custom FormControl validator is a function that receives a the value as a String and returns a Map. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true**. 
+A custom FormControl validator is a function that receives the value as a String and returns a Map. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
 
 You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demostration porpouse.
 
 ### FormGroup validators
 
-There are special validators that can be attached to FormGroup. In the Next section we will see an example.
+There are special validators that can be attached to **FormGroup**. In the Next section we will see an example of that.
 
 ## What about Password and PasswordConfirmation?
+
+There are some cases where we want to implement a Form where a validation of a field depends on the value of another field, For example a sign-up form with *email* and *emailConfirmation* or *password* and *passwordConfirmation*.
+
+For that cases we must implement a custom validator and attach it to the **FormGroup**, lets see an example:
+
+```dart
+final form = FromGroup({
+  'name': FormControl(validators: [Validators.required]),
+  'email': FormControl(validators: [Validators.required, Validators.email]),
+  'password': FormControl(validators: [Validators.required, Validators.minLenght(8)]),
+  'passwordConfirmation': FormControl(validators: [Validators.required]),
+}, validators: [_mustMatch('password', 'passwordConfirmation')]);
+```
+
+In the previous code you can notice that we have added two more fields to the form: *password* and *passwordConfirmation*, also that boths fields are required and that the password must be at least 8 charactares lenght.
+
+But the must important thing here is that we have attached a **validator** to the **FormGroup**, this validator is a custom validator and here is the implementation:
+
+```dart
+Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) {
+  return (FormGroup form) {
+    final control = form.formControl(controlName);
+    final matchingControl = form.formControl(matchingControlName);
+
+    if (control.value != matchingControl.value) {
+      matchingControl.addError({'mustMatch': true});
+    } else {
+      matchingControl.removeError('mustMatch');
+    }
+
+    return null;
+  };
+}
+```
