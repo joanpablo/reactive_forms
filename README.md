@@ -238,7 +238,7 @@ Widget build(BuildContext context) {
 
 ## When does Validation Messages begin to show up?
 
-By default validation messages begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or complete the edition.
+Even when the **FormControl** is invalid, validation messages begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
 
 You can initialize a **FormControl** as **touched** so that the validations messages show up at the very first time the widget builds.
 
