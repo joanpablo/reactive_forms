@@ -78,7 +78,7 @@ Map<String, dynamic> _emptyWhiteSpaces(String value) {
   }
 ```
 
-A custom FormControl validator is a function that receives the value as a String and returns a Map. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
+A custom **FormControl** validator is a function that receives the value as a String and returns a Map. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
 
 You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demostration porpouse.
 
