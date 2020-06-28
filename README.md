@@ -238,9 +238,9 @@ Widget build(BuildContext context) {
 
 ## When does Validation Messages begin to show up?
 
-Even when the **FormControl** is invalid, validation messages begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
+Even when the **FormControl** is invalid, validation messages will begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
 
-You can initialize a **FormControl** as **touched** so that the validations messages show up at the very first time the widget builds.
+You can initialize a **FormControl** as **touched** to force the validation messages to show up at the very first time the widget builds.
 
 ```dart
 final form = FormGroup({
