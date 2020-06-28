@@ -122,15 +122,17 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
 }
 ```
 
-Fortunly you don't have to implement a custom *must match* validator because we have already included it into the implementation of the **reactive_forms** package so you could reuse it. The previous example will become:
+Fortunly you don't have to implement a custom *must match* validator because we have already included it into the implementation of the **reactive_forms** package so you could reuse it. The previous example will become into:
 
 ```dart
 final form = FromGroup({
   'name': FormControl(validators: [Validators.required]),
   'email': FormControl(validators: [Validators.required, Validators.email]),
+  'emailConfirmation': FormControl(validators: [Validators.required]),
   'password': FormControl(validators: [Validators.required, Validators.minLenght(8)]),
   'passwordConfirmation': FormControl(validators: [Validators.required]),
 }, validators: [
+  FormGroupValidators.mustMatch('email', 'emailConfirmation'),
   FormGroupValidators.mustMatch('password', 'passwordConfirmation'),
 ]);
 ```
