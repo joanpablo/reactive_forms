@@ -228,7 +228,7 @@ Also when we set a *value* to a **FormControl** the validations messages begin t
 ```dart
 set name(String newName) {
   final formControl = this.form.formControl('name');
-  formControl.value = newName;
+  formControl.value = newName; // if newName is invalid then messages will show up in UI
 }
 ```
 
