@@ -366,7 +366,7 @@ void _onSubmit() {
 
 > It is entirely up to you to decide wich of the above two methods to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
 
-## Focus/Unfocus from **FormControl**
+## Focus/Unfocus a **FormControl**
 
 There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()** methods.
 
