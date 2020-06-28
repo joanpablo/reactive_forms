@@ -102,10 +102,11 @@ final form = FromGroup({
   'passwordConfirmation': FormControl(validators: [Validators.required]),
 }, validators: [_mustMatch('password', 'passwordConfirmation')]);
 ```
+> Notice the use of *Validators.**minLenght(8)***
 
-In the previous code you can notice that we have added two more fields to the form: *password* and *passwordConfirmation*, also that boths fields are required and that the password must be at least 8 charactares lenght.
+In the previous code we have added two more fields to the form: *password* and *passwordConfirmation*, boths fields are required and the password must be at least 8 charactares lenght.
 
-But the must important thing here is that we have attached a **validator** to the **FormGroup**, this validator is a custom validator and here is the implementation:
+However the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator and the implementation follows as:
 
 ```dart
 Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) {
@@ -124,7 +125,7 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
 }
 ```
 
-Fortunly you don't have to implement a custom *must match* validator because we have already included it into the implementation of the **reactive_forms** package so you could reuse it. The previous example will become into:
+Fortunly you don't have to implement a custom *must match* validator because we have already included it into the code of the **reactive_forms** package so you could reuse it. The previous form definition example will become into:
 
 ```dart
 final form = FromGroup({
