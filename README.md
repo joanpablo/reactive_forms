@@ -207,6 +207,31 @@ Widget build(BuildContext context) {
 }
 ```
 
+## When does Validation Messages begin to show up?
+
+By default validation messages begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or complete the edition.
+
+You can initialize a **FormControl** as **touched** so that the validations messages show up at the very first time the widget builds.
+
+```dart
+final form = FormGroup({
+  'name': FormControl(
+    defaultValue: 'John Doe',
+    validators: [Validators.required],
+    touched: true,
+  ),
+});
+```
+
+Also when we set a *value* to a **FormControl** the validations messages begin to show up, for example:
+
+```dart
+set name(String newName) {
+  final formControl = this.form.formControl('name');
+  formControl.value = newName;
+}
+```
+
 ## Enable/Disable Submit button
 
 For a better User Experience some times we want to enable/disable the *Submit* button based on the validity of the *Form*. Getting this behavior, even in such a great framework as Flutter, some times can be hard and can lead to have individual implementations for each *Form* of the same application plus boilerplate code.  
@@ -309,3 +334,5 @@ void _onSubmit() {
   print('Hello Reactive Forms!!!');
 }
 ```
+
+## Focus/Unfocus from **FormControl**
