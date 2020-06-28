@@ -23,7 +23,7 @@ dependencies:
 
 Then run the command `flutter packages get` on the console.
 
-## Create a form
+## Creating a form
 
 A *form* is composed by multiple fields or *controls*.
 
