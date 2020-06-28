@@ -1,10 +1,10 @@
 # Reactive Forms
 
-This is a model driven approach to handling form inputs and validations, heavily inspired in Angular's Reactive Forms
+This is a model driven approach to handling form inputs and validations, heavily inspired in Angular's Reactive Forms.
 
 ## Getting Started
 
-For help getting started with Flutter, view our 
+For help getting started with Flutter, view the 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
 
@@ -38,7 +38,7 @@ final form = FromGroup({
 
 ## Default Values
 
-Notice that in the example above that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
+Notice in the example above that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
 
 ## What about Validators?
 
@@ -80,7 +80,7 @@ Map<String, dynamic> _emptyWhiteSpaces(String value) {
   }
 ```
 
-A custom **FormControl** validator is a function that receives the value as a String and returns a Map. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
+A custom **FormControl** validator is a function that receives the *value* as a **String** and returns a **Map**. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
 
 > You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demostration porpouse.
 
@@ -206,3 +206,6 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+## Enable/Disable Submit button
+
