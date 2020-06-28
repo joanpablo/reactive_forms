@@ -54,7 +54,9 @@ final form = FromGroup({
 });
 ```
 
-There are common predifined validators, but you can implement custom validators too.
+> If at least one **FormControl** is **invalid** then the FormGroup is **invalid**  
+
+There are common predifined validators, but you can implement custom validators too.  
 ### Predifined validators
 - Validators.required
 - Validators.email
