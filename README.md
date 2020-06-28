@@ -240,10 +240,10 @@ Now lets see the implementation of the **MySubmitButton** custom widget:
 class MySubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final formGroup = ReactiveForm.of(context);
+    final form = ReactiveForm.of(context);
     return RaisedButton(
       child: Text('Submit'),
-      onPressed: formGroup.invalid ? null : _onPressed,
+      onPressed: form.invalid ? null : _onPressed,
     );
   }
 
@@ -252,3 +252,7 @@ class MySubmitButton extends StatelessWidget {
   }
 }
 ```
+
+> Notice the use of ***ReactiveForm.of(context)*** to get access to the nearest **FormGroup** up the widget's tree.
+
+In the previous example we have separate the implementation of the *submit* button in a different widget. The reason behind that is that we want to re-build the *submit* button each time the *validity* of the **FormGroup** changes, not the entire *Form*, but just the button.
