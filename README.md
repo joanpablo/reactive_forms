@@ -88,7 +88,7 @@ A custom **FormControl** validator is a function that receives the *value* as a 
 
 There are special validators that can be attached to **FormGroup**. In the Next section we will see an example of that.
 
-## What about Password and PasswordConfirmation?
+## What about Password and Password Confirmation?
 
 There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with *email* and *emailConfirmation* or *password* and *passwordConfirmation*.
 
