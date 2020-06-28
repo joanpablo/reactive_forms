@@ -38,7 +38,7 @@ final form = FromGroup({
 
 ## Default Values
 
-Notice that in the above example that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
+Notice that in the example above that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
 
 ## What about Validators?
 
@@ -139,3 +139,34 @@ final form = FromGroup({
   FormGroupValidators.mustMatch('password', 'passwordConfirmation'),
 ]);
 ```
+
+## Flutter Reactive Widgets
+
+So far we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Widgets is the answer ;)
+
+Lets see an example:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: Columns(
+      children: <Widget>[
+        ReactiveTextField(
+          formControlName: 'name',
+        ),
+        ReactiveTextField(
+          formControlName: 'email',
+        ),
+        ReactiveTextField(
+          formControlName: 'password',
+          obscureText: true,
+        ),
+      ],
+    ),
+  );
+}
+```
+
+> The example above ignores the *emailConfirmation* and *passwordConfirmation* fields previously seen for simplicity.
