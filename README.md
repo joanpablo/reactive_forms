@@ -38,7 +38,7 @@ final form = FromGroup({
 
 ## Default Values
 
-Notice that in the examble above that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
+Notice that in the above example that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
 
 ## What about Validators?
 
