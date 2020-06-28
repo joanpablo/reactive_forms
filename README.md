@@ -170,3 +170,39 @@ Widget build(BuildContext context) {
 ```
 
 > The example above ignores the *emailConfirmation* and *passwordConfirmation* fields previously seen for simplicity.
+
+## How to customize error messages?
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: Columns(
+      children: <Widget>[
+        ReactiveTextField(
+          formControlName: 'name',
+          validationMessages: {
+            'required': 'The name must not be empty'
+          },
+        ),
+        ReactiveTextField(
+          formControlName: 'email',
+          validationMessages: {
+            'required': 'The email must not be empty',
+            'email': 'The email value must be a valid email'
+          },
+        ),
+        ReactiveTextField(
+          formControlName: 'password',
+          obscureText: true,
+          validationMessages: {
+            'required': 'The password must not be empty',
+            'minLenght': 'The password must have at least 8 characters'
+          },
+        ),
+      ],
+    ),
+  );
+}
+```
