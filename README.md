@@ -274,9 +274,9 @@ The expression above have two important responsabilities:
 
 The **ReactiveForm** widget has this behavior because is implemented using the [**InheritedNotifier**](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html).
 
-### Using **ReactiveFormConsumer**:
+### Using **ReactiveFormConsumer** widget:
 
-**ReactiveFormConsumer** is a wrapped widget around the **ReactiveForm.of(context)** expression so that we can reimplement the previous example as follows:
+**ReactiveFormConsumer** widget is a wrapped around the **ReactiveForm.of(context)** expression so that we can reimplement the previous example as follows:
 
 ```dart
 @override
