@@ -108,7 +108,7 @@ Map<String, dynamic> _emptyWhiteSpaces(String value) {
   if (value == null) {
     return error;
   } else if (value is String) {
-    return value.trim().isNotEmpty ? null : error;
+    return value.trim().isEmpty ? error : null;
   }
 
   return null;
