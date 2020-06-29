@@ -1,6 +1,6 @@
 # Reactive Forms
 
-This is a model driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
+This is a model-driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
 ## Getting Started
 
@@ -67,7 +67,7 @@ The previous code prints the following output:
 }
 ```
 
-> **FormGroup.value** returns an instance of **Map<String, dynamic>** for each field and its value.
+> **FormGroup.value** returns an instance of **Map<String, dynamic>** with each field and its value.
 
 ## What about Validators?
 
@@ -115,7 +115,7 @@ A custom **FormControl** validator is a function that receives the *value* as a 
 
 ### FormGroup validators
 
-There are special validators that can be attached to **FormGroup**. In the Next section we will see an example of that.
+There are special validators that can be attached to **FormGroup**. In the next section we will see an example of that.
 
 ## What about Password and Password Confirmation?
 
@@ -265,7 +265,7 @@ set name(String newName) {
 
 For a better User Experience some times we want to enable/disable the *Submit* button based on the validity of the *Form*. Getting this behavior, even in such a great framework as Flutter, some times can be hard and can lead to have individual implementations for each *Form* of the same application plus boilerplate code.  
 
-We will show you two different ways to accomplish this very easely:
+We will show you two different approaches to accomplish this very easily:
 1. Separating Submit Button in a different Widget.
 2. Using **ReactiveFormConsumer** widget.
 
@@ -286,7 +286,7 @@ Widget build(BuildContext context) {
           formControlName: 'password',
           obscureText: true,
         ),
-        MySubmitButton(),
+        MySubmitButton(), 
       ],
     ),
   );
@@ -316,7 +316,7 @@ class MySubmitButton extends StatelessWidget {
 
 > Notice the use of ***ReactiveForm.of(context)*** to get access to the nearest **FormGroup** up the widget's tree.
 
-In the previous example we have separate the implementation of the *submit* button in a different widget. The reasons behind this is that we want to re-build the *submit* button each time the *validity* of the **FormGroup** changes. We don't want to rebuild the entire *Form*, but just the button.
+In the previous example we have separated the implementation of the *submit* button in a different widget. The reasons behind this is that we want to re-build the *submit* button each time the *validity* of the **FormGroup** changes. We don't want to rebuild the entire *Form*, but just the button.
 
 How is that possible? Well, the answer is in the expression:
 
@@ -364,7 +364,7 @@ void _onSubmit() {
 }
 ```
 
-> It is entirely up to you to decide wich of the above two methods to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
+> It is entirely up to you to decide which of the above two approaches to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
 
 ## Focus/Unfocus a **FormControl**
 
