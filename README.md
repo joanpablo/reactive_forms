@@ -465,11 +465,11 @@ Widget build(BuildContext context) {
               child: Text('Visa'),
             ),
             DropdownMenuItem(
-              value: 1,
+              value: 2,
               child: Text('Mastercard'),
             ),
             DropdownMenuItem(
-              value: 2,
+              value: 3,
               child: Text('PayPal'),
             ),
           ],
