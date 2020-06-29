@@ -5,7 +5,7 @@ import 'package:reactive_forms/validators/number_validator.dart';
 import 'package:reactive_forms/validators/pattern_validator.dart';
 import 'package:reactive_forms/validators/required_validator.dart';
 
-typedef ValidatorFunction = Map<String, dynamic> Function(String value);
+typedef ValidatorFunction = Map<String, dynamic> Function(dynamic value);
 
 class Validators {
   static ValidatorFunction get required => RequiredValidator().validate;

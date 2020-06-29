@@ -1,3 +1,3 @@
 abstract class Validator {
-  Map<String, dynamic> validate(String value);
+  Map<String, dynamic> validate(dynamic value);
 }

@@ -6,7 +6,7 @@ class MinLengthValidator extends Validator {
   MinLengthValidator(this.minLength);
 
   @override
-  Map<String, dynamic> validate(String value) {
+  Map<String, dynamic> validate(dynamic value) {
     return (value == null || value.length >= this.minLength)
         ? null
         : {

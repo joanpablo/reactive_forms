@@ -5,7 +5,7 @@ class EmailValidator extends Validator {
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   @override
-  Map<String, dynamic> validate(String value) {
+  Map<String, dynamic> validate(dynamic value) {
     RegExp regex = new RegExp(EmailValidator.pattern);
     return (value == null || value == '' || regex.hasMatch(value))
         ? null
