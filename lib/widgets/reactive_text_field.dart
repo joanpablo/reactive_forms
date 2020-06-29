@@ -2,20 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reactive_forms/models/form_control.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/widgets/reactive_form_field.dart';
 
-typedef _ReactiveFieldBuilder = Widget Function(_ReactiveTextFieldState state);
-
-class ReactiveTextField extends StatefulWidget {
-  final _ReactiveFieldBuilder _builder;
-  final String formControlName;
-  final Map<String, String> validationMessages;
-
+class ReactiveTextField extends ReactiveFormField<String> {
   ReactiveTextField({
     Key key,
-    @required this.formControlName,
-    this.validationMessages = const {},
+    @required String formControlName,
+    Map<String, String> validationMessages,
     InputDecoration decoration = const InputDecoration(),
     TextInputType keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -52,180 +45,128 @@ class ReactiveTextField extends StatefulWidget {
     ScrollPhysics scrollPhysics,
   })  : assert(formControlName != null),
         assert(validationMessages != null),
-        _builder = ((_ReactiveTextFieldState state) {
-          final InputDecoration effectiveDecoration =
-              (decoration ?? const InputDecoration())
+        super(
+            formControlName: formControlName,
+            validationMessages: validationMessages,
+            builder: (ReactiveFormFieldState<String> field) {
+              final state = field as _ReactiveTextFieldState;
+              final InputDecoration effectiveDecoration = (decoration ??
+                      const InputDecoration())
                   .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
-          return TextField(
-            controller: state._textController,
-            focusNode: state._focusNode,
-            decoration:
-                effectiveDecoration.copyWith(errorText: state._errorText),
-            keyboardType: keyboardType,
-            textInputAction: textInputAction,
-            style: style,
-            strutStyle: strutStyle,
-            textAlign: textAlign,
-            textAlignVertical: textAlignVertical,
-            textDirection: textDirection,
-            textCapitalization: textCapitalization,
-            autofocus: autofocus,
-            toolbarOptions: toolbarOptions,
-            readOnly: readOnly,
-            showCursor: showCursor,
-            obscureText: obscureText,
-            autocorrect: autocorrect,
-            smartDashesType: smartDashesType ??
-                (obscureText
-                    ? SmartDashesType.disabled
-                    : SmartDashesType.enabled),
-            smartQuotesType: smartQuotesType ??
-                (obscureText
-                    ? SmartQuotesType.disabled
-                    : SmartQuotesType.enabled),
-            enableSuggestions: enableSuggestions,
-            maxLengthEnforced: maxLengthEnforced,
-            maxLines: maxLines,
-            minLines: minLines,
-            expands: expands,
-            maxLength: maxLength,
-            onChanged: state._onChanged,
-            onTap: onTap,
-            inputFormatters: inputFormatters,
-            enabled: enabled,
-            cursorWidth: cursorWidth,
-            cursorRadius: cursorRadius,
-            cursorColor: cursorColor,
-            scrollPadding: scrollPadding,
-            scrollPhysics: scrollPhysics,
-            keyboardAppearance: keyboardAppearance,
-            enableInteractiveSelection: enableInteractiveSelection,
-            buildCounter: buildCounter,
-          );
-        });
+              return TextField(
+                controller: state._textController,
+                focusNode: state._focusNode,
+                decoration:
+                    effectiveDecoration.copyWith(errorText: state.errorText),
+                keyboardType: keyboardType,
+                textInputAction: textInputAction,
+                style: style,
+                strutStyle: strutStyle,
+                textAlign: textAlign,
+                textAlignVertical: textAlignVertical,
+                textDirection: textDirection,
+                textCapitalization: textCapitalization,
+                autofocus: autofocus,
+                toolbarOptions: toolbarOptions,
+                readOnly: readOnly,
+                showCursor: showCursor,
+                obscureText: obscureText,
+                autocorrect: autocorrect,
+                smartDashesType: smartDashesType ??
+                    (obscureText
+                        ? SmartDashesType.disabled
+                        : SmartDashesType.enabled),
+                smartQuotesType: smartQuotesType ??
+                    (obscureText
+                        ? SmartQuotesType.disabled
+                        : SmartQuotesType.enabled),
+                enableSuggestions: enableSuggestions,
+                maxLengthEnforced: maxLengthEnforced,
+                maxLines: maxLines,
+                minLines: minLines,
+                expands: expands,
+                maxLength: maxLength,
+                onChanged: state.didChange,
+                onTap: onTap,
+                inputFormatters: inputFormatters,
+                enabled: enabled,
+                cursorWidth: cursorWidth,
+                cursorRadius: cursorRadius,
+                cursorColor: cursorColor,
+                scrollPadding: scrollPadding,
+                scrollPhysics: scrollPhysics,
+                keyboardAppearance: keyboardAppearance,
+                enableInteractiveSelection: enableInteractiveSelection,
+                buildCounter: buildCounter,
+              );
+            });
 
   @override
-  _ReactiveTextFieldState createState() => _ReactiveTextFieldState();
+  ReactiveFormFieldState<String> createState() => _ReactiveTextFieldState();
 }
 
-class _ReactiveTextFieldState extends State<ReactiveTextField> {
+class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   TextEditingController _textController;
-  FormControl _control;
   FocusNode _focusNode = FocusNode();
-  String _errorText;
-
-  StreamSubscription _statusChangeSubscription;
   StreamSubscription _focusChangeSubscription;
 
   @override
   void initState() {
-    final form = ReactiveForm.of(context, listen: false);
-    _control = form.formControl(widget.formControlName);
-    _textController = TextEditingController(text: _control.value);
-    _focusNode.addListener(_onFocusChanged);
-    _subscribeFormControl();
-
     super.initState();
-  }
 
-  @override
-  void didChangeDependencies() {
-    final form = ReactiveForm.of(context, listen: false);
-    final newControl = form.formControl(widget.formControlName);
-    if (_control != newControl) {
-      _unsubscribeFormControl();
-      _control = newControl;
-    }
-
-    super.didChangeDependencies();
+    _textController = TextEditingController(text: control.value);
+    _focusNode.addListener(_onFocusChanged);
   }
 
   @override
   void dispose() {
     _focusNode.removeListener(_onFocusChanged);
-    _unsubscribeFormControl();
+    this.unsubscribeFormControl();
 
     super.dispose();
   }
 
-  void _subscribeFormControl() {
-    _statusChangeSubscription =
-        _control.onStatusChanged.listen(_onFormControlStatusChanged);
+  @override
+  void subscribeFormControl() {
+    super.subscribeFormControl();
     _focusChangeSubscription =
-        _control.onFocusChanged.listen(_onFormControlFocusChanged);
-    _control.addListener(_onFormControlValueChanged);
+        this.control.onFocusChanged.listen(_onFormControlFocusChanged);
   }
 
-  void _unsubscribeFormControl() {
-    _control.removeListener(_onFormControlValueChanged);
-    _statusChangeSubscription.cancel();
+  @override
+  void unsubscribeFormControl() {
+    super.unsubscribeFormControl();
     _focusChangeSubscription.cancel();
   }
 
-  void _onChanged(String value) {
-    _control.value = value;
-    if (_control.touched) {
-      _validate();
-    }
-  }
-
-  void _onFormControlStatusChanged(_) {
-    _touch();
-  }
-
-  void _onFormControlValueChanged() {
-    if (_textController.text == _control.value) {
+  @override
+  void updateValueFromControl() {
+    if (_textController.text == this.control.value) {
       return;
     }
 
-    _textController.text = _control.value;
-    _touch();
+    _textController.text = this.control.value;
+    super.updateValueFromControl();
   }
 
   void _onFormControlFocusChanged(_) {
-    if (_control.focused && !_focusNode.hasFocus) {
+    if (this.control.focused && !_focusNode.hasFocus) {
       _focusNode.requestFocus();
-    } else if (!_control.focused && _focusNode.hasFocus) {
+    } else if (!this.control.focused && _focusNode.hasFocus) {
       _focusNode.unfocus();
     }
   }
 
   void _onFocusChanged() {
-    if (!_focusNode.hasFocus && !_control.touched) {
-      _touch();
+    if (!_focusNode.hasFocus && !this.control.touched) {
+      this.touch();
     }
 
-    if (_control.focused && !_focusNode.hasFocus) {
-      _control.unfocus();
-    } else if (!_control.focused && _focusNode.hasFocus) {
-      _control.focus();
+    if (this.control.focused && !_focusNode.hasFocus) {
+      this.control.unfocus();
+    } else if (!this.control.focused && _focusNode.hasFocus) {
+      this.control.focus();
     }
-  }
-
-  void _touch() {
-    _control.touched = true;
-    _validate();
-  }
-
-  String _validator() {
-    if (_control.valid) {
-      return null;
-    }
-
-    return widget.validationMessages.containsKey(_control.errors.keys.first)
-        ? widget.validationMessages[_control.errors.keys.first]
-        : _control.errors.keys.first;
-  }
-
-  void _validate() {
-    setState(() {
-      _errorText = _validator();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget._builder(this);
   }
 }
