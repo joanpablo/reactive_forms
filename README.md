@@ -67,7 +67,7 @@ The previous code prints the following output:
 }
 ```
 
-> :point_right: **FormGroup.value** returns an instance of **Map<String, dynamic>** with each field and its value.
+> **FormGroup.value** returns an instance of **Map<String, dynamic>** with each field and its value.
 
 ## What about Validators?
 
@@ -83,7 +83,7 @@ final form = FromGroup({
 });
 ```
 
-> :point_right: If at least one **FormControl** is **invalid** then the FormGroup is **invalid**  
+> If at least one **FormControl** is **invalid** then the FormGroup is **invalid**  
 
 There are common predifined validators, but you can implement custom validators too.  
 ### Predifined validators
@@ -111,7 +111,7 @@ Map<String, dynamic> _emptyWhiteSpaces(String value) {
 
 A custom **FormControl** validator is a function that receives the *value* as a **String** and returns a **Map**. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
 
-> :point_right: You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demostration porpouse.
+> You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demostration porpouse.
 
 ### FormGroup validators
 
@@ -131,7 +131,7 @@ final form = FromGroup({
   'passwordConfirmation': FormControl(validators: [Validators.required]),
 }, validators: [_mustMatch('password', 'passwordConfirmation')]);
 ```
-> :point_right: Notice the use of *Validators.**minLenght(8)***
+> Notice the use of *Validators.**minLenght(8)***
 
 In the previous code we have added two more fields to the form: *password* and *passwordConfirmation*, boths fields are required and the password must be at least 8 charactares lenght.
 
@@ -198,7 +198,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-> :point_right: The example above ignores the *emailConfirmation* and *passwordConfirmation* fields previously seen for simplicity.
+> The example above ignores the *emailConfirmation* and *passwordConfirmation* fields previously seen for simplicity.
 
 ## How to customize error messages?
 
@@ -293,7 +293,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-> :point_right: The above is a simple sign-in form with *email*, *password*, and a *submit* button.
+> The above is a simple sign-in form with *email*, *password*, and a *submit* button.
 
 Now lets see the implementation of the **MySubmitButton** widget:
 
@@ -314,7 +314,7 @@ class MySubmitButton extends StatelessWidget {
 }
 ```
 
-> :point_right: Notice the use of ***ReactiveForm.of(context)*** to get access to the nearest **FormGroup** up the widget's tree.
+> Notice the use of ***ReactiveForm.of(context)*** to get access to the nearest **FormGroup** up the widget's tree.
 
 In the previous example we have separated the implementation of the *submit* button in a different widget. The reasons behind this is that we want to re-build the *submit* button each time the *validity* of the **FormGroup** changes. We don't want to rebuild the entire *Form*, but just the button.
 
@@ -366,7 +366,7 @@ void _onSubmit() {
 }
 ```
 
-> :point_right: It is entirely up to you to decide which of the above two approaches to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
+> It is entirely up to you to decide which of the above two approaches to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
 
 ## Focus/Unfocus a **FormControl**
 
@@ -428,7 +428,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-> :point_right: Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl** the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*, *onChanged*, *onEditingComplete*, *onFieldSubmitted*, the **FormControl** is reponsible for handling validation as well as changes notifications.
+> Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl** the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*, *onChanged*, *onEditingComplete*, *onFieldSubmitted*, the **FormControl** is reponsible for handling validation as well as changes notifications.
 
 ## Supported Reactive Form Widgets
 
@@ -485,7 +485,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-> :point_right: As you can see from the above example the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the aditional *formControlName* and *validationMessages* properties.
+> As you can see from the above example the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the aditional *formControlName* and *validationMessages* properties.
 
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 
