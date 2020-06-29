@@ -427,3 +427,60 @@ Widget build(BuildContext context) {
 ```
 
 > Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl** the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*, *onChanged*, *onEditingComplete*, *onFieldSubmitted*, the **FormControl** is reponsible for handling validation as well as changes notifications.
+
+## Supported Reactive Form Widgets
+
+- ReactiveTextField
+- ReactiveDropdownField
+
+### ReactiveTextField
+
+You have seen all the possible explanation along these documentation.
+
+### ReactiveDropdownField
+
+**ReactiveDropdownField** as all the other *reactive field widgets* is almost the same as its native version [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html) but adding two-binding capabilities. The code is ported from the original native implementation. It have all the capability of styles and themes of the native version.
+
+```dart
+final form = FormGroup({
+  'payment': FormControl(validators: [Validators.required]),
+});
+
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: FormGroupProvider.of(context),
+    child: Column(
+      children: <Widget>[
+        ReactiveDropdownField<int>(
+          formControlName: 'payment',
+          hint: Text('Select payment...'),
+          items: [
+            DropdownMenuItem(
+              value: 0,
+              child: Text('Free'),
+            ),
+            DropdownMenuItem(
+              value: 1,
+              child: Text('Visa'),
+            ),
+            DropdownMenuItem(
+              value: 1,
+              child: Text('Mastercard'),
+            ),
+            DropdownMenuItem(
+              value: 2,
+              child: Text('PayPal'),
+            ),
+          ],
+          validationMessages: {
+            'required': 'You must select a payment method',
+          },
+        ),
+      ],
+    ),
+  );
+}
+```
+
+> As you can see from the above example the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the aditional *formControlName* and *validationMessages* properties.
