@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:reactive_forms/models/form_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-typedef ReactiveFieldBuilder = Widget Function(_ReactiveTextFieldState state);
+typedef _ReactiveFieldBuilder = Widget Function(_ReactiveTextFieldState state);
 
 class ReactiveTextField extends StatefulWidget {
-  ReactiveFieldBuilder _builder;
+  final _ReactiveFieldBuilder _builder;
   final String formControlName;
   final Map<String, String> validationMessages;
 
@@ -115,33 +115,52 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
   FocusNode _focusNode = FocusNode();
   String _errorText;
 
-  StreamSubscription _onStatusChangedSubscription;
-  StreamSubscription _onFocusChangedSubscription;
+  StreamSubscription _statusChangeSubscription;
+  StreamSubscription _focusChangeSubscription;
 
   @override
   void initState() {
     final form = ReactiveForm.of(context, listen: false);
     _control = form.formControl(widget.formControlName);
     _textController = TextEditingController(text: _control.value);
-
     _focusNode.addListener(_onFocusChanged);
-    _onStatusChangedSubscription =
-        _control.onStatusChanged.listen(_onFormControlStatusChanged);
-    _onFocusChangedSubscription =
-        _control.onFocusChanged.listen(_onFormControlFocusChanged);
-    _control.addListener(_onFormControlValueChanged);
+    _subscribeFormControl();
 
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    final form = ReactiveForm.of(context, listen: false);
+    final newControl = form.formControl(widget.formControlName);
+    if (_control != newControl) {
+      _unsubscribeFormControl();
+      _control = newControl;
+    }
+
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _focusNode.removeListener(_onFocusChanged);
-    _control.removeListener(_onFormControlValueChanged);
-    _onStatusChangedSubscription.cancel();
-    _onFocusChangedSubscription.cancel();
+    _unsubscribeFormControl();
 
     super.dispose();
+  }
+
+  void _subscribeFormControl() {
+    _statusChangeSubscription =
+        _control.onStatusChanged.listen(_onFormControlStatusChanged);
+    _focusChangeSubscription =
+        _control.onFocusChanged.listen(_onFormControlFocusChanged);
+    _control.addListener(_onFormControlValueChanged);
+  }
+
+  void _unsubscribeFormControl() {
+    _control.removeListener(_onFormControlValueChanged);
+    _statusChangeSubscription.cancel();
+    _focusChangeSubscription.cancel();
   }
 
   void _onChanged(String value) {
@@ -151,7 +170,9 @@ class _ReactiveTextFieldState extends State<ReactiveTextField> {
     }
   }
 
-  void _onFormControlStatusChanged(_) => _touch();
+  void _onFormControlStatusChanged(_) {
+    _touch();
+  }
 
   void _onFormControlValueChanged() {
     if (_textController.text == _control.value) {
