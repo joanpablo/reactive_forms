@@ -435,7 +435,7 @@ Widget build(BuildContext context) {
 
 ### ReactiveTextField
 
-You have seen all the possible explanation along these documentation.
+We have explain the common usage of a **ReactiveTextField** along this documentation.
 
 ### ReactiveDropdownField
 
@@ -449,7 +449,7 @@ final form = FormGroup({
 @override
 Widget build(BuildContext context) {
   return ReactiveForm(
-    formGroup: FormGroupProvider.of(context),
+    formGroup: this.form,
     child: Column(
       children: <Widget>[
         ReactiveDropdownField<int>(
