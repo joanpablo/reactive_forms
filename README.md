@@ -484,3 +484,7 @@ Widget build(BuildContext context) {
 ```
 
 > As you can see from the above example the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the aditional *formControlName* and *validationMessages* properties.
+
+## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
+
+**Reactive Forms** gets its maximum potential when used in combination with [Provider](https://pub.dev/packages/provider) plugin.
