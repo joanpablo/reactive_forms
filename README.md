@@ -388,7 +388,7 @@ formControl.unfocus(); // UI text field will lose focus
 
 **ReactiveTextField** has all the properties that you can find in a common *TextField*, it can be customizable and themeable as much as you want just as a simple *TextField* or a *TextFormField*. In fact must of the code was taken from the original TextFormField and ported to have a reactive behavior that binds itself to a **FormControl** in a **two-way** binding. 
 
-Below is an example of how to create some **RectiveTextField** with some common properties:
+Below is an example of how to create some **ReactiveTextField** with some common properties:
 
 ```dart
 @override
