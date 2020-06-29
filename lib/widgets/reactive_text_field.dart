@@ -40,7 +40,6 @@ class ReactiveTextField extends StatefulWidget {
     bool expands = false,
     int maxLength,
     GestureTapCallback onTap,
-    FormFieldValidator<String> validator,
     List<TextInputFormatter> inputFormatters,
     bool enabled = true,
     double cursorWidth = 2.0,

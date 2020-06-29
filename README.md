@@ -381,3 +381,47 @@ formControl.focus(); // UI text field will get focus and the device keyboard wil
 
 formControl.unfocus(); // UI text field will lose focus
 ```
+
+## How does **ReactiveTextField** differs from native TextFormField or TextField?
+
+**ReactiveTextField** has more in common with TextFormField that with TextField. As we all know TextFormField is a wrapper around the TextField widget that brings some extra capabilities such as *Form validations* with properties like *autovalidate* and *validator*. In the same way **ReactiveTextField** is a wrapper around *TextField* that handle the features of validations in a own different way.
+
+**ReactiveTextField** has all the properties that you can find in a common *TextField*, it can be customizable and themeable as much as you want just as a simple *TextField* or a *TextFormField*. In fact must of the code was taken from the original TextFormField and ported to have a reactive behavior that binds itself to a **FormControl** in a **two-way** binding. 
+
+Below is an example of how to create some **RectiveTextField** with some common properties:
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: Columns(
+      children: <Widget>[
+        ReactiveTextField(
+          formControlName: 'name',
+          decoration: InputDecoration(
+            labelText: 'Name',
+          ),
+          textCapitalization: TextCapitalization.words,
+          textAlign: TextAlign.center,
+          style: TextStyle(backgroundColor: Colors.white),
+        ),
+        ReactiveTextField(
+          formControlName: 'phoneNumber',
+          decoration: InputDecoration(
+            labelText: 'Phone number',
+          ),
+          keyboardType: TextInputType.number,
+        ),
+        ReactiveTextField(
+          formControlName: 'password',
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'Password',
+          ),
+        ),
+      ],
+    ),
+  );
+}
+```
