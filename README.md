@@ -382,9 +382,9 @@ formControl.focus(); // UI text field will get focus and the device keyboard wil
 formControl.unfocus(); // UI text field will lose focus
 ```
 
-## How does **ReactiveTextField** differs from native TextFormField or TextField?
+## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
 
-**ReactiveTextField** has more in common with TextFormField that with TextField. As we all know TextFormField is a wrapper around the TextField widget that brings some extra capabilities such as *Form validations* with properties like *autovalidate* and *validator*. In the same way **ReactiveTextField** is a wrapper around *TextField* that handle the features of validations in a own different way.
+**ReactiveTextField** has more in common with *TextFormField* that with *TextField*. As we all know *TextFormField* is a wrapper around the *TextField* widget that brings some extra capabilities such as *Form validations* with properties like *autovalidate* and *validator*. In the same way **ReactiveTextField** is a wrapper around *TextField* that handle the features of validations in a own different way.
 
 **ReactiveTextField** has all the properties that you can find in a common *TextField*, it can be customizable and themeable as much as you want just as a simple *TextField* or a *TextFormField*. In fact must of the code was taken from the original TextFormField and ported to have a reactive behavior that binds itself to a **FormControl** in a **two-way** binding. 
 
@@ -425,3 +425,5 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+> Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl** the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*, *onChanged*, *onEditingComplete*, *onFieldSubmitted*, the **FormControl** is reponsible for handling validation as well as changes notifications.
