@@ -6,7 +6,7 @@ class MaxLengthValidator extends Validator {
   MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, dynamic> validate(String value) {
+  Map<String, dynamic> validate(dynamic value) {
     return (value == null || value.length <= this.maxLength)
         ? null
         : {

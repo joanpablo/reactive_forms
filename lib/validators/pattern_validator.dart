@@ -6,7 +6,7 @@ class PatternValidator extends Validator {
   PatternValidator(this.pattern);
 
   @override
-  Map<String, dynamic> validate(String value) {
+  Map<String, dynamic> validate(dynamic value) {
     RegExp regex = new RegExp(this.pattern);
     return (value == null || value == '' || regex.hasMatch(value))
         ? null
