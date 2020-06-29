@@ -103,10 +103,16 @@ final form = FromGroup({
 });
 
 Map<String, dynamic> _emptyWhiteSpaces(String value) {
-    return (value != null && value.trim().isNotEmpty)
-        ? null
-        : {'emptyWhiteSpaces': true};
+  final error = {'required': true};
+  
+  if (value == null) {
+    return error;
+  } else if (value is String) {
+    return value.trim().isNotEmpty ? null : error;
   }
+
+  return null;
+}
 ```
 
 A custom **FormControl** validator is a function that receives the *value* as a **String** and returns a **Map**. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
