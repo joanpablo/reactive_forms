@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/models/form_group.dart';
-import 'package:reactive_forms/widgets/reactive_form.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 typedef ReactiveFormConsumerBuilder = Widget Function(
     BuildContext context, FormGroup formGroup, Widget child);
@@ -12,14 +12,12 @@ class ReactiveFormConsumer extends StatelessWidget {
   const ReactiveFormConsumer({
     Key key,
     @required this.builder,
-    @required this.child,
+    this.child,
   })  : assert(builder != null),
-        assert(child != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final formGroup = ReactiveForm.of(context);
-    return this.builder(context, formGroup, this.child);
+    return this.builder(context, ReactiveForm.of(context), this.child);
   }
 }

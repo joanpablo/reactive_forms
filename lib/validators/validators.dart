@@ -1,4 +1,3 @@
-import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/validators/email_validator.dart';
 import 'package:reactive_forms/validators/max_length_validator.dart';
 import 'package:reactive_forms/validators/min_length_validator.dart';
@@ -7,8 +6,6 @@ import 'package:reactive_forms/validators/pattern_validator.dart';
 import 'package:reactive_forms/validators/required_validator.dart';
 
 typedef ValidatorFunction = Map<String, dynamic> Function(String value);
-typedef FormGroupValidatorFunction = Map<String, dynamic> Function(
-    FormGroup formGroup);
 
 class Validators {
   static ValidatorFunction get required => RequiredValidator().validate;

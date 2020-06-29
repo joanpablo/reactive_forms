@@ -17,12 +17,12 @@ class ReactiveForm extends StatefulWidget {
         assert(child != null),
         super(key: key);
 
-  /// Returns the nearest [FormGroup] up its widget tree
+  /// Returns the nearest model up its widget tree
   ///
   /// If [listen] is `true` (default value), all the dependents widgets
   /// will rebuild
   ///
-  /// `listen: false` is necessary if want to avoid rebuilding the
+  /// `rebuildContext: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
   static FormGroup of(BuildContext context, {bool listen: true}) {
     if (listen) {
@@ -42,16 +42,16 @@ class ReactiveForm extends StatefulWidget {
 
 class _ReactiveFormState extends State<ReactiveForm> {
   @override
-  Widget build(BuildContext context) {
-    return FormGroupInheritedNotifier(
-      formGroup: widget.formGroup,
-      child: widget.child,
-    );
-  }
-
-  @override
   void dispose() {
     widget.formGroup.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FormGroupInheritedNotifier(
+      notifier: widget.formGroup,
+      child: widget.child,
+    );
   }
 }

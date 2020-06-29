@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/models/form_control.dart';
-import 'package:reactive_forms/validators/validators.dart';
+import 'package:reactive_forms/validators/form_group_validators.dart';
 
 class FormGroup extends ChangeNotifier {
   final Map<String, FormControl> _controls;
@@ -26,6 +26,21 @@ class FormGroup extends ChangeNotifier {
 
   FormControl formControl(String name) {
     return this._controls[name];
+  }
+
+  Map<String, dynamic> get value {
+    final map = Map<String, dynamic>();
+    this._controls.forEach((key, formControl) {
+      map[key] = formControl.value;
+    });
+
+    return map;
+  }
+
+  void reset() {
+    this._controls.forEach((key, formControl) {
+      formControl.reset();
+    });
   }
 
   void _validate() {

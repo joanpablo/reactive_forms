@@ -2,17 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/validators/validators.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FormControl extends ChangeNotifier implements ValueListenable<String> {
+class FormControl extends ChangeNotifier implements ValueListenable<dynamic> {
   final List<ValidatorFunction> validators;
   final Map<String, dynamic> errors = {};
   final PublishSubject _onStatusChangedSubject = PublishSubject();
   final PublishSubject _onFocusChangedSubject = PublishSubject();
   bool touched;
   bool _focused = false;
-  String _value;
+  dynamic _value;
+  String defaultValue;
 
   FormControl({
-    String defaultValue,
+    this.defaultValue,
     this.validators = const [],
     this.touched = false,
   }) : _value = defaultValue {
@@ -20,11 +21,11 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
   }
 
   @override
-  String get value => _value;
+  dynamic get value => _value;
 
   bool get focused => _focused;
 
-  set value(String newValue) {
+  set value(dynamic newValue) {
     if (_value == newValue) return;
     _value = newValue;
     _validate();
@@ -60,6 +61,10 @@ class FormControl extends ChangeNotifier implements ValueListenable<String> {
     if (prevStatus != this.valid) {
       _onStatusChangedSubject.add(this.valid);
     }
+  }
+
+  void reset() {
+    this.value = this.defaultValue;
   }
 
   void _validate() {
