@@ -258,7 +258,7 @@ final form = FormGroup({
 });
 ```
 
-Also when we set a *value* to a **FormControl** the validations messages begin to show up, even if the UI widget haven't been touched by the user yet. For example:
+Also when we set a *value* to a **FormControl** the validations messages begin to show up, even if the UI widget haven't been touched by the user. For example:
 
 ```dart
 set name(String newName) {
