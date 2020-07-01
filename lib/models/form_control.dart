@@ -62,7 +62,7 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
 
   @override
   void dispose() {
-    this._onStatusChangedSubject.close();
+    //this._onStatusChangedSubject.close();
     this._onFocusChangedSubject.close();
     super.dispose();
   }

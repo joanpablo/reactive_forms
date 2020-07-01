@@ -35,7 +35,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   StreamSubscription _statusChangeSubscription;
 
   /// The current value of the [FormControl].
-  @protected
   T get value => control.value;
 
   String get errorText {
