@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/widgets/reactive_form_field.dart';
 
 class ReactiveSwitch extends ReactiveFormField<bool> {
+  /// Creates a [ReactiveSwitch] that wraps a material design switch.
+  ///
+  /// The [formControlName] is required to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// For documentation about the various parameters, see the [Switch] class
+  /// and [new Switch], the constructor.
+  ///
   ReactiveSwitch({
     Key key,
     @required String formControlName,
@@ -40,6 +48,19 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           },
         );
 
+  /// Creates a [ReactiveSwitch] that wraps a [CupertinoSwitch] if the
+  /// target platform is iOS, creates a material design switch otherwise.
+  ///
+  /// If a [CupertinoSwitch] is created, the following parameters are
+  /// ignored: [activeTrackColor], [inactiveThumbColor], [inactiveTrackColor],
+  /// [activeThumbImage], [onActiveThumbImageError], [inactiveThumbImage],
+  /// [onInactiveImageThumbError], [materialTapTargetSize].
+  ///
+  /// The target platform is based on the current [Theme]: [ThemeData.platform].
+  ///
+  /// For documentation about the various parameters, see the [Switch.adaptive]
+  /// constructor.
+  ///
   ReactiveSwitch.adaptive({
     Key key,
     @required String formControlName,
