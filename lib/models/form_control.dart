@@ -30,7 +30,9 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   /// You can also force the data type of this control by specifying it
   ///
   /// ### Example:
-  ///       final priceControl = FormControl<double>(defaultValue: 0.0);
+  /// ```dart
+  /// final priceControl = FormControl<double>(defaultValue: 0.0);
+  /// ```
   ///
   FormControl({
     T defaultValue,
@@ -84,9 +86,11 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   ///
   /// ### Example:
   ///
-  ///     final passwordConfirmation = FormControl();
+  /// ```dart
+  /// final passwordConfirmation = FormControl();
   ///
-  ///     passwordConfirmation.addError({'mustMatch': true});
+  /// passwordConfirmation.addError({'mustMatch': true});
+  ///```
   ///
   /// See also [FormControl.errors]
   ///
@@ -102,9 +106,11 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   ///
   /// ### Example:
   ///
-  ///     final passwordConfirmation = FormControl();
+  ///```dart
+  /// final passwordConfirmation = FormControl();
   ///
-  ///     passwordConfirmation.removeError('mustMatch');
+  /// passwordConfirmation.removeError('mustMatch');
+  ///```
   ///
   /// See also [FormControl.errors]
   ///
@@ -126,12 +132,14 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   /// Remove focus on a ReactiveFormField widget without the interaction
   /// of the user.
   ///
-  ///  ### Example:
+  /// ### Example:
   ///
-  ///       final formControl = form.formControl('name');
+  /// ```dart
+  /// final formControl = form.formControl('name');
   ///
-  ///       // UI text field lose focus
-  ///       formControl.unfocus();
+  /// // UI text field lose focus
+  /// formControl.unfocus();
+  ///```
   ///
   void unfocus() {
     if (this._focused) {
@@ -143,12 +151,14 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   /// Sets focus on a ReactiveFormField widget without the interaction
   /// of the user.
   ///
-  ///  ### Example:
+  /// ### Example:
   ///
-  ///       final formControl = form.formControl('name');
+  /// ```dart
+  /// final formControl = form.formControl('name');
   ///
-  ///       // UI text field get focus and the device keyboard pop up
-  ///       formControl.focus();
+  /// // UI text field get focus and the device keyboard pop up
+  /// formControl.focus();
+  ///```
   ///
   void focus() {
     if (!this._focused) {

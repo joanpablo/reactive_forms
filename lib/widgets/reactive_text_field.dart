@@ -4,7 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/widgets/reactive_form_field.dart';
 
+/// A [ReactiveTextField] that contains a [TextField].
+///
+/// This is a convenience widget that wraps a [TextField] widget in a
+/// [ReactiveTextField].
+///
+/// A [ReactiveForm] ancestor is required.
+///
 class ReactiveTextField extends ReactiveFormField<String> {
+  /// Creates a [ReactiveTextField] that contains a [TextField].
+  ///
+  /// The [formControlName] is required to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// You can optionally set the [validationMessages].
+  ///
+  /// For documentation about the various parameters, see the [TextField] class
+  /// and [new TextField], the constructor.
   ReactiveTextField({
     Key key,
     @required String formControlName,

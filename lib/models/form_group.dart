@@ -29,11 +29,12 @@ class FormGroup extends ChangeNotifier {
   ///
   /// ### Example:
   ///
-  ///     final form = FromGroup({
-  ///       'name': FormControl(defaultValue: 'John Doe'),
-  ///       'email': FormControl(),
-  ///     });
-  ///
+  /// ```dart
+  /// final form = FromGroup({
+  ///   'name': FormControl(defaultValue: 'John Doe'),
+  ///   'email': FormControl(),
+  /// });
+  /// ```
   /// You can also set [validators] as optionally argument.
   ///
   /// See also [FormGroup.validators]
@@ -69,14 +70,18 @@ class FormGroup extends ChangeNotifier {
   ///
   /// ### Example:
   ///
-  ///     final form = FormGroup({
-  ///       'name': FormControl(defaultValue: 'John Doe'),
-  ///       'email': FormControl(defaultValue: 'johndoe@email.com'),
-  ///     });
+  ///```dart
+  /// final form = FormGroup({
+  ///   'name': FormControl(defaultValue: 'John Doe'),
+  ///   'email': FormControl(defaultValue: 'johndoe@email.com'),
+  /// });
   ///
-  ///     print(form.value);
+  /// print(form.value);
+  ///```
   ///
-  ///     { "name": "John Doe", "email": "johndoe@email.com" }
+  /// ```json
+  /// { "name": "John Doe", "email": "johndoe@email.com" }
+  ///```
   ///
   Map<String, dynamic> get value {
     final map = Map<String, dynamic>();
