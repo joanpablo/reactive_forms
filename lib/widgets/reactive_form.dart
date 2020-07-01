@@ -42,12 +42,6 @@ class ReactiveForm extends StatefulWidget {
 
 class _ReactiveFormState extends State<ReactiveForm> {
   @override
-  void dispose() {
-    widget.formGroup.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FormGroupInheritedNotifier(
       notifier: widget.formGroup,
