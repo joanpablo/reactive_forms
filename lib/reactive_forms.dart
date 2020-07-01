@@ -9,6 +9,7 @@ export 'widgets/reactive_checkbox.dart';
 export 'widgets/reactive_dropdown_field.dart';
 export 'widgets/reactive_form.dart';
 export 'widgets/reactive_form_consumer.dart';
+export 'widgets/reactive_form_field.dart';
 export 'widgets/reactive_radio.dart';
 export 'widgets/reactive_slider.dart';
 export 'widgets/reactive_switch.dart';
