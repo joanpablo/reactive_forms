@@ -443,6 +443,7 @@ Widget build(BuildContext context) {
 - ReactiveSwitch
 - ReactiveCheckbox
 - ReactiveRadio
+- ReactiveSlider
 
 ### ReactiveTextField
 

@@ -24,8 +24,8 @@ class FormGroup extends ChangeNotifier {
 
   bool get invalid => !this.valid;
 
-  FormControl formControl(String name) {
-    return this._controls[name];
+  FormControl<T> formControl<T>(String name) {
+    return this._controls[name] as FormControl<T>;
   }
 
   Map<String, dynamic> get value {
