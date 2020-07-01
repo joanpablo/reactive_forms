@@ -385,9 +385,9 @@ final form = FromGroup({
 
 final formControl = form.formControl('name');
 
-formControl.focus(); // UI text field will get focus and the device keyboard will pop up
+formControl.focus(); // UI text field get focus and the device keyboard pop up
 
-formControl.unfocus(); // UI text field will lose focus
+formControl.unfocus(); // UI text field lose focus
 ```
 
 ## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
