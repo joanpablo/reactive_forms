@@ -44,6 +44,8 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
               onInactiveThumbImageError: onInactiveThumbImageError,
               materialTapTargetSize: materialTapTargetSize,
               dragStartBehavior: dragStartBehavior,
+              focusColor: focusColor,
+              hoverColor: hoverColor,
             );
           },
         );
