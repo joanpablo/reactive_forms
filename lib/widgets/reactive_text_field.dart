@@ -60,10 +60,9 @@ class ReactiveTextField extends ReactiveFormField<String> {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
   })  : assert(formControlName != null),
-        assert(validationMessages != null),
         super(
             formControlName: formControlName,
-            validationMessages: validationMessages,
+            validationMessages: validationMessages ?? const {},
             builder: (ReactiveFormFieldState<String> field) {
               final state = field as _ReactiveTextFieldState;
               final InputDecoration effectiveDecoration = (decoration ??
@@ -128,10 +127,14 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   StreamSubscription _focusChangeSubscription;
 
   @override
+  String get value =>
+      this.control.value != null ? this.control.value.toString() : null;
+
+  @override
   void initState() {
     super.initState();
 
-    _textController = TextEditingController(text: control.value);
+    _textController = TextEditingController(text: this.value);
     _focusNode.addListener(_onFocusChanged);
   }
 
@@ -158,11 +161,11 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
 
   @override
   void updateValueFromControl() {
-    if (_textController.text == this.control.value) {
+    if (_textController.text == this.value) {
       return;
     }
 
-    _textController.text = this.control.value;
+    _textController.text = this.value;
     super.updateValueFromControl();
   }
 

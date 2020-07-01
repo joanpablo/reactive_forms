@@ -186,7 +186,7 @@ Lets see an example:
 Widget build(BuildContext context) {
   return ReactiveForm(
     formGroup: this.form,
-    child: Columns(
+    child: Column(
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'name',
@@ -213,7 +213,7 @@ Widget build(BuildContext context) {
 Widget build(BuildContext context) {
   return ReactiveForm(
     formGroup: this.form,
-    child: Columns(
+    child: Column(
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'name',
@@ -283,7 +283,7 @@ Lets add a submit button to our *Form*:
 Widget build(BuildContext context) {
   return ReactiveForm(
     formGroup: this.form,
-    child: Columns(
+    child: Column(
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'email',
@@ -345,7 +345,7 @@ The **ReactiveForm** widget has this behavior because is implemented using the [
 Widget build(BuildContext context) {
   return ReactiveForm(
     formGroup: this.form,
-    child: Columns(
+    child: Column(
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'email',
@@ -403,7 +403,7 @@ Below is an example of how to create some **ReactiveTextField** with some common
 Widget build(BuildContext context) {
   return ReactiveForm(
     formGroup: this.form,
-    child: Columns(
+    child: Column(
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'name',
