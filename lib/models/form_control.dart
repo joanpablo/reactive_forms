@@ -62,8 +62,8 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
 
   @override
   void dispose() {
-    //this._onStatusChangedSubject.close();
-    this._onFocusChangedSubject.close();
+    _onStatusChangedSubject.close();
+    _onFocusChangedSubject.close();
     super.dispose();
   }
 
@@ -144,7 +144,7 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   void unfocus() {
     if (this._focused) {
       this._focused = false;
-      this._onFocusChangedSubject.add(this._focused);
+      _onFocusChangedSubject.add(this._focused);
     }
   }
 
@@ -163,7 +163,7 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   void focus() {
     if (!this._focused) {
       this._focused = true;
-      this._onFocusChangedSubject.add(this._focused);
+      _onFocusChangedSubject.add(this._focused);
     }
   }
 
