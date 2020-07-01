@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/exceptions/form_control_not_found_exception.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Signature for building the widget representing the form field.
@@ -49,7 +50,11 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @override
   void initState() {
     final form = ReactiveForm.of(context, listen: false);
-    control = form.formControl(widget.formControlName);
+    this.control = form.formControl(widget.formControlName);
+    if (this.control == null) {
+      throw FormControlNotFoundException(widget.formControlName);
+    }
+
     this.subscribeFormControl();
 
     super.initState();
