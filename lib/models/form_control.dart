@@ -10,7 +10,7 @@ class FormControl extends ChangeNotifier implements ValueListenable<dynamic> {
   bool touched;
   bool _focused = false;
   dynamic _value;
-  String defaultValue;
+  dynamic defaultValue;
 
   FormControl({
     this.defaultValue,

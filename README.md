@@ -440,6 +440,9 @@ Widget build(BuildContext context) {
 
 - ReactiveTextField
 - ReactiveDropdownField
+- ReactiveSwitch
+- ReactiveCheckbox
+- ReactiveRadio
 
 ### ReactiveTextField
 
