@@ -36,6 +36,8 @@ class FormGroup extends ChangeNotifier {
   ///
   /// You can also set [validators] as optionally argument.
   ///
+  /// See also [FormGroup.validators]
+  ///
   FormGroup(
     Map<String, FormControl> controls, {
     this.validators = const [],
