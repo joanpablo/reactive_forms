@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/exceptions/form_control_not_found_exception.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -32,16 +30,15 @@ class ReactiveFormField<T> extends StatefulWidget {
 class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   FormControl control;
 
-  StreamSubscription _statusChangeSubscription;
-
   /// The current value of the [FormControl].
-  T get value => control.value;
+  T get value => this.control.value;
 
   String get errorText {
-    if (control.invalid && control.touched) {
-      return widget.validationMessages.containsKey(control.errors.keys.first)
-          ? widget.validationMessages[control.errors.keys.first]
-          : control.errors.keys.first;
+    if (this.control.invalid && this.control.touched) {
+      return widget.validationMessages
+              .containsKey(this.control.errors.keys.first)
+          ? widget.validationMessages[this.control.errors.keys.first]
+          : this.control.errors.keys.first;
     }
 
     return null;
@@ -67,6 +64,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     if (this.control != newControl) {
       this.unsubscribeFormControl();
       this.control = newControl;
+      subscribeFormControl();
     }
 
     super.didChangeDependencies();
@@ -80,16 +78,14 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void subscribeFormControl() {
-    _statusChangeSubscription =
-        this.control.onStatusChanged.listen(_onFormControlStatusChanged);
-
-    control.addListener(_onFormControlValueChanged);
+    this.control.onStatusChanged.addListener(_onFormControlStatusChanged);
+    this.control.onValueChanged.addListener(_onFormControlValueChanged);
   }
 
   @protected
   void unsubscribeFormControl() {
-    control.removeListener(_onFormControlValueChanged);
-    _statusChangeSubscription.cancel();
+    this.control.onStatusChanged.removeListener(_onFormControlStatusChanged);
+    this.control.onValueChanged.removeListener(_onFormControlValueChanged);
   }
 
   void _onFormControlValueChanged() {
@@ -101,7 +97,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     touch();
   }
 
-  void _onFormControlStatusChanged(_) {
+  void _onFormControlStatusChanged() {
     touch();
   }
 
@@ -114,7 +110,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   void touch() {
     setState(() {
-      control.touched = true;
+      this.control.touched = true;
     });
   }
 
