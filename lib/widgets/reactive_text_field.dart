@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/widgets/reactive_form_field.dart';
@@ -124,7 +122,6 @@ class ReactiveTextField extends ReactiveFormField<String> {
 class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   TextEditingController _textController;
   FocusNode _focusNode = FocusNode();
-  StreamSubscription _focusChangeSubscription;
 
   @override
   String get value =>
@@ -142,21 +139,19 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   void dispose() {
     _focusNode.removeListener(_onFocusChanged);
     this.unsubscribeFormControl();
-
     super.dispose();
   }
 
   @override
   void subscribeFormControl() {
     super.subscribeFormControl();
-    _focusChangeSubscription =
-        this.control.onFocusChanged.listen(_onFormControlFocusChanged);
+    this.control.onFocusChanged.addListener(_onFormControlFocusChanged);
   }
 
   @override
   void unsubscribeFormControl() {
     super.unsubscribeFormControl();
-    _focusChangeSubscription.cancel();
+    this.control.onFocusChanged.removeListener(_onFormControlFocusChanged);
   }
 
   @override
@@ -169,7 +164,7 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
     super.updateValueFromControl();
   }
 
-  void _onFormControlFocusChanged(_) {
+  void _onFormControlFocusChanged() {
     if (this.control.focused && !_focusNode.hasFocus) {
       _focusNode.requestFocus();
     } else if (!this.control.focused && _focusNode.hasFocus) {

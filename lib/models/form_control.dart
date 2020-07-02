@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/validators/validators.dart';
-import 'package:rxdart/rxdart.dart';
 
 /// Tracks the value and validation status of an individual form control.
-class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
-  final PublishSubject _onStatusChangedSubject = PublishSubject();
-  final PublishSubject _onFocusChangedSubject = PublishSubject();
-  bool _focused = false;
-  T _value;
+class FormControl<T> implements AbstractControl<T> {
+  final _onStatusChanged = ValueNotifier<bool>(true);
+  final _onFocusChanged = ValueNotifier<bool>(false);
+  final _onValueChanged = ValueNotifier<T>(null);
   T _defaultValue;
 
   /// The list of functions that determines the validity of this control.
@@ -38,47 +37,52 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
     T defaultValue,
     this.validators = const [],
     this.touched = false,
-  }) : _value = defaultValue {
-    _validate();
+  }) {
+    this.value = defaultValue;
   }
 
   /// Returns the current value of the control.
   @override
-  T get value => _value;
+  T get value => _onValueChanged.value;
 
   /// Returns the default value of the control.
   T get defaultValue => _defaultValue;
 
   /// True if the control is marked as focused.
-  bool get focused => _focused;
+  bool get focused => _onFocusChanged.value;
 
   /// Sets the [newValue] as value for the form control.
+  @override
   set value(T newValue) {
-    if (_value == newValue) return;
-    _value = newValue;
-    _validate();
-    notifyListeners();
+    _validate(newValue);
+    _onValueChanged.value = newValue;
   }
 
   @override
   void dispose() {
-    _onStatusChangedSubject.close();
-    _onFocusChangedSubject.close();
-    super.dispose();
+    _onStatusChanged.dispose();
+    _onFocusChanged.dispose();
+    _onValueChanged.dispose();
   }
 
   /// A [Stream] that emits an event every time the validation status of
   /// the control changes.
-  Stream get onStatusChanged => _onStatusChangedSubject.stream;
+  @override
+  ValueListenable<bool> get onStatusChanged => _onStatusChanged;
+
+  @override
+  ValueListenable<T> get onValueChanged => _onValueChanged;
 
   /// A [Stream] that emits an event every time the focus status of
   /// the control changes.
-  Stream get onFocusChanged => _onFocusChangedSubject.stream;
+  ChangeNotifier get onFocusChanged => _onFocusChanged;
 
   /// True if the control doesn't has validations errors.
+  @override
   bool get valid => this.errors.keys.length == 0;
 
   /// True if the control has validations errors.
+  @override
   bool get invalid => !this.valid;
 
   /// Sets errors on a form control when running validations manually,
@@ -98,7 +102,7 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
     final prevStatus = this.valid;
     this.errors.addAll(error);
     if (prevStatus != this.valid) {
-      _onStatusChangedSubject.add(this.valid);
+      _onStatusChanged.value = this.valid;
     }
   }
 
@@ -118,12 +122,13 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
     final prevStatus = this.valid;
     this.errors.remove(errorName);
     if (prevStatus != this.valid) {
-      _onStatusChangedSubject.add(this.valid);
+      _onStatusChanged.value = this.valid;
     }
   }
 
   /// Resets the form control, marking it as untouched,
   /// and setting the [value] to [defaultValue].
+  @override
   void reset() {
     this.touched = false;
     this.value = this.defaultValue;
@@ -142,9 +147,8 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   ///```
   ///
   void unfocus() {
-    if (this._focused) {
-      this._focused = false;
-      _onFocusChangedSubject.add(this._focused);
+    if (this.focused) {
+      _onFocusChanged.value = false;
     }
   }
 
@@ -161,16 +165,15 @@ class FormControl<T> extends ChangeNotifier implements ValueListenable<T> {
   ///```
   ///
   void focus() {
-    if (!this._focused) {
-      this._focused = true;
-      _onFocusChangedSubject.add(this._focused);
+    if (!this.focused) {
+      _onFocusChanged.value = true;
     }
   }
 
-  void _validate() {
+  void _validate(T value) {
     this.errors.clear();
     this.validators.forEach((validator) {
-      final error = validator(this._value);
+      final error = validator(value);
       if (error != null) {
         this.errors.addAll(error);
       }

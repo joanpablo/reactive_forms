@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/models/form_control.dart';
 import 'package:reactive_forms/validators/form_group_validators.dart';
 
@@ -11,14 +12,20 @@ import 'package:reactive_forms/validators/form_group_validators.dart';
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
 ///
-class FormGroup extends ChangeNotifier {
-  final Map<String, FormControl> _controls;
-
-  bool _valid = true;
+class FormGroup implements AbstractControl<Map<String, dynamic>> {
+  final Map<String, AbstractControl> _controls;
+  final _onStatusChanged = ValueNotifier<bool>(true);
+  final _onValueChanged = ValueNotifier<Map<String, dynamic>>(null);
 
   /// These come in handy when you want to perform validation that considers
   /// the value of more than one child control.
   final List<FormGroupValidatorFunction> validators;
+
+  @override
+  ValueListenable<bool> get onStatusChanged => _onStatusChanged;
+
+  @override
+  ValueListenable<Map<String, dynamic>> get onValueChanged => _onValueChanged;
 
   /// Creates a new FormGroup instance.
   ///
@@ -40,13 +47,14 @@ class FormGroup extends ChangeNotifier {
   /// See also [FormGroup.validators]
   ///
   FormGroup(
-    Map<String, FormControl> controls, {
+    Map<String, AbstractControl> controls, {
     this.validators = const [],
   })  : assert(controls != null),
         _controls = controls {
     _validate();
-    this._controls.forEach((_, formControl) {
-      formControl.addListener(() {
+    this._controls.forEach((_, control) {
+      control.onValueChanged.addListener(() {
+        _onValueChanged.value = this.value;
         _validate();
       });
     });
@@ -54,13 +62,15 @@ class FormGroup extends ChangeNotifier {
 
   /// True if all the controls contained in this group are valid. If at least
   /// one [FormControl] is invalid then the [FormGroup] is invalid.
-  bool get valid => _valid;
+  @override
+  bool get valid => _onStatusChanged.value;
 
   /// True if at least one [FormControl] is invalid.
+  @override
   bool get invalid => !this.valid;
 
   /// Returns a [FormControl] by its name.
-  FormControl formControl(String name) {
+  AbstractControl formControl(String name) {
     return this._controls[name];
   }
 
@@ -92,32 +102,52 @@ class FormGroup extends ChangeNotifier {
     return map;
   }
 
+  @override
+  set value(Map<String, dynamic> newValue) {
+    // TODO: implement value
+  }
+
   /// Resets all the form controls of the group, marking them as untouched,
   /// and setting the [FormControl.value] to [FormControl.defaultValue].
   ///
   /// See also [FormControl.reset()]
   ///
+  @override
   void reset() {
     this._controls.forEach((key, formControl) {
       formControl.reset();
     });
   }
 
-  void _validate() {
-    final validity =
-        this.validators.any((validator) => validator(this) != null);
+  @override
+  void dispose() {
+    _onStatusChanged.dispose();
+    _onValueChanged.dispose();
+  }
 
-    final controlsValidity = _controls.keys.any((formControlName) {
+  void _validate() {
+    final invalid = this.validators.any((validator) => validator(this) != null);
+
+    final invalidControls = _controls.keys.any((formControlName) {
       return _controls[formControlName].invalid;
     });
 
-    this._setValidity(!validity && !controlsValidity);
+    this._setValidity(!invalid && !invalidControls);
   }
 
   void _setValidity(bool validity) {
-    if (this.valid != validity) {
-      this._valid = validity;
-      notifyListeners();
+    if (_onStatusChanged.value != validity) {
+      _onStatusChanged.value = validity;
     }
+  }
+
+  @override
+  void addError(Map<String, bool> map) {
+    // TODO: implement addError
+  }
+
+  @override
+  void removeError(String error) {
+    // TODO: implement removeError
   }
 }

@@ -28,12 +28,12 @@ class ReactiveForm extends StatefulWidget {
     if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormGroupInheritedNotifier>()
-          .notifier;
+          .formGroup;
     }
 
     final element = context
         .getElementForInheritedWidgetOfExactType<FormGroupInheritedNotifier>();
-    return (element.widget as InheritedNotifier<FormGroup>).notifier;
+    return (element.widget as FormGroupInheritedNotifier).formGroup;
   }
 
   @override
@@ -44,7 +44,7 @@ class _ReactiveFormState extends State<ReactiveForm> {
   @override
   Widget build(BuildContext context) {
     return FormGroupInheritedNotifier(
-      notifier: widget.formGroup,
+      formGroup: widget.formGroup,
       child: widget.child,
     );
   }

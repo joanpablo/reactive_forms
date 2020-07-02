@@ -14,3 +14,4 @@ export 'widgets/reactive_radio.dart';
 export 'widgets/reactive_slider.dart';
 export 'widgets/reactive_switch.dart';
 export 'widgets/reactive_text_field.dart';
+export 'widgets/reactive_value_listenable_builder.dart';
