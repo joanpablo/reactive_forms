@@ -104,7 +104,11 @@ class FormGroup implements AbstractControl<Map<String, dynamic>> {
 
   @override
   set value(Map<String, dynamic> newValue) {
-    // TODO: implement value
+    newValue.forEach((key, value) {
+      if (this._controls.containsKey(key)) {
+        this._controls[key].value = value;
+      }
+    });
   }
 
   /// Resets all the form controls of the group, marking them as untouched,
