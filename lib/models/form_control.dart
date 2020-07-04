@@ -3,11 +3,11 @@ import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/validators/validators.dart';
 
 /// Tracks the value and validation status of an individual form control.
-class FormControl<T> implements AbstractControl<T> {
-  final _onStatusChanged = ValueNotifier<bool>(true);
+class FormControl<T> extends AbstractControl<T> {
   final _onFocusChanged = ValueNotifier<bool>(false);
   final _onValueChanged = ValueNotifier<T>(null);
   T _defaultValue;
+  T _value;
 
   /// The list of functions that determines the validity of this control.
   final List<ValidatorFunction> validators;
@@ -43,7 +43,7 @@ class FormControl<T> implements AbstractControl<T> {
 
   /// Returns the current value of the control.
   @override
-  T get value => _onValueChanged.value;
+  T get value => this._value;
 
   /// Returns the default value of the control.
   T get defaultValue => _defaultValue;
@@ -57,21 +57,18 @@ class FormControl<T> implements AbstractControl<T> {
   /// Sets the [newValue] as value for the form control.
   @override
   set value(T newValue) {
-    _validate(newValue);
-    _onValueChanged.value = newValue;
+    this._value = newValue;
+    _validate();
+    _onValueChanged.value = this._value;
   }
 
   @override
   void dispose() {
-    _onStatusChanged.dispose();
     _onFocusChanged.dispose();
     _onValueChanged.dispose();
-  }
 
-  /// A [Stream] that emits an event every time the validation status of
-  /// the control changes.
-  @override
-  ValueListenable<bool> get onStatusChanged => _onStatusChanged;
+    super.dispose();
+  }
 
   @override
   ValueListenable<T> get onValueChanged => _onValueChanged;
@@ -102,11 +99,8 @@ class FormControl<T> implements AbstractControl<T> {
   /// See also [FormControl.errors]
   ///
   void addError(Map<String, dynamic> error) {
-    final prevStatus = this.valid;
     this.errors.addAll(error);
-    if (prevStatus != this.valid) {
-      _onStatusChanged.value = this.valid;
-    }
+    this.notifyStatusChanged();
   }
 
   /// Remove errors by name.
@@ -122,11 +116,8 @@ class FormControl<T> implements AbstractControl<T> {
   /// See also [FormControl.errors]
   ///
   void removeError(String errorName) {
-    final prevStatus = this.valid;
     this.errors.remove(errorName);
-    if (prevStatus != this.valid) {
-      _onStatusChanged.value = this.valid;
-    }
+    this.notifyStatusChanged();
   }
 
   /// Resets the form control, marking it as untouched,
@@ -173,13 +164,15 @@ class FormControl<T> implements AbstractControl<T> {
     }
   }
 
-  void _validate(T value) {
+  void _validate() {
     this._errors.clear();
     this.validators.forEach((validator) {
-      final error = validator(value);
+      final error = validator(this);
       if (error != null) {
         this._errors.addAll(error);
       }
     });
+
+    this.notifyStatusChanged();
   }
 }

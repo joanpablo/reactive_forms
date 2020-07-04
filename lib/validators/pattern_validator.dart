@@ -1,3 +1,4 @@
+import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/validators/validator.dart';
 
 class PatternValidator extends Validator {
@@ -6,14 +7,16 @@ class PatternValidator extends Validator {
   PatternValidator(this.pattern);
 
   @override
-  Map<String, dynamic> validate(dynamic value) {
+  Map<String, dynamic> validate(AbstractControl control) {
     RegExp regex = new RegExp(this.pattern);
-    return (value == null || value == '' || regex.hasMatch(value))
+    return (control.value == null ||
+            control.value == '' ||
+            regex.hasMatch(control.value))
         ? null
         : {
             'pattern': {
               'requiredPattern': this.pattern.toString(),
-              'actualValue': value,
+              'actualValue': control.value,
             }
           };
   }

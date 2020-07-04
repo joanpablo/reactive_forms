@@ -48,7 +48,7 @@ void main() {
 
       form.formControl('name').value = null;
 
-      expect(form.valid, false);
+      expect(form.invalid, true);
     });
 
     test('FormGroup is valid if set valid value to FormControl', () {
@@ -69,7 +69,9 @@ void main() {
         'email': FormControl(validators: [Validators.email]),
       });
 
-      expect(form.valid, false);
+      print(form.errors);
+
+      expect(form.invalid, true);
     });
 
     test('FormGroup is invalid if at least one FormControl is invalid', () {

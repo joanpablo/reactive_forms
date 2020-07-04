@@ -5,16 +5,29 @@ abstract class AbstractControl<T> {
   set value(T newValue);
   bool get valid;
   bool get invalid;
-  void reset();
+  final _onStatusChanged = ValueNotifier<bool>(true);
 
   Map<String, dynamic> get errors;
 
-  ValueListenable<bool> get onStatusChanged;
+  /// A [Stream] that emits an event every time the validation status of
+  /// the control changes.
+  ValueListenable<bool> get onStatusChanged => _onStatusChanged;
+
   ValueListenable<T> get onValueChanged;
 
-  dispose();
+  @protected
+  void dispose() {
+    _onStatusChanged.dispose();
+  }
+
+  void reset();
 
   void addError(Map<String, bool> map);
 
   void removeError(String error);
+
+  @protected
+  void notifyStatusChanged() {
+    this._onStatusChanged.value = this.valid;
+  }
 }

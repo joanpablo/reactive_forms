@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-abstract class Validator {
-  Map<String, dynamic> validate(dynamic value);
+import 'package:reactive_forms/models/abstract_control.dart';
+
+abstract class Validator<T> {
+  Map<String, dynamic> validate(AbstractControl<T> value);
 }
