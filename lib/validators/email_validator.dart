@@ -7,6 +7,11 @@ class EmailValidator extends Validator {
 
   @override
   Map<String, dynamic> validate(AbstractControl control) {
+    // error if value is not a String
+    if (control.value != null && !(control.value is String)) {
+      return {'email': true};
+    }
+
     RegExp regex = new RegExp(EmailValidator.pattern);
     return (control.value == null ||
             control.value == '' ||
