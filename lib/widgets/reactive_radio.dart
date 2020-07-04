@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/widgets/reactive_form_field.dart';
 
+/// This is a convenience widget that wraps a [Radio] widget in a
+/// [ReactiveRadio].
+///
+/// The [formControlName] is required to bind this [ReactiveRadio]
+/// to a [FormControl].
+///
+/// For documentation about the various parameters, see the [Radio] class
+/// and [new Radio], the constructor.
 class ReactiveRadio<T> extends ReactiveFormField<T> {
   ReactiveRadio({
     Key key,

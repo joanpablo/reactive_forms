@@ -54,6 +54,7 @@ class FormControl<T> extends AbstractControl<T> {
     _onValueChanged.value = this._value;
   }
 
+  /// Disposes the control
   @override
   void dispose() {
     _onFocusChanged.dispose();
@@ -62,10 +63,12 @@ class FormControl<T> extends AbstractControl<T> {
     super.dispose();
   }
 
+  /// A [ValueListenable] that emits an event every time the value
+  /// of the control changes.
   @override
   ValueListenable<T> get onValueChanged => _onValueChanged;
 
-  /// A [Stream] that emits an event every time the focus status of
+  /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
   ChangeNotifier get onFocusChanged => _onFocusChanged;
 
