@@ -69,8 +69,6 @@ void main() {
         'email': FormControl(validators: [Validators.email]),
       });
 
-      print(form.errors);
-
       expect(form.invalid, true);
     });
 
@@ -206,6 +204,14 @@ void main() {
 
       expect(formGroup.formControl('name').value, defaultName);
       expect(formGroup.formControl('email').value, defaultEmail);
+    });
+
+    test('Add errors to FormGroup', () {
+      final formGroup = FormGroup({
+        'name': FormControl(),
+      });
+
+      expect(formGroup.valid, true);
     });
   });
 }
