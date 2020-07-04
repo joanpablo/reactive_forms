@@ -1,6 +1,6 @@
 name: reactive_forms
 description: A new Flutter package project.
-version: 0.0.1
+version: 1.0.0
 author:
 homepage:
 
@@ -10,9 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # RxDart adds additional capabilities to Dart Streams and StreamControllers.
-  rxdart: ^0.24.1
 
 dev_dependencies:
   flutter_test:

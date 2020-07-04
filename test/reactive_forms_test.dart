@@ -48,7 +48,7 @@ void main() {
 
       form.formControl('name').value = null;
 
-      expect(form.valid, false);
+      expect(form.invalid, true);
     });
 
     test('FormGroup is valid if set valid value to FormControl', () {
@@ -69,7 +69,7 @@ void main() {
         'email': FormControl(validators: [Validators.email]),
       });
 
-      expect(form.valid, false);
+      expect(form.invalid, true);
     });
 
     test('FormGroup is invalid if at least one FormControl is invalid', () {
@@ -159,6 +159,23 @@ void main() {
       expect(formControl.errors['minLength'] != null, true);
     });
 
+    test('FormGroup contains all matching errors of nested controls', () {
+      final form = FormGroup({
+        'name': FormControl(
+          defaultValue: 'hi',
+          validators: [
+            Validators.required,
+            Validators.minLength(5),
+          ],
+        ),
+      });
+
+      expect(form.errors.keys.length, 1);
+      expect(form.errors['name'] != null, true, reason: 'Name');
+      expect(form.errors['name']['minLength'] != null, true,
+          reason: 'name.minLength');
+    });
+
     test('Reset a control restore default value', () {
       final defaultValue = 'john doe';
       final formControl = FormControl(
@@ -187,6 +204,14 @@ void main() {
 
       expect(formGroup.formControl('name').value, defaultName);
       expect(formGroup.formControl('email').value, defaultEmail);
+    });
+
+    test('Add errors to FormGroup', () {
+      final formGroup = FormGroup({
+        'name': FormControl(),
+      });
+
+      expect(formGroup.valid, true);
     });
   });
 }
