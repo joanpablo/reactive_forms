@@ -1,3 +1,4 @@
+import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/validators/validator.dart';
 
 class EmailValidator extends Validator {
@@ -5,9 +6,16 @@ class EmailValidator extends Validator {
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
   @override
-  Map<String, dynamic> validate(dynamic value) {
+  Map<String, dynamic> validate(AbstractControl control) {
+    // error if value is not a String
+    if (control.value != null && !(control.value is String)) {
+      return {'email': true};
+    }
+
     RegExp regex = new RegExp(EmailValidator.pattern);
-    return (value == null || value == '' || regex.hasMatch(value))
+    return (control.value == null ||
+            control.value == '' ||
+            regex.hasMatch(control.value))
         ? null
         : {'email': true};
   }

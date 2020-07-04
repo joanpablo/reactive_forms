@@ -1,19 +1,25 @@
+import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class MustMatchValidator {
+class MustMatchValidator extends Validator {
   final String controlName;
   final String matchingControlName;
 
   MustMatchValidator(this.controlName, this.matchingControlName);
 
-  Map<String, dynamic> validate(FormGroup form) {
-    final control = form.formControl(controlName);
-    final matchingControl = form.formControl(matchingControlName);
+  Map<String, dynamic> validate(AbstractControl control) {
+    final form = control as FormGroup;
+    if (form == null) {
+      return {'mustMatch': true};
+    }
 
-    if (control.value != matchingControl.value) {
-      matchingControl.addError({'mustMatch': true});
+    final formControl = form.formControl(controlName);
+    final matchingFormControl = form.formControl(matchingControlName);
+
+    if (formControl.value != matchingFormControl.value) {
+      matchingFormControl.addError({'mustMatch': true});
     } else {
-      matchingControl.removeError('mustMatch');
+      matchingFormControl.removeError('mustMatch');
     }
 
     return null;

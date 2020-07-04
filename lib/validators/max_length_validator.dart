@@ -1,3 +1,4 @@
+import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/validators/validator.dart';
 
 class MaxLengthValidator extends Validator {
@@ -6,13 +7,13 @@ class MaxLengthValidator extends Validator {
   MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, dynamic> validate(dynamic value) {
-    return (value == null || value.length <= this.maxLength)
+  Map<String, dynamic> validate(AbstractControl control) {
+    return (control.value == null || control.value.length <= this.maxLength)
         ? null
         : {
             'maxLength': {
               'requiredLength': this.maxLength,
-              'actualLength': value.length,
+              'actualLength': control.value.length,
             }
           };
   }
