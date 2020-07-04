@@ -45,4 +45,18 @@ void main() {
       expect(control.errors['minLength'] != null, true);
     });
   });
+
+  group('MustMatch Validator Tests', () {
+    test('FormGroup invalid if passwords mismatch', () {
+      final form = FormGroup({
+        'password': FormControl(defaultValue: '1234'),
+        'passwordConfirmation': FormControl(defaultValue: '123'),
+      }, validators: [
+        Validators.mustMatch('password', 'passwordConfirmation'),
+      ]);
+
+      expect(form.invalid, true);
+      expect(form.errors['passwordConfirmation']['mustMatch'], true);
+    });
+  });
 }

@@ -102,20 +102,20 @@ final form = FromGroup({
   'name': FormControl(validators: [Validators.required, _emptyWhiteSpaces]),
 });
 
-Map<String, dynamic> _emptyWhiteSpaces(dynamic value) {
+Map<String, dynamic> _emptyWhiteSpaces(AbstractControl control) {
   final error = {'required': true};
-  
-  if (value == null) {
+
+  if (control.value == null) {
     return error;
-  } else if (value is String) {
-    return value.trim().isEmpty ? error : null;
+  } else if (control.value is String) {
+    return control.value.trim().isEmpty ? error : null;
   }
 
   return null;
 }
 ```
 
-A custom **FormControl** validator is a function that receives the *value* as a **dynamic** and returns a **Map**. If the the value is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
+A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
 
 > You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demonstration purpose.
 
@@ -145,14 +145,16 @@ However the most important thing here is that we have attached a **validator** t
 
 ```dart
 Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) {
-  return (FormGroup form) {
-    final control = form.formControl(controlName);
-    final matchingControl = form.formControl(matchingControlName);
+  return (AbstractControl control) {
+    final form = control as FormGroup;
 
-    if (control.value != matchingControl.value) {
-      matchingControl.addError({'mustMatch': true});
+    final formControl = form.formControl(controlName);
+    final matchingFormControl = form.formControl(matchingControlName);
+
+    if (formControl.value != matchingFormControl.value) {
+      matchingFormControl.addError({'mustMatch': true});
     } else {
-      matchingControl.removeError('mustMatch');
+      matchingFormControl.removeError('mustMatch');
     }
 
     return null;
