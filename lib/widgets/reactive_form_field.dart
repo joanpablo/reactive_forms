@@ -20,8 +20,9 @@ class ReactiveFormField<T> extends StatefulWidget {
     Key key,
     @required this.formControlName,
     @required this.builder,
-    @required this.validationMessages,
-  }) : super(key: key);
+    Map<String, String> validationMessages,
+  })  : validationMessages = validationMessages ?? const {},
+        super(key: key);
 
   @override
   ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();

@@ -175,7 +175,7 @@ final form = FromGroup({
 ]);
 ```
 
-## Groups of Groups :open_mouth: :grin:
+## Groups of Groups :grin:
 
 **FormGroup** is not restricted to contains only **FormControl**, it can nest others **FormGroup** so you can create more complex **Forms**.
 
@@ -199,7 +199,7 @@ final form = FormGroup({
 });
 ```
 
-> Note how we set the *data type* to a **Form Control**, this is not mandatory when define *Forms* but we recommend this syntax.
+> Note how we set the *data type* to a **FormControl**, this is not mandatory when define *Forms* but we recommend this syntax.
 
 You can collect all data using **FormGroup.value**:
 
@@ -234,6 +234,8 @@ And of course you can access to a nested **FormGroup** as following:
 ```dart
 FormGroup personalForm = form.formControl('personal');
 ```
+
+A simple way to create a wizzard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each *Page* inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
 
 ## Reactive Form Widgets
 
@@ -596,9 +598,17 @@ Widget build(BuildContext context) {
 }
 ```
 
-
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 
 Although **Reactive Forms** can be used with any state management library or even without any one at all, **Reactive Forms** gets its maximum potential when is used in combination with a state management library like the [Provider](https://pub.dev/packages/provider) plugin.
 
 This way you can separate UI logic from business logic and you can define the **FormGroup** inside a business logic class and then exposes that class to widgets with mechanism like the one [Provider](https://pub.dev/packages/provider) plugin brings.
+
+## How create a custom Reactive Widget?
+
+**Reactive Forms** is not limited just to common widgets in *Forms* like text, dropdowns, sliders switch fields and etc, you can easily create **custom widgets** that **two-way** binds to **FormControls** and create your own set of *Reactive Widgets* ;)
+
+In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-Widgets) you can find a tutorial of how to create your custom Reactive Widget. 
+
+
+
