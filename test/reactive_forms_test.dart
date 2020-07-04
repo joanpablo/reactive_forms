@@ -159,6 +159,23 @@ void main() {
       expect(formControl.errors['minLength'] != null, true);
     });
 
+    test('FormGroup contains all matching errors of nested controls', () {
+      final form = FormGroup({
+        'name': FormControl(
+          defaultValue: 'hi',
+          validators: [
+            Validators.required,
+            Validators.minLength(5),
+          ],
+        ),
+      });
+
+      expect(form.errors.keys.length, 1);
+      expect(form.errors['name'] != null, true, reason: 'Name');
+      expect(form.errors['name']['minLength'] != null, true,
+          reason: 'name.minLength');
+    });
+
     test('Reset a control restore default value', () {
       final defaultValue = 'john doe';
       final formControl = FormControl(

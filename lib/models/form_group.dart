@@ -147,7 +147,7 @@ class FormGroup implements AbstractControl<Map<String, dynamic>> {
     });
 
     this._controls.forEach((key, control) {
-      if (control.errors.isNotEmpty) {
+      if (control.invalid) {
         this._errors.addAll({key: control.errors});
       }
     });
