@@ -7,6 +7,8 @@ abstract class AbstractControl<T> {
   bool get invalid;
   void reset();
 
+  Map<String, dynamic> get errors;
+
   ValueListenable<bool> get onStatusChanged;
   ValueListenable<T> get onValueChanged;
 
