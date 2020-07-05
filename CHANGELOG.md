@@ -1,3 +1,7 @@
+## [1.0.1] - 2020-07-04
+
+- Added an example application
+
 ## [1.0.0] - 2020-07-04
 
 ### Predefined validators
