@@ -13,12 +13,6 @@ class FormControl<T> extends AbstractControl<T> {
   T _defaultValue;
   T _value;
 
-  /// Represents if the control is touched or not. A control is touched when
-  /// the user taps on the ReactiveFormField widget and then remove focus or
-  /// completes the text edition. Validation messages will begin to show up
-  /// when the FormControl is touched.
-  bool touched;
-
   /// Creates a new FormControl instance, optionally pass [defaultValue]
   /// and [validators]. You can set [touched] to true to force the validation
   /// messages to show up at the very first time the widget builds.
@@ -33,7 +27,6 @@ class FormControl<T> extends AbstractControl<T> {
   FormControl({
     T defaultValue,
     List<ValidatorFunction> validators,
-    this.touched = false,
   })  : _defaultValue = defaultValue,
         super(validators: validators) {
     this.value = _defaultValue;

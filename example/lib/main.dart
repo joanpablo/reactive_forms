@@ -35,9 +35,14 @@ class _HomePageState extends State<HomePage> {
       Validators.required,
       Validators.minLength(8),
     ]),
+    'passwordConfirmation': FormControl(validators: [
+      Validators.required,
+    ]),
     'rememberMe': FormControl(defaultValue: false),
     'progress': FormControl<double>(defaultValue: 50.0),
-  });
+  }, validators: [
+    Validators.mustMatch('password', 'passwordConfirmation')
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +80,18 @@ class _HomePageState extends State<HomePage> {
                         'The password must not be empty',
                     ValidationMessage.minLength:
                         'The password must be at least 8 characters',
+                  },
+                ),
+                ReactiveTextField(
+                  formControlName: 'passwordConfirmation',
+                  decoration: InputDecoration(
+                    hintText: 'Confirm Password',
+                  ),
+                  obscureText: true,
+                  validationMessages: {
+                    ValidationMessage.required:
+                        'The password confirmation must not be empty',
+                    ValidationMessage.mustMatch: 'The passwords must match',
                   },
                 ),
                 ReactiveFormConsumer(

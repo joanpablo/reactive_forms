@@ -19,8 +19,15 @@ abstract class AbstractControl<T> {
   final List<ValidatorFunction> _validators;
   final Map<String, dynamic> _errors = {};
 
+  /// Represents if the control is touched or not. A control is touched when
+  /// the user taps on the ReactiveFormField widget and then remove focus or
+  /// completes the text edition. Validation messages will begin to show up
+  /// when the FormControl is touched.
+  bool touched;
+
   AbstractControl({
     List<ValidatorFunction> validators,
+    this.touched = false,
   }) : _validators = validators ?? const [];
 
   /// The list of functions that determines the validity of this control.

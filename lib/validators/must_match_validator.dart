@@ -23,6 +23,7 @@ class MustMatchValidator extends Validator {
 
     if (formControl.value != matchingFormControl.value) {
       matchingFormControl.addError(error);
+      matchingFormControl.touched = true;
     } else {
       matchingFormControl.removeError(ValidationMessage.mustMatch);
     }
