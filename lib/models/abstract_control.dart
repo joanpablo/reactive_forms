@@ -131,7 +131,7 @@ abstract class AbstractControl<T> {
 
   @protected
   void validate() {
-    this.status = ControlStatus.pending;
+    this._onStatusChanged.value = ControlStatus.pending;
 
     final errors = Map<String, dynamic>();
     this.validators.forEach((validator) {
@@ -156,14 +156,11 @@ abstract class AbstractControl<T> {
   /// This method is for internal use
   @protected
   void checkValidityAndUpdateStatus() {
-    this.status = this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
+    this._onStatusChanged.value =
+        this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
   }
 
   @protected
-  set status(ControlStatus status) {
-    this._onStatusChanged.value = status;
-  }
-
   Future<void> validateAsync(Map<String, dynamic> prevErrors) async {
     if (this._runningAsyncValidators) {
       return;
