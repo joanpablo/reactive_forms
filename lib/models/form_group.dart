@@ -18,10 +18,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   final Map<String, AbstractControl> _controls;
   final _onValueChanged = ValueNotifier<Map<String, dynamic>>(null);
 
-  /// These come in handy when you want to perform validation that considers
-  /// the value of more than one child control.
-  final List<ValidatorFunction> validators;
-
   /// A [ValueListenable] that emits an event every time the value
   /// of the group changes.
   @override
@@ -48,10 +44,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   ///
   FormGroup(
     Map<String, AbstractControl> controls, {
-    this.validators = const [],
+    List<ValidatorFunction> validators,
   })  : assert(controls != null),
-        _controls = controls {
-    _validate();
+        _controls = controls,
+        super(validators: validators) {
+    this.validate();
     _registerControlListeners();
   }
 
@@ -139,12 +136,13 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     this._controls.forEach((_, control) {
       control.onValueChanged.addListener(() {
         _onValueChanged.value = this.value;
-        _validate();
+        this.validate();
       });
     });
   }
 
-  void _validate() {
+  @override
+  void validate() {
     final errors = Map<String, dynamic>();
 
     this.validators.forEach((validator) {

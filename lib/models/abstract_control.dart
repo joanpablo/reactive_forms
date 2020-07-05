@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// This is the base class for FormControl and FormGroup.
 ///
@@ -14,8 +15,19 @@ import 'package:flutter/foundation.dart';
 ///
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
-  final _onStatusChanged = ValueNotifier<bool>(true);
+  final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.pending);
+  final List<ValidatorFunction> _validators;
   final Map<String, dynamic> _errors = {};
+
+  AbstractControl({
+    List<ValidatorFunction> validators,
+  }) : _validators = validators ?? const [];
+
+  /// The list of functions that determines the validity of this control.
+  ///
+  /// In [FormGroup] these come in handy when you want to perform validation
+  /// that considers the value of more than one child control.
+  List<ValidatorFunction> get validators => List.unmodifiable(_validators);
 
   /// The current value of the control.
   T get value;
@@ -29,17 +41,21 @@ abstract class AbstractControl<T> {
 
   /// A [ValueListenable] that emits an event every time the validation status
   /// of the control changes.
-  ValueListenable<bool> get onStatusChanged => _onStatusChanged;
+  ValueListenable<ControlStatus> get onStatusChanged => _onStatusChanged;
 
   /// A [ValueListenable] that emits an event every time the value
   /// of the control changes.
   ValueListenable<T> get onValueChanged;
 
   /// True if the control doesn't has validations errors.
-  bool get valid => this.errors.keys.length == 0;
+  bool get valid => this._onStatusChanged.value == ControlStatus.valid;
 
   /// True if the control has validations errors.
-  bool get invalid => !this.valid;
+  bool get invalid => this._onStatusChanged.value == ControlStatus.invalid;
+
+  bool get hasErrors => this._errors.keys.length > 0;
+
+  ControlStatus get status => _onStatusChanged.value;
 
   /// Disposes the control
   @protected
@@ -64,7 +80,7 @@ abstract class AbstractControl<T> {
   ///
   void addError(Map<String, dynamic> error) {
     this._errors.addAll(error);
-    notifyStatusChanged();
+    checkValidityAndUpdateStatus();
   }
 
   /// Remove errors by name.
@@ -81,7 +97,7 @@ abstract class AbstractControl<T> {
   ///
   void removeError(String errorName) {
     this._errors.remove(errorName);
-    notifyStatusChanged();
+    checkValidityAndUpdateStatus();
   }
 
   /// Sets errors on a form control when running validations manually,
@@ -90,12 +106,30 @@ abstract class AbstractControl<T> {
   void setErrors(Map<String, dynamic> errors) {
     this._errors.clear();
     this._errors.addAll(errors);
-    notifyStatusChanged();
+    checkValidityAndUpdateStatus();
+  }
+
+  @protected
+  void validate() {
+    final errors = Map<String, dynamic>();
+    this.validators.forEach((validator) {
+      final error = validator(this);
+      if (error != null) {
+        errors.addAll(error);
+      }
+    });
+
+    this.setErrors(errors);
   }
 
   /// This method is for internal use
   @protected
-  void notifyStatusChanged() {
-    this._onStatusChanged.value = this.valid;
+  void checkValidityAndUpdateStatus() {
+    this.status = this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
+  }
+
+  @protected
+  set status(ControlStatus status) {
+    this._onStatusChanged.value = status;
   }
 }

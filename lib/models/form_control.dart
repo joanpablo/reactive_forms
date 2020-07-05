@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
+import 'package:reactive_forms/models/control_status.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validation status of an individual form control.
@@ -11,9 +12,6 @@ class FormControl<T> extends AbstractControl<T> {
   final _onValueChanged = ValueNotifier<T>(null);
   T _defaultValue;
   T _value;
-
-  /// The list of functions that determines the validity of this control.
-  final List<ValidatorFunction> validators;
 
   /// Represents if the control is touched or not. A control is touched when
   /// the user taps on the ReactiveFormField widget and then remove focus or
@@ -34,9 +32,10 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T defaultValue,
-    this.validators = const [],
+    List<ValidatorFunction> validators,
     this.touched = false,
-  }) : _defaultValue = defaultValue {
+  })  : _defaultValue = defaultValue,
+        super(validators: validators) {
     this.value = _defaultValue;
   }
 
@@ -54,7 +53,8 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   set value(T newValue) {
     this._value = newValue;
-    _validate();
+    this.status = ControlStatus.pending;
+    this.validate();
     _onValueChanged.value = this._value;
   }
 
@@ -118,17 +118,5 @@ class FormControl<T> extends AbstractControl<T> {
     if (!this.focused) {
       _onFocusChanged.value = true;
     }
-  }
-
-  void _validate() {
-    final errors = Map<String, dynamic>();
-    this.validators.forEach((validator) {
-      final error = validator(this);
-      if (error != null) {
-        errors.addAll(error);
-      }
-    });
-
-    this.setErrors(errors);
   }
 }
