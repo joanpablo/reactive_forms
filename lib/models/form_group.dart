@@ -18,6 +18,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   /// the value of more than one child control.
   final List<ValidatorFunction> validators;
 
+  /// A [ValueListenable] that emits an event every time the value
+  /// of the group changes.
   @override
   ValueListenable<Map<String, dynamic>> get onValueChanged => _onValueChanged;
 
@@ -49,7 +51,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     _registerControlListeners();
   }
 
-  /// Returns a [FormControl] by its name.
+  /// Returns a [AbstractControl] by its name.
   AbstractControl formControl(String name) {
     return this._controls[name];
   }
@@ -82,6 +84,24 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     return map;
   }
 
+  /// Set the complete value for the form group.
+  ///
+  /// ### Example
+  ///
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'name': FormControl(),
+  ///   'email': FormControl(),
+  /// });
+  ///
+  /// form.value = { 'name': 'John Doe', 'email': 'johndoe@email.com' }
+  ///
+  /// print(form.value);
+  /// ```
+  /// ```json
+  /// { "name": "John Doe", "email": "johndoe@email.com" }
+  ///```
+  ///
   @override
   set value(Map<String, dynamic> newValue) {
     newValue.forEach((key, value) {
@@ -91,7 +111,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
   }
 
-  /// Resets all the form controls of the group, marking them as untouched,
+  /// Resets all the controls of the group, marking them as untouched,
   /// and setting the [FormControl.value] to [FormControl.defaultValue].
   ///
   /// See also [FormControl.reset()]
@@ -103,6 +123,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
   }
 
+  /// Disposes the [FormGroup]
   @override
   void dispose() {
     _onValueChanged.dispose();

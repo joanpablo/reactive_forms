@@ -206,12 +206,19 @@ void main() {
       expect(formGroup.formControl('email').value, defaultEmail);
     });
 
-    test('Add errors to FormGroup', () {
-      final formGroup = FormGroup({
+    test('Set value to FormGroup', () {
+      final form = FormGroup({
         'name': FormControl(),
+        'email': FormControl(),
       });
 
-      expect(formGroup.valid, true);
+      form.value = {
+        'name': 'John Doe',
+        'email': 'johndoe@email.com',
+      };
+
+      expect(form.formControl('name').value, 'John Doe');
+      expect(form.formControl('email').value, 'johndoe@email.com');
     });
   });
 }

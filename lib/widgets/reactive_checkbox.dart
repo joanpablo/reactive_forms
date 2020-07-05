@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/widgets/reactive_form_field.dart';
 
+/// This is a convenience widget that wraps a [Checkbox] widget in a
+/// [ReactiveCheckbox].
+///
+/// The [formControlName] is required to bind this [ReactiveCheckbox]
+/// to a [FormControl].
+///
+/// For documentation about the various parameters, see the [Checkbox] class
+/// and [new Checkbox], the constructor.
 class ReactiveCheckbox extends ReactiveFormField<bool> {
+  /// Create an instance of a [ReactiveCheckbox].
+  ///
+  /// The [formControlName] arguments must not be null.
   ReactiveCheckbox({
     Key key,
     @required String formControlName,

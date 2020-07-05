@@ -2,6 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/widgets/reactive_form_field.dart';
 
+/// This is a convenience widget that wraps a [Switch] widget in a
+/// [ReactiveSwitch].
+///
+/// The [formControlName] is required to bind this [ReactiveSwitch]
+/// to a [FormControl].
+///
+/// For documentation about the various parameters, see the [Switch] class
+/// and [new Switch], the constructor.
 class ReactiveSwitch extends ReactiveFormField<bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
