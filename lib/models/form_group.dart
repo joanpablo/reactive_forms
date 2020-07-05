@@ -50,6 +50,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
         super(validators: validators) {
     this.validate();
     _registerControlListeners();
+    print('FormGroup constructor');
   }
 
   /// Returns a [AbstractControl] by its name.

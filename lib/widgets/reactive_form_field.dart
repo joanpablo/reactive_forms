@@ -83,13 +83,11 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void subscribeFormControl() {
-    this.control.onStatusChanged.addListener(_onFormControlStatusChanged);
     this.control.onValueChanged.addListener(_onFormControlValueChanged);
   }
 
   @protected
   void unsubscribeFormControl() {
-    this.control.onStatusChanged.removeListener(_onFormControlStatusChanged);
     this.control.onValueChanged.removeListener(_onFormControlValueChanged);
   }
 
@@ -99,11 +97,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void updateValueFromControl() {
-    touch();
-  }
-
-  void _onFormControlStatusChanged() {
-    touch();
+    this.touch();
   }
 
   void didChange(T value) {
