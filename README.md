@@ -10,7 +10,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Installation and Usage
 
-Once you're familiar with Flutter you may install this package adding `reactive_forms` (1.0.0 or higher) to the dependencies list
+Once you're familiar with Flutter you may install this package adding `reactive_forms` (1.0.1 or higher) to the dependencies list
 of the `pubspec.yaml` file as follow:
 
 ```yaml
@@ -18,7 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_froms: ^1.0.0
+  reactive_froms: ^1.0.1
 ```
 
 Then run the command `flutter packages get` on the console.
