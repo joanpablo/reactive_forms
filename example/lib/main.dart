@@ -59,8 +59,9 @@ class _HomePageState extends State<HomePage> {
                     hintText: 'Email',
                   ),
                   validationMessages: {
-                    'required': 'The email must not be empty',
-                    'email': 'The email value must be a valid email',
+                    ValidationMessage.required: 'The email must not be empty',
+                    ValidationMessage.email:
+                        'The email value must be a valid email',
                   },
                 ),
                 ReactiveTextField(
@@ -70,8 +71,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   obscureText: true,
                   validationMessages: {
-                    'required': 'The password must not be empty',
-                    'minLength': 'The password must be at least 8 characters',
+                    ValidationMessage.required:
+                        'The password must not be empty',
+                    ValidationMessage.minLength:
+                        'The password must be at least 8 characters',
                   },
                 ),
                 ReactiveFormConsumer(
