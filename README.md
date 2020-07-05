@@ -30,7 +30,7 @@ A *form* is composed by multiple fields or *controls*.
 To declare a form with the fields *name* and *email* is as simple as:
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(defaultValue: 'John Doe'),
   'email': FormControl(),
 });
@@ -50,7 +50,7 @@ String get name() => this.form.formControl('name').value;
 But you can also get the complete *Form* data as follows:
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(defaultValue: 'John Doe'),
   'email': FormControl(defaultValue: 'johndoe@email.com'),
 });
@@ -74,7 +74,7 @@ The previous code prints the following output:
 You can add validators to a **FormControl** as follows:
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(validators: [Validators.required]),
   'email': FormControl(validators: [
     Validators.required,
@@ -98,7 +98,7 @@ There are common predefined validators, but you can implement custom validators 
 Lets implement a custom validator that validates empty white spaces value:
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(validators: [Validators.required, _emptyWhiteSpaces]),
 });
 
@@ -130,7 +130,7 @@ There are some cases where we want to implement a Form where a validation of a f
 For that cases we must implement a custom validator and attach it to the **FormGroup**, lets see an example:
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(validators: [Validators.required]),
   'email': FormControl(validators: [Validators.required, Validators.email]),
   'password': FormControl(validators: [Validators.required, Validators.minLength(8)]),
@@ -165,7 +165,7 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
 Fortunately you don't have to implement a custom *must match* validator because we have already included it into the code of the **reactive_forms** package so you could reuse it. The previous form definition example will become into:
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(validators: [Validators.required]),
   'email': FormControl(validators: [Validators.required, Validators.email]),
   'emailConfirmation': FormControl(validators: [Validators.required]),
@@ -443,7 +443,7 @@ void _onSubmit() {
 There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()** methods.
 
 ```dart
-final form = FromGroup({
+final form = FormGroup({
   'name': FormControl(defaultValue: 'John Doe'),
 });
 
