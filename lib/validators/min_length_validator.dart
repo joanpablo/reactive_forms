@@ -2,8 +2,7 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:reactive_forms/models/abstract_control.dart';
-import 'package:reactive_forms/validators/validator.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class MinLengthValidator extends Validator {
   final int minLength;
@@ -15,7 +14,7 @@ class MinLengthValidator extends Validator {
     return (control.value == null || control.value.length >= this.minLength)
         ? null
         : {
-            'minLength': {
+            ValidationMessage.minLength: {
               'requiredLength': this.minLength,
               'actualLength': control.value.length,
             }

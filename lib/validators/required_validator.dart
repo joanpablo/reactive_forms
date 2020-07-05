@@ -2,13 +2,12 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:reactive_forms/models/abstract_control.dart';
-import 'package:reactive_forms/validators/validator.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class RequiredValidator extends Validator {
   @override
   Map<String, dynamic> validate(AbstractControl control) {
-    final error = {'required': true};
+    final error = {ValidationMessage.required: true};
 
     if (control.value == null) {
       return error;
