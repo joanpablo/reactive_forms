@@ -306,6 +306,20 @@ Widget build(BuildContext context) {
 }
 ```
 
+> **Reactive Forms** have an utility class called **ValidationMessage** that brings access to 
+> common *validation messages*: *required*, *email*, *pattern* and so on. So instead of write 'required' you
+> could use *ValidationMessage.required* as the key of validations messages:
+> ```dart
+> return ReactiveTextField(
+>    formControlName: 'email',
+>    validationMessages: {
+>      ValidationMessage.required: 'The email must not be empty',
+>      ValidationMessage.email: 'The email value must be a valid email'
+>    },
+> ),
+> ````
+> good isn't it? ;)
+
 ## When does Validation Messages begin to show up?
 
 Even when the **FormControl** is invalid, validation messages will begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
