@@ -314,11 +314,11 @@ Widget build(BuildContext context) {
 >    formControlName: 'email',
 >    validationMessages: {
 >      ValidationMessage.required: 'The email must not be empty',
->      ValidationMessage.email: 'The email value must be a valid email'
+>      ValidationMessage.email: 'The email value must be a valid email',
 >    },
 > ),
 > ````
-> good isn't it? ;)
+> nice isn't it? ;)
 
 ## When does Validation Messages begin to show up?
 
@@ -570,7 +570,7 @@ Widget build(BuildContext context) {
             ),
           ],
           validationMessages: {
-            'required': 'You must select a payment method',
+            ValidationMessage.required: 'You must select a payment method',
           },
         ),
       ],
