@@ -15,7 +15,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
-  final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.pending);
+  final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.valid);
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
@@ -66,12 +66,12 @@ abstract class AbstractControl<T> {
   ValueListenable<T> get onValueChanged;
 
   /// True if the control doesn't has validations errors.
-  bool get valid => this._onStatusChanged.value == ControlStatus.valid;
+  bool get valid => this.status == ControlStatus.valid;
 
   /// True if the control has validations errors.
-  bool get invalid => this._onStatusChanged.value == ControlStatus.invalid;
+  bool get invalid => this.status == ControlStatus.invalid;
 
-  bool get pending => this._onStatusChanged.value == ControlStatus.pending;
+  bool get pending => this.status == ControlStatus.pending;
 
   bool get hasErrors => this._errors.keys.length > 0;
 
@@ -158,6 +158,11 @@ abstract class AbstractControl<T> {
   void checkValidityAndUpdateStatus() {
     this._onStatusChanged.value =
         this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
+  }
+
+  @protected
+  void updateStatus() {
+    this._onStatusChanged.value = this.status;
   }
 
   @protected

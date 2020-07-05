@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, form, child) {
                     return RaisedButton(
                       child: Text('SignIn'),
-                      onPressed: form.invalid ? null : () => print(form.value),
+                      onPressed: form.valid ? () => print(form.value) : null,
                     );
                   },
                 ),
@@ -158,9 +158,10 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+final emails = ['johnpjm85@gmail.com'];
 Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
   return Future.delayed(
     Duration(seconds: 5),
-    () => {'unique': true},
+    () => emails.contains(control.value) ? {'unique': true} : null,
   );
 }

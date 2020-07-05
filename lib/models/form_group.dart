@@ -114,6 +114,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
         this._controls[key].value = value;
       }
     });
+
+    _onValueChanged.value = this.value;
   }
 
   /// Resets all the controls of the group, marking them as untouched,
@@ -140,12 +142,25 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     this._controls.forEach((_, control) {
       control.onValueChanged.addListener(() {
         _onValueChanged.value = this.value;
-        this.validate();
+      });
+      control.onStatusChanged.addListener(() {
+        updateStatus();
       });
     });
   }
 
   @override
+  ControlStatus get status {
+    final isPending = this._controls.values.any((control) => control.pending);
+    if (isPending) {
+      return ControlStatus.pending;
+    }
+
+    final isInvalid = this._controls.values.any((control) => control.invalid);
+    return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
+  }
+
+  /*@override
   void validate() {
     final errors = Map<String, dynamic>();
 
@@ -163,5 +178,5 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
 
     this.setErrors(errors);
-  }
+  }*/
 }
