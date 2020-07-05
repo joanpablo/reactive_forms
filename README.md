@@ -308,7 +308,7 @@ Widget build(BuildContext context) {
 
 > **Reactive Forms** have an utility class called **ValidationMessage** that brings access to 
 > common *validation messages*: *required*, *email*, *pattern* and so on. So instead of write 'required' you
-> could use *ValidationMessage.required* as the key of validations messages:
+> could use *ValidationMessage.required* as the key of validation messages:
 > ```dart
 > return ReactiveTextField(
 >    formControlName: 'email',
