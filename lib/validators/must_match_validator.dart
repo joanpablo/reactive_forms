@@ -2,7 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:reactive_forms/models/abstract_control.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class MustMatchValidator extends Validator {
@@ -12,18 +11,20 @@ class MustMatchValidator extends Validator {
   MustMatchValidator(this.controlName, this.matchingControlName);
 
   Map<String, dynamic> validate(AbstractControl control) {
+    final error = {ValidationMessage.mustMatch: true};
+
     final form = control as FormGroup;
     if (form == null) {
-      return {'mustMatch': true};
+      return error;
     }
 
     final formControl = form.formControl(controlName);
     final matchingFormControl = form.formControl(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
-      matchingFormControl.addError({'mustMatch': true});
+      matchingFormControl.addError(error);
     } else {
-      matchingFormControl.removeError('mustMatch');
+      matchingFormControl.removeError(ValidationMessage.mustMatch);
     }
 
     return null;

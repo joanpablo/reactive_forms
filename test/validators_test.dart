@@ -42,7 +42,7 @@ void main() {
       );
 
       expect(control.invalid, true);
-      expect(control.errors['minLength'] != null, true);
+      expect(control.errors[ValidationMessage.minLength] != null, true);
     });
   });
 
@@ -56,7 +56,10 @@ void main() {
       ]);
 
       expect(form.invalid, true);
-      expect(form.errors['passwordConfirmation']['mustMatch'], true);
+      expect(
+        form.errors['passwordConfirmation'][ValidationMessage.mustMatch],
+        true,
+      );
     });
   });
 }

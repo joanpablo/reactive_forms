@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/models/form_control.dart';
 import 'package:reactive_forms/models/form_group.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/validators/validators.dart';
 
 void main() {
@@ -114,7 +115,7 @@ void main() {
 
       formControl.value = null;
 
-      expect(formControl.errors.containsKey('required'), true);
+      expect(formControl.errors.containsKey(ValidationMessage.required), true);
     });
 
     test('FormControl.errors contains all errors', () {
@@ -127,8 +128,8 @@ void main() {
       );
 
       expect(formControl.errors.keys.length, 2);
-      expect(formControl.errors['email'], true, reason: 'mail');
-      expect(formControl.errors['minLength'] != null, true,
+      expect(formControl.errors[ValidationMessage.email], true, reason: 'mail');
+      expect(formControl.errors[ValidationMessage.minLength] != null, true,
           reason: 'minLength');
     });
 
@@ -143,7 +144,7 @@ void main() {
       formControl.value = 'hi';
 
       expect(formControl.errors.keys.length, 1);
-      expect(formControl.errors['minLength'] != null, true);
+      expect(formControl.errors[ValidationMessage.minLength] != null, true);
     });
 
     test('FormControl with default value contains all matching errors', () {
@@ -156,7 +157,7 @@ void main() {
       );
 
       expect(formControl.errors.keys.length, 1);
-      expect(formControl.errors['minLength'] != null, true);
+      expect(formControl.errors[ValidationMessage.minLength] != null, true);
     });
 
     test('FormGroup contains all matching errors of nested controls', () {
@@ -172,7 +173,7 @@ void main() {
 
       expect(form.errors.keys.length, 1);
       expect(form.errors['name'] != null, true, reason: 'Name');
-      expect(form.errors['name']['minLength'] != null, true,
+      expect(form.errors['name'][ValidationMessage.minLength] != null, true,
           reason: 'name.minLength');
     });
 
