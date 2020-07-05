@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 ReactiveTextField(
                   formControlName: 'email',
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    labelText: 'Email',
                   ),
                   validationMessages: {
                     ValidationMessage.required: 'The email must not be empty',
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 ReactiveTextField(
                   formControlName: 'password',
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    labelText: 'Password',
                   ),
                   obscureText: true,
                   validationMessages: {
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 ReactiveTextField(
                   formControlName: 'passwordConfirmation',
                   decoration: InputDecoration(
-                    hintText: 'Confirm Password',
+                    labelText: 'Confirm Password',
                   ),
                   obscureText: true,
                   validationMessages: {
@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                 ReactiveDropdownField<bool>(
                   formControlName: 'rememberMe',
                   hint: Text('Want to stay logged in?'),
+                  decoration: InputDecoration(labelText: 'Remember me'),
                   items: [
                     DropdownMenuItem(
                       value: true,
