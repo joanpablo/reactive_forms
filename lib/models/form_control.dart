@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
-import 'package:reactive_forms/models/control_status.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validation status of an individual form control.
@@ -50,7 +49,6 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   set value(T newValue) {
     this._value = newValue;
-    this.status = ControlStatus.pending;
     this.validate();
     _onValueChanged.value = this._value;
   }

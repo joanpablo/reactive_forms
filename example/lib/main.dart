@@ -27,10 +27,13 @@ class _HomePageState extends State<HomePage> {
   // We have declared the FormGroup within a Stateful Widget only for
   // demonstration purposes and to simplify the explanation in this example.
   final form = FormGroup({
-    'email': FormControl(validators: [
-      Validators.required,
-      Validators.email,
-    ]),
+    'email': FormControl(
+      validators: [
+        Validators.required,
+        Validators.email,
+      ],
+      asyncValidators: [_uniqueEmail],
+    ),
     'password': FormControl(validators: [
       Validators.required,
       Validators.minLength(8),
@@ -153,4 +156,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+  return Future.delayed(
+    Duration(seconds: 5),
+    () => {'unique': true},
+  );
 }

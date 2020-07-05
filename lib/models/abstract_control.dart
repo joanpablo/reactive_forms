@@ -19,6 +19,7 @@ abstract class AbstractControl<T> {
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
+  bool _runningAsyncValidators = false;
 
   /// Represents if the control is touched or not. A control is touched when
   /// the user taps on the ReactiveFormField widget and then remove focus or
@@ -43,7 +44,7 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<ValidatorFunction> get asyncValidators =>
+  List<AsyncValidatorFunction> get asyncValidators =>
       List.unmodifiable(_asyncValidators);
 
   /// The current value of the control.
@@ -69,6 +70,8 @@ abstract class AbstractControl<T> {
 
   /// True if the control has validations errors.
   bool get invalid => this._onStatusChanged.value == ControlStatus.invalid;
+
+  bool get pending => this._onStatusChanged.value == ControlStatus.pending;
 
   bool get hasErrors => this._errors.keys.length > 0;
 
@@ -128,6 +131,8 @@ abstract class AbstractControl<T> {
 
   @protected
   void validate() {
+    this.status = ControlStatus.pending;
+
     final errors = Map<String, dynamic>();
     this.validators.forEach((validator) {
       final error = validator(this);
@@ -136,7 +141,16 @@ abstract class AbstractControl<T> {
       }
     });
 
-    this.setErrors(errors);
+    if (errors.keys.isNotEmpty) {
+      setErrors(errors);
+      return;
+    }
+
+    if (this.asyncValidators.isEmpty) {
+      setErrors(errors);
+    } else {
+      validateAsync(errors);
+    }
   }
 
   /// This method is for internal use
@@ -148,5 +162,25 @@ abstract class AbstractControl<T> {
   @protected
   set status(ControlStatus status) {
     this._onStatusChanged.value = status;
+  }
+
+  Future<void> validateAsync(Map<String, dynamic> prevErrors) async {
+    if (this._runningAsyncValidators) {
+      return;
+    }
+    this._runningAsyncValidators = true;
+
+    final errors = await Future.wait(
+        this.asyncValidators.map((validator) => validator(this)).toList());
+
+    if (errors == null) {
+      setErrors(prevErrors);
+      return;
+    }
+
+    errors.where((error) => error != null).forEach(prevErrors.addAll);
+
+    this._runningAsyncValidators = false;
+    setErrors(prevErrors);
   }
 }
