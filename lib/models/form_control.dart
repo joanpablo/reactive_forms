@@ -27,8 +27,12 @@ class FormControl<T> extends AbstractControl<T> {
   FormControl({
     T defaultValue,
     List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
   })  : _defaultValue = defaultValue,
-        super(validators: validators) {
+        super(
+          validators: validators,
+          asyncValidators: asyncValidators,
+        ) {
     this.value = _defaultValue;
   }
 

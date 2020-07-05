@@ -17,6 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 abstract class AbstractControl<T> {
   final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.pending);
   final List<ValidatorFunction> _validators;
+  final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
 
   /// Represents if the control is touched or not. A control is touched when
@@ -27,14 +28,23 @@ abstract class AbstractControl<T> {
 
   AbstractControl({
     List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
     this.touched = false,
-  }) : _validators = validators ?? const [];
+  })  : _validators = validators ?? const [],
+        _asyncValidators = asyncValidators ?? const [];
 
   /// The list of functions that determines the validity of this control.
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
   List<ValidatorFunction> get validators => List.unmodifiable(_validators);
+
+  /// The list of async functions that determines the validity of this control.
+  ///
+  /// In [FormGroup] these come in handy when you want to perform validation
+  /// that considers the value of more than one child control.
+  List<ValidatorFunction> get asyncValidators =>
+      List.unmodifiable(_asyncValidators);
 
   /// The current value of the control.
   T get value;
