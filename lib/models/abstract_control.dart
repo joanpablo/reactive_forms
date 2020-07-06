@@ -129,6 +129,18 @@ abstract class AbstractControl<T> {
     checkValidityAndUpdateStatus();
   }
 
+  /// This method is for internal use
+  @protected
+  void checkValidityAndUpdateStatus() {
+    this._onStatusChanged.value =
+        this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
+  }
+
+  @protected
+  void updateStatus() {
+    this._onStatusChanged.value = this.status;
+  }
+
   @protected
   void validate() {
     this._onStatusChanged.value = ControlStatus.pending;
@@ -151,18 +163,6 @@ abstract class AbstractControl<T> {
     } else {
       validateAsync(errors);
     }
-  }
-
-  /// This method is for internal use
-  @protected
-  void checkValidityAndUpdateStatus() {
-    this._onStatusChanged.value =
-        this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
-  }
-
-  @protected
-  void updateStatus() {
-    this._onStatusChanged.value = this.status;
   }
 
   @protected
