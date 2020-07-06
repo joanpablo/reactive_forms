@@ -142,6 +142,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     this._controls.forEach((_, control) {
       control.onValueChanged.addListener(() {
         _onValueChanged.value = this.value;
+        validate();
       });
       control.onStatusChanged.addListener(() {
         updateStatus();
@@ -160,7 +161,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
   }
 
-  /*@override
+  @override
   void validate() {
     final errors = Map<String, dynamic>();
 
@@ -172,11 +173,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
 
     this._controls.forEach((key, control) {
-      if (control.invalid) {
+      if (control.hasErrors) {
         errors.addAll({key: control.errors});
       }
     });
 
     this.setErrors(errors);
-  }*/
+  }
 }

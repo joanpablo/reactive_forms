@@ -65,6 +65,14 @@ class _HomePageState extends State<HomePage> {
                   formControlName: 'email',
                   decoration: InputDecoration(
                     labelText: 'Email',
+                    suffixIcon: ReactiveStatusListenableBuilder(
+                      formControlName: 'email',
+                      builder: (context, control, child) {
+                        return control.pending
+                            ? CircularProgressIndicator()
+                            : Container(width: 0);
+                      },
+                    ),
                   ),
                   validationMessages: {
                     ValidationMessage.required: 'The email must not be empty',
