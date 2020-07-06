@@ -153,12 +153,7 @@ abstract class AbstractControl<T> {
       }
     });
 
-    if (errors.keys.isNotEmpty) {
-      setErrors(errors);
-      return;
-    }
-
-    if (this.asyncValidators.isEmpty) {
+    if (errors.keys.isNotEmpty || this.asyncValidators.isEmpty) {
       setErrors(errors);
     } else {
       validateAsync(errors);
