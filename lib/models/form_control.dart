@@ -8,18 +8,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
   final _onFocusChanged = ValueNotifier<bool>(false);
-  final _onValueChanged = ValueNotifier<T>(null);
   T _defaultValue;
   T _value;
-
-  /// The list of functions that determines the validity of this control.
-  final List<ValidatorFunction> validators;
-
-  /// Represents if the control is touched or not. A control is touched when
-  /// the user taps on the ReactiveFormField widget and then remove focus or
-  /// completes the text edition. Validation messages will begin to show up
-  /// when the FormControl is touched.
-  bool touched;
 
   /// Creates a new FormControl instance, optionally pass [defaultValue]
   /// and [validators]. You can set [touched] to true to force the validation
@@ -34,9 +24,13 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T defaultValue,
-    this.validators = const [],
-    this.touched = false,
-  }) : _defaultValue = defaultValue {
+    List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
+  })  : _defaultValue = defaultValue,
+        super(
+          validators: validators,
+          asyncValidators: asyncValidators,
+        ) {
     this.value = _defaultValue;
   }
 
@@ -54,23 +48,17 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   set value(T newValue) {
     this._value = newValue;
-    _validate();
-    _onValueChanged.value = this._value;
+    this.notifyValueChanged(this._value);
+    this.validate();
   }
 
   /// Disposes the control
   @override
   void dispose() {
     _onFocusChanged.dispose();
-    _onValueChanged.dispose();
 
     super.dispose();
   }
-
-  /// A [ValueListenable] that emits an event every time the value
-  /// of the control changes.
-  @override
-  ValueListenable<T> get onValueChanged => _onValueChanged;
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
@@ -118,17 +106,5 @@ class FormControl<T> extends AbstractControl<T> {
     if (!this.focused) {
       _onFocusChanged.value = true;
     }
-  }
-
-  void _validate() {
-    final errors = Map<String, dynamic>();
-    this.validators.forEach((validator) {
-      final error = validator(this);
-      if (error != null) {
-        errors.addAll(error);
-      }
-    });
-
-    this.setErrors(errors);
   }
 }

@@ -10,7 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// to its descendants and listen to changes in [FormGroup.onStatusChanged]
 /// and rebuilds all the dependents widgets.
 class FormGroupInheritedNotifier
-    extends InheritedNotifier<ValueListenable<bool>> {
+    extends InheritedNotifier<ValueListenable<ControlStatus>> {
   final FormGroup formGroup;
 
   FormGroupInheritedNotifier({

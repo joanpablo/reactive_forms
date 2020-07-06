@@ -2,7 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -16,16 +15,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 class FormGroup extends AbstractControl<Map<String, dynamic>> {
   final Map<String, AbstractControl> _controls;
-  final _onValueChanged = ValueNotifier<Map<String, dynamic>>(null);
-
-  /// These come in handy when you want to perform validation that considers
-  /// the value of more than one child control.
-  final List<ValidatorFunction> validators;
-
-  /// A [ValueListenable] that emits an event every time the value
-  /// of the group changes.
-  @override
-  ValueListenable<Map<String, dynamic>> get onValueChanged => _onValueChanged;
 
   /// Creates a new FormGroup instance.
   ///
@@ -48,10 +37,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   ///
   FormGroup(
     Map<String, AbstractControl> controls, {
-    this.validators = const [],
+    List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
   })  : assert(controls != null),
-        _controls = controls {
-    _validate();
+        _controls = controls,
+        super(
+          validators: validators,
+          asyncValidators: asyncValidators,
+        ) {
+    this.validate();
     _registerControlListeners();
   }
 
@@ -127,24 +121,43 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
   }
 
-  /// Disposes the [FormGroup]
-  @override
-  void dispose() {
-    _onValueChanged.dispose();
-
-    super.dispose();
-  }
-
   void _registerControlListeners() {
-    this._controls.forEach((_, control) {
-      control.onValueChanged.addListener(() {
-        _onValueChanged.value = this.value;
-        _validate();
-      });
+    this._controls.values.forEach((control) {
+      control.onValueChanged.addListener(_onControlValueChanged);
+      control.onStatusChanged.addListener(_onControlStatusChanged);
     });
   }
 
-  void _validate() {
+  void _onControlValueChanged() {
+    if (this.pending) {
+      this.notifyValueChanged(this.value);
+    } else {
+      this.validate();
+    }
+  }
+
+  void _onControlStatusChanged() {
+    print('formControl status: ${this.status}');
+    if (this.pending) {
+      notifyStatusChanged(ControlStatus.pending);
+    } else {
+      this.validate();
+    }
+  }
+
+  @override
+  ControlStatus get status {
+    final isPending = this._controls.values.any((control) => control.pending);
+    if (isPending) {
+      return ControlStatus.pending;
+    }
+
+    final isInvalid = this._controls.values.any((control) => control.invalid);
+    return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
+  }
+
+  @override
+  void validate() {
     final errors = Map<String, dynamic>();
 
     this.validators.forEach((validator) {
@@ -155,7 +168,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
 
     this._controls.forEach((key, control) {
-      if (control.invalid) {
+      if (control.hasErrors) {
         errors.addAll({key: control.errors});
       }
     });

@@ -1,6 +1,7 @@
 library reactive_forms;
 
 export 'models/abstract_control.dart';
+export 'models/control_status.dart';
 export 'models/form_control.dart';
 export 'models/form_group.dart';
 export 'validators/validation_message.dart';
@@ -13,6 +14,7 @@ export 'widgets/reactive_form_consumer.dart';
 export 'widgets/reactive_form_field.dart';
 export 'widgets/reactive_radio.dart';
 export 'widgets/reactive_slider.dart';
+export 'widgets/reactive_status_listenable_builder.dart';
 export 'widgets/reactive_switch.dart';
 export 'widgets/reactive_text_field.dart';
 export 'widgets/reactive_value_listenable_builder.dart';

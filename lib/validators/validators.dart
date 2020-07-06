@@ -11,8 +11,14 @@ import 'package:reactive_forms/validators/number_validator.dart';
 import 'package:reactive_forms/validators/pattern_validator.dart';
 import 'package:reactive_forms/validators/required_validator.dart';
 
-/// Signature for functions that defines a validator
+/// Signature of a function that receives a control and synchronously
+/// returns a map of validation errors if present, otherwise null.
 typedef ValidatorFunction = Map<String, dynamic> Function(
+    AbstractControl value);
+
+/// Signature of a function that receives a control and returns a Future
+/// that emits validation errors if present, otherwise null.
+typedef AsyncValidatorFunction = Future<Map<String, dynamic>> Function(
     AbstractControl value);
 
 /// Provides a set of built-in validators that can be used by form controls.

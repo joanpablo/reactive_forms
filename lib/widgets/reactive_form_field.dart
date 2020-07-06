@@ -99,11 +99,11 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void updateValueFromControl() {
-    touch();
+    this.touch();
   }
 
   void _onFormControlStatusChanged() {
-    touch();
+    setState(() {});
   }
 
   void didChange(T value) {
