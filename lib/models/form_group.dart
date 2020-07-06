@@ -2,7 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -16,12 +15,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 class FormGroup extends AbstractControl<Map<String, dynamic>> {
   final Map<String, AbstractControl> _controls;
-  final _onValueChanged = ValueNotifier<Map<String, dynamic>>(null);
-
-  /// A [ValueListenable] that emits an event every time the value
-  /// of the group changes.
-  @override
-  ValueListenable<Map<String, dynamic>> get onValueChanged => _onValueChanged;
 
   /// Creates a new FormGroup instance.
   ///
@@ -114,8 +107,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
         this._controls[key].value = value;
       }
     });
-
-    _onValueChanged.value = this.value;
   }
 
   /// Resets all the controls of the group, marking them as untouched,
@@ -130,27 +121,24 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
     });
   }
 
-  /// Disposes the [FormGroup]
-  @override
-  void dispose() {
-    _onValueChanged.dispose();
-
-    super.dispose();
+  void _registerControlListeners() {
+    this._controls.values.forEach((control) {
+      control.onValueChanged.addListener(_onControlValueChanged);
+      control.onStatusChanged.addListener(_onControlStatusChanged);
+    });
   }
 
-  void _registerControlListeners() {
-    this._controls.forEach((controlName, control) {
-      control.onValueChanged.addListener(() {
-        print('$controlName value changed ${control.value}');
-        _onValueChanged.value = this.value;
-        validate();
-      });
-      control.onStatusChanged.addListener(() {
-        print('$controlName status changed ${control.status}');
-        print('form status is ${this.status}');
-        updateStatus();
-      });
-    });
+  void _onControlValueChanged() {
+    this.notifyValueChanged(this.value);
+    this.validate();
+  }
+
+  void _onControlStatusChanged() {
+    if (this.pending) {
+      notifyStatusChanged(ControlStatus.pending);
+    } else {
+      this.validate();
+    }
   }
 
   @override

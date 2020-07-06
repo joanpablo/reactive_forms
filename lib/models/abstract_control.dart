@@ -16,6 +16,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
   final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.valid);
+  final _onValueChanged = ValueNotifier<T>(null);
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
@@ -63,7 +64,7 @@ abstract class AbstractControl<T> {
 
   /// A [ValueListenable] that emits an event every time the value
   /// of the control changes.
-  ValueListenable<T> get onValueChanged;
+  ValueListenable<T> get onValueChanged => _onValueChanged;
 
   /// True if the control doesn't has validations errors.
   bool get valid => this.status == ControlStatus.valid;
@@ -81,10 +82,21 @@ abstract class AbstractControl<T> {
   @protected
   void dispose() {
     _onStatusChanged.dispose();
+    _onValueChanged.dispose();
   }
 
   /// Resets the control.
   void reset();
+
+  @protected
+  void notifyValueChanged(T value) {
+    _onValueChanged.value = value;
+  }
+
+  @protected
+  void notifyStatusChanged(ControlStatus status) {
+    _onStatusChanged.value = status;
+  }
 
   /// Add errors when running validations manually, rather than automatically.
   ///
@@ -132,18 +144,13 @@ abstract class AbstractControl<T> {
   /// This method is for internal use
   @protected
   void checkValidityAndUpdateStatus() {
-    this._onStatusChanged.value =
-        this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
-  }
-
-  @protected
-  void updateStatus() {
-    this._onStatusChanged.value = this.status;
+    final status = this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
+    notifyStatusChanged(status);
   }
 
   @protected
   void validate() {
-    this._onStatusChanged.value = ControlStatus.pending;
+    this.notifyStatusChanged(ControlStatus.pending);
 
     _errors.clear();
     this.validators.forEach((validator) {
@@ -177,7 +184,10 @@ abstract class AbstractControl<T> {
 
     errors.where((error) => error != null).forEach(_errors.addAll);
 
+    if (this.pending) {
+      checkValidityAndUpdateStatus();
+    }
+
     this._runningAsyncValidators = false;
-    checkValidityAndUpdateStatus();
   }
 }

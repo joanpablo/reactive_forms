@@ -8,7 +8,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
   final _onFocusChanged = ValueNotifier<bool>(false);
-  final _onValueChanged = ValueNotifier<T>(null);
   T _defaultValue;
   T _value;
 
@@ -49,23 +48,17 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   set value(T newValue) {
     this._value = newValue;
+    this.notifyValueChanged(this._value);
     this.validate();
-    _onValueChanged.value = this._value;
   }
 
   /// Disposes the control
   @override
   void dispose() {
     _onFocusChanged.dispose();
-    _onValueChanged.dispose();
 
     super.dispose();
   }
-
-  /// A [ValueListenable] that emits an event every time the value
-  /// of the control changes.
-  @override
-  ValueListenable<T> get onValueChanged => _onValueChanged;
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
