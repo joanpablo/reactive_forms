@@ -174,20 +174,22 @@ abstract class AbstractControl<T> {
     }
     this._runningAsyncValidators = true;
 
-    final errors = await Future.wait(
-        this.asyncValidators.map((validator) => validator(this)).toList());
+    final validatorsStream = Stream.fromFutures(
+        this.asyncValidators.map((validator) => validator(this)));
 
-    if (errors == null) {
-      checkValidityAndUpdateStatus();
-      return;
-    }
+    validatorsStream.listen(
+      (error) {
+        if (error != null) {
+          _errors.addAll(error);
+        }
+      },
+      onDone: () {
+        if (this.pending) {
+          checkValidityAndUpdateStatus();
+        }
 
-    errors.where((error) => error != null).forEach(_errors.addAll);
-
-    if (this.pending) {
-      checkValidityAndUpdateStatus();
-    }
-
-    this._runningAsyncValidators = false;
+        this._runningAsyncValidators = false;
+      },
+    );
   }
 }
