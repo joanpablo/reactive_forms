@@ -139,12 +139,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   }
 
   void _registerControlListeners() {
-    this._controls.forEach((_, control) {
+    this._controls.forEach((controlName, control) {
       control.onValueChanged.addListener(() {
+        print('$controlName value changed ${control.value}');
         _onValueChanged.value = this.value;
         validate();
       });
       control.onStatusChanged.addListener(() {
+        print('$controlName status changed ${control.status}');
+        print('form status is ${this.status}');
         updateStatus();
       });
     });

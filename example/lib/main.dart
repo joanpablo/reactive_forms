@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 ReactiveFormConsumer(
                   builder: (context, form, child) {
+                    print('form status is valid ${form.valid}');
                     return RaisedButton(
                       child: Text('SignIn'),
                       onPressed: form.valid ? () => print(form.value) : null,

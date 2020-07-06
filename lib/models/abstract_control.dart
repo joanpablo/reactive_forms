@@ -145,23 +145,23 @@ abstract class AbstractControl<T> {
   void validate() {
     this._onStatusChanged.value = ControlStatus.pending;
 
-    final errors = Map<String, dynamic>();
+    _errors.clear();
     this.validators.forEach((validator) {
       final error = validator(this);
       if (error != null) {
-        errors.addAll(error);
+        _errors.addAll(error);
       }
     });
 
-    if (errors.keys.isNotEmpty || this.asyncValidators.isEmpty) {
-      setErrors(errors);
+    if (_errors.keys.isNotEmpty || this.asyncValidators.isEmpty) {
+      checkValidityAndUpdateStatus();
     } else {
-      validateAsync(errors);
+      validateAsync();
     }
   }
 
   @protected
-  Future<void> validateAsync(Map<String, dynamic> prevErrors) async {
+  Future<void> validateAsync() async {
     if (this._runningAsyncValidators) {
       return;
     }
@@ -171,13 +171,13 @@ abstract class AbstractControl<T> {
         this.asyncValidators.map((validator) => validator(this)).toList());
 
     if (errors == null) {
-      setErrors(prevErrors);
+      checkValidityAndUpdateStatus();
       return;
     }
 
-    errors.where((error) => error != null).forEach(prevErrors.addAll);
+    errors.where((error) => error != null).forEach(_errors.addAll);
 
     this._runningAsyncValidators = false;
-    setErrors(prevErrors);
+    checkValidityAndUpdateStatus();
   }
 }
