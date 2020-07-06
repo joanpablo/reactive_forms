@@ -2,6 +2,8 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -20,7 +22,6 @@ abstract class AbstractControl<T> {
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
-  bool _runningAsyncValidators = false;
 
   /// Represents if the control is touched or not. A control is touched when
   /// the user taps on the ReactiveFormField widget and then remove focus or
@@ -167,28 +168,29 @@ abstract class AbstractControl<T> {
     }
   }
 
+  static StreamSubscription _runningAsyncValidators;
   @protected
   Future<void> validateAsync() async {
-    if (this._runningAsyncValidators) {
-      return;
+    if (_runningAsyncValidators != null) {
+      await _runningAsyncValidators.cancel();
+      _runningAsyncValidators = null;
     }
-    this._runningAsyncValidators = true;
 
     final validatorsStream = Stream.fromFutures(
         this.asyncValidators.map((validator) => validator(this)));
 
-    validatorsStream.listen(
+    final errors = Map<String, dynamic>();
+    _runningAsyncValidators = validatorsStream.listen(
       (error) {
         if (error != null) {
-          _errors.addAll(error);
+          errors.addAll(error);
         }
       },
       onDone: () {
+        _errors.addAll(errors);
         if (this.pending) {
           checkValidityAndUpdateStatus();
         }
-
-        this._runningAsyncValidators = false;
       },
     );
   }
