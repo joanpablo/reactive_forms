@@ -119,6 +119,41 @@ A custom **FormControl** validator is a function that receives the *control* to 
 
 > You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demonstration purpose.
 
+### Pattern Validator
+
+***Validator.pattern*** is a validator that comes with **Reactive Forms**. Validation using regular expressions have been always a very useful tool to solve validation requirements. Lets see how we can validate American Express card numbers: 
+
+> American Express card numbers start with 34 or 37 and have 15 digits.
+
+```dart
+const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+
+final cardNumber = FormControl(
+  validators: [Validators.pattern(AmericanExpressPattern)],
+);
+
+cardNumber.value = '395465465421';
+
+expect(cardNumber.valid, false);
+expect(cardNumber.errors.containsKey('pattern'), true);
+```
+If we *print* the value of **FormControl.errors**:
+
+```dart
+print(cardNumber.errors);
+```
+
+ We will get a *Map* like this:
+
+```json
+{
+  "pattern": {
+    "requiredPattern": "^3[47][0-9]{13}$", 
+    "actualValue": 395465465421
+  }
+}
+```
+
 ### FormGroup validators
 
 There are special validators that can be attached to **FormGroup**. In the next section we will see an example of that.
