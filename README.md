@@ -137,7 +137,7 @@ cardNumber.value = '395465465421'; // not a valid number
 expect(cardNumber.valid, false);
 expect(cardNumber.errors.containsKey('pattern'), true);
 ```
-> The above code is a Unit Test extracted from **Reactive Forms**
+> The above code is a Unit Test extracted from **Reactive Forms** tests.
 
 If we *print* the value of **FormControl.errors**:
 
