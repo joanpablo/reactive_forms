@@ -71,7 +71,7 @@ void main() {
         validators: [Validators.pattern(AmericanExpressPattern)],
       );
 
-      cardNumber.value = '395465465421';
+      cardNumber.value = '395465465421'; // not a valid number
 
       expect(cardNumber.valid, false);
       expect(cardNumber.errors.containsKey(ValidationMessage.pattern), true);
