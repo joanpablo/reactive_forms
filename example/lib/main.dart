@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage> {
                     ValidationMessage.required: 'The email must not be empty',
                     ValidationMessage.email:
                         'The email value must be a valid email',
+                    'unique': 'This email is already in use',
                   },
                 ),
                 ReactiveTextField(
@@ -166,10 +167,16 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-final emails = ['johnpjm85@gmail.com'];
+/// Async validator in use emails example
+const inUseEmails = ['johndoe@email.com', 'john@email.com'];
+
+/// Async validator example that simulates a request to a server
+/// to validate if the email of the user is unique.
 Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+  final error = {'unique': true};
+
   return Future.delayed(
     Duration(seconds: 5),
-    () => emails.contains(control.value) ? {'unique': true} : null,
+    () => inUseEmails.contains(control.value) ? error : null,
   );
 }
