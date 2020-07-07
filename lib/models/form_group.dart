@@ -137,7 +137,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   }
 
   void _onControlStatusChanged() {
-    print('formControl status: ${this.status}');
     if (this.pending) {
       notifyStatusChanged(ControlStatus.pending);
     } else {
