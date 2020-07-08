@@ -1,3 +1,12 @@
+## [1.0.3] - 2020-07-08
+
+- Async validators (only FormControl for now...)
+- Controls have now three different states: **VALID**, **INVALID**, **PENDING** 
+  (this last one was specially included due to async validators, the control is **PENDING** 
+  until validator completes)
+- Added documentations about *Validator.pattern*
+- Added *Async Validator's* example in example application */example/main.dart* 
+
 ## [1.0.2] - 2020-07-05
 
 - Added class ValidationMessage for common validation messages key as: *required*, *email*, etc.

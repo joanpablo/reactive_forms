@@ -38,12 +38,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>> {
   FormGroup(
     Map<String, AbstractControl> controls, {
     List<ValidatorFunction> validators,
-    List<AsyncValidatorFunction> asyncValidators,
   })  : assert(controls != null),
         _controls = controls,
         super(
           validators: validators,
-          asyncValidators: asyncValidators,
         ) {
     this.validate();
     _registerControlListeners();

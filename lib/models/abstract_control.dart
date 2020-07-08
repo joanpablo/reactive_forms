@@ -67,16 +67,27 @@ abstract class AbstractControl<T> {
   /// of the control changes.
   ValueListenable<T> get onValueChanged => _onValueChanged;
 
-  /// True if the control doesn't has validations errors.
+  /// A control is valid when its [status] is ControlStatus.valid.
   bool get valid => this.status == ControlStatus.valid;
 
-  /// True if the control has validations errors.
+  /// A control is invalid when its [status] is ControlStatus.invalid.
   bool get invalid => this.status == ControlStatus.invalid;
 
+  /// A control is pending when its [status] is ControlStatus.pending.
   bool get pending => this.status == ControlStatus.pending;
 
+  /// True whether the control has validation errors.
   bool get hasErrors => this._errors.keys.length > 0;
 
+  /// The validation status of the control.
+  ///
+  /// There are four possible validation status values:
+  /// * VALID: This control has passed all validation checks.
+  /// * INVALID: This control has failed at least one validation check.
+  /// * PENDING: This control is in the midst of conducting a validation check.
+  ///
+  /// These status values are mutually exclusive, so a control cannot be both
+  /// valid AND invalid or invalid AND pending.
   ControlStatus get status => _onStatusChanged.value;
 
   /// Disposes the control
