@@ -219,7 +219,7 @@ final form = FormGroup({
 ]);
 ```
 
-## Asynchronous Validators :open_mouth:
+## Asynchronous Validators :sunglasses:
 
 Some times you want to perform a validation against a remote server, this operations are more time consuming and need to be done asynchronously. 
 
