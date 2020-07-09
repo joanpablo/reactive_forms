@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms_example/array_sample_screen.dart';
 
 void main() {
   runApp(ReactiveFormsApp());
@@ -9,7 +10,7 @@ class ReactiveFormsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: ArraySampleScreen(),
     );
   }
 }

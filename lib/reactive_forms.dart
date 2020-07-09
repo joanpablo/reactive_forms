@@ -1,5 +1,8 @@
 library reactive_forms;
 
+export 'exceptions/form_array_invalid_index_exception.dart';
+export 'exceptions/form_control_invalid_name_exception.dart';
+export 'exceptions/form_control_not_found_exception.dart';
 export 'models/abstract_control.dart';
 export 'models/control_status.dart';
 export 'models/form_control.dart';
@@ -10,6 +13,7 @@ export 'validators/validators.dart';
 export 'widgets/reactive_checkbox.dart';
 export 'widgets/reactive_dropdown_field.dart';
 export 'widgets/reactive_form.dart';
+export 'widgets/reactive_form_array.dart';
 export 'widgets/reactive_form_consumer.dart';
 export 'widgets/reactive_form_field.dart';
 export 'widgets/reactive_radio.dart';
