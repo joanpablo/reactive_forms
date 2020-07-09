@@ -8,18 +8,18 @@ class ArraySampleScreen extends StatefulWidget {
 }
 
 class _ArraySampleScreenState extends State<ArraySampleScreen> {
-  final contacts = ['john@email.com', 'susan@email.com', 'mary@email.com'];
+  final contacts = ['john@email.com', 'susan@email.com', 'caroline@email.com'];
   final form = FormGroup({
-    'selectedContacts': FormArray<bool>([]),
+    'selectedContacts': FormArray<bool>([], validators: [_emptyAddressee]),
   });
 
-  FormArray get selectedContacts =>
+  FormArray<bool> get selectedContacts =>
       form.formControl('selectedContacts') as FormArray;
 
   @override
   void initState() {
     selectedContacts.addAll(
-      contacts.map((email) => FormControl<bool>(defaultValue: true)),
+      contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
     );
 
     super.initState();
@@ -55,10 +55,23 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
                   children: this.contacts.map(_buildEmailListItem).toList(),
                 ),
               ),
-              RaisedButton(
-                child: Text('Send Email'),
-                onPressed: () {
-                  print(this.form.value);
+              ReactiveFormConsumer(
+                builder: (context, form, child) {
+                  print('${form.valid}');
+                  return RaisedButton(
+                    child: Text('Send Email'),
+                    onPressed: form.valid
+                        ? () {
+                            final selectedEmails = this
+                                .contacts
+                                .asMap()
+                                .keys
+                                .where(this.selectedContacts.value.elementAt)
+                                .map(this.contacts.elementAt);
+                            print('Sent emails to: $selectedEmails');
+                          }
+                        : null,
+                  );
                 },
               ),
             ],
@@ -67,4 +80,11 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
       ),
     );
   }
+}
+
+Map<String, dynamic> _emptyAddressee(AbstractControl control) {
+  final emails = (control as FormArray<bool>).value;
+  return emails.any((isSelected) => isSelected)
+      ? null
+      : {'emptyAddressee': true};
 }

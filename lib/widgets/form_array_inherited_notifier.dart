@@ -4,20 +4,20 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/models/form_array.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Represents an Inherited Widget that exposes a [FormGroup]
 /// to its descendants and listen to changes in [FormGroup.onStatusChanged]
 /// and rebuilds all the dependents widgets.
-class FormGroupInheritedNotifier
-    extends InheritedNotifier<ValueListenable<ControlStatus>> {
-  final AbstractControl control;
+class FormArrayInheritedNotifier extends InheritedNotifier<Listenable> {
+  final FormArray formArray;
 
-  FormGroupInheritedNotifier({
-    @required this.control,
+  FormArrayInheritedNotifier({
+    @required this.formArray,
     @required Widget child,
   }) : super(
-          notifier: control.onStatusChanged,
+          notifier: formArray.onCollectionChanged,
           child: child,
         );
 }

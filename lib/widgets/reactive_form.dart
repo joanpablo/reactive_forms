@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/models/form_group.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/widgets/form_group_inherited_notifier.dart';
 
 ///This class is responsible for create an [FormGroupInheritedNotifier] for
@@ -28,16 +29,16 @@ class ReactiveForm extends StatefulWidget {
   ///
   /// `rebuildContext: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static FormGroup of(BuildContext context, {bool listen: true}) {
+  static AbstractControl of(BuildContext context, {bool listen: true}) {
     if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormGroupInheritedNotifier>()
-          .formGroup;
+          .control;
     }
 
     final element = context
         .getElementForInheritedWidgetOfExactType<FormGroupInheritedNotifier>();
-    return (element.widget as FormGroupInheritedNotifier).formGroup;
+    return (element.widget as FormGroupInheritedNotifier).control;
   }
 
   @override
@@ -48,7 +49,7 @@ class _ReactiveFormState extends State<ReactiveForm> {
   @override
   Widget build(BuildContext context) {
     return FormGroupInheritedNotifier(
-      formGroup: widget.formGroup,
+      control: widget.formGroup,
       child: widget.child,
     );
   }

@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/exceptions/form_control_not_found_exception.dart';
+import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Signature for building the widget representing the form field.
@@ -51,8 +52,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @override
   void initState() {
-    final form = ReactiveForm.of(context, listen: false);
-    this.control = form.formControl(widget.formControlName);
+    this.control = _getFormControl();
     if (this.control == null) {
       throw FormControlNotFoundException(widget.formControlName);
     }
@@ -64,8 +64,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @override
   void didChangeDependencies() {
-    final form = ReactiveForm.of(context, listen: false);
-    final newControl = form.formControl(widget.formControlName);
+    final newControl = _getFormControl();
     if (this.control != newControl) {
       this.unsubscribeFormControl();
       this.control = newControl;
@@ -91,6 +90,12 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   void unsubscribeFormControl() {
     this.control.onStatusChanged.removeListener(_onFormControlStatusChanged);
     this.control.onValueChanged.removeListener(_onFormControlValueChanged);
+  }
+
+  FormControl _getFormControl() {
+    final form =
+        ReactiveForm.of(context, listen: false) as FormControlCollection;
+    return form.formControl(widget.formControlName);
   }
 
   void _onFormControlValueChanged() {

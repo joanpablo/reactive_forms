@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/models/form_array.dart';
+import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/widgets/form_group_inherited_notifier.dart';
 
@@ -24,7 +25,8 @@ class _ReactiveFormArrayState extends State<ReactiveFormArray> {
 
   @override
   void initState() {
-    final form = ReactiveForm.of(context);
+    final form =
+        ReactiveForm.of(context, listen: false) as FormControlCollection;
     _formArray = form.formControl(widget.formArrayName) as FormArray;
 
     super.initState();
@@ -33,7 +35,7 @@ class _ReactiveFormArrayState extends State<ReactiveFormArray> {
   @override
   Widget build(BuildContext context) {
     return FormGroupInheritedNotifier(
-      formGroup: null,
+      control: _formArray,
       child: widget.child,
     );
   }
