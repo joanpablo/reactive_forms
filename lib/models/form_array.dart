@@ -64,6 +64,8 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     });
   }
 
+  /// Emits when a control is added or removed from collection.
+  ///
   @override
   Listenable get onCollectionChanged => this._onCollectionChanged;
 

@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/models/form_array.dart';
 import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/widgets/form_group_inherited_notifier.dart';
+import 'package:reactive_forms/widgets/form_control_inherited_notifier.dart';
+
+typedef ReactiveFormArrayBuilder = Widget Function(
+    BuildContext context, FormArray formArray, Widget child);
 
 class ReactiveFormArray extends StatefulWidget {
   final String formArrayName;
   final Widget child;
+  final ReactiveFormArrayBuilder builder;
 
   const ReactiveFormArray({
     Key key,
     @required this.formArrayName,
-    @required this.child,
+    @required this.builder,
+    this.child,
   })  : assert(formArrayName != null),
-        assert(child != null),
+        assert(builder != null),
         super(key: key);
 
   @override
@@ -34,9 +39,12 @@ class _ReactiveFormArrayState extends State<ReactiveFormArray> {
 
   @override
   Widget build(BuildContext context) {
-    return FormGroupInheritedNotifier(
+    return FormControlInheritedNotifier(
       control: _formArray,
-      child: widget.child,
+      notifierDelegate: () => _formArray.onCollectionChanged,
+      child: Builder(builder: (context) {
+        return widget.builder(context, ReactiveForm.of(context), widget.child);
+      }),
     );
   }
 }

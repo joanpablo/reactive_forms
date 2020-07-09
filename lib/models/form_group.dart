@@ -64,6 +64,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return this._controls[name];
   }
 
+  /// Emits when a control is added or removed from collection.
+  ///
   @override
   Listenable get onCollectionChanged => this._onCollectionChanged;
 

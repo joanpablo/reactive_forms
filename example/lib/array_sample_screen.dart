@@ -42,39 +42,51 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
       appBar: AppBar(
         title: Text('FormArray Example'),
       ),
-      body: ReactiveForm(
-        formGroup: this.form,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ReactiveFormArray(
-                formArrayName: 'selectedContacts',
-                child: Column(
-                  children: this.contacts.map(_buildEmailListItem).toList(),
+      body: SingleChildScrollView(
+        child: ReactiveForm(
+          formGroup: this.form,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ReactiveFormArray(
+                  formArrayName: 'selectedContacts',
+                  builder: (context, formArray, child) => Column(
+                    children: this.contacts.map(_buildEmailListItem).toList(),
+                  ),
                 ),
-              ),
-              ReactiveFormConsumer(
-                builder: (context, form, child) {
-                  print('${form.valid}');
-                  return RaisedButton(
-                    child: Text('Send Email'),
-                    onPressed: form.valid
-                        ? () {
-                            final selectedEmails = this
-                                .contacts
-                                .asMap()
-                                .keys
-                                .where(this.selectedContacts.value.elementAt)
-                                .map(this.contacts.elementAt);
-                            print('Sent emails to: $selectedEmails');
-                          }
-                        : null,
-                  );
-                },
-              ),
-            ],
+                ReactiveFormConsumer(
+                  builder: (context, form, child) {
+                    return RaisedButton(
+                      child: Text('Send Email'),
+                      onPressed: form.valid
+                          ? () {
+                              final selectedEmails = this
+                                  .contacts
+                                  .asMap()
+                                  .keys
+                                  .where(this.selectedContacts.value.elementAt)
+                                  .map(this.contacts.elementAt);
+                              print('Sent emails to: $selectedEmails');
+                            }
+                          : null,
+                    );
+                  },
+                ),
+                RaisedButton(
+                  child: Text('add'),
+                  onPressed: () {
+                    this
+                        .contacts
+                        .add('other${this.contacts.length + 1}@email.com');
+                    this
+                        .selectedContacts
+                        .add(FormControl<bool>(defaultValue: true));
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
