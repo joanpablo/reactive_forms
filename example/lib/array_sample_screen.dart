@@ -8,10 +8,14 @@ class ArraySampleScreen extends StatefulWidget {
 }
 
 class _ArraySampleScreenState extends State<ArraySampleScreen> {
-  final contacts = ['john@email.com', 'susan@email.com', 'caroline@email.com'];
+  final contacts = [
+    'john@email.com' /*, 'susan@email.com', 'caroline@email.com'*/
+  ];
   final form = FormGroup({
-    'selectedContacts': FormArray<bool>([], validators: [_emptyAddressee]),
-  });
+    'selectedContacts': FormArray<bool>([]),
+  }, validators: [
+    _emptyAddressee
+  ]);
 
   FormArray<bool> get selectedContacts =>
       form.formControl('selectedContacts') as FormArray;
@@ -54,6 +58,8 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
                 ),
                 ReactiveFormConsumer(
                   builder: (context, form, child) {
+                    /*print(form.valid);
+                    print(form.errors);*/
                     return RaisedButton(
                       child: Text('Send Email'),
                       onPressed: form.valid
@@ -91,7 +97,10 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
 }
 
 Map<String, dynamic> _emptyAddressee(AbstractControl control) {
-  final emails = (control as FormArray<bool>).value;
+  final form = control as FormGroup;
+  final emails =
+      (form.formControl('selectedContacts') as FormArray<bool>).value;
+
   return emails.any((isSelected) => isSelected)
       ? null
       : {'emptyAddressee': true};
