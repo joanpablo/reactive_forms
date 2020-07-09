@@ -13,4 +13,8 @@ abstract class FormControlCollection {
 
   /// Emits when a control is added or removed from collection.
   Listenable get onCollectionChanged;
+
+  /// Returns the calculated status depending of the status of the children
+  /// controls
+  ControlStatus get childrenStatus;
 }

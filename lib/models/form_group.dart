@@ -137,7 +137,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }
 
   @override
-  ControlStatus get status {
+  ControlStatus get childrenStatus {
     final isPending = this._controls.values.any((control) => control.pending);
     if (isPending) {
       return ControlStatus.pending;
@@ -149,6 +149,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void validate() {
+    this.notifyStatusChanged(ControlStatus.pending);
+
     final errors = Map<String, dynamic>();
 
     this.validators.forEach((validator) {
@@ -167,15 +169,24 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this.setErrors(errors);
   }
 
+  @override
+  void dispose() {
+    this._controls.values.forEach((control) {
+      control.onStatusChanged.removeListener(this._onControlStatusChanged);
+      control.onValueChanged.removeListener(this._onControlValueChanged);
+    });
+    super.dispose();
+  }
+
   void _registerControlListeners() {
     this._controls.values.forEach((control) {
-      control.onValueChanged.addListener(_onControlValueChanged);
-      control.onStatusChanged.addListener(_onControlStatusChanged);
+      control.onValueChanged.addListener(this._onControlValueChanged);
+      control.onStatusChanged.addListener(this._onControlStatusChanged);
     });
   }
 
   void _onControlValueChanged() {
-    if (this.pending) {
+    if (this.childrenStatus == ControlStatus.pending) {
       this.notifyValueChanged(this.value);
     } else {
       this.validate();
@@ -183,7 +194,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }
 
   void _onControlStatusChanged() {
-    if (this.pending) {
+    if (this.childrenStatus == ControlStatus.pending) {
       notifyStatusChanged(ControlStatus.pending);
     } else {
       this.validate();

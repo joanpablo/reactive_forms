@@ -50,8 +50,8 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   set value(T newValue) {
     this._value = newValue;
-    this.notifyValueChanged(this._value);
     this.validate();
+    this.notifyValueChanged(this._value);
   }
 
   /// Disposes the control

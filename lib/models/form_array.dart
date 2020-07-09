@@ -46,9 +46,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     List<ValidatorFunction> validators,
   })  : assert(controls != null),
         super(validators: validators) {
-    _controls.addAll(controls);
-    this.validate();
-    _registerControlListeners(_controls);
+    this.addAll(controls);
   }
 
   /// Returns the values of controls as an [Iterable].
@@ -117,15 +115,59 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     return this._controls[index];
   }
 
+  @override
+  ControlStatus get childrenStatus {
+    final isPending = this._controls.any((control) => control.pending);
+    if (isPending) {
+      return ControlStatus.pending;
+    }
+
+    final isInvalid = this._controls.any((control) => control.invalid);
+    return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
+  }
+
+  @override
+  void dispose() {
+    this._controls.forEach((control) {
+      control.onStatusChanged.removeListener(this._onControlStatusChanged);
+      control.onValueChanged.removeListener(this._onControlValueChanged);
+    });
+    super.dispose();
+  }
+
+  @override
+  void validate() {
+    this.notifyStatusChanged(ControlStatus.pending);
+
+    final errors = Map<String, dynamic>();
+
+    this.validators.forEach((validator) {
+      final error = validator(this);
+      if (error != null) {
+        errors.addAll(error);
+      }
+    });
+
+    this._controls.asMap().entries.forEach((entry) {
+      final control = entry.value;
+      final key = entry.key.toString();
+      if (control.hasErrors) {
+        errors.addAll({key: control.errors});
+      }
+    });
+
+    this.setErrors(errors);
+  }
+
   void _registerControlListeners(Iterable<AbstractControl> controls) {
-    controls.forEach((control) {
-      control.onValueChanged.addListener(_onControlValueChanged);
-      control.onStatusChanged.addListener(_onControlStatusChanged);
+    controls.toList().forEach((control) {
+      control.onStatusChanged.addListener(this._onControlStatusChanged);
+      control.onValueChanged.addListener(this._onControlValueChanged);
     });
   }
 
   void _onControlValueChanged() {
-    if (this.pending) {
+    if (this.childrenStatus == ControlStatus.pending) {
       this.notifyValueChanged(this.value);
     } else {
       this.validate();
@@ -133,7 +175,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   void _onControlStatusChanged() {
-    if (this.pending) {
+    if (this.childrenStatus == ControlStatus.pending) {
       notifyStatusChanged(ControlStatus.pending);
     } else {
       this.validate();
