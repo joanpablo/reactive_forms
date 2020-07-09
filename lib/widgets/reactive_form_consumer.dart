@@ -29,6 +29,7 @@ class ReactiveFormConsumer extends StatelessWidget {
 
   /// Creates an instance of the [ReactiveFormConsumer]
   /// [builder] must not be null.
+  ///
   /// The [child] is optional but is good practice to use if part of the widget
   /// subtree does not depend on the value of the [FormGroup] that is bind
   /// with this widget.

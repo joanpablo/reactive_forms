@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 library reactive_forms;
 
 export 'exceptions/form_array_invalid_index_exception.dart';
@@ -11,6 +15,7 @@ export 'validators/validation_message.dart';
 export 'validators/validator.dart';
 export 'validators/validators.dart';
 export 'widgets/reactive_checkbox.dart';
+export 'widgets/reactive_checkbox_list_tile.dart';
 export 'widgets/reactive_dropdown_field.dart';
 export 'widgets/reactive_form.dart';
 export 'widgets/reactive_form_array.dart';
