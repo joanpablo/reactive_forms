@@ -26,13 +26,9 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
   }
 
   Widget _buildEmailListItem(contact) {
-    return Row(
-      children: <Widget>[
-        Expanded(child: Text(contact)),
-        ReactiveCheckbox(
-          formControlName: this.contacts.indexOf(contact).toString(),
-        ),
-      ],
+    return ReactiveCheckboxListTile(
+      formControlName: this.contacts.indexOf(contact).toString(),
+      title: Text(contact),
     );
   }
 
