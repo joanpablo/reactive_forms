@@ -1,3 +1,23 @@
+## [1.0.3] - 2020-07-08
+
+### New Validators
+- **Async Validators** (only FormControl for now...)
+- Controls have now three different states: **VALID**, **INVALID**, **PENDING** 
+  (this last one was specially included due to async validators, the control is **PENDING** 
+  until validator completes)
+- Added documentations about *Validator.pattern*
+- Added *Async Validator's* example in example application */example/main.dart* 
+
+### New Models
+- **FormArray** (aggregates the values of each child FormControl into an array)
+
+### New Reactive Widgets:
+- ReactiveFormArray
+- ReactiveCheckboxListTile
+- ReactiveSwitchListTile
+- ReactiveRadioListTile
+- ReactiveStatusListenableBuilder
+
 ## [1.0.2] - 2020-07-05
 
 - Added class ValidationMessage for common validation messages key as: *required*, *email*, etc.

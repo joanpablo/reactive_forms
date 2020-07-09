@@ -27,17 +27,25 @@ class _HomePageState extends State<HomePage> {
   // We have declared the FormGroup within a Stateful Widget only for
   // demonstration purposes and to simplify the explanation in this example.
   final form = FormGroup({
-    'email': FormControl(validators: [
-      Validators.required,
-      Validators.email,
-    ]),
+    'email': FormControl(
+      validators: [
+        Validators.required,
+        Validators.email,
+      ],
+      asyncValidators: [_uniqueEmail],
+    ),
     'password': FormControl(validators: [
       Validators.required,
       Validators.minLength(8),
     ]),
+    'passwordConfirmation': FormControl(validators: [
+      Validators.required,
+    ]),
     'rememberMe': FormControl(defaultValue: false),
     'progress': FormControl<double>(defaultValue: 50.0),
-  });
+  }, validators: [
+    Validators.mustMatch('password', 'passwordConfirmation')
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -56,18 +64,27 @@ class _HomePageState extends State<HomePage> {
                 ReactiveTextField(
                   formControlName: 'email',
                   decoration: InputDecoration(
-                    hintText: 'Email',
+                    labelText: 'Email',
+                    suffixIcon: ReactiveStatusListenableBuilder(
+                      formControlName: 'email',
+                      builder: (context, control, child) {
+                        return control.pending
+                            ? CircularProgressIndicator()
+                            : Container(width: 0);
+                      },
+                    ),
                   ),
                   validationMessages: {
                     ValidationMessage.required: 'The email must not be empty',
                     ValidationMessage.email:
                         'The email value must be a valid email',
+                    'unique': 'This email is already in use',
                   },
                 ),
                 ReactiveTextField(
                   formControlName: 'password',
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    labelText: 'Password',
                   ),
                   obscureText: true,
                   validationMessages: {
@@ -77,11 +94,23 @@ class _HomePageState extends State<HomePage> {
                         'The password must be at least 8 characters',
                   },
                 ),
+                ReactiveTextField(
+                  formControlName: 'passwordConfirmation',
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                  ),
+                  obscureText: true,
+                  validationMessages: {
+                    ValidationMessage.required:
+                        'The password confirmation must not be empty',
+                    ValidationMessage.mustMatch: 'The passwords must match',
+                  },
+                ),
                 ReactiveFormConsumer(
                   builder: (context, form, child) {
                     return RaisedButton(
                       child: Text('SignIn'),
-                      onPressed: form.invalid ? null : () => print(form.value),
+                      onPressed: form.valid ? () => print(form.value) : null,
                     );
                   },
                 ),
@@ -90,6 +119,7 @@ class _HomePageState extends State<HomePage> {
                 ReactiveDropdownField<bool>(
                   formControlName: 'rememberMe',
                   hint: Text('Want to stay logged in?'),
+                  decoration: InputDecoration(labelText: 'Remember me'),
                   items: [
                     DropdownMenuItem(
                       value: true,
@@ -135,4 +165,18 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+/// Async validator in use emails example
+const inUseEmails = ['johndoe@email.com', 'john@email.com'];
+
+/// Async validator example that simulates a request to a server
+/// to validate if the email of the user is unique.
+Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+  final error = {'unique': true};
+
+  return Future.delayed(
+    Duration(seconds: 5),
+    () => inUseEmails.contains(control.value) ? error : null,
+  );
 }

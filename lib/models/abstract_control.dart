@@ -2,7 +2,10 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// This is the base class for FormControl and FormGroup.
 ///
@@ -14,8 +17,37 @@ import 'package:flutter/foundation.dart';
 ///
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
-  final _onStatusChanged = ValueNotifier<bool>(true);
+  final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.valid);
+  final _onValueChanged = ValueNotifier<T>(null);
+  final List<ValidatorFunction> _validators;
+  final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
+
+  /// Represents if the control is touched or not. A control is touched when
+  /// the user taps on the ReactiveFormField widget and then remove focus or
+  /// completes the text edition. Validation messages will begin to show up
+  /// when the FormControl is touched.
+  bool touched;
+
+  AbstractControl({
+    List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
+    this.touched = false,
+  })  : _validators = validators ?? const [],
+        _asyncValidators = asyncValidators ?? const [];
+
+  /// The list of functions that determines the validity of this control.
+  ///
+  /// In [FormGroup] these come in handy when you want to perform validation
+  /// that considers the value of more than one child control.
+  List<ValidatorFunction> get validators => List.unmodifiable(_validators);
+
+  /// The list of async functions that determines the validity of this control.
+  ///
+  /// In [FormGroup] these come in handy when you want to perform validation
+  /// that considers the value of more than one child control.
+  List<AsyncValidatorFunction> get asyncValidators =>
+      List.unmodifiable(_asyncValidators);
 
   /// The current value of the control.
   T get value;
@@ -29,26 +61,54 @@ abstract class AbstractControl<T> {
 
   /// A [ValueListenable] that emits an event every time the validation status
   /// of the control changes.
-  ValueListenable<bool> get onStatusChanged => _onStatusChanged;
+  ValueListenable<ControlStatus> get onStatusChanged => _onStatusChanged;
 
   /// A [ValueListenable] that emits an event every time the value
   /// of the control changes.
-  ValueListenable<T> get onValueChanged;
+  ValueListenable<T> get onValueChanged => _onValueChanged;
 
-  /// True if the control doesn't has validations errors.
-  bool get valid => this.errors.keys.length == 0;
+  /// A control is valid when its [status] is ControlStatus.valid.
+  bool get valid => this.status == ControlStatus.valid;
 
-  /// True if the control has validations errors.
-  bool get invalid => !this.valid;
+  /// A control is invalid when its [status] is ControlStatus.invalid.
+  bool get invalid => this.status == ControlStatus.invalid;
+
+  /// A control is pending when its [status] is ControlStatus.pending.
+  bool get pending => this.status == ControlStatus.pending;
+
+  /// True whether the control has validation errors.
+  bool get hasErrors => this._errors.keys.length > 0;
+
+  /// The validation status of the control.
+  ///
+  /// There are four possible validation status values:
+  /// * VALID: This control has passed all validation checks.
+  /// * INVALID: This control has failed at least one validation check.
+  /// * PENDING: This control is in the midst of conducting a validation check.
+  ///
+  /// These status values are mutually exclusive, so a control cannot be both
+  /// valid AND invalid or invalid AND pending.
+  ControlStatus get status => _onStatusChanged.value;
 
   /// Disposes the control
   @protected
   void dispose() {
     _onStatusChanged.dispose();
+    _onValueChanged.dispose();
   }
 
   /// Resets the control.
   void reset();
+
+  @protected
+  void notifyValueChanged(T value) {
+    _onValueChanged.value = value;
+  }
+
+  @protected
+  void notifyStatusChanged(ControlStatus status) {
+    _onStatusChanged.value = status;
+  }
 
   /// Add errors when running validations manually, rather than automatically.
   ///
@@ -64,7 +124,7 @@ abstract class AbstractControl<T> {
   ///
   void addError(Map<String, dynamic> error) {
     this._errors.addAll(error);
-    notifyStatusChanged();
+    checkValidityAndUpdateStatus();
   }
 
   /// Remove errors by name.
@@ -81,7 +141,7 @@ abstract class AbstractControl<T> {
   ///
   void removeError(String errorName) {
     this._errors.remove(errorName);
-    notifyStatusChanged();
+    checkValidityAndUpdateStatus();
   }
 
   /// Sets errors on a form control when running validations manually,
@@ -90,12 +150,59 @@ abstract class AbstractControl<T> {
   void setErrors(Map<String, dynamic> errors) {
     this._errors.clear();
     this._errors.addAll(errors);
-    notifyStatusChanged();
+    checkValidityAndUpdateStatus();
   }
 
   /// This method is for internal use
   @protected
-  void notifyStatusChanged() {
-    this._onStatusChanged.value = this.valid;
+  void checkValidityAndUpdateStatus() {
+    final status = this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
+    notifyStatusChanged(status);
+  }
+
+  @protected
+  void validate() {
+    this.notifyStatusChanged(ControlStatus.pending);
+
+    _errors.clear();
+    this.validators.forEach((validator) {
+      final error = validator(this);
+      if (error != null) {
+        _errors.addAll(error);
+      }
+    });
+
+    if (_errors.keys.isNotEmpty || this.asyncValidators.isEmpty) {
+      checkValidityAndUpdateStatus();
+    } else {
+      validateAsync();
+    }
+  }
+
+  static StreamSubscription _runningAsyncValidators;
+  @protected
+  Future<void> validateAsync() async {
+    if (_runningAsyncValidators != null) {
+      await _runningAsyncValidators.cancel();
+      _runningAsyncValidators = null;
+    }
+
+    final validatorsStream = Stream.fromFutures(
+        this.asyncValidators.map((validator) => validator(this)));
+
+    final errors = Map<String, dynamic>();
+    _runningAsyncValidators = validatorsStream.listen(
+      (error) {
+        if (error != null) {
+          errors.addAll(error);
+        }
+      },
+      onDone: () {
+        _errors.addAll(errors);
+        if (this.pending) {
+          checkValidityAndUpdateStatus();
+        }
+      },
+    );
   }
 }

@@ -24,8 +24,8 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
     MaterialTapTargetSize materialTapTargetSize,
     VisualDensity visualDensity,
   }) : super(
+          key: key,
           formControlName: formControlName,
-          validationMessages: const {},
           builder: (ReactiveFormFieldState<T> field) {
             return Radio<T>(
               value: value,

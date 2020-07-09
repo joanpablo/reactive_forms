@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A widget whose content stays synced with a [ValueListenable].
@@ -35,7 +36,8 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final form = ReactiveForm.of(context, listen: false);
+    final form =
+        ReactiveForm.of(context, listen: false) as FormControlCollection;
     final formControl = form.formControl(this.formControlName);
     return ValueListenableBuilder<T>(
       valueListenable: formControl.onValueChanged,
