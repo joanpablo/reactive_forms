@@ -8,6 +8,11 @@ For help getting started with Flutter, view the
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
 
+## Minimum Requirements
+
+- Dart SDK: >=2.7.0 <3.0.0
+- Flutter: >= 1.17.0
+
 ## Installation and Usage
 
 Once you're familiar with Flutter you may install this package adding `reactive_forms` (1.0.1 or higher) to the dependencies list
@@ -18,7 +23,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^1.0.2
+  reactive_forms: ^1.0.3
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -214,6 +219,57 @@ final form = FormGroup({
 ]);
 ```
 
+## Asynchronous Validators :open_mouth:
+
+Some times you want to perform a validation against a remote server, this operations are more time consuming and need to be done asynchronously. 
+
+For example you want to validate that the *email* the user is currently typing in a *registration form* is unique and is not already used in your application. **Asynchronous Validators** are just another tool so use it wisely.
+
+**Asynchronous Validators** are very similar to their synchronous counterparts, with the following difference:
+
+- The validator function returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html)
+
+Asynchronous validation executes after the synchronous validation, and is performed only if the synchronous validation is successful. This check allows forms to avoid potentially expensive async validation processes (such as an HTTP request) if the more basic validation methods have already found invalid input.
+
+After asynchronous validation begins, the form control enters a **pending** state. You can inspect the control's pending property and use it to give visual feedback about the ongoing validation operation.
+
+Code speaks more than a thousand words :) so let's see an example.
+
+Let's implement the previous mentioned example: the user is typing the email in a registration Form and you want to validate that the *email* is unique in your System. We will implement a *custom async validator* for that purpose.
+
+```dart
+final form = FormGroup({
+  'email': FormControl<String>(
+    validators: [
+      Validators.required, // traditional required and email validators
+      Validators.email,
+    ],
+    asyncValidators: [_uniqueEmail], // custom asynchronous validator :)
+  ),
+});
+```
+
+We have declared a simple **Form** with an email **field** that is *required* and must have a valid email value, and we have include a custom async validator that will validate if the email is unique. Let's see the implementation of our new async validator:
+
+```dart
+/// just a simple array to simulate a database of emails in a server
+const inUseEmails = ['johndoe@email.com', 'john@email.com'];
+
+/// Async validator example that simulates a request to a server
+/// and validates if the email of the user is unique.
+Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+  final error = {'unique': true};
+
+  return Future.delayed(
+    Duration(seconds: 5), // a delay to simulate a time consuming operation
+    () => inUseEmails.contains(control.value) ? error : null,
+  );
+}
+```
+The previous implementation was a simple function that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the *value* of the *control* is contained in the *server* array of emails.
+
+>If you want to see **Async Validators** in action with a **full example** using widgets and animations to feedback the user we strong advice you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file just to simplify things here and to not anticipate things that we will see later in this doc.
+
 ## Groups of Groups :grin:
 
 **FormGroup** is not restricted to contains only **FormControl**, it can nest others **FormGroup** so you can create more complex **Forms**.
@@ -275,6 +331,80 @@ FormGroup personalForm = form.formControl('personal');
 ```
 
 A simple way to create a wizzard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each *Page* inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
+
+## Dynamic forms with **FormArray** :sunglasses:
+
+FormArray is an alternative to **FormGroup** for managing any number of unnamed controls. As with **FormGroup** instances, you can dynamically insert and remove controls from **FormArray** instances, and the form array instance value and validation status is calculated from its child controls.
+
+You don't need to define a *key* for each control by *name*, so this is a great option if you don't know the number of child values in advance.
+
+Let's see a simple example:
+
+```dart
+final form = FormGroup({
+  'emails': FormArray([]), // an empty array of controls
+});
+```
+
+We have defined just an empty form array. Let's define another array with two controls:
+
+```dart
+final form = FormGroup({
+  'emails': FormArray<String>([
+    FormControl<String>(defaultValue: 'john@email.com'),
+    FormControl<String>(defaultValue: 'paul@email.com'),
+  ]),
+});
+```
+
+> Note that you don't have to specify the name of the controls inside of the array.
+
+If we output the *value* of the previous form group we will get something like this:
+
+```dart
+void printFormValue(FormGroup form) {
+  print(form.value);
+}
+```
+
+```json
+{
+  "emails": ["john@email.com", "paul@email.com"]
+}
+```
+
+A more advanced example:
+
+```dart
+// an array of contacts
+final contacts = ['john@email.com', 'susan@email.com', 'caroline@email.com'];
+
+// a form with a list of selected emails
+final form = FormGroup({
+  'selectedEmails': FormArray<bool>([], // an empty array of controls 
+    validators: [emptyAddressee], // validates that at least one email is selected
+  ), 
+});
+
+// get the array of controls
+final formArray = form.formControl('selectedEmails') as FormArray<bool>;
+
+// populates the array of controls.
+// for each contact add a boolean form control to the array.
+formArray.addAll(
+  contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
+);
+````
+
+```dart
+// validates that at least one email is selected
+Map<String, dynamic> emptyAddressee(AbstractControl control) {
+  final emails = (control as FormArray<bool>).value;
+  return emails.any((isSelected) => isSelected)
+      ? null
+      : {'emptyAddressee': true};
+}
+```
 
 ## Reactive Form Widgets
 
@@ -559,12 +689,17 @@ Widget build(BuildContext context) {
 - ReactiveCheckbox
 - ReactiveRadio
 - ReactiveSlider
+- ReactiveCheckboxListTile
+- ReactiveSwitchListTile
+- ReactiveRadioListTile
 
 ## Other Reactive Forms Widgets
 
 - ReactiveForm
 - ReactiveFormConsumer
+- ReactiveFormArray
 - ReactiveValueListenableBuilder
+- ReactiveStatusListenableBuilder
 
 ### ReactiveTextField
 
@@ -618,7 +753,7 @@ Widget build(BuildContext context) {
 
 > As you can see from the above example the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the additional *formControlName* and *validationMessages* properties.
 
-## **ReactiveValueListenableBuilder** to listen when value changes in a FormControl
+## **ReactiveValueListenableBuilder** to listen when value changes in a **FormControl**
 
 If you want to rebuild a widget each time a FormControl value changes you could use the **ReactiveValueListenableBuilder** widget.
 
