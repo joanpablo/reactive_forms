@@ -1,3 +1,8 @@
+## [1.0.4] - 2020-07-09
+
+### Fixes:
+- FormArray now correctly notify status depending of children status.
+
 ## [1.0.3] - 2020-07-08
 
 ### New Validators
