@@ -332,7 +332,7 @@ FormGroup personalForm = form.formControl('personal');
 
 A simple way to create a wizzard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each *Page* inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
 
-## Dynamic forms with **FormArray** :open_mouth:
+## Dynamic forms with **FormArray** :wink:
 
 FormArray is an alternative to **FormGroup** for managing any number of unnamed controls. As with **FormGroup** instances, you can dynamically insert and remove controls from **FormArray** instances, and the form array instance value and validation status is calculated from its child controls.
 
