@@ -23,6 +23,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
     Color hoverColor,
     MaterialTapTargetSize materialTapTargetSize,
     VisualDensity visualDensity,
+    bool autofocus = false,
   }) : super(
           key: key,
           formControlName: formControlName,
@@ -36,6 +37,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
               hoverColor: hoverColor,
               materialTapTargetSize: materialTapTargetSize,
               visualDensity: visualDensity,
+              autofocus: autofocus,
             );
           },
         );

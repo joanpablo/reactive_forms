@@ -47,6 +47,10 @@ class _HomePageState extends State<HomePage> {
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
 
+  FormControl get password => this.form.formControl('password');
+  FormControl get passwordConfirmation =>
+      this.form.formControl('passwordConfirmation');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +84,8 @@ class _HomePageState extends State<HomePage> {
                         'The email value must be a valid email',
                     'unique': 'This email is already in use',
                   },
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: () => this.password.focus(),
                 ),
                 ReactiveTextField(
                   formControlName: 'password',
@@ -93,6 +99,8 @@ class _HomePageState extends State<HomePage> {
                     ValidationMessage.minLength:
                         'The password must be at least 8 characters',
                   },
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: () => this.passwordConfirmation.focus(),
                 ),
                 ReactiveTextField(
                   formControlName: 'passwordConfirmation',

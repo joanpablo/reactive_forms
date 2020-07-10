@@ -27,6 +27,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
     Color hoverColor,
     MaterialTapTargetSize materialTapTargetSize,
     VisualDensity visualDensity,
+    bool autofocus = false,
   }) : super(
           key: key,
           formControlName: formControlName,
@@ -42,6 +43,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
               hoverColor: hoverColor,
               materialTapTargetSize: materialTapTargetSize,
               visualDensity: visualDensity,
+              autofocus: autofocus,
             );
           },
         );
