@@ -635,6 +635,53 @@ formControl.focus(); // UI text field get focus and the device keyboard pop up
 formControl.unfocus(); // UI text field lose focus
 ```
 
+## Focus flow between Text Fields
+
+Another example is when you have a form with several text fields and each time the user completes edition in one field you wnat to request next focus field using the keyboard actions:
+
+```dart
+final form = FormGroup({
+  'name': FormControl<String>(validators: [Validators.required]),
+  'email': FormControl<String>(validators: [Validators.required, Validators.email]),
+  'password': FormControl<String>(validators: [Validators.required]),
+});
+```
+
+```dart
+/// Gets the email
+FormControl get email => this.form.formControl('email');
+
+/// Gets the password
+FormControl get password => this.form.formControl('password');
+```
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: Column(
+      children: <Widget>[
+        ReactiveTextField(
+          formControlName: 'name',
+          textInputAction: TextInputAction.next,
+          onSubmitted: () => this.email.focus(), // email text field request focus
+        ),
+        ReactiveTextField(
+          formControlName: 'email',
+          textInputAction: TextInputAction.next,
+          onSubmitted: () => this.password.focus(), // password text field request focus
+        ),
+        ReactiveTextField(
+          formControlName: 'password',
+          obscureText: true,
+        ),
+      ],
+    ),
+  );
+}
+```
+
 ## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
 
 **ReactiveTextField** has more in common with *TextFormField* that with *TextField*. As we all know *TextFormField* is a wrapper around the *TextField* widget that brings some extra capabilities such as *Form validations* with properties like *autovalidate* and *validator*. In the same way **ReactiveTextField** is a wrapper around *TextField* that handle the features of validations in a own different way.
