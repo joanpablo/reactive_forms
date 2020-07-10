@@ -61,6 +61,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
     bool enableInteractiveSelection = true,
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
+    VoidCallback onSubmitted,
   })  : assert(formControlName != null),
         super(
             formControlName: formControlName,
@@ -106,6 +107,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
                 maxLength: maxLength,
                 onChanged: state.didChange,
                 onTap: onTap,
+                onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
                 inputFormatters: inputFormatters,
                 enabled: enabled,
                 cursorWidth: cursorWidth,

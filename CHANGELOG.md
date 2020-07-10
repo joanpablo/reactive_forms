@@ -1,3 +1,12 @@
+## [1.0.5] - 2020-07-10
+
+- Added ***ReactiveTextField.onSubmitted*** for an example of how to handle moving to
+  the next/previous field when using *TextInputAction.next* and *TextInputAction.previous* 
+  for *textInputAction*.
+- Included property *ReactiveSwitchListTile.inactiveThumbImage*
+- Included properties *autofocus* to *ReactiveCheckbox*, *ReactiveRadio* and *ReactiveSwitch* 
+- Included callbacks *ReactiveSlider.onChangeEnd* and *ReactiveSlider.onChangeStart*
+
 ## [1.0.4] - 2020-07-09
 
 ### Fixes:

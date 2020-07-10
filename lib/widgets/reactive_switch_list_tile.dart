@@ -50,6 +50,7 @@ class ReactiveSwitchListTile extends ReactiveFormField {
               dense: dense,
               contentPadding: contentPadding,
               secondary: secondary,
+              inactiveThumbImage: inactiveThumbImage,
             );
           },
         );

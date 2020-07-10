@@ -35,6 +35,8 @@ class ReactiveSlider extends ReactiveFormField<double> {
     Color activeColor,
     Color inactiveColor,
     SemanticFormatterCallback semanticFormatterCallback,
+    ValueChanged<double> onChangeEnd,
+    ValueChanged<double> onChangeStart,
   }) : super(
           formControlName: formControlName,
           validationMessages: const {},
@@ -49,6 +51,8 @@ class ReactiveSlider extends ReactiveFormField<double> {
               activeColor: activeColor,
               inactiveColor: inactiveColor,
               semanticFormatterCallback: semanticFormatterCallback,
+              onChangeEnd: onChangeEnd,
+              onChangeStart: onChangeStart,
             );
           },
         );

@@ -38,6 +38,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     Color focusColor,
     Color hoverColor,
+    bool autofocus = false,
   }) : super(
           formControlName: formControlName,
           validationMessages: const {},
@@ -58,6 +59,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
               dragStartBehavior: dragStartBehavior,
               focusColor: focusColor,
               hoverColor: hoverColor,
+              autofocus: autofocus,
             );
           },
         );
