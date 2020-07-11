@@ -1,4 +1,4 @@
-name: Run Flutter Tests
+name: flutter tests
 
 on:
   # Trigger the workflow on push
