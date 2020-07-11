@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     # Job name is Greeting
-    name: Greeting
+    name: Running Tests
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
@@ -24,3 +24,5 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter test --coverage
+      - run: export CODECOV_TOKEN="d5f3f780-d3d4-4c7c-997b-31f1f7620eba"
+      - run: bash <(curl -s https://codecov.io/bash)
