@@ -1,9 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reactive_forms/models/form_array.dart';
-import 'package:reactive_forms/models/form_control.dart';
-import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/validators/validators.dart';
 
 void main() {
   group('Form Group', () {
@@ -222,82 +220,27 @@ void main() {
       expect(form.formControl('name').value, 'John Doe');
       expect(form.formControl('email').value, 'johndoe@email.com');
     });
-  });
 
-  group('FormArray tests', () {
-    test('Form group is invalid if form array is invalid', () {
-      // an array of contacts
-      final contacts = [
-        'john@email.com',
-        'susan@email.com',
-        'caroline@email.com',
-      ];
-
-      // a form with a list of selected emails
+    test('Get value returns a Map with controls name and values', () {
       final form = FormGroup({
-        'selectedEmails': FormArray<bool>(
-          [], // an empty array of controls
-          validators: [
-            _emptyAddressee
-          ], // validates that at least one email is selected
-        ),
+        'name': FormControl(defaultValue: 'john'),
+        'email': FormControl(defaultValue: 'john@email.com'),
       });
 
-      // get the array of controls
-      final formArray = form.formControl('selectedEmails') as FormArray<bool>;
+      final value = form.value;
 
-      // populates the array of controls.
-      // for each contact add a boolean form control to the array.
-      formArray.addAll(
-        contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
-      );
-
-      formArray.formControl('0').value = false;
-      formArray.formControl('1').value = false;
-      formArray.formControl('2').value = false;
-
-      expect(form.valid, false);
+      expect(jsonEncode(value), '{"name":"john","email":"john@email.com"}');
     });
 
-    test('Form group is valid if form array is valid', () {
-      // an array of contacts
-      final contacts = [
-        'john@email.com',
-        'susan@email.com',
-        'caroline@email.com',
-      ];
+    test('Assertion Error if passing null controls to constructor', () {
+      expect(() => FormGroup(null), throwsAssertionError);
+    });
 
-      // a form with a list of selected emails
-      final form = FormGroup({
-        'selectedEmails': FormArray<bool>(
-          [], // an empty array of controls
-          validators: [
-            _emptyAddressee
-          ], // validates that at least one email is selected
-        ),
-      });
+    test('Throws FormControlInvalidNameException if invalid control name', () {
+      final form = FormGroup({});
 
-      // get the array of controls
-      final formArray = form.formControl('selectedEmails') as FormArray<bool>;
-
-      // populates the array of controls.
-      // for each contact add a boolean form control to the array.
-      formArray.addAll(
-        contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
-      );
-
-      formArray.formControl('0').value = false;
-      formArray.formControl('1').value = true; // at least one is true
-      formArray.formControl('2').value = false;
-
-      expect(form.valid, true);
+      expect(() => form.formControl('does not exist'),
+          throwsA(isInstanceOf<FormControlInvalidNameException>()));
     });
   });
-}
-
-Map<String, dynamic> _emptyAddressee(AbstractControl control) {
-  final emails = (control as FormArray<bool>).value;
-  return emails.any((isSelected) => isSelected)
-      ? null
-      : {'emptyAddressee': true};
 }
