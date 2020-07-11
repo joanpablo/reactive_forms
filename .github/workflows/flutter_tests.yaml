@@ -23,4 +23,4 @@ jobs:
           flutter-version: '1.17.0'
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter test
+      - run: flutter test --coverage
