@@ -2,6 +2,8 @@
 
 This is a model-driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
+![Pub Version](https://img.shields.io/pub/v/reactive_forms) ![GitHub](https://img.shields.io/github/license/joanpablo/reactive_forms) ![GitHub top language](https://img.shields.io/github/languages/top/joanpablo/reactive_forms)
+
 ## Getting Started
 
 For help getting started with Flutter, view the 
