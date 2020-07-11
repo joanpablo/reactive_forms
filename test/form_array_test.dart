@@ -73,6 +73,13 @@ void main() {
 
       expect(form.valid, true);
     });
+
+    test('Throws FormArrayInvalidIndexException if index not a valid int', () {
+      final array = FormArray([]);
+
+      expect(() => array.formControl('control'),
+          throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
+    });
   });
 }
 
