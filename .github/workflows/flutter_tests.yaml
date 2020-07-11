@@ -23,6 +23,5 @@ jobs:
           flutter-version: '1.17.0'
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter test --coverage
-      - run: export CODECOV_TOKEN="d5f3f780-d3d4-4c7c-997b-31f1f7620eba"
-      - run: bash <(curl -s https://codecov.io/bash)
+      - run: flutter test --no-pub --coverage
+      - run: bash <(curl -s https://codecov.io/bash) -t d5f3f780-d3d4-4c7c-997b-31f1f7620eba
