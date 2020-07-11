@@ -46,6 +46,18 @@ void main() {
     });
   });
 
+  group('MaxLength Validator Tests', () {
+    test('FormControl invalid if maxLength invalid', () {
+      final control = FormControl(
+        defaultValue: 'Hello Reactive Forms',
+        validators: [Validators.maxLength(10)],
+      );
+
+      expect(control.invalid, true);
+      expect(control.errors[ValidationMessage.maxLength] != null, true);
+    });
+  });
+
   group('MustMatch Validator Tests', () {
     test('FormGroup invalid if passwords mismatch', () {
       final form = FormGroup({
@@ -60,6 +72,21 @@ void main() {
         form.errors['passwordConfirmation'][ValidationMessage.mustMatch],
         true,
       );
+    });
+
+    test('FormGroup valid if passwords match', () {
+      final form = FormGroup({
+        'password': FormControl(defaultValue: '1234'),
+        'passwordConfirmation': FormControl(defaultValue: '123'),
+      }, validators: [
+        Validators.mustMatch('password', 'passwordConfirmation'),
+      ]);
+
+      final passwordConfirmation = form.formControl('passwordConfirmation');
+      passwordConfirmation.value = '1234';
+
+      expect(form.valid, true);
+      expect(form.hasErrors, false);
     });
   });
 
@@ -88,6 +115,25 @@ void main() {
 
       expect(cardNumber.valid, true);
       expect(cardNumber.errors.keys.isEmpty, true);
+    });
+  });
+
+  group('Number Validator Tests', () {
+    test('FormControl invalid if not a number', () {
+      final control = FormControl<String>(validators: [Validators.number]);
+
+      control.value = 'hello';
+
+      expect(control.valid, false);
+      expect(control.errors.containsKey(ValidationMessage.number), true);
+    });
+
+    test('FormControl valid if a number', () {
+      final control = FormControl<String>(validators: [Validators.number]);
+
+      control.value = '10';
+
+      expect(control.valid, true);
     });
   });
 }

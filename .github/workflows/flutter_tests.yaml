@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    # Job name is Greeting
+    # Job name is Running Tests
     name: Running Tests
     # This job runs on Linux
     runs-on: ubuntu-latest
