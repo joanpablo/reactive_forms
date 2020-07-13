@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import 'reactive_testing_widget.dart';
+import 'reactive_text_field_testing_widget.dart';
 
 void main() {
   group('ReactiveTextField Tests', () {
@@ -15,7 +15,7 @@ void main() {
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // Expect: that the text field has no value when painted
         expect(find.text('John'), findsNothing);
@@ -38,7 +38,7 @@ void main() {
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // Expect: that the text field has no focus
         TextField textField = tester.firstWidget(find.byType(TextField));
@@ -63,14 +63,17 @@ void main() {
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // And: the text field has focused
         TextField textField = tester.firstWidget(find.byType(TextField));
         textField.focusNode.requestFocus();
+        await tester.pump();
+        expect(textField.focusNode.hasFocus, true);
 
         // When: call FormControl.unfocus()
         (form.formControl('name') as FormControl).unfocus();
+        await tester.pump();
 
         // Then: the reactive text field is unfocused
         textField = tester.firstWidget(find.byType(TextField)) as TextField;
@@ -95,7 +98,7 @@ void main() {
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // And: the field is invalid and untouched
         expect(form.formControl('name').hasErrors, true);
@@ -119,7 +122,7 @@ void main() {
       });
 
       // And: a widget that is bind to the form
-      await tester.pumpWidget(ReactiveTestingWidget(form: form));
+      await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
       // Expect: text field is showing errors
       final textField = tester.firstWidget(find.byType(TextField)) as TextField;
@@ -141,7 +144,7 @@ void main() {
         final customMessage = 'The name is required';
 
         // And: a widget that is bind to the form with the custom message
-        await tester.pumpWidget(ReactiveTestingWidget(
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
           form: form,
           validationMessages: {ValidationMessage.required: customMessage},
         ));

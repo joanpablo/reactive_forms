@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class ReactiveTestingWidget extends StatelessWidget {
+class ReactiveTextFieldTestingWidget extends StatelessWidget {
   final FormGroup form;
   final Map<String, String> validationMessages;
   final Map<String, String> bindings;
 
-  const ReactiveTestingWidget({
+  const ReactiveTextFieldTestingWidget({
     Key key,
     @required this.form,
     this.validationMessages,

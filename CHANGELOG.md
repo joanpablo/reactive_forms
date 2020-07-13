@@ -1,3 +1,8 @@
+## [1.0.6] - 
+
+- fixed ReactiveCheckbox exception when binding with FormControl with null value
+- more tests to Reactive Forms added
+
 ## [1.0.5] - 2020-07-10
 
 - Added ***ReactiveTextField.onSubmitted*** for an example of how to handle moving to

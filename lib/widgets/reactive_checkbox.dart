@@ -34,7 +34,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
           validationMessages: const {},
           builder: (ReactiveFormFieldState<bool> field) {
             return Checkbox(
-              value: field.value,
+              value: field.value ?? false,
               onChanged: field.didChange,
               tristate: tristate,
               activeColor: activeColor,

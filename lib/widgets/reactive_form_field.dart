@@ -26,7 +26,8 @@ class ReactiveFormField<T> extends StatefulWidget {
     @required this.formControlName,
     @required this.builder,
     Map<String, String> validationMessages,
-  })  : validationMessages = validationMessages ?? const {},
+  })  : assert(formControlName != null),
+        validationMessages = validationMessages ?? const {},
         super(key: key);
 
   @override

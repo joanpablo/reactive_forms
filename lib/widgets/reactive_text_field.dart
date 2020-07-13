@@ -62,8 +62,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
-  })  : assert(formControlName != null),
-        super(
+  }) : super(
             formControlName: formControlName,
             validationMessages: validationMessages ?? const {},
             builder: (ReactiveFormFieldState<String> field) {
