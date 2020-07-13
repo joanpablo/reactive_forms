@@ -53,12 +53,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   /// Returns a [AbstractControl] by its name.
   ///
-  /// Throws [FormControlInvalidNameException] if no [FormControl] founded with
+  /// Throws [FormControlNotFoundException] if no [FormControl] founded with
   /// the specified [name].
   @override
   AbstractControl formControl(String name) {
     if (!this._controls.containsKey(name)) {
-      throw FormControlInvalidNameException(name);
+      throw FormControlNotFoundException(name);
     }
 
     return this._controls[name];

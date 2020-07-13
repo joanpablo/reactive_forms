@@ -55,6 +55,30 @@ void main() {
     );
 
     testWidgets(
+      'Call FormControl.unfocus() remove focus on text field',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final form = FormGroup({
+          'name': FormControl(defaultValue: 'John'),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTestingWidget(form: form));
+
+        // And: the text field has focused
+        TextField textField = tester.firstWidget(find.byType(TextField));
+        textField.focusNode.requestFocus();
+
+        // When: call FormControl.unfocus()
+        (form.formControl('name') as FormControl).unfocus();
+
+        // Then: the reactive text field is unfocused
+        textField = tester.firstWidget(find.byType(TextField)) as TextField;
+        expect(textField.focusNode.hasFocus, false);
+      },
+    );
+
+    testWidgets(
       'Assertion Error if passing null as formControlName',
       (WidgetTester tester) async {
         expect(() => ReactiveTextField(formControlName: null),
@@ -101,5 +125,45 @@ void main() {
       final textField = tester.firstWidget(find.byType(TextField)) as TextField;
       expect(textField.decoration.errorText, ValidationMessage.required);
     });
+
+    testWidgets(
+      'Custom Validation Error is visible if supplied',
+      (WidgetTester tester) async {
+        // Given: A group with a required and touched field
+        final form = FormGroup({
+          'name': FormControl(
+            validators: [Validators.required],
+            touched: true,
+          ),
+        });
+
+        // And: a custom required message
+        final customMessage = 'The name is required';
+
+        // And: a widget that is bind to the form with the custom message
+        await tester.pumpWidget(ReactiveTestingWidget(
+          form: form,
+          validationMessages: {ValidationMessage.required: customMessage},
+        ));
+
+        // Expect: text field is showing the custom message as error
+        final textField =
+            tester.firstWidget(find.byType(TextField)) as TextField;
+        expect(textField.decoration.errorText, customMessage);
+      },
+    );
+
+    testWidgets(
+      'FormControlParentNotFoundException when no parent widget',
+      (WidgetTester tester) async {
+        FlutterError.onError = (errorDetails) {
+          expect(errorDetails.exception,
+              isInstanceOf<FormControlParentNotFoundException>());
+        };
+
+        // Expect: error when create text field without parent widget
+        await tester.pumpWidget(ReactiveTextField(formControlName: 'name'));
+      },
+    );
   });
 }

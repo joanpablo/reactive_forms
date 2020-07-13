@@ -45,7 +45,7 @@ class ReactiveForm extends StatefulWidget {
 
     final element = context.getElementForInheritedWidgetOfExactType<
         FormControlInheritedNotifier>();
-    return (element.widget as FormControlInheritedNotifier).control;
+    return (element?.widget as FormControlInheritedNotifier)?.control;
   }
 
   @override

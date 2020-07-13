@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/exceptions/form_control_not_found_exception.dart';
+import 'package:reactive_forms/exceptions/form_control_parent_not_found_exception.dart';
 import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -53,10 +53,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @override
   void initState() {
     this.control = _getFormControl();
-    if (this.control == null) {
-      throw FormControlNotFoundException(widget.formControlName);
-    }
-
     this.subscribeFormControl();
 
     super.initState();
@@ -95,6 +91,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   FormControl _getFormControl() {
     final form =
         ReactiveForm.of(context, listen: false) as FormControlCollection;
+    if (form == null) {
+      throw FormControlParentNotFoundException(widget);
+    }
+
     return form.formControl(widget.formControlName);
   }
 

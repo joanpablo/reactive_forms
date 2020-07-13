@@ -236,11 +236,11 @@ void main() {
       expect(() => FormGroup(null), throwsAssertionError);
     });
 
-    test('Throws FormControlInvalidNameException if invalid control name', () {
+    test('Throws FormControlNotFoundException if invalid control name', () {
       final form = FormGroup({});
 
       expect(() => form.formControl('does not exist'),
-          throwsA(isInstanceOf<FormControlInvalidNameException>()));
+          throwsA(isInstanceOf<FormControlNotFoundException>()));
     });
   });
 }

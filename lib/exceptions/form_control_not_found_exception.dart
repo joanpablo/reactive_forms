@@ -2,17 +2,16 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-/// This exception is thrown by Reactive Widgets that doesn't find a FormControl
-/// to bind
+/// This exception is thrown when a [FormGroup] or a [FormArray]
+/// doesn't find the [FormControl] by name
 class FormControlNotFoundException implements Exception {
-  final String formControlName;
+  final String name;
 
   /// Creates an instance of the exception
-  /// passing the name of the form control
-  FormControlNotFoundException(this.formControlName);
+  FormControlNotFoundException(this.name);
 
   @override
   String toString() {
-    return 'FormControlNotFoundException: ReactiveFormField widget couldn\'t bind to FormControl, the name: \'$formControlName\' not found!';
+    return 'FormControlNotFoundException: Child FormControl with name: \'$name\' not found';
   }
 }

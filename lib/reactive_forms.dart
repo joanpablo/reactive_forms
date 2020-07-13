@@ -5,8 +5,8 @@
 library reactive_forms;
 
 export 'exceptions/form_array_invalid_index_exception.dart';
-export 'exceptions/form_control_invalid_name_exception.dart';
 export 'exceptions/form_control_not_found_exception.dart';
+export 'exceptions/form_control_parent_not_found_exception.dart';
 export 'models/abstract_control.dart';
 export 'models/control_status.dart';
 export 'models/form_array.dart';

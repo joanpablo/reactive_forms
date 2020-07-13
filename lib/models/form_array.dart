@@ -3,8 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
-import 'package:reactive_forms/exceptions/form_array_invalid_index_exception.dart';
-import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -101,7 +99,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Throws [FormArrayInvalidIndexException] if [name] is not e valid [int]
   /// number.
   ///
-  /// Throws [FormControlInvalidNameException] if no [FormControl] founded with
+  /// Throws [FormControlNotFoundException] if no [FormControl] founded with
   /// the specified [name].
   @override
   AbstractControl formControl(String name) {
@@ -109,7 +107,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     if (index == null) {
       throw FormArrayInvalidIndexException(name);
     } else if (index >= this._controls.length) {
-      throw FormControlInvalidNameException(name);
+      throw FormControlNotFoundException(name);
     }
 
     return this._controls[index];

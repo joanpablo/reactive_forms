@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 abstract class FormControlCollection {
   /// Returns a [AbstractControl] by its name.
   ///
-  /// Throws [FormControlInvalidNameException] if no [FormControl] founded with
+  /// Throws [FormControlNotFoundException] if no [FormControl] founded with
   /// the specified [name].
   AbstractControl formControl(String name);
 
