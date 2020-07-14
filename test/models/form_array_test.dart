@@ -80,6 +80,56 @@ void main() {
       expect(() => array.formControl('control'),
           throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
     });
+
+    test('Assertion Error if passing null controls to constructor', () {
+      expect(() => FormArray(null), throwsAssertionError);
+    });
+
+    test('Add values to array sets value to each item', () {
+      // Given: an array with several items
+      final array = FormArray<int>([
+        FormControl<int>(),
+        FormControl<int>(),
+        FormControl<int>(),
+      ]);
+
+      //When: set a value to array
+      array.value = [1, 2, 3];
+
+      //Then: items has each value
+      expect(array.formControl('0').value, 1);
+      expect(array.formControl('1').value, 2);
+      expect(array.formControl('2').value, 3);
+    });
+
+    test('Throws FormControlNotFoundException if invalid control index', () {
+      final array = FormArray([]);
+
+      expect(() => array.formControl('0'),
+          throwsA(isInstanceOf<FormControlNotFoundException>()));
+    });
+
+    test('Reset array restores default value of all items', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(defaultValue: 1),
+        FormControl<int>(defaultValue: 2),
+        FormControl<int>(defaultValue: 3),
+      ]);
+
+      // When: change values of items
+      array.formControl('0').value = 10;
+      array.formControl('1').value = 20;
+      array.formControl('2').value = 30;
+
+      // And: reset array
+      array.reset();
+
+      //Then: items has initial default values
+      expect(array.formControl('0').value, 1);
+      expect(array.formControl('1').value, 2);
+      expect(array.formControl('2').value, 3);
+    });
   });
 }
 
