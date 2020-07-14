@@ -41,7 +41,6 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     bool autofocus = false,
   }) : super(
           formControlName: formControlName,
-          validationMessages: const {},
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch(
               key: key,
@@ -94,7 +93,6 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     Color hoverColor,
   }) : super(
           formControlName: formControlName,
-          validationMessages: const {},
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch.adaptive(
               key: key,
