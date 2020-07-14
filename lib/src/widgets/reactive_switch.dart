@@ -44,7 +44,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch(
               key: key,
-              value: field.value,
+              value: field.value ?? false,
               onChanged: field.didChange,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
@@ -96,7 +96,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch.adaptive(
               key: key,
-              value: field.value,
+              value: field.value ?? false,
               onChanged: field.didChange,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
