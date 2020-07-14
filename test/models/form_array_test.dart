@@ -130,6 +130,30 @@ void main() {
       expect(array.formControl('1').value, 2);
       expect(array.formControl('2').value, 3);
     });
+
+    test('Adding a control to array adds a new value', () {
+      // Given: an empty array
+      final array = FormArray([]);
+
+      // Expect value as an empty array
+      expect([], array.value);
+
+      // When: add one control
+      array.add(FormControl<int>(defaultValue: 1));
+
+      // Then: array has one value
+      expect(array.value, [1]);
+    });
+
+    test('Array is invalid if control is invalid', () {
+      // Given: an array with invalid control
+      final array = FormArray([
+        FormControl(validators: [Validators.required]),
+      ]);
+
+      // Expect: array is also invalid
+      expect(array.valid, false);
+    });
   });
 }
 

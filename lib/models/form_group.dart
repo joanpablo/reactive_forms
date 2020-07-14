@@ -51,7 +51,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     _registerControlListeners();
   }
 
-  /// Returns a [AbstractControl] by its name.
+  /// Returns a [AbstractControl] by [name].
   ///
   /// Throws [FormControlNotFoundException] if no [FormControl] founded with
   /// the specified [name].

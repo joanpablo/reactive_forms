@@ -94,13 +94,30 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     _notifyCollectionChanged();
   }
 
-  /// Returns a [AbstractControl] by its index.
+  /// Returns a [AbstractControl] by [name].
+  /// The key represents the index of the control.
   ///
   /// Throws [FormArrayInvalidIndexException] if [name] is not e valid [int]
   /// number.
   ///
   /// Throws [FormControlNotFoundException] if no [FormControl] founded with
   /// the specified [name].
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// final array = FormArray([
+  ///   FormControl(defaultValue: 'hello'),
+  /// ]);
+  ///
+  /// final control = array.formControl('0');
+  ///
+  /// print(control.value);
+  /// ```
+  ///
+  /// ```shell
+  /// >hello
+  /// ```
   @override
   AbstractControl formControl(String name) {
     int index = int.tryParse(name);
