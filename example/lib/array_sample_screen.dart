@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/models/form_array.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class ArraySampleScreen extends StatefulWidget {

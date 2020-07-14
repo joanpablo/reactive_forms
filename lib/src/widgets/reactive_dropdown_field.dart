@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/widgets/reactive_form_field.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
 class ReactiveDropdownField<T> extends ReactiveFormField<T> {

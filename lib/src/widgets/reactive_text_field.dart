@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reactive_forms/widgets/reactive_form_field.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// A [ReactiveTextField] that contains a [TextField].
 ///

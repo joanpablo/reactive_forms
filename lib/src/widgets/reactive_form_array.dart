@@ -3,10 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/models/form_array.dart';
-import 'package:reactive_forms/models/form_control_collection.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/widgets/form_control_inherited_notifier.dart';
+
+import '../widgets/form_control_inherited_notifier.dart';
 
 /// Called to obtain the child widget.
 /// This is the signature of a function that receives the [context],

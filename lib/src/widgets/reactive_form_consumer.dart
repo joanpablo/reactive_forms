@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Obtains [FormGroup] from its ancestors and passes its value to [builder].

@@ -2,14 +2,15 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:reactive_forms/models/abstract_control.dart';
-import 'package:reactive_forms/validators/email_validator.dart';
-import 'package:reactive_forms/validators/max_length_validator.dart';
-import 'package:reactive_forms/validators/min_length_validator.dart';
-import 'package:reactive_forms/validators/must_match_validator.dart';
-import 'package:reactive_forms/validators/number_validator.dart';
-import 'package:reactive_forms/validators/pattern_validator.dart';
-import 'package:reactive_forms/validators/required_validator.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+
+import './email_validator.dart';
+import './max_length_validator.dart';
+import './min_length_validator.dart';
+import './must_match_validator.dart';
+import './number_validator.dart';
+import './pattern_validator.dart';
+import './required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.

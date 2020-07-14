@@ -4,9 +4,9 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/models/form_group.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/widgets/form_control_inherited_notifier.dart';
+
+import '../widgets/form_control_inherited_notifier.dart';
 
 /// This class is responsible for create a [FormControlInheritedNotifier] for
 /// exposing a [FormGroup] to all descendants widgets.

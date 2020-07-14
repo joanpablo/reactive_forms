@@ -156,7 +156,8 @@ class _HomePageState extends State<HomePage> {
                 ReactiveValueListenableBuilder<double>(
                   formControlName: 'progress',
                   builder: (context, value, child) {
-                    return Text('Progress set to ${value.toStringAsFixed(2)}%');
+                    return Text(
+                        'Progress set to ${value?.toStringAsFixed(2)}%');
                   },
                 ),
                 ReactiveSlider(
