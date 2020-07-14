@@ -55,5 +55,35 @@ void main() {
         expect(text.data, control.value);
       },
     );
+
+    testWidgets(
+      'Assert error thrown if formControlName is null',
+      (WidgetTester tester) async {
+        // Given: a ReactiveValueListenableBuilder with null formControlName
+        final reactiveWidget = () => ReactiveValueListenableBuilder(
+              formControlName: null,
+              builder: (context, control, child) {
+                return null;
+              },
+            );
+
+        // Expect assertion error
+        expect(reactiveWidget, throwsAssertionError);
+      },
+    );
+
+    testWidgets(
+      'Assert error thrown if builder is null',
+      (WidgetTester tester) async {
+        // Given: a ReactiveValueListenableBuilder with null builder
+        final reactiveWidget = () => ReactiveValueListenableBuilder(
+              formControlName: 'someName',
+              builder: null,
+            );
+
+        // Expect assertion error
+        expect(reactiveWidget, throwsAssertionError);
+      },
+    );
   });
 }

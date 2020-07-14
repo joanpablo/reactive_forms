@@ -91,5 +91,18 @@ void main() {
         expect(submitButton.enabled, true);
       },
     );
+
+    testWidgets(
+      'Assert error thrown if builder is null',
+      (WidgetTester tester) async {
+        // Given: a ReactiveFormConsumer with null builder
+        final reactiveWidget = () => ReactiveFormConsumer(
+              builder: null,
+            );
+
+        // Expect assertion error
+        expect(reactiveWidget, throwsAssertionError);
+      },
+    );
   });
 }
