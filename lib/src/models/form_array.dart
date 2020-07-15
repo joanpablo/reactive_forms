@@ -94,6 +94,15 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     _notifyCollectionChanged();
   }
 
+  /// Removes control at [index]
+  ///
+  void removeAt(int index) {
+    final removedControl = this._controls.removeAt(index);
+    this.validate();
+    this._removeControlListeners([removedControl]);
+    this._notifyCollectionChanged();
+  }
+
   /// Returns a [AbstractControl] by [name].
   /// The key represents the index of the control.
   ///
@@ -143,10 +152,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   @override
   void dispose() {
-    this._controls.forEach((control) {
-      control.onStatusChanged.removeListener(this._onControlStatusChanged);
-      control.onValueChanged.removeListener(this._onControlValueChanged);
-    });
+    this._removeControlListeners(this._controls);
     super.dispose();
   }
 
@@ -178,6 +184,13 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     controls.toList().forEach((control) {
       control.onStatusChanged.addListener(this._onControlStatusChanged);
       control.onValueChanged.addListener(this._onControlValueChanged);
+    });
+  }
+
+  void _removeControlListeners(Iterable<AbstractControl> controls) {
+    controls.forEach((control) {
+      control.onStatusChanged.removeListener(this._onControlStatusChanged);
+      control.onValueChanged.removeListener(this._onControlValueChanged);
     });
   }
 
