@@ -169,13 +169,47 @@ void main() {
       },
     );
 
+    Future<Map<String, dynamic>> failedAsyncValidator(
+        AbstractControl control) async {
+      return {'failed': true};
+    }
+
+    testWidgets(
+      'Async Validator change status to invalid',
+      (WidgetTester tester) async {
+        // Given: a form with a field and async validator
+        final form = FormGroup({
+          'control': FormControl<String>(
+            validators: [Validators.required],
+            asyncValidators: [failedAsyncValidator],
+          ),
+        });
+
+        // And: a widget is bind to the form
+        await tester.pumpWidget(
+          ReactiveStatusListenableTestingWidget(
+            form: form,
+          ),
+        );
+
+        // When: change status of control
+        form.formControl('control').value = 'some value';
+        await tester.pumpAndSettle();
+
+        // When: get text widget
+        Text text = tester.widget(find.byType(Text));
+
+        // Then: the text is displaying status invalid
+        expect(text.data, 'invalid');
+      },
+    );
+
     Future<Map<String, dynamic>> asyncValidator(AbstractControl control) async {
-      await Future.delayed(Duration(seconds: 5), () => null);
       return null;
     }
 
     testWidgets(
-      'Async Validator change status to pending',
+      'Async Validator change status to valid',
       (WidgetTester tester) async {
         // Given: a form with a field and async validator
         final form = FormGroup({
@@ -192,21 +226,14 @@ void main() {
           ),
         );
 
-        // When: change status of control to pending
+        // When: change status of control
         form.formControl('control').value = 'some value';
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         // When: get text widget
         Text text = tester.widget(find.byType(Text));
 
         // Then: the text is displaying status invalid
-        expect(text.data, 'pending');
-
-        // Then: wait async validator to finish
-        await tester.pump(Duration(seconds: 6));
-
-        // Expect: the text is displaying status valid
-        text = tester.widget(find.byType(Text));
         expect(text.data, 'valid');
       },
     );

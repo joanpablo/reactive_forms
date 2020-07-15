@@ -18,7 +18,6 @@ class ReactiveFormArrayTestingWidget extends StatelessWidget {
           child: ReactiveFormArray(
             formArrayName: 'array',
             builder: (context, array, child) {
-              print(array);
               return Column(
                 children:
                     array.value.map((value) => Text(value.toString())).toList(),

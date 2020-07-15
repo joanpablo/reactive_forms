@@ -95,6 +95,7 @@ abstract class AbstractControl<T> {
   void dispose() {
     _onStatusChanged.dispose();
     _onValueChanged.dispose();
+    _runningAsyncValidators?.cancel();
   }
 
   /// Resets the control.
@@ -180,7 +181,7 @@ abstract class AbstractControl<T> {
     }
   }
 
-  static StreamSubscription _runningAsyncValidators;
+  StreamSubscription _runningAsyncValidators;
   @protected
   Future<void> validateAsync() async {
     if (_runningAsyncValidators != null) {
