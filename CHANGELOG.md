@@ -2,7 +2,7 @@
 
 - fixed ReactiveCheckbox and ReactiveCheckboxListTile exception when binding 
   with FormControl with null value.
-- more tests to Reactive Forms added.
+- several tests to Reactive Forms.
 
 ## [1.0.5] - 2020-07-10
 
