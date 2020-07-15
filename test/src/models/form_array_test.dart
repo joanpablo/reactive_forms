@@ -78,18 +78,6 @@ void main() {
           throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
     });
 
-    test('FormArrayInvalidIndexException message references the invalid index ',
-        () {
-      final array = FormArray([]);
-
-      try {
-        array.formControl('control');
-      } on Exception catch (e) {
-        expect(e.toString().contains('Index \'control\' is not a valid index'),
-            true);
-      }
-    });
-
     test('Assertion Error if passing null controls to constructor', () {
       expect(() => FormArray(null), throwsAssertionError);
     });
@@ -116,18 +104,6 @@ void main() {
 
       expect(() => array.formControl('0'),
           throwsA(isInstanceOf<FormControlNotFoundException>()));
-    });
-
-    test('FormControlNotFoundException message references the control index',
-        () {
-      final array = FormArray([]);
-
-      try {
-        array.formControl('0');
-      } on Exception catch (e) {
-        expect(
-            e.toString().contains('control with name: \'0\' not found'), true);
-      }
     });
 
     test('Reset array restores default value of all items', () {
