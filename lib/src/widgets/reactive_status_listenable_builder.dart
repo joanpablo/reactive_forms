@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-typedef ReactiveStatusListenableWidgetBuilder = Widget Function(
-    BuildContext context, AbstractControl control, Widget child);
-
 /// This widget listen for changes in the status of a [FormControl] specified
 /// in [formControlName] property and call [builder] function to rebuild widgets.
 ///
@@ -13,7 +10,7 @@ typedef ReactiveStatusListenableWidgetBuilder = Widget Function(
 class ReactiveStatusListenableBuilder extends StatelessWidget {
   final String formControlName;
   final Widget child;
-  final ReactiveStatusListenableWidgetBuilder builder;
+  final ReactiveListenableWidgetBuilder builder;
 
   /// Creates an instance of [ReactiveStatusListenableBuilder].
   ///

@@ -1,3 +1,12 @@
+## [1.0.7] - 2020-07-
+
+- *ReactiveValueListenableBuilder.builder* now pass as parameter the *control* instead of the 
+  *value* so you can access the full control within the builder function.
+
+- Bonus widgets:
+  - ReactiveDatePicker
+  - ReactiveTimePicker
+
 ## [1.0.6] - 2020-07-15
 
 - fixed ReactiveCheckbox and ReactiveCheckboxListTile exception when binding with FormControl with null value.

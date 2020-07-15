@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   final String formControlName;
   final Widget child;
-  final ValueWidgetBuilder<T> builder;
+  final ReactiveListenableWidgetBuilder<T> builder;
 
   /// Create an instance of a [ReactiveValueListenableBuilder].
   ///
@@ -40,7 +40,8 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
     final formControl = form.formControl(this.formControlName);
     return ValueListenableBuilder<T>(
       valueListenable: formControl.onValueChanged,
-      builder: this.builder,
+      builder: (context, value, child) =>
+          this.builder(context, formControl as AbstractControl<T>, child),
     );
   }
 }
