@@ -12,6 +12,6 @@ class FormControlNotFoundException implements Exception {
 
   @override
   String toString() {
-    return 'FormControlNotFoundException: Child FormControl with name: \'$name\' not found';
+    return 'FormControlNotFoundException: control with name: \'$name\' not found.';
   }
 }

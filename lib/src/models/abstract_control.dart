@@ -105,6 +105,7 @@ abstract class AbstractControl<T> {
     _onValueChanged.value = value;
   }
 
+  @visibleForTesting
   @protected
   void notifyStatusChanged(ControlStatus status) {
     _onStatusChanged.value = status;
