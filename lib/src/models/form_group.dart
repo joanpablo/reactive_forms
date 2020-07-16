@@ -52,10 +52,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   /// Returns a [AbstractControl] by [name].
   ///
-  /// Throws [FormControlNotFoundException] if no [FormControl] founded with
+  /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name].
   @override
-  AbstractControl formControl(String name) {
+  AbstractControl control(String name) {
     if (!this._controls.containsKey(name)) {
       throw FormControlNotFoundException(name);
     }
@@ -135,6 +135,23 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
   }
 
+  /// A [FormGroup] is touched if at least one of its controls is touched
+  @override
+  bool get touched => this._controls.values.any((control) => control.touched);
+
+  /// Marks all controls as touched
+  @override
+  void touch() {
+    this._controls.values.forEach((control) => control.touch());
+  }
+
+  /// Marks all controls as untouched
+  @override
+  void untouch() {
+    this._controls.values.forEach((control) => control.untouch());
+  }
+
+  /// Calculates status based on status of controls
   @override
   ControlStatus get childrenStatus {
     final isPending = this._controls.values.any((control) => control.pending);

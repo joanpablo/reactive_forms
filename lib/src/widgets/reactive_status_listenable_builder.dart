@@ -31,7 +31,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final form =
         ReactiveForm.of(context, listen: false) as FormControlCollection;
-    final formControl = form.formControl(this.formControlName);
+    final formControl = form.control(this.formControlName);
     return ValueListenableBuilder<ControlStatus>(
       valueListenable: formControl.onStatusChanged,
       builder: (context, status, child) =>

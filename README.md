@@ -51,7 +51,7 @@ Notice in the example above that in the case of the *name* we have also set a de
 You can get the value of a single **FormControl** as simple as:
 
 ```dart
-String get name() => this.form.formControl('name').value;
+String get name() => this.form.control('name').value;
 ```
 
 But you can also get the complete *Form* data as follows:
@@ -192,8 +192,8 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
   return (AbstractControl control) {
     final form = control as FormGroup;
 
-    final formControl = form.formControl(controlName);
-    final matchingFormControl = form.formControl(matchingControlName);
+    final formControl = form.control(controlName);
+    final matchingFormControl = form.control(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
       matchingFormControl.addError({'mustMatch': true});
@@ -329,7 +329,7 @@ The previous method outputs a *Map* as the following one:
 And of course you can access to a nested **FormGroup** as following:
 
 ```dart
-FormGroup personalForm = form.formControl('personal');
+FormGroup personalForm = form.control('personal');
 ```
 
 A simple way to create a wizzard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each *Page* inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
@@ -389,7 +389,7 @@ final form = FormGroup({
 });
 
 // get the array of controls
-final formArray = form.formControl('selectedEmails') as FormArray<bool>;
+final formArray = form.control('selectedEmails') as FormArray<bool>;
 
 // populates the array of controls.
 // for each contact add a boolean form control to the array.
@@ -509,7 +509,7 @@ Also when we set a *value* to a **FormControl** the validations messages begin t
 
 ```dart
 set name(String newName) {
-  final formControl = this.form.formControl('name');
+  final formControl = this.form.control('name');
   formControl.value = newName; // if newName is invalid then messages will show up in UI
 }
 ```
@@ -630,7 +630,7 @@ final form = FormGroup({
   'name': FormControl(defaultValue: 'John Doe'),
 });
 
-final formControl = form.formControl('name');
+final formControl = form.control('name');
 
 formControl.focus(); // UI text field get focus and the device keyboard pop up
 
@@ -651,10 +651,10 @@ final form = FormGroup({
 
 ```dart
 /// Gets the email
-FormControl get email => this.form.formControl('email');
+FormControl get email => this.form.control('email');
 
 /// Gets the password
-FormControl get password => this.form.formControl('password');
+FormControl get password => this.form.control('password');
 ```
 
 ```dart

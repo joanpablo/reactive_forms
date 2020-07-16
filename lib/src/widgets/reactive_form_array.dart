@@ -51,7 +51,7 @@ class _ReactiveFormArrayState extends State<ReactiveFormArray> {
   void initState() {
     final form =
         ReactiveForm.of(context, listen: false) as FormControlCollection;
-    _formArray = form.formControl(widget.formArrayName) as FormArray;
+    _formArray = form.control(widget.formArrayName) as FormArray;
 
     super.initState();
   }

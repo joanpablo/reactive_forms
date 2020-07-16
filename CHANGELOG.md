@@ -1,3 +1,9 @@
+## [1.0.7] - 2020
+
+- *FormGroup.touch* mask all controls as touched.
+- renamed *FormGroup.formControl* to *FormGroup.control* 
+  and *FormArray.formControl* to *FormArray.control* to get this controls
+
 ## [1.0.6] - 2020-07-15
 
 - fixed ReactiveCheckbox and ReactiveCheckboxListTile exception when binding with FormControl with null value.

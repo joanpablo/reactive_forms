@@ -43,7 +43,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormArrayTestingWidget(form: form));
 
         // When: add new control to array
-        (form.formControl('array') as FormArray).add(FormControl());
+        (form.control('array') as FormArray).add(FormControl());
         await tester.pump();
 
         // Expect: display the same amount of items of the array
@@ -68,7 +68,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormArrayTestingWidget(form: form));
 
         // When: add new controls to array
-        (form.formControl('array') as FormArray).addAll([
+        (form.control('array') as FormArray).addAll([
           FormControl(),
           FormControl(),
         ]);
@@ -96,7 +96,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormArrayTestingWidget(form: form));
 
         // When: remove a control
-        (form.formControl('array') as FormArray).removeAt(0);
+        (form.control('array') as FormArray).removeAt(0);
         await tester.pump();
 
         // Expect: display the same amount of items of the array

@@ -71,7 +71,7 @@ void main() {
         );
 
         // When: change status of control to pending
-        form.formControl('control').notifyStatusChanged(ControlStatus.pending);
+        form.control('control').notifyStatusChanged(ControlStatus.pending);
         await tester.pump();
 
         // When: get text widget
@@ -98,7 +98,7 @@ void main() {
         );
 
         // When: change status of control to valid
-        form.formControl('control').value = 'som valid value';
+        form.control('control').value = 'som valid value';
         await tester.pump();
 
         // When: get text widget
@@ -128,7 +128,7 @@ void main() {
         );
 
         // When: change status of control to invalid
-        form.formControl('control').value = null;
+        form.control('control').value = null;
         await tester.pump();
 
         // When: get text widget
@@ -193,7 +193,7 @@ void main() {
         );
 
         // When: change status of control
-        form.formControl('control').value = 'some value';
+        form.control('control').value = 'some value';
         await tester.pumpAndSettle();
 
         // When: get text widget
@@ -227,7 +227,7 @@ void main() {
         );
 
         // When: change status of control
-        form.formControl('control').value = 'some value';
+        form.control('control').value = 'some value';
         await tester.pumpAndSettle();
 
         // When: get text widget

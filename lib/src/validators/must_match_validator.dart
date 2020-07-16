@@ -18,12 +18,12 @@ class MustMatchValidator extends Validator {
       return error;
     }
 
-    final formControl = form.formControl(controlName);
-    final matchingFormControl = form.formControl(matchingControlName);
+    final formControl = form.control(controlName);
+    final matchingFormControl = form.control(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
       matchingFormControl.addError(error);
-      matchingFormControl.touched = true;
+      matchingFormControl.touch();
     } else {
       matchingFormControl.removeError(ValidationMessage.mustMatch);
     }

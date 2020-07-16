@@ -47,9 +47,9 @@ class _HomePageState extends State<HomePage> {
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
 
-  FormControl get password => this.form.formControl('password');
+  FormControl get password => this.form.control('password');
   FormControl get passwordConfirmation =>
-      this.form.formControl('passwordConfirmation');
+      this.form.control('passwordConfirmation');
 
   @override
   Widget build(BuildContext context) {

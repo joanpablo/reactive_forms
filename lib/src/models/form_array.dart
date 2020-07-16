@@ -128,7 +128,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// >hello
   /// ```
   @override
-  AbstractControl formControl(String name) {
+  AbstractControl control(String name) {
     int index = int.tryParse(name);
     if (index == null) {
       throw FormArrayInvalidIndexException(name);

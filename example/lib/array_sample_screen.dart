@@ -13,7 +13,7 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
   });
 
   FormArray<bool> get selectedContacts =>
-      form.formControl('selectedContacts') as FormArray;
+      form.control('selectedContacts') as FormArray;
 
   @override
   void initState() {

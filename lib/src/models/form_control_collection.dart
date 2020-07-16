@@ -7,9 +7,9 @@ import 'package:reactive_forms/reactive_forms.dart';
 abstract class FormControlCollection {
   /// Returns a [AbstractControl] by its name.
   ///
-  /// Throws [FormControlNotFoundException] if no [FormControl] founded with
+  /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name].
-  AbstractControl formControl(String name);
+  AbstractControl control(String name);
 
   /// Emits when a control is added or removed from collection.
   Listenable get onCollectionChanged;
