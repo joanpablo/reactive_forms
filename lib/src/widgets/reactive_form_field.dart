@@ -15,16 +15,18 @@ class ReactiveFormField<T> extends StatefulWidget {
   /// Function that returns the widget representing this form field. It is
   /// passed the form field state as input, containing the current value and
   /// validation state of this field.
-  final ReactiveFormFieldBuilder<T> builder;
+  final ReactiveFormFieldBuilder<T> _builder;
   final String formControlName;
   final Map<String, String> validationMessages;
 
   const ReactiveFormField({
     Key key,
     @required this.formControlName,
-    @required this.builder,
+    @required ReactiveFormFieldBuilder<T> builder,
     Map<String, String> validationMessages,
   })  : assert(formControlName != null),
+        assert(builder != null),
+        _builder = builder,
         validationMessages = validationMessages ?? const {},
         super(key: key);
 
@@ -125,6 +127,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(this);
+    return widget._builder(this);
   }
 }

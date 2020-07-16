@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
     ]),
     'rememberMe': FormControl(defaultValue: false),
     'progress': FormControl<double>(defaultValue: 50.0),
+    'dateTime': FormControl<DateTime>(defaultValue: DateTime.now()),
   }, validators: [
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
@@ -167,6 +168,24 @@ class _HomePageState extends State<HomePage> {
                   labelBuilder: (double value) =>
                       '${value.toStringAsFixed(2)}%',
                 ),
+                ReactiveValueListenableBuilder<DateTime>(
+                  formControlName: 'dateTime',
+                  builder: (context, control, child) {
+                    return Text(
+                        control.value != null ? control.value.toString() : '');
+                  },
+                ),
+                ReactiveDatePicker(
+                  formControlName: 'dateTime',
+                  builder: (context, picker, child) {
+                    return RaisedButton(
+                      onPressed: picker.openPicker,
+                      child: Text(
+                          'Select DateTime (${picker.dateTime.year}-${picker.dateTime.month}-${picker.dateTime.day})'),
+                    );
+                  },
+                ),
+                SizedBox(height: 20.0),
               ],
             ),
           ),

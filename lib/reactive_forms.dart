@@ -18,6 +18,7 @@ export 'src/validators/validator.dart';
 export 'src/validators/validators.dart';
 export 'src/widgets/reactive_checkbox.dart';
 export 'src/widgets/reactive_checkbox_list_tile.dart';
+export 'src/widgets/reactive_date_picker.dart';
 export 'src/widgets/reactive_dropdown_field.dart';
 export 'src/widgets/reactive_form.dart';
 export 'src/widgets/reactive_form_array.dart';
