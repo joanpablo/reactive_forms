@@ -11,6 +11,21 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
     @required ReactiveDatePickerBuilder builder,
     @required DateTime firstDate,
     @required DateTime lastDate,
+    DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+    SelectableDayPredicate selectableDayPredicate,
+    String helpText,
+    String cancelText,
+    String confirmText,
+    Locale locale,
+    bool useRootNavigator = true,
+    RouteSettings routeSettings,
+    TextDirection textDirection,
+    TransitionBuilder transitionBuilder,
+    DatePickerMode initialDatePickerMode = DatePickerMode.day,
+    String errorFormatText,
+    String errorInvalidText,
+    String fieldHintText,
+    String fieldLabelText,
     Widget child,
   })  : assert(builder != null),
         super(
@@ -20,8 +35,27 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
                 field.context,
                 ReactiveDatePickerDelegate._(
                   field,
-                  firstDate: firstDate,
-                  lastDate: lastDate,
+                  () => showDatePicker(
+                    context: field.context,
+                    initialDate: field.value ?? DateTime.now(),
+                    firstDate: firstDate,
+                    lastDate: lastDate,
+                    initialEntryMode: initialEntryMode,
+                    selectableDayPredicate: selectableDayPredicate,
+                    helpText: helpText,
+                    cancelText: cancelText,
+                    confirmText: confirmText,
+                    locale: locale,
+                    useRootNavigator: useRootNavigator,
+                    routeSettings: routeSettings,
+                    textDirection: textDirection,
+                    builder: transitionBuilder,
+                    initialDatePickerMode: initialDatePickerMode,
+                    errorFormatText: errorFormatText,
+                    errorInvalidText: errorInvalidText,
+                    fieldHintText: fieldHintText,
+                    fieldLabelText: fieldLabelText,
+                  ).then(field.didChange),
                 ),
                 child);
           },
@@ -34,26 +68,16 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
 
 class ReactiveDatePickerDelegate {
   final ReactiveFormFieldState<DateTime> _field;
-  final DateTime firstDate;
-  final DateTime lastDate;
+  final VoidCallback _showPickerCallback;
 
-  ReactiveDatePickerDelegate._(
-    this._field, {
-    @required this.firstDate,
-    @required this.lastDate,
-  });
+  ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
 
   AbstractControl<DateTime> get control =>
       _field.control as AbstractControl<DateTime>;
 
-  DateTime get dateTime => control.value;
+  DateTime get value => this.control.value;
 
-  void openPicker() {
-    showDatePicker(
-      context: _field.context,
-      initialDate: this.control.value ?? DateTime.now(),
-      firstDate: firstDate,
-      lastDate: lastDate,
-    ).then(_field.didChange);
+  void showPicker() {
+    this._showPickerCallback();
   }
 }

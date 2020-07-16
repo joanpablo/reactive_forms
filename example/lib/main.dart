@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 void main() {
@@ -9,6 +10,7 @@ class ReactiveFormsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: customTheme,
       home: HomePage(),
     );
   }
@@ -49,6 +51,7 @@ class _HomePageState extends State<HomePage> {
   ]);
 
   FormControl get password => this.form.control('password');
+
   FormControl get passwordConfirmation =>
       this.form.control('passwordConfirmation');
 
@@ -60,7 +63,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: ReactiveForm(
             formGroup: this.form,
             child: Column(
@@ -74,7 +77,12 @@ class _HomePageState extends State<HomePage> {
                       formControlName: 'email',
                       builder: (context, control, child) {
                         return control.pending
-                            ? CircularProgressIndicator()
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
                             : Container(width: 0);
                       },
                     ),
@@ -88,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                   textInputAction: TextInputAction.next,
                   onSubmitted: () => this.password.focus(),
                 ),
+                SizedBox(height: 24.0),
                 ReactiveTextField(
                   formControlName: 'password',
                   decoration: InputDecoration(
@@ -103,6 +112,7 @@ class _HomePageState extends State<HomePage> {
                   textInputAction: TextInputAction.next,
                   onSubmitted: () => this.passwordConfirmation.focus(),
                 ),
+                SizedBox(height: 24.0),
                 ReactiveTextField(
                   formControlName: 'passwordConfirmation',
                   decoration: InputDecoration(
@@ -115,10 +125,30 @@ class _HomePageState extends State<HomePage> {
                     ValidationMessage.mustMatch: 'The passwords must match',
                   },
                 ),
+                SizedBox(height: 24.0),
+                ReactiveTextField(
+                  formControlName: 'dateTime',
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Birthday',
+                    suffixIcon: ReactiveDatePicker(
+                      formControlName: 'dateTime',
+                      firstDate: DateTime(1985),
+                      lastDate: DateTime(2030),
+                      builder: (context, picker, child) {
+                        return IconButton(
+                          onPressed: picker.showPicker,
+                          icon: Icon(Icons.date_range),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.0),
                 ReactiveFormConsumer(
                   builder: (context, form, child) {
                     return RaisedButton(
-                      child: Text('SignIn'),
+                      child: Text('Sign Up'),
                       onPressed: form.valid ? () => print(form.value) : null,
                     );
                   },
@@ -168,26 +198,6 @@ class _HomePageState extends State<HomePage> {
                   labelBuilder: (double value) =>
                       '${value.toStringAsFixed(2)}%',
                 ),
-                ReactiveValueListenableBuilder<DateTime>(
-                  formControlName: 'dateTime',
-                  builder: (context, control, child) {
-                    return Text(
-                        control.value != null ? control.value.toString() : '');
-                  },
-                ),
-                ReactiveDatePicker(
-                  formControlName: 'dateTime',
-                  firstDate: DateTime(1985),
-                  lastDate: DateTime(2030),
-                  builder: (context, picker, child) {
-                    return RaisedButton(
-                      onPressed: picker.openPicker,
-                      child: Text(
-                          'Select DateTime (${picker.dateTime.year}-${picker.dateTime.month}-${picker.dateTime.day})'),
-                    );
-                  },
-                ),
-                SizedBox(height: 20.0),
               ],
             ),
           ),
@@ -210,3 +220,11 @@ Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
     () => inUseEmails.contains(control.value) ? error : null,
   );
 }
+
+final customTheme = ThemeData.light().copyWith(
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(),
+    floatingLabelBehavior: FloatingLabelBehavior.auto,
+    alignLabelWithHint: true,
+  ),
+);
