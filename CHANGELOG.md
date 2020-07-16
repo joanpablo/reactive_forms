@@ -2,14 +2,14 @@
 
 - *FormGroup.touch* mask all controls as touched.
 - renamed *FormGroup.formControl* to *FormGroup.control* 
-  and *FormArray.formControl* to *FormArray.control* to get this controls
+  and *FormArray.formControl* to *FormArray.control* to get *controls* by name.
 
-- *ReactiveValueListenableBuilder.builder* now pass as parameter the *control* instead of the 
-  *value* so you can access the full control within the builder function.
+- *ReactiveValueListenableBuilder.builder* now pass the *control* as parameter instead of the 
+  *value* so you can get access to the control within the builder function.
 
-- Bonus widgets:
-  - ReactiveDatePicker
-  - ReactiveTimePicker
+- **Bonus widgets:**
+  - **ReactiveDatePicker**
+  - **ReactiveTimePicker**
 
 ## [1.0.6] - 2020-07-15
 

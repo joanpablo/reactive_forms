@@ -7,7 +7,7 @@ import 'reactive_value_listenable_builder_testing_widget.dart';
 void main() {
   group('ReactiveValueListenableBuilder Tests', () {
     testWidgets(
-      'Text widget init with control default values',
+      'Text widget init with control default value',
       (WidgetTester tester) async {
         // Given: a form and a String field with a default value
         final defaultValue = 'Reactive Forms';

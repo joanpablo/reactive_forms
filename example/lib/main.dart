@@ -177,6 +177,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 ReactiveDatePicker(
                   formControlName: 'dateTime',
+                  firstDate: DateTime(1985),
+                  lastDate: DateTime(2030),
                   builder: (context, picker, child) {
                     return RaisedButton(
                       onPressed: picker.openPicker,
