@@ -90,7 +90,7 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: change control value to true
-        form.formControl('switch').value = true;
+        form.control('switch').value = true;
         await tester.pump();
 
         // Then: value equals to true
@@ -116,7 +116,7 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: change control value to false
-        form.formControl('switch').value = false;
+        form.control('switch').value = false;
         await tester.pump();
 
         // Then: value equals to false

@@ -22,7 +22,7 @@ void main() {
       });
 
       // get the array of controls
-      final formArray = form.formControl('selectedEmails') as FormArray<bool>;
+      final formArray = form.control('selectedEmails') as FormArray<bool>;
 
       // populates the array of controls.
       // for each contact add a boolean form control to the array.
@@ -30,9 +30,9 @@ void main() {
         contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
       );
 
-      formArray.formControl('0').value = false;
-      formArray.formControl('1').value = false;
-      formArray.formControl('2').value = false;
+      formArray.control('0').value = false;
+      formArray.control('1').value = false;
+      formArray.control('2').value = false;
 
       expect(form.valid, false);
     });
@@ -56,7 +56,7 @@ void main() {
       });
 
       // get the array of controls
-      final formArray = form.formControl('selectedEmails') as FormArray<bool>;
+      final formArray = form.control('selectedEmails') as FormArray<bool>;
 
       // populates the array of controls.
       // for each contact add a boolean form control to the array.
@@ -64,9 +64,9 @@ void main() {
         contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
       );
 
-      formArray.formControl('0').value = false;
-      formArray.formControl('1').value = true; // at least one is true
-      formArray.formControl('2').value = false;
+      formArray.control('0').value = false;
+      formArray.control('1').value = true; // at least one is true
+      formArray.control('2').value = false;
 
       expect(form.valid, true);
     });
@@ -74,7 +74,7 @@ void main() {
     test('Throws FormArrayInvalidIndexException if index not a valid int', () {
       final array = FormArray([]);
 
-      expect(() => array.formControl('control'),
+      expect(() => array.control('control'),
           throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
     });
 
@@ -94,15 +94,15 @@ void main() {
       array.value = [1, 2, 3];
 
       //Then: items has each value
-      expect(array.formControl('0').value, 1);
-      expect(array.formControl('1').value, 2);
-      expect(array.formControl('2').value, 3);
+      expect(array.control('0').value, 1);
+      expect(array.control('1').value, 2);
+      expect(array.control('2').value, 3);
     });
 
     test('Throws FormControlNotFoundException if invalid control index', () {
       final array = FormArray([]);
 
-      expect(() => array.formControl('0'),
+      expect(() => array.control('0'),
           throwsA(isInstanceOf<FormControlNotFoundException>()));
     });
 
@@ -115,17 +115,17 @@ void main() {
       ]);
 
       // When: change values of items
-      array.formControl('0').value = 10;
-      array.formControl('1').value = 20;
-      array.formControl('2').value = 30;
+      array.control('0').value = 10;
+      array.control('1').value = 20;
+      array.control('2').value = 30;
 
       // And: reset array
       array.reset();
 
       //Then: items has initial default values
-      expect(array.formControl('0').value, 1);
-      expect(array.formControl('1').value, 2);
-      expect(array.formControl('2').value, 3);
+      expect(array.control('0').value, 1);
+      expect(array.control('1').value, 2);
+      expect(array.control('2').value, 3);
     });
 
     test('Adding a control to array adds a new value', () {

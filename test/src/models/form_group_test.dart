@@ -46,7 +46,7 @@ void main() {
         ),
       });
 
-      form.formControl('name').value = null;
+      form.control('name').value = null;
 
       expect(form.invalid, true);
     });
@@ -58,7 +58,7 @@ void main() {
         ),
       });
 
-      form.formControl('name').value = 'hello';
+      form.control('name').value = 'hello';
 
       expect(form.valid, true);
     });
@@ -112,13 +112,13 @@ void main() {
         'email': FormControl(defaultValue: defaultEmail),
       });
 
-      formGroup.formControl('name').value = 'hello john';
-      formGroup.formControl('email').value = 'john@reactiveforms.com';
+      formGroup.control('name').value = 'hello john';
+      formGroup.control('email').value = 'john@reactiveforms.com';
 
       formGroup.reset();
 
-      expect(formGroup.formControl('name').value, defaultName);
-      expect(formGroup.formControl('email').value, defaultEmail);
+      expect(formGroup.control('name').value, defaultName);
+      expect(formGroup.control('email').value, defaultEmail);
     });
 
     test('Set value to FormGroup', () {
@@ -132,8 +132,8 @@ void main() {
         'email': 'johndoe@email.com',
       };
 
-      expect(form.formControl('name').value, 'John Doe');
-      expect(form.formControl('email').value, 'johndoe@email.com');
+      expect(form.control('name').value, 'John Doe');
+      expect(form.control('email').value, 'johndoe@email.com');
     });
 
     test('Get value returns a Map with controls name and values', () {
@@ -154,8 +154,68 @@ void main() {
     test('Throws FormControlNotFoundException if invalid control name', () {
       final form = FormGroup({});
 
-      expect(() => form.formControl('does not exist'),
+      expect(() => form.control('does not exist'),
           throwsA(isInstanceOf<FormControlNotFoundException>()));
+    });
+
+    test('Mark form as touched mark all controls in the form as touched', () {
+      // Given: an untouched form
+      final form = FormGroup({
+        'name': FormControl(),
+        'email': FormControl(),
+      });
+
+      // Expect: all controls are untouched
+      expect(form.control('name').touched, false);
+      expect(form.control('email').touched, false);
+
+      // When: touch the form
+      form.touch();
+
+      // Then: all controls are touched
+      expect(form.control('name').touched, true);
+      expect(form.control('email').touched, true);
+    });
+
+    test('Mark form as untouched mark all controls as untouched', () {
+      // Given: a form with touched controls
+      final form = FormGroup({
+        'name': FormControl(touched: true),
+        'email': FormControl(touched: true),
+      });
+
+      // Expect: all controls are touched
+      expect(form.control('name').touched, true);
+      expect(form.control('email').touched, true);
+
+      // When: untouch the form
+      form.untouch();
+
+      // Then: all controls are untouched
+      expect(form.control('name').touched, false);
+      expect(form.control('email').touched, false);
+    });
+
+    test('The form is touched if at least one control is touched', () {
+      // Given: a form with only one control touched
+      final form = FormGroup({
+        'name': FormControl(),
+        'email': FormControl(touched: true),
+      });
+
+      // Expect: the form is touched
+      expect(form.touched, true);
+    });
+
+    test('The form is untouched if all control are untouched', () {
+      // Given: a form with no touched controls
+      final form = FormGroup({
+        'name': FormControl(),
+        'email': FormControl(),
+      });
+
+      // Expect: the form is touched
+      expect(form.touched, false);
     });
   });
 }

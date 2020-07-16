@@ -60,7 +60,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
         // When: form changes status to invalid
-        form.formControl('name').value = null;
+        form.control('name').value = null;
         await tester.pump();
 
         // Expect: submit button is disabled
@@ -83,7 +83,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
         // When: form changes status to valid
-        form.formControl('name').value = 'Reactive Forms';
+        form.control('name').value = 'Reactive Forms';
         await tester.pump();
 
         // Expect: submit button is disabled

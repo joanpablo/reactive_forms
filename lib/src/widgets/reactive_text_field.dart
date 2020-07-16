@@ -143,19 +143,19 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   @override
   void dispose() {
     _focusNode.removeListener(_onFocusChanged);
-    this.unsubscribeFormControl();
+    this.unsubscribeControl();
     super.dispose();
   }
 
   @override
-  void subscribeFormControl() {
-    super.subscribeFormControl();
+  void subscribeControl() {
+    super.subscribeControl();
     this.control.onFocusChanged.addListener(_onFormControlFocusChanged);
   }
 
   @override
-  void unsubscribeFormControl() {
-    super.unsubscribeFormControl();
+  void unsubscribeControl() {
+    super.unsubscribeControl();
     this.control.onFocusChanged.removeListener(_onFormControlFocusChanged);
   }
 
@@ -178,7 +178,7 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   }
 
   void _onFocusChanged() {
-    if (!_focusNode.hasFocus && !this.control.touched) {
+    if (!_focusNode.hasFocus && !this.touched) {
       this.touch();
     }
 

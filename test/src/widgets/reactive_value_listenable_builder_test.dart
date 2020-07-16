@@ -46,7 +46,7 @@ void main() {
         );
 
         //When: set control value
-        final control = form.formControl('name');
+        final control = form.control('name');
         control.value = 'Reactive Forms';
         await tester.pump();
 

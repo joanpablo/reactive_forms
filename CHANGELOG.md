@@ -1,4 +1,8 @@
-## [1.0.7] - 2020-07-
+## [1.0.7] - 2020
+
+- *FormGroup.touch* mask all controls as touched.
+- renamed *FormGroup.formControl* to *FormGroup.control* 
+  and *FormArray.formControl* to *FormArray.control* to get this controls
 
 - *ReactiveValueListenableBuilder.builder* now pass as parameter the *control* instead of the 
   *value* so you can access the full control within the builder function.

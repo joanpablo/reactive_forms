@@ -82,7 +82,7 @@ void main() {
         Validators.mustMatch('password', 'passwordConfirmation'),
       ]);
 
-      final passwordConfirmation = form.formControl('passwordConfirmation');
+      final passwordConfirmation = form.control('passwordConfirmation');
       passwordConfirmation.value = '1234';
 
       expect(form.valid, true);

@@ -81,7 +81,7 @@ void main() {
         await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
 
         // When: changes control value
-        form.formControl('dropdown').value = true;
+        form.control('dropdown').value = true;
         await tester.pump();
 
         // Then: dropdown value is equals to control
@@ -89,7 +89,7 @@ void main() {
             DropdownButton<bool>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
-        expect(dropdown.value, form.formControl('dropdown').value);
+        expect(dropdown.value, form.control('dropdown').value);
       },
     );
 
@@ -105,7 +105,7 @@ void main() {
         await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
 
         // When: changes control value
-        form.formControl('dropdown').value = false;
+        form.control('dropdown').value = false;
         await tester.pump();
 
         // Then: dropdown value is equals to control
@@ -113,7 +113,7 @@ void main() {
             DropdownButton<bool>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
-        expect(dropdown.value, form.formControl('dropdown').value);
+        expect(dropdown.value, form.control('dropdown').value);
       },
     );
 

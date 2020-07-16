@@ -19,6 +19,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 abstract class AbstractControl<T> {
   final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.valid);
   final _onValueChanged = ValueNotifier<T>(null);
+  final _onTouched = ValueNotifier<bool>(false);
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
@@ -27,14 +28,26 @@ abstract class AbstractControl<T> {
   /// the user taps on the ReactiveFormField widget and then remove focus or
   /// completes the text edition. Validation messages will begin to show up
   /// when the FormControl is touched.
-  bool touched;
+  bool get touched => _onTouched.value;
+
+  /// Marks the control as touched.
+  void touch() {
+    this._onTouched.value = true;
+  }
+
+  /// Marks the control as untouched.
+  void untouch() {
+    this._onTouched.value = false;
+  }
 
   AbstractControl({
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
-    this.touched = false,
+    bool touched = false,
   })  : _validators = validators ?? const [],
-        _asyncValidators = asyncValidators ?? const [];
+        _asyncValidators = asyncValidators ?? const [] {
+    _onTouched.value = touched;
+  }
 
   /// The list of functions that determines the validity of this control.
   ///
@@ -66,6 +79,8 @@ abstract class AbstractControl<T> {
   /// A [ValueListenable] that emits an event every time the value
   /// of the control changes.
   ValueListenable<T> get onValueChanged => _onValueChanged;
+
+  ValueListenable<bool> get onTouched => _onTouched;
 
   /// A control is valid when its [status] is ControlStatus.valid.
   bool get valid => this.status == ControlStatus.valid;
@@ -182,6 +197,7 @@ abstract class AbstractControl<T> {
   }
 
   StreamSubscription _runningAsyncValidators;
+
   @protected
   Future<void> validateAsync() async {
     if (_runningAsyncValidators != null) {

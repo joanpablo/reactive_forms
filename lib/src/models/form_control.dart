@@ -70,7 +70,7 @@ class FormControl<T> extends AbstractControl<T> {
   /// and setting the [value] to [defaultValue].
   @override
   void reset() {
-    this.touched = false;
+    this.untouch();
     this.value = this.defaultValue;
   }
 

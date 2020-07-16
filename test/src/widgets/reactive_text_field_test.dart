@@ -21,7 +21,7 @@ void main() {
         expect(find.text('John'), findsNothing);
 
         // When: set a value to field 'name'
-        form.formControl('name').value = 'John';
+        form.control('name').value = 'John';
         await tester.pump();
 
         // Then: the reactive text field updates its value with the new name
@@ -45,7 +45,7 @@ void main() {
         expect(textField.focusNode.hasFocus, false);
 
         // When: call FormControl.focus()
-        (form.formControl('name') as FormControl).focus();
+        (form.control('name') as FormControl).focus();
         await tester.pump();
 
         // Then: the reactive text field is focused
@@ -72,7 +72,7 @@ void main() {
         expect(textField.focusNode.hasFocus, true);
 
         // When: call FormControl.unfocus()
-        (form.formControl('name') as FormControl).unfocus();
+        (form.control('name') as FormControl).unfocus();
         await tester.pump();
 
         // Then: the reactive text field is unfocused
@@ -101,8 +101,8 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // And: the field is invalid and untouched
-        expect(form.formControl('name').hasErrors, true);
-        expect(form.formControl('name').touched, false);
+        expect(form.control('name').hasErrors, true);
+        expect(form.control('name').touched, false);
 
         // Expect: text field is not showing errors
         final textField =
@@ -155,6 +155,32 @@ void main() {
         expect(textField.decoration.errorText, customMessage);
       },
     );
+
+    testWidgets('Errors visible when control change to touched',
+        (WidgetTester tester) async {
+      // Given: An invalid form
+      final form = FormGroup({
+        'name': FormControl(
+          validators: [Validators.required],
+        ),
+      });
+
+      // And: a widget that is bind to the form
+      await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+      // Expect: text field is not showing errors because is not touched
+      TextField textField =
+          tester.firstWidget(find.byType(TextField)) as TextField;
+      expect(textField.decoration.errorText, null);
+
+      // When: touch the control
+      form.control('name').touch();
+      await tester.pump();
+
+      // Then: text field is showing errors
+      textField = tester.firstWidget(find.byType(TextField)) as TextField;
+      expect(textField.decoration.errorText, ValidationMessage.required);
+    });
 
     testWidgets(
       'FormControlParentNotFoundException when no parent widget',
