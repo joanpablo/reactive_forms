@@ -40,9 +40,7 @@ class _HomePageState extends State<HomePage> {
       Validators.required,
       Validators.minLength(8),
     ]),
-    'passwordConfirmation': FormControl(validators: [
-      Validators.required,
-    ]),
+    'passwordConfirmation': FormControl(),
     'rememberMe': FormControl(defaultValue: false),
     'progress': FormControl<double>(defaultValue: 50.0),
     'dateTime': FormControl<DateTime>(defaultValue: DateTime.now()),
@@ -120,9 +118,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   obscureText: true,
                   validationMessages: {
-                    ValidationMessage.required:
-                        'The password confirmation must not be empty',
-                    ValidationMessage.mustMatch: 'The passwords must match',
+                    ValidationMessage.mustMatch:
+                        'Password confirmation must match',
                   },
                 ),
                 SizedBox(height: 24.0),

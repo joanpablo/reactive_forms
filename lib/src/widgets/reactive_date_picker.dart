@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// A builder that builds a widget responsible to decide when to show
+/// the picker dialog.
+///
+/// The builder pass the [picker] that has the method to show the dialog,
+/// it also has properties to access the [FormControl] bind to
+/// [ReactiveTimePicker].
 typedef ReactiveDatePickerBuilder = Widget Function(
     BuildContext context, ReactiveDatePickerDelegate picker, Widget child);
 
@@ -32,32 +38,37 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<DateTime> field) {
             return builder(
-                field.context,
-                ReactiveDatePickerDelegate._(
-                  field,
-                  () => showDatePicker(
-                    context: field.context,
-                    initialDate: field.value ?? DateTime.now(),
-                    firstDate: firstDate,
-                    lastDate: lastDate,
-                    initialEntryMode: initialEntryMode,
-                    selectableDayPredicate: selectableDayPredicate,
-                    helpText: helpText,
-                    cancelText: cancelText,
-                    confirmText: confirmText,
-                    locale: locale,
-                    useRootNavigator: useRootNavigator,
-                    routeSettings: routeSettings,
-                    textDirection: textDirection,
-                    builder: transitionBuilder,
-                    initialDatePickerMode: initialDatePickerMode,
-                    errorFormatText: errorFormatText,
-                    errorInvalidText: errorInvalidText,
-                    fieldHintText: fieldHintText,
-                    fieldLabelText: fieldLabelText,
-                  ).then(field.didChange),
-                ),
-                child);
+              field.context,
+              ReactiveDatePickerDelegate._(
+                field,
+                () => showDatePicker(
+                  context: field.context,
+                  initialDate: field.value ?? DateTime.now(),
+                  firstDate: firstDate,
+                  lastDate: lastDate,
+                  initialEntryMode: initialEntryMode,
+                  selectableDayPredicate: selectableDayPredicate,
+                  helpText: helpText,
+                  cancelText: cancelText,
+                  confirmText: confirmText,
+                  locale: locale,
+                  useRootNavigator: useRootNavigator,
+                  routeSettings: routeSettings,
+                  textDirection: textDirection,
+                  builder: transitionBuilder,
+                  initialDatePickerMode: initialDatePickerMode,
+                  errorFormatText: errorFormatText,
+                  errorInvalidText: errorInvalidText,
+                  fieldHintText: fieldHintText,
+                  fieldLabelText: fieldLabelText,
+                ).then((value) {
+                  if (value != null) {
+                    field.didChange(value);
+                  }
+                }),
+              ),
+              child,
+            );
           },
         );
 

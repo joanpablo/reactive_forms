@@ -151,6 +151,21 @@ void main() {
       // Expect: array is also invalid
       expect(array.valid, false);
     });
+
+    test('FormArray.controls contains controls collection', () {
+      // Given: an array with three controls
+      final array = FormArray([
+        FormControl(),
+        FormControl(),
+        FormControl(),
+      ]);
+
+      // When: count children of array
+      int count = array.controls.length;
+
+      // Then: count is three
+      expect(count, 3);
+    });
   });
 }
 

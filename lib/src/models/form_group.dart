@@ -13,7 +13,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// It calculates its status by reducing the status values of its children.
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
-///
 class FormGroup extends AbstractControl<Map<String, dynamic>>
     implements FormControlCollection {
   final Map<String, AbstractControl> _controls;
@@ -37,7 +36,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// You can also set [validators] as optionally argument.
   ///
   /// See also [AbstractControl.validators]
-  ///
   FormGroup(
     Map<String, AbstractControl> controls, {
     List<ValidatorFunction> validators,
@@ -63,14 +61,18 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return this._controls[name];
   }
 
-  /// Emits when a control is added or removed from collection.
+  /// Gets the collection of child controls.
   ///
+  /// The key for each child is the name under which it is registered.
+  Map<String, AbstractControl> get controls => Map.unmodifiable(this._controls);
+
+  /// Emits when a control is added or removed from collection.
   @override
   Listenable get onCollectionChanged => this._onCollectionChanged;
 
   /// Returns the current value of the group.
-  /// The values of controls as an object with
-  /// a key-value pair for each control in the group.
+  ///
+  /// Value of the group is a key-value pair for each control in the group.
   ///
   /// ### Example:
   ///
@@ -86,7 +88,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// ```json
   /// { "name": "John Doe", "email": "johndoe@email.com" }
   ///```
-  ///
   Map<String, dynamic> get value {
     final map = Map<String, dynamic>();
     this._controls.forEach((key, formControl) {
@@ -113,7 +114,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// ```json
   /// { "name": "John Doe", "email": "johndoe@email.com" }
   ///```
-  ///
   @override
   set value(Map<String, dynamic> newValue) {
     newValue.forEach((key, value) {
@@ -123,11 +123,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
   }
 
-  /// Resets all the controls of the group, marking them as untouched,
-  /// and setting the [FormControl.value] to [FormControl.defaultValue].
+  /// Resets all the controls of the group to default.
+  ///
+  /// Marks them as untouched and sets the
+  /// [FormControl.value] to [FormControl.defaultValue].
   ///
   /// See also [FormControl.reset()]
-  ///
   @override
   void reset() {
     this._controls.forEach((key, formControl) {
@@ -135,7 +136,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
   }
 
-  /// A [FormGroup] is touched if at least one of its controls is touched
+  /// A group is touched if at least one of its children is mark as touched.
   @override
   bool get touched => this._controls.values.any((control) => control.touched);
 

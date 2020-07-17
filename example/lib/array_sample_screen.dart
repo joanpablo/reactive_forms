@@ -48,8 +48,8 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
                 ReactiveFormArray(
                   formArrayName: 'selectedContacts',
                   builder: (context, formArray, child) => Column(
-                    children: this.contacts.map(_buildEmailListItem).toList(),
-                  ),
+                      children:
+                          this.contacts.map(_buildEmailListItem).toList()),
                 ),
                 ReactiveFormConsumer(
                   builder: (context, form, child) {

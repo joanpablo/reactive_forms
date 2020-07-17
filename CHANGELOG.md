@@ -3,9 +3,9 @@
 - *FormGroup.touch* mask all controls as touched.
 - renamed *FormGroup.formControl* to *FormGroup.control* 
   and *FormArray.formControl* to *FormArray.control* to get *controls* by name.
-
 - *ReactiveValueListenableBuilder.builder* now pass the *control* as parameter instead of the 
   *value* so you can get access to the control within the builder function.
+- Added *FormGroup.controls* and *FormArray.controls* to iterate over child controls.
 
 - **Bonus widgets:**
   - **ReactiveDatePicker**
