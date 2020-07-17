@@ -199,6 +199,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
       this.notifyValueChanged(this.value);
     } else {
       this.validate();
+      this.notifyValueChanged(this.value);
     }
   }
 

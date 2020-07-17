@@ -240,5 +240,24 @@ void main() {
       expect(names.contains('email'), true);
       expect(names.contains('password'), true);
     });
+
+    test('Group notify value changes when control value changes', () {
+      // Given: a form with a controls
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      // When: listen to changes notification
+      bool valueChanged = false;
+      form.onValueChanged.addListener(() {
+        valueChanged = true;
+      });
+
+      // And: change value to control
+      form.control('name').value = 'Reactive Forms';
+
+      // Then: form value changed fires
+      expect(valueChanged, true);
+    });
   });
 }

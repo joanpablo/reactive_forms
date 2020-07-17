@@ -124,41 +124,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 SizedBox(height: 24.0),
-                ReactiveTextField(
-                  formControlName: 'dateTime',
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Birthday',
-                    suffixIcon: ReactiveDatePicker(
-                      formControlName: 'dateTime',
-                      firstDate: DateTime(1985),
-                      lastDate: DateTime(2030),
-                      builder: (context, picker, child) {
-                        return IconButton(
-                          onPressed: picker.showPicker,
-                          icon: Icon(Icons.date_range),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                ReactiveTextField(
-                  formControlName: 'time',
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Birthday',
-                    suffixIcon: ReactiveTimePicker(
-                      formControlName: 'time',
-                      builder: (context, picker, child) {
-                        return IconButton(
-                          onPressed: picker.showPicker,
-                          icon: Icon(Icons.access_time),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 24.0),
                 ReactiveFormConsumer(
                   builder: (context, form, child) {
                     return RaisedButton(
@@ -198,6 +163,7 @@ class _HomePageState extends State<HomePage> {
                     value: false,
                   ),
                 ),
+                SizedBox(height: 24.0),
                 ReactiveValueListenableBuilder<double>(
                   formControlName: 'progress',
                   builder: (context, control, child) {
@@ -212,6 +178,43 @@ class _HomePageState extends State<HomePage> {
                   labelBuilder: (double value) =>
                       '${value.toStringAsFixed(2)}%',
                 ),
+                SizedBox(height: 24.0),
+                ReactiveTextField(
+                  formControlName: 'dateTime',
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Birthday',
+                    suffixIcon: ReactiveDatePicker(
+                      formControlName: 'dateTime',
+                      firstDate: DateTime(1985),
+                      lastDate: DateTime(2030),
+                      builder: (context, picker, child) {
+                        return IconButton(
+                          onPressed: picker.showPicker,
+                          icon: Icon(Icons.date_range),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                ReactiveTextField(
+                  formControlName: 'time',
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Birthday',
+                    suffixIcon: ReactiveTimePicker(
+                      formControlName: 'time',
+                      builder: (context, picker, child) {
+                        return IconButton(
+                          onPressed: picker.showPicker,
+                          icon: Icon(Icons.access_time),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24.0),
               ],
             ),
           ),
@@ -227,12 +230,17 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 /// Async validator example that simulates a request to a server
 /// to validate if the email of the user is unique.
 Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
-  final error = {'unique': true};
+  final error = {'unique': false};
 
-  return Future.delayed(
-    Duration(seconds: 5),
-    () => inUseEmails.contains(control.value) ? error : null,
-  );
+  final emailAlreadyUsed = await Future.delayed(
+      Duration(seconds: 5), () => inUseEmails.contains(control.value));
+
+  if (emailAlreadyUsed) {
+    control.touch();
+    return error;
+  }
+
+  return null;
 }
 
 final customTheme = ThemeData.light().copyWith(
