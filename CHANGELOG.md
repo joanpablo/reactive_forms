@@ -13,8 +13,8 @@
 
 # 1.0.6  
 
-- fixed ReactiveCheckbox and ReactiveCheckboxListTile exception when binding with FormControl with null value.
-- increased code tests coverage to 92% (a lot of tests).
+- Fixed ReactiveCheckbox and ReactiveCheckboxListTile exception when binding with FormControl with null value.
+- Increased code tests coverage to 92% (a lot of tests).
 - *FormArray.removeAt* method added to remove a control given the index position.  
 
 # 1.0.5  
