@@ -25,11 +25,11 @@ typedef ReactiveTimePickerBuilder = Widget Function(
 ///
 /// ```dart
 /// ReactiveTimePicker(
-///   formControlName: 'dateTime',
+///   formControlName: 'time',
 ///   builder: (context, picker, child) {
 ///     return IconButton(
 ///       onPressed: picker.showPicker,
-///       icon: Icon(Icons.date_range),
+///       icon: Icon(Icons.access_time),
 ///     );
 ///   },
 /// )
@@ -37,8 +37,7 @@ typedef ReactiveTimePickerBuilder = Widget Function(
 class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
   /// Creates a [ReactiveTimePicker] that wraps the function [showTimePicker].
   ///
-  /// The [formControlName] is required to bind this ReactiveFormField
-  /// to a [FormControl].
+  /// The [formControlName] is required to bind this widget to a [FormControl].
   ///
   /// The parameter [transitionBuilder] is the equivalent of [builder]
   /// parameter in the [showTimePicker].
