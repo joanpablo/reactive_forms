@@ -207,6 +207,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
       this.notifyValueChanged(this.value);
     } else {
       this.validate();
+      this.notifyValueChanged(this.value);
     }
   }
 
