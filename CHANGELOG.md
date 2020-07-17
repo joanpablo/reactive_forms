@@ -1,4 +1,4 @@
-## [1.0.7] - 2020
+## [1.0.7] - 2020-07-17
 
 - *FormGroup.touch* mask all controls as touched.
 - renamed *FormGroup.formControl* to *FormGroup.control* 
