@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^1.0.6
+  reactive_forms: ^1.0.7
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -736,7 +736,7 @@ Widget build(BuildContext context) {
 
 > Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl** the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*, *onChanged*, *onEditingComplete*, *onFieldSubmitted*, the **FormControl** is responsible for handling validation as well as changes notifications.
 
-## Supported Reactive Form Fields Widgets
+## Supported Reactive Form Field Widgets
 
 - ReactiveTextField
 - ReactiveDropdownField
@@ -747,6 +747,11 @@ Widget build(BuildContext context) {
 - ReactiveCheckboxListTile
 - ReactiveSwitchListTile
 - ReactiveRadioListTile
+
+## Bonus Field Widgets
+
+- ReactiveDatePicker
+- ReactiveTimePicker
 
 ## Other Reactive Forms Widgets
 
