@@ -3,7 +3,7 @@
 ### Fixes  
 
 - FormArray and FormGroup now notify value changes when a control without validators changes 
-its value
+its value.  
 
 # 1.0.7  
 
