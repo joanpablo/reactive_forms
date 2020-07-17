@@ -859,18 +859,18 @@ In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-W
 
 No more *onSave*, *onChanges*, *onEditionCompleted* callbacks needed or *TextEditionControllers* to collect data from inputs and get syncronizations between model and widgets values. Goodby to verbose and boilerplate code.
 
-**Reactive Forms** get a clean separation between views an model and mantains syncronization between your model and widgets in a transparent way with two-binding mechanism, you don't have to collect data, it does it for you. So you just define your model, declare your widgets and then layback and relax, data will flow smoothly.
+**Reactive Forms** get a clean separation between views an model and maintains synchronization between your model and widgets in a transparent way with two-binding mechanism, you don't have to collect data, it does it for you. So you just define your model, declare your widgets and then layback and relax, data will flow smoothly.
 
 ### 2. Transparent and Clean Validations of inputs fields.
 
-No more StatefullWidget defining a *key* for the *Form* widget, goodby to *Form.of(context)* and goodby to:
+No more StatefulWidget defining a *key* for the *Form* widget, goodbye to *Form.of(context)* and goodbye to:
 ```dart
 if (form.validate()) {
   form.save();
 }
 ```
 
-In **Reactive Forms** Validations occures transparently, you don't have to write boilerplate code in each of your Forms to take care manually of this kind of tasks. Just declare your model and define the **validators** you need, **Reactive Form** will handles it for you. It will handle validity of controls and validity of the entire Form. It will shows error messages and will mantains validity syncronization. All of that without you need to write a single imperative line of code to handle it.
+In **Reactive Forms** Validations occurs transparently, you don't have to write boilerplate code in each of your Forms to take care manually of this kind of tasks. Just declare your model and define the **validators** you need, **Reactive Form** will handles it for you. It will handle validity of controls and validity of the entire Form. It will shows error messages and will mantains validity syncronization. All of that without you need to write a single imperative line of code to handle it.
 
 ```dart
 // just declare your Form and validators
