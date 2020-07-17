@@ -39,10 +39,10 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     Color hoverColor,
     bool autofocus = false,
   }) : super(
+          key: key,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch(
-              key: key,
               value: field.value ?? false,
               onChanged: field.didChange,
               activeColor: activeColor,
@@ -91,10 +91,10 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     Color focusColor,
     Color hoverColor,
   }) : super(
+          key: key,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch.adaptive(
-              key: key,
               value: field.value ?? false,
               onChanged: field.didChange,
               activeColor: activeColor,

@@ -63,62 +63,64 @@ class ReactiveTextField extends ReactiveFormField<String> {
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
   }) : super(
-            formControlName: formControlName,
-            validationMessages: validationMessages ?? const {},
-            builder: (ReactiveFormFieldState<String> field) {
-              final state = field as _ReactiveTextFieldState;
-              final InputDecoration effectiveDecoration = (decoration ??
-                      const InputDecoration())
-                  .applyDefaults(Theme.of(state.context).inputDecorationTheme);
+          key: key,
+          formControlName: formControlName,
+          validationMessages: validationMessages ?? const {},
+          builder: (ReactiveFormFieldState<String> field) {
+            final state = field as _ReactiveTextFieldState;
+            final InputDecoration effectiveDecoration = (decoration ??
+                    const InputDecoration())
+                .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
-              return TextField(
-                controller: state._textController,
-                focusNode: state._focusNode,
-                decoration:
-                    effectiveDecoration.copyWith(errorText: state.errorText),
-                keyboardType: keyboardType,
-                textInputAction: textInputAction,
-                style: style,
-                strutStyle: strutStyle,
-                textAlign: textAlign,
-                textAlignVertical: textAlignVertical,
-                textDirection: textDirection,
-                textCapitalization: textCapitalization,
-                autofocus: autofocus,
-                toolbarOptions: toolbarOptions,
-                readOnly: readOnly,
-                showCursor: showCursor,
-                obscureText: obscureText,
-                autocorrect: autocorrect,
-                smartDashesType: smartDashesType ??
-                    (obscureText
-                        ? SmartDashesType.disabled
-                        : SmartDashesType.enabled),
-                smartQuotesType: smartQuotesType ??
-                    (obscureText
-                        ? SmartQuotesType.disabled
-                        : SmartQuotesType.enabled),
-                enableSuggestions: enableSuggestions,
-                maxLengthEnforced: maxLengthEnforced,
-                maxLines: maxLines,
-                minLines: minLines,
-                expands: expands,
-                maxLength: maxLength,
-                onChanged: state.didChange,
-                onTap: onTap,
-                onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
-                inputFormatters: inputFormatters,
-                enabled: enabled,
-                cursorWidth: cursorWidth,
-                cursorRadius: cursorRadius,
-                cursorColor: cursorColor,
-                scrollPadding: scrollPadding,
-                scrollPhysics: scrollPhysics,
-                keyboardAppearance: keyboardAppearance,
-                enableInteractiveSelection: enableInteractiveSelection,
-                buildCounter: buildCounter,
-              );
-            });
+            return TextField(
+              controller: state._textController,
+              focusNode: state._focusNode,
+              decoration:
+                  effectiveDecoration.copyWith(errorText: state.errorText),
+              keyboardType: keyboardType,
+              textInputAction: textInputAction,
+              style: style,
+              strutStyle: strutStyle,
+              textAlign: textAlign,
+              textAlignVertical: textAlignVertical,
+              textDirection: textDirection,
+              textCapitalization: textCapitalization,
+              autofocus: autofocus,
+              toolbarOptions: toolbarOptions,
+              readOnly: readOnly,
+              showCursor: showCursor,
+              obscureText: obscureText,
+              autocorrect: autocorrect,
+              smartDashesType: smartDashesType ??
+                  (obscureText
+                      ? SmartDashesType.disabled
+                      : SmartDashesType.enabled),
+              smartQuotesType: smartQuotesType ??
+                  (obscureText
+                      ? SmartQuotesType.disabled
+                      : SmartQuotesType.enabled),
+              enableSuggestions: enableSuggestions,
+              maxLengthEnforced: maxLengthEnforced,
+              maxLines: maxLines,
+              minLines: minLines,
+              expands: expands,
+              maxLength: maxLength,
+              onChanged: state.didChange,
+              onTap: onTap,
+              onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
+              inputFormatters: inputFormatters,
+              enabled: enabled,
+              cursorWidth: cursorWidth,
+              cursorRadius: cursorRadius,
+              cursorColor: cursorColor,
+              scrollPadding: scrollPadding,
+              scrollPhysics: scrollPhysics,
+              keyboardAppearance: keyboardAppearance,
+              enableInteractiveSelection: enableInteractiveSelection,
+              buildCounter: buildCounter,
+            );
+          },
+        );
 
   @override
   ReactiveFormFieldState<String> createState() => _ReactiveTextFieldState();

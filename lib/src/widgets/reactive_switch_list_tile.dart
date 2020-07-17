@@ -20,6 +20,7 @@ class ReactiveSwitchListTile extends ReactiveFormField {
   ///
   /// See also [CheckboxListTile]
   ReactiveSwitchListTile({
+    Key key,
     @required String formControlName,
     Color activeColor,
     Color activeTrackColor,
@@ -34,6 +35,7 @@ class ReactiveSwitchListTile extends ReactiveFormField {
     EdgeInsetsGeometry contentPadding,
     Widget secondary,
   }) : super(
+          key: key,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState field) {
             return SwitchListTile(

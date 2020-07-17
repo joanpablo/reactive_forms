@@ -40,6 +40,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
         assert(isExpanded != null),
         assert(itemHeight == null || itemHeight > 0),
         super(
+          key: key,
           formControlName: formControlName,
           validationMessages: validationMessages ?? const {},
           builder: (ReactiveFormFieldState field) {

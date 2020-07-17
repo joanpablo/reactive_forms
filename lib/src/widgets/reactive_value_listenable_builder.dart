@@ -31,7 +31,8 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
     @required this.builder,
     this.child,
   })  : assert(formControlName != null),
-        assert(builder != null);
+        assert(builder != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

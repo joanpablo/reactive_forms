@@ -54,6 +54,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
     Widget child,
   })  : assert(builder != null),
         super(
+          key: key,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<TimeOfDay> field) {
             return builder(

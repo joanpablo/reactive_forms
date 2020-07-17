@@ -185,6 +185,20 @@ void main() {
       // Then: array value changed fires
       expect(valueChanged, true);
     });
+
+    test('Remove control', () {
+      // Given: an array with two controls
+      final array = FormArray<String>([
+        FormControl<String>(defaultValue: 'Reactive'),
+        FormControl<String>(defaultValue: 'Forms'),
+      ]);
+
+      // When: removed last control
+      array.remove(array.controls.last);
+
+      // Then: last control is removed
+      expect(array.value.join(''), 'Reactive');
+    });
   });
 }
 
