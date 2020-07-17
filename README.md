@@ -852,36 +852,3 @@ This way you can separate UI logic from business logic and you can define the **
 **Reactive Forms** is not limited just to common widgets in *Forms* like text, dropdowns, sliders switch fields and etc, you can easily create **custom widgets** that **two-way** binds to **FormControls** and create your own set of *Reactive Widgets* ;)
 
 In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-Widgets) you can find a tutorial of how to create your custom Reactive Widget. 
-
-## Why use Reactive Forms?
-
-### 1. Ease and Clean way of collecting data from your Forms.
-
-No more *onSave*, *onChanges*, *onEditionCompleted* callbacks needed or *TextEditionControllers* to collect data from inputs and get syncronizations between model and widgets values. Goodby to verbose and boilerplate code.
-
-**Reactive Forms** get a clean separation between views an model and maintains synchronization between your model and widgets in a transparent way with two-binding mechanism, you don't have to collect data, it does it for you. So you just define your model, declare your widgets and then layback and relax, data will flow smoothly.
-
-### 2. Transparent and Clean Validations of inputs fields.
-
-No more StatefulWidget defining a *key* for the *Form* widget, goodbye to *Form.of(context)* and goodbye to:
-```dart
-if (form.validate()) {
-  form.save();
-}
-```
-
-In **Reactive Forms** Validations occurs transparently, you don't have to write boilerplate code in each of your Forms to take care manually of this kind of tasks. Just declare your model and define the **validators** you need, **Reactive Form** will handles it for you. It will handle validity of controls and validity of the entire Form. It will shows error messages and will mantains validity syncronization. All of that without you need to write a single imperative line of code to handle it.
-
-```dart
-// just declare your Form and validators
-final form = FormGroup({
-  'email': FormControl(validators: [
-    Validators.required,
-    Validators.email,
-  ]),
-});
-```
-
-### 3. Enable/Disable buttons depending of Form validity.
-### 4. Perfect integration with Provider plugin and other state management plugins.
-### 5. Focus/Unfocus text fields ease and clean.
