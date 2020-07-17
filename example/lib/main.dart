@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
     'rememberMe': FormControl(defaultValue: false),
     'progress': FormControl<double>(defaultValue: 50.0),
     'dateTime': FormControl<DateTime>(defaultValue: DateTime.now()),
+    'time': FormControl<TimeOfDay>(defaultValue: TimeOfDay.now()),
   }, validators: [
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
@@ -136,6 +137,22 @@ class _HomePageState extends State<HomePage> {
                         return IconButton(
                           onPressed: picker.showPicker,
                           icon: Icon(Icons.date_range),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                ReactiveTextField(
+                  formControlName: 'time',
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Birthday',
+                    suffixIcon: ReactiveTimePicker(
+                      formControlName: 'time',
+                      builder: (context, picker, child) {
+                        return IconButton(
+                          onPressed: picker.showPicker,
+                          icon: Icon(Icons.access_time),
                         );
                       },
                     ),
