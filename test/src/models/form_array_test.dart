@@ -166,6 +166,25 @@ void main() {
       // Then: count is three
       expect(count, 3);
     });
+
+    test('Array notify value changes when control value changes', () {
+      // Given: an array with a controls
+      final array = FormArray([
+        FormControl(),
+      ]);
+
+      // When: listen to changes notification
+      bool valueChanged = false;
+      array.onValueChanged.addListener(() {
+        valueChanged = true;
+      });
+
+      // And: change value to control
+      array.control('0').value = 'Reactive Forms';
+
+      // Then: array value changed fires
+      expect(valueChanged, true);
+    });
   });
 }
 

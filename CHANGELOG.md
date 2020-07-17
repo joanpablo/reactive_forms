@@ -1,3 +1,10 @@
+# 1.0.8  
+
+### Fixes  
+
+- FormArray and FormGroup now notify value changes when a control without validators changes 
+its value
+
 # 1.0.7  
 
 - *FormGroup.touch* mask all controls as touched.
