@@ -18,10 +18,12 @@ class FormControlInheritedNotifier extends InheritedNotifier<Listenable> {
   final AbstractControl control;
 
   FormControlInheritedNotifier({
+    Key key,
     @required this.control,
     @required FormControlInheritedNotifierDelegate notifierDelegate,
     @required Widget child,
   }) : super(
+          key: key,
           notifier: notifierDelegate(),
           child: child,
         );

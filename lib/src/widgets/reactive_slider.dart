@@ -37,6 +37,7 @@ class ReactiveSlider extends ReactiveFormField<double> {
     ValueChanged<double> onChangeEnd,
     ValueChanged<double> onChangeStart,
   }) : super(
+          key: key,
           formControlName: formControlName,
           validationMessages: const {},
           builder: (ReactiveFormFieldState<double> field) {

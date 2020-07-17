@@ -68,6 +68,7 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
     Widget child,
   })  : assert(builder != null),
         super(
+          key: key,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<DateTime> field) {
             return builder(

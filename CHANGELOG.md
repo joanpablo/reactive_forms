@@ -1,3 +1,11 @@
+# 1.0.9  
+
+- Added utilities an extensions to *AbstractControl*
+  - AbstractControl.isNull
+  - AbstractControl<String>.isNullOrEmpty
+  
+- Minor fixes
+
 # 1.0.8  
 
 ### Fixes  

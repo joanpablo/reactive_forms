@@ -51,7 +51,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
       this._controls.map((control) => control.value).toList();
 
   /// Gets the list of child controls.
-  List<AbstractControl> get controls => List.unmodifiable(this._controls);
+  List<AbstractControl<T>> get controls => List.unmodifiable(this._controls);
 
   /// Sets the value of the [FormArray].
   ///
@@ -101,6 +101,17 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this._notifyCollectionChanged();
   }
 
+  /// Removes [control].
+  ///
+  /// Throws [FormControlNotFoundException] if no control found.
+  void remove(AbstractControl<T> control) {
+    final index = this._controls.indexOf(control);
+    if (index == -1) {
+      throw FormControlNotFoundException();
+    }
+    this.removeAt(index);
+  }
+
   /// Returns a control by name where [name].
   ///
   /// The [name] is the String representation of the index position
@@ -133,7 +144,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     if (index == null) {
       throw FormArrayInvalidIndexException(name);
     } else if (index >= this._controls.length) {
-      throw FormControlNotFoundException(name);
+      throw FormControlNotFoundException(controlName: name);
     }
 
     return this._controls[index];

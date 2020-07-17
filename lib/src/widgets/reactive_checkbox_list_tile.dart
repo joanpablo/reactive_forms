@@ -20,6 +20,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
   ///
   /// See also [CheckboxListTile]
   ReactiveCheckboxListTile({
+    Key key,
     @required String formControlName,
     Color activeColor,
     Color checkColor,
@@ -30,6 +31,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
     Widget secondary,
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
   }) : super(
+          key: key,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState field) {
             return CheckboxListTile(
