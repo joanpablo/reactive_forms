@@ -2,6 +2,7 @@
 
 This is a model-driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4b71e2f1a0fb449b8342c9f810d51759)](https://app.codacy.com/manual/joanpablo/reactive_forms?utm_source=github.com&utm_medium=referral&utm_content=joanpablo/reactive_forms&utm_campaign=Badge_Grade_Settings)
 ![Pub Version](https://img.shields.io/pub/v/reactive_forms) ![GitHub](https://img.shields.io/github/license/joanpablo/reactive_forms) ![GitHub top language](https://img.shields.io/github/languages/top/joanpablo/reactive_forms) ![flutter tests](https://github.com/joanpablo/reactive_forms/workflows/flutter%20tests/badge.svg?branch=master) [![codecov](https://codecov.io/gh/joanpablo/reactive_forms/branch/master/graph/badge.svg)](https://codecov.io/gh/joanpablo/reactive_forms)
 
 ## Getting Started
