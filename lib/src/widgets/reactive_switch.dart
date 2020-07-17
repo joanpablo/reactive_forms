@@ -22,7 +22,6 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
   ///
   /// For documentation about the various parameters, see the [Switch] class
   /// and [new Switch], the constructor.
-  ///
   ReactiveSwitch({
     Key key,
     @required String formControlName,

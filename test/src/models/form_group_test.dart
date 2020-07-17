@@ -217,5 +217,28 @@ void main() {
       // Expect: the form is touched
       expect(form.touched, false);
     });
+
+    test('FormGroup.controls contains controls collection', () {
+      // Given: a group with three controls
+      final group = FormGroup({
+        'name': FormControl(),
+        'email': FormControl(),
+        'password': FormControl(),
+      });
+
+      // When: count children of array
+      int count = group.controls.length;
+
+      // And: get names of controls
+      List names = group.controls.keys.toList();
+
+      // Then: count is three
+      expect(count, 3);
+
+      // And: names are correct
+      expect(names.contains('name'), true);
+      expect(names.contains('email'), true);
+      expect(names.contains('password'), true);
+    });
   });
 }

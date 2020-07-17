@@ -13,7 +13,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
-///
 class FormArray<T> extends AbstractControl<Iterable<T>>
     implements FormControlCollection {
   final List<AbstractControl<T>> _controls = [];
@@ -38,7 +37,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// You can also set [validators] as optionally argument.
   ///
   /// See also [AbstractControl.validators]
-  ///
   FormArray(
     Iterable<AbstractControl<T>> controls, {
     List<ValidatorFunction> validators,
@@ -47,13 +45,16 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.addAll(controls);
   }
 
-  /// Returns the values of controls as an [Iterable].
-  ///
+  /// Gets the values of controls as an [Iterable].
   @override
   Iterable<T> get value =>
       this._controls.map((control) => control.value).toList();
 
+  /// Gets the list of child controls.
+  List<AbstractControl> get controls => List.unmodifiable(this._controls);
+
   /// Sets the value of the [FormArray].
+  ///
   /// It accepts an array that matches the structure of the control.
   @override
   set value(Iterable<T> newValue) {
@@ -65,28 +66,26 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   /// Emits when a control is added or removed from collection.
-  ///
   @override
   Listenable get onCollectionChanged => this._onCollectionChanged;
 
-  /// Resets all the controls of the array, marking them as untouched,
-  /// and setting the [FormControl.value] to [FormControl.defaultValue].
+  /// Resets all the controls of the array to default.
+  ///
+  /// Marks them as untouched and sets the
+  /// [FormControl.value] to [FormControl.defaultValue].
   ///
   /// See also [FormControl.reset()]
-  ///
   @override
   void reset() {
     this._controls.forEach((control) => control.reset());
   }
 
   /// Insert a new [AbstractControl] at the end of the array.
-  ///
   void add(AbstractControl<T> control) {
     this.addAll([control]);
   }
 
   /// Appends all [AbstractControl] of [iterable] to the end of this array.
-  ///
   void addAll(Iterable<AbstractControl<T>> controls) {
     this._controls.addAll(controls);
     this.validate();
@@ -95,7 +94,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   /// Removes control at [index]
-  ///
   void removeAt(int index) {
     final removedControl = this._controls.removeAt(index);
     this.validate();
@@ -103,8 +101,10 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this._notifyCollectionChanged();
   }
 
-  /// Returns a [AbstractControl] by [name].
-  /// The key represents the index of the control.
+  /// Returns a control by name where [name].
+  ///
+  /// The [name] is the String representation of the index position
+  /// of the control in array.
   ///
   /// Throws [FormArrayInvalidIndexException] if [name] is not e valid [int]
   /// number.
