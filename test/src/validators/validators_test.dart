@@ -136,4 +136,41 @@ void main() {
       expect(control.valid, true);
     });
   });
+
+  group('Composing Validator Tests', () {
+    test(
+      'If none validators validate to VALID then the control is INVALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          defaultValue: 'john@',
+          validators: Validators.compose([
+            Validators.email,
+            Validators.minLength(20),
+          ]),
+        );
+
+        // Expect: control invalid
+        expect(control.valid, false);
+      },
+    );
+
+    test(
+      'If none validators validate to VALID then the control is INVALID',
+      () {
+        // Given: a control that is email and min length in 20
+        // but with valid email default value
+        final control = FormControl<String>(
+          defaultValue: 'john@email.com',
+          validators: Validators.compose([
+            Validators.email,
+            Validators.minLength(20),
+          ]),
+        );
+
+        // Expect: control invalid
+        expect(control.valid, true);
+      },
+    );
+  });
 }

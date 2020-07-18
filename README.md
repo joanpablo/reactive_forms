@@ -298,6 +298,43 @@ The previous implementation was a simple function that receives the **AbstractCo
 
 >If you want to see **Async Validators** in action with a **full example** using widgets and animations to feedback the user we strong advice you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file just to simplify things here and to not anticipate things that we will see later in this doc.
 
+## Composing Validators
+
+To explain what Composing Validators is, let's see an example:
+
+We want to validate a text field of an authentication form. In this text field the user can write an **email** or a **phone number** and we want to make sure that the information is correctly formatted: that is, if it is an email, it is a valid email and if it is a phone it must have a valid format.
+
+```dart
+
+final phonePattern = '<some phone regex pattern>';
+
+final form = FormGroup({
+  'user': FormControl<String>(
+    validators: Validators.compose([
+      Validators.email,
+      Validators.pattern(phonePattern),
+    ]),
+  ),
+});
+```
+> Note that **Validators.compose** receives a collection of validators as argument and returns a collection of validators, this is intentional just to simplify code readability.
+
+With **Validators.compose** we are saying to **FormControl** that **if at least one validator evaluate as VALID then the control is VALID** it's not necesary that both validators evaluate to valid.
+
+Another example could be to validate multiples Credit Card numbers. In that case you have several regular expression patterns for each of the different kinds of credit cards. So the user can introduce a card number and if the information match with at least one of the cards the System recognice then the information is considered as valid.
+
+```dart
+final form = FormGroup({
+  'cardNumber': FormControl<String>(
+    validators: Validators.compose([
+      Validators.pattern(americanExpressCardPattern),
+      Validators.pattern(masterCardPattern),
+      Validators.pattern(visaCardPattern),
+    ]),
+  ),
+});
+```
+
 ## Groups of Groups :grin:
 
 **FormGroup** is not restricted to contains only **FormControl**, it can nest others **FormGroup** so you can create more complex **Forms**.
