@@ -5,9 +5,13 @@
 /// This exception is thrown when the index used to access a control in a
 /// [FormArray] is not a valid integer number.
 class FormArrayInvalidIndexException implements Exception {
+  /// The invalid index that was the cause of this exception.
   final String index;
 
-  /// Creates an instance of the exception
+  /// Creates an instance of the exception.
+  ///
+  /// The [index] argument is the invalid index that was the cause
+  /// of this exception.
   FormArrayInvalidIndexException(this.index);
 
   @override

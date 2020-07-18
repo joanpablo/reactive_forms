@@ -15,8 +15,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// See [ValueListenableBuilder] documentation for more information
 ///
 class ReactiveValueListenableBuilder<T> extends StatelessWidget {
+  /// The name of the control bound to this widgets.
   final String formControlName;
+
+  /// Optionally child widget.
   final Widget child;
+
+  /// The builder that creates a widget depending on the value of the control.
   final ReactiveListenableWidgetBuilder<T> builder;
 
   /// Create an instance of a [ReactiveValueListenableBuilder].

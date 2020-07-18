@@ -22,7 +22,11 @@ class ReactiveFormField<T> extends StatefulWidget {
   /// passed the form field state as input, containing the current value and
   /// validation state of this field.
   final ReactiveFormFieldBuilder<T> _builder;
+
+  /// The name of the [FormControl] that is bound to this widget.
   final String formControlName;
+
+  /// A [Map] that store custom validation messages for each error.
   final Map<String, String> validationMessages;
 
   /// Creates an instance of the [ReactiveFormField].
@@ -45,6 +49,7 @@ class ReactiveFormField<T> extends StatefulWidget {
 
 /// Represents the state of the [ReactiveFormField] stateful widget.
 class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
+  /// The [FormControl] that is bound to this state.
   FormControl control;
   bool _touched;
 

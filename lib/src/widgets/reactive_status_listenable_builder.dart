@@ -8,8 +8,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// that listen [AbstractControl.onStatusChanged]
 ///
 class ReactiveStatusListenableBuilder extends StatelessWidget {
+  /// The name of the control bound to this widgets
   final String formControlName;
+
+  /// Optionally child widget
   final Widget child;
+
+  /// The builder that creates a widget depending on the status of the control.
   final ReactiveListenableWidgetBuilder builder;
 
   /// Creates an instance of [ReactiveStatusListenableBuilder].

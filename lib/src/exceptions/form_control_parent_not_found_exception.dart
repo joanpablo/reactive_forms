@@ -7,10 +7,11 @@ import 'package:flutter/widgets.dart';
 /// This exception is thrown by Reactive Widgets that doesn't find a
 /// parent widget [ReactiveForm] or [ReactiveFormArray] in the widgets tree.
 class FormControlParentNotFoundException implements Exception {
+  /// The widget that throws this exception.
   Widget widget;
 
   /// Creates an instance of the exception
-  /// passing the widget that throws the exception.
+  /// passing the [widget] that throws the exception.
   FormControlParentNotFoundException(this.widget);
 
   @override
