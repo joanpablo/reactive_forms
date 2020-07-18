@@ -1,8 +1,13 @@
+# 1.0.10
+
+- Composing validators with **Validators.compose**
+- Added optionally type to ReactiveFormArray widget
+
 # 1.0.9  
 
 - Added utilities an extensions to *AbstractControl*
   - AbstractControl.isNull
-  - AbstractControl<String>.isNullOrEmpty
+  - AbstractControl.isNullOrEmpty for controls of type *String*
   
 - Minor fixes
 
