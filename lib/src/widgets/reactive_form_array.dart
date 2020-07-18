@@ -11,8 +11,8 @@ import '../widgets/form_control_inherited_notifier.dart';
 /// This is the signature of a function that receives the [context],
 /// the [formArray] and an optional [child] and returns a [Widget].
 ///
-typedef ReactiveFormArrayBuilder = Widget Function(
-    BuildContext context, FormArray formArray, Widget child);
+typedef ReactiveFormArrayBuilder<T> = Widget Function(
+    BuildContext context, FormArray<T> formArray, Widget child);
 
 /// This class is responsible for create a [FormControlInheritedNotifier] for
 /// exposing a [FormArray] to all descendants widgets.
@@ -20,10 +20,10 @@ typedef ReactiveFormArrayBuilder = Widget Function(
 /// It also configures the inner [FormControlInheritedNotifier] to refresh
 /// context each time the [FormArray] append or remove new controls.
 ///
-class ReactiveFormArray extends StatefulWidget {
+class ReactiveFormArray<T> extends StatefulWidget {
   final String formArrayName;
   final Widget child;
-  final ReactiveFormArrayBuilder builder;
+  final ReactiveFormArrayBuilder<T> builder;
 
   /// Creates an instance of [ReactiveFormArray].
   ///
@@ -41,17 +41,17 @@ class ReactiveFormArray extends StatefulWidget {
         super(key: key);
 
   @override
-  _ReactiveFormArrayState createState() => _ReactiveFormArrayState();
+  _ReactiveFormArrayState<T> createState() => _ReactiveFormArrayState<T>();
 }
 
-class _ReactiveFormArrayState extends State<ReactiveFormArray> {
+class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
   FormArray _formArray;
 
   @override
   void initState() {
     final form =
         ReactiveForm.of(context, listen: false) as FormControlCollection;
-    _formArray = form.control(widget.formArrayName) as FormArray;
+    _formArray = form.control(widget.formArrayName) as FormArray<T>;
 
     super.initState();
   }
@@ -62,7 +62,11 @@ class _ReactiveFormArrayState extends State<ReactiveFormArray> {
       control: _formArray,
       notifierDelegate: () => _formArray.onCollectionChanged,
       child: Builder(builder: (context) {
-        return widget.builder(context, ReactiveForm.of(context), widget.child);
+        return widget.builder(
+          context,
+          ReactiveForm.of(context) as FormArray<T>,
+          widget.child,
+        );
       }),
     );
   }
