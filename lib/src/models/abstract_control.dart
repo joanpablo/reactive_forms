@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// This is the base class for FormControl and FormGroup.
+/// This is the base class for [FormGroup], [FormArray] and [FormControl].
 ///
 /// It provides some of the shared behavior that all controls and groups have,
 /// like running validators, calculating status, and resetting state.
@@ -24,10 +24,11 @@ abstract class AbstractControl<T> {
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
 
-  /// Represents if the control is touched or not. A control is touched when
-  /// the user taps on the ReactiveFormField widget and then remove focus or
-  /// completes the text edition. Validation messages will begin to show up
-  /// when the FormControl is touched.
+  /// Gets if the control is touched or not.
+  ///
+  /// A control is touched when the user taps on the ReactiveFormField widget
+  /// and then remove focus or completes the text edition. Validation messages
+  /// will begin to show up when the FormControl is touched.
   bool get touched => _onTouched.value;
 
   /// Marks the control as touched.
@@ -80,6 +81,8 @@ abstract class AbstractControl<T> {
   /// of the control changes.
   ValueListenable<T> get onValueChanged => _onValueChanged;
 
+  /// A [ValueListenable] that emits an event every time the control
+  /// is touched or untouched.
   ValueListenable<bool> get onTouched => _onTouched;
 
   /// A control is valid when its [status] is ControlStatus.valid.

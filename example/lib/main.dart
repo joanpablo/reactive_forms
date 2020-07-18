@@ -233,7 +233,9 @@ Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
   final error = {'unique': false};
 
   final emailAlreadyUsed = await Future.delayed(
-      Duration(seconds: 5), () => inUseEmails.contains(control.value));
+    Duration(seconds: 5), // a delay to simulate a time consuming operation
+    () => inUseEmails.contains(control.value),
+  );
 
   if (emailAlreadyUsed) {
     control.touch();

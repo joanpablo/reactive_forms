@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/compose_validator.dart';
 
 import './email_validator.dart';
 import './max_length_validator.dart';
@@ -30,6 +31,7 @@ class Validators {
   /// Validator that requires the control's value pass an email validation test.
   static ValidatorFunction get email => EmailValidator().validate;
 
+  /// Validates if control's value is an integer.
   static ValidatorFunction get number => NumberValidator().validate;
 
   /// Validator that requires the length of the control's value to be greater
@@ -51,5 +53,14 @@ class Validators {
   static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;
+  }
+
+  /// Compose multiple validators into a single function.
+  ///
+  /// If at least one validator evaluates as 'VALID' then compose validator
+  /// evaluates a 'VALID' and return null, otherwise returns the union of
+  /// the individual error maps returned by each validator.
+  static List<ValidatorFunction> compose(List<ValidatorFunction> validators) {
+    return [ComposeValidator(validators).validate];
   }
 }

@@ -183,9 +183,14 @@ For that cases we must implement a custom validator and attach it to the **FormG
 final form = FormGroup({
   'name': FormControl(validators: [Validators.required]),
   'email': FormControl(validators: [Validators.required, Validators.email]),
-  'password': FormControl(validators: [Validators.required, Validators.minLength(8)]),
-  'passwordConfirmation': FormControl(validators: [Validators.required]),
-}, validators: [_mustMatch('password', 'passwordConfirmation')]);
+  'password': FormControl(validators: [
+    Validators.required,
+    Validators.minLength(8),
+  ]),
+  'passwordConfirmation': FormControl(),
+}, validators: [
+  _mustMatch('password', 'passwordConfirmation')
+]);
 ```
 > Notice the use of *Validators.**minLength(8)***
 
@@ -203,6 +208,9 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
 
     if (formControl.value != matchingFormControl.value) {
       matchingFormControl.addError({'mustMatch': true});
+
+      // force messages to show up as soon as possible
+      matchingFormControl.touch(); 
     } else {
       matchingFormControl.removeError('mustMatch');
     }
@@ -218,9 +226,12 @@ Fortunately you don't have to implement a custom *must match* validator because 
 final form = FormGroup({
   'name': FormControl(validators: [Validators.required]),
   'email': FormControl(validators: [Validators.required, Validators.email]),
-  'emailConfirmation': FormControl(validators: [Validators.required]),
-  'password': FormControl(validators: [Validators.required, Validators.minLenght(8)]),
-  'passwordConfirmation': FormControl(validators: [Validators.required]),
+  'emailConfirmation': FormControl(),
+  'password': FormControl(validators: [
+    Validators.required,
+    Validators.minLength(8),
+  ]),
+  'passwordConfirmation': FormControl(),
 }, validators: [
   FormGroupValidators.mustMatch('email', 'emailConfirmation'),
   FormGroupValidators.mustMatch('password', 'passwordConfirmation'),
@@ -266,14 +277,23 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 /// Async validator example that simulates a request to a server
 /// and validates if the email of the user is unique.
 Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
-  final error = {'unique': true};
+  final error = {'unique': false};
 
-  return Future.delayed(
+  final emailAlreadyUsed = await Future.delayed(
     Duration(seconds: 5), // a delay to simulate a time consuming operation
-    () => inUseEmails.contains(control.value) ? error : null,
+    () => inUseEmails.contains(control.value),
   );
+
+  if (emailAlreadyUsed) {
+    control.touch();
+    return error;
+  }
+
+  return null;
 }
 ```
+> Note the use of **control.touch()** to force the validation message to show up as soon as possible.
+
 The previous implementation was a simple function that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the *value* of the *control* is contained in the *server* array of emails.
 
 >If you want to see **Async Validators** in action with a **full example** using widgets and animations to feedback the user we strong advice you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file just to simplify things here and to not anticipate things that we will see later in this doc.
