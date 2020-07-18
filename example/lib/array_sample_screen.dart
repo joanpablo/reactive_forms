@@ -45,7 +45,7 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ReactiveFormArray(
+                ReactiveFormArray<bool>(
                   formArrayName: 'selectedContacts',
                   builder: (context, formArray, child) => Column(
                       children:
