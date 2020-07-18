@@ -5,6 +5,7 @@ import 'package:reactive_forms/src/utils/control_utils.dart';
 ///
 /// Brings to [AbstractControl] methods like [isNull].
 extension ControlExtension on AbstractControl {
+  /// Returns true is the value of the control is null, otherwise returns false.
   bool get isNull => Control.isNull(this);
 }
 
@@ -12,5 +13,7 @@ extension ControlExtension on AbstractControl {
 ///
 /// Brings to [AbstractControl<String>] methods like [isNullOrEmpty]
 extension StringControlExtension on AbstractControl<String> {
+  /// Returns true if the value of the control is null or
+  /// an empty white spaces string, otherwise returns false.
   bool get isNullOrEmpty => Control.isNullOrEmpty(this);
 }

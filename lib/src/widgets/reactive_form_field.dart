@@ -11,6 +11,12 @@ import 'package:reactive_forms/reactive_forms.dart';
 typedef ReactiveFormFieldBuilder<T> = Widget Function(
     ReactiveFormFieldState<T> field);
 
+/// A single reactive form field.
+///
+/// This widget maintains the current state of the reactive form field,
+/// so that updates and validation errors are visually reflected in the UI.
+///
+/// It is the base class for all other reactive widgets.
 class ReactiveFormField<T> extends StatefulWidget {
   /// Function that returns the widget representing this form field. It is
   /// passed the form field state as input, containing the current value and
@@ -19,6 +25,9 @@ class ReactiveFormField<T> extends StatefulWidget {
   final String formControlName;
   final Map<String, String> validationMessages;
 
+  /// Creates an instance of the [ReactiveFormField].
+  ///
+  /// The [formControlName] and [builder] arguments are required.
   const ReactiveFormField({
     Key key,
     @required this.formControlName,
@@ -34,6 +43,7 @@ class ReactiveFormField<T> extends StatefulWidget {
   ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();
 }
 
+/// Represents the state of the [ReactiveFormField] stateful widget.
 class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   FormControl control;
   bool _touched;
@@ -41,8 +51,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// The current value of the [FormControl].
   T get value => this.control.value;
 
+  /// Gets true if the widget is touched, otherwise return false.
   bool get touched => _touched;
 
+  /// Sets the value of [touched] and rebuilds the widget.
   set touched(bool value) {
     if (this._touched != value) {
       setState(() {
@@ -51,6 +63,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     }
   }
 
+  /// Gets the error text calculated from validators of the control.
+  ///
+  /// If the control has several errors, then the first error is selected
+  /// for visualizing in UI.
   String get errorText {
     if (this.control.invalid && this.touched) {
       return widget.validationMessages
@@ -136,6 +152,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     this.touched = this.control.touched;
   }
 
+  /// Updates this field's state to the new value. Useful for responding to
+  /// child widget changes.
+  ///
+  /// Updates the value of the [FormControl] bound to this widget.
   void didChange(T value) {
     this.control.value = value;
     if (this.touched) {
