@@ -182,6 +182,7 @@ void main() {
           'control': FormControl<String>(
             validators: [Validators.required],
             asyncValidators: [failedAsyncValidator],
+            asyncValidatorsDebounceTime: 0,
           ),
         });
 
@@ -216,6 +217,7 @@ void main() {
           'control': FormControl<String>(
             validators: [Validators.required],
             asyncValidators: [asyncValidator],
+            asyncValidatorsDebounceTime: 0,
           ),
         });
 

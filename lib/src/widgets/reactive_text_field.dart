@@ -16,8 +16,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveTextField extends ReactiveFormField<String> {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
-  /// The [formControlName] is required to bind this ReactiveFormField
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
   /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
   ///
   /// You can optionally set the [validationMessages].
   ///
@@ -25,7 +30,8 @@ class ReactiveTextField extends ReactiveFormField<String> {
   /// and [new TextField], the constructor.
   ReactiveTextField({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     Map<String, String> validationMessages,
     InputDecoration decoration = const InputDecoration(),
     TextInputType keyboardType,
@@ -64,6 +70,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
     VoidCallback onSubmitted,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           validationMessages: validationMessages ?? const {},
           builder: (ReactiveFormFieldState<String> field) {

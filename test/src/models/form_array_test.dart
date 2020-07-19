@@ -199,6 +199,38 @@ void main() {
       // Then: last control is removed
       expect(array.value.join(''), 'Reactive');
     });
+
+    test('Insert control at index position', () {
+      // Given: an array with two controls
+      final array = FormArray<String>([
+        FormControl<String>(),
+        FormControl<String>(),
+      ]);
+
+      // When: insert a control in the middle
+      final control = FormControl<String>();
+      array.insert(1, control);
+
+      // Then: then the control at index 1 is the one inserted
+      expect(array.control('1'), control);
+    });
+
+    test('Set value to empty array insert the new items', () {
+      // Given: an instance of an empty array
+      final array = FormArray<String>([]);
+
+      // Expect: the array is empty
+      expect(array.controls.length, 0);
+
+      // When: add value with several controls
+      array.value = ['control_1', 'control_2', 'control_3'];
+
+      // Then: the controls are inserted
+      expect(array.controls.length, 3);
+      expect(array.controls[0].value, 'control_1');
+      expect(array.controls[1].value, 'control_2');
+      expect(array.controls[2].value, 'control_3');
+    });
   });
 }
 

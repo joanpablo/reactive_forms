@@ -53,7 +53,8 @@ abstract class AbstractControl<T> {
     List<AsyncValidatorFunction> asyncValidators,
     bool touched = false,
     int asyncValidatorsDebounceTime = 250,
-  })  : _validators = validators ?? const [],
+  })  : assert(asyncValidatorsDebounceTime >= 0),
+        _validators = validators ?? const [],
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
     _onTouched.value = touched;
