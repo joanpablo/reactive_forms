@@ -5,6 +5,12 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// Builder function definition of the [ReactiveFormConsumer] [builder].
+///
+/// See also [ReactiveFormConsumer].
+typedef ReactiveFormConsumerBuilder = Widget Function(
+    BuildContext context, FormGroup formGroup, Widget child);
+
 /// Obtains [FormGroup] from its ancestors and passes its value to [builder].
 ///
 /// The [ReactiveFormConsumerBuilder] widget doesn't do any fancy work.
@@ -19,9 +25,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// - Register the current context with the changes in the [FormGroup]
 ///   so that if the validity of the [FormGroup] change then the current
 ///   context is rebuilt.
-typedef ReactiveFormConsumerBuilder = Widget Function(
-    BuildContext context, FormGroup formGroup, Widget child);
-
 class ReactiveFormConsumer extends StatelessWidget {
   final Widget child;
   final ReactiveFormConsumerBuilder builder;

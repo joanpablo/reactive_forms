@@ -52,6 +52,7 @@ class ReactiveForm extends StatefulWidget {
   _ReactiveFormState createState() => _ReactiveFormState();
 }
 
+/// Represents the state of the [ReactiveForm] stateful widget.
 class _ReactiveFormState extends State<ReactiveForm> {
   @override
   Widget build(BuildContext context) {

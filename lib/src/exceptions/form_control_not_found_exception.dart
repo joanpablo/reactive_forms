@@ -5,9 +5,13 @@
 /// This exception is thrown when a [FormGroup] or a [FormArray]
 /// doesn't find the [FormControl] by name
 class FormControlNotFoundException implements Exception {
+  /// The name of the control that was not found.
   final String controlName;
 
-  /// Creates an instance of the exception
+  /// Creates an instance of the exception.
+  ///
+  /// Requires the [controlName] that represents the name of the control
+  /// that was not found.
   FormControlNotFoundException({this.controlName});
 
   @override

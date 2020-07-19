@@ -14,6 +14,15 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// For documentation about the various parameters, see the [Radio] class
 /// and [new Radio], the constructor.
 class ReactiveRadio<T> extends ReactiveFormField<T> {
+  /// Creates a [ReactiveRadio] that contains a [Radio].
+  ///
+  /// The [formControlName] is required to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// The [value] arguments is required. See [Radio] constructor.
+  ///
+  /// For documentation about the various parameters, see the [Radio] class
+  /// and [new Radio], the constructor.
   ReactiveRadio({
     Key key,
     @required String formControlName,

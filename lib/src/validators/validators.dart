@@ -25,41 +25,43 @@ typedef AsyncValidatorFunction = Future<Map<String, dynamic>> Function(
 
 /// Provides a set of built-in validators that can be used by form controls.
 class Validators {
-  /// Validator that requires the control have a non-empty value.
+  /// Gets a validator that requires the control have a non-empty value.
   static ValidatorFunction get required => RequiredValidator().validate;
 
-  /// Validator that requires the control's value pass an email validation test.
+  /// Gets a validator that validates that the control's value is a valid email.
   static ValidatorFunction get email => EmailValidator().validate;
 
-  /// Validates if control's value is an integer.
+  /// Gets a validator that validates if control's value is an integer.
   static ValidatorFunction get number => NumberValidator().validate;
 
-  /// Validator that requires the length of the control's value to be greater
-  /// than or equal to the provided minimum length.
+  /// Gets a validator that validates that the length of the control's value
+  /// must be greater than or equals to the [minLength] argument.
   static ValidatorFunction minLength(int minLength) =>
       MinLengthValidator(minLength).validate;
 
-  /// Validator that requires the length of the control's value to be less
-  /// than or equal to the provided maximum length.
+  /// Gets a validator that validates that the length of the control's value
+  /// must be less than or equals to the [maxLength] argument.
   static ValidatorFunction maxLength(int maxLength) =>
       MaxLengthValidator(maxLength).validate;
 
-  /// Validator that requires the control's value to match a regex pattern.
+  /// Gets a validator that validates that the control's value matches
+  /// the regex [pattern].
   static ValidatorFunction pattern(Pattern pattern) =>
       PatternValidator(pattern).validate;
 
-  /// This validator is for use with a [FormGroup] and check that
-  /// the controls [controlName] and [matchingControlName] have the same value.
+  /// Gets a validator that is for use with a [FormGroup] and checks that
+  /// the controls [controlName] and [matchingControlName] have the same values.
   static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;
   }
 
-  /// Compose multiple validators into a single function.
+  /// Gets a collection with only one validator that is the composition
+  /// of multiple validators.
   ///
-  /// If at least one validator evaluates as 'VALID' then compose validator
-  /// evaluates a 'VALID' and return null, otherwise returns the union of
-  /// the individual error maps returned by each validator.
+  /// If at least one of the [validators] evaluates as 'VALID' then the compose
+  /// validator evaluates as 'VALID' and returns null, otherwise returns
+  /// the union of all the individual errors returned by each validator.
   static List<ValidatorFunction> compose(List<ValidatorFunction> validators) {
     return [ComposeValidator(validators).validate];
   }
