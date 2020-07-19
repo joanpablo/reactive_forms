@@ -8,8 +8,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// This is a convenience widget that wraps a [SwitchListTile] widget in a
 /// [ReactiveSwitchListTile].
 ///
-/// The [formControlName] is required to bind this [ReactiveSwitchListTile]
+/// Can optionally provide a [formControl] to bind this widget to a control.
+///
+/// Can optionally provide a [formControlName] to bind this ReactiveFormField
 /// to a [FormControl].
+///
+/// Must provide one of the arguments [formControl] or a [formControlName],
+/// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [SwitchListTile]
 /// class and [new SwitchListTile], the constructor.
@@ -21,7 +26,8 @@ class ReactiveSwitchListTile extends ReactiveFormField {
   /// See also [CheckboxListTile]
   ReactiveSwitchListTile({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     Color activeColor,
     Color activeTrackColor,
     Color inactiveThumbColor,
@@ -36,6 +42,7 @@ class ReactiveSwitchListTile extends ReactiveFormField {
     Widget secondary,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState field) {
             return SwitchListTile(

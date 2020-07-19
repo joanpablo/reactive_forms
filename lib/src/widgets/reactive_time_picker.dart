@@ -15,8 +15,13 @@ typedef ReactiveTimePickerBuilder = Widget Function(
 /// This is a convenience widget that wraps the function
 /// [showTimePicker] in a [ReactiveTimePicker].
 ///
-/// The [formControlName] is required to bind this [ReactiveTimePicker]
+/// Can optionally provide a [formControl] to bind this widget to a control.
+///
+/// Can optionally provide a [formControlName] to bind this ReactiveFormField
 /// to a [FormControl].
+///
+/// Must provide one of the arguments [formControl] or a [formControlName],
+/// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [showTimePicker]
 /// function parameters.
@@ -37,7 +42,13 @@ typedef ReactiveTimePickerBuilder = Widget Function(
 class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
   /// Creates a [ReactiveTimePicker] that wraps the function [showTimePicker].
   ///
-  /// The [formControlName] is required to bind this widget to a [FormControl].
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
   ///
   /// The parameter [transitionBuilder] is the equivalent of [builder]
   /// parameter in the [showTimePicker].
@@ -46,7 +57,8 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
   /// function parameters.
   ReactiveTimePicker({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     @required ReactiveTimePickerBuilder builder,
     TransitionBuilder transitionBuilder,
     bool useRootNavigator = true,
@@ -55,6 +67,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
   })  : assert(builder != null),
         super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<TimeOfDay> field) {
             return builder(

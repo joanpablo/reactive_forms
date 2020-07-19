@@ -9,10 +9,19 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveDropdownField<T> extends ReactiveFormField<T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
+  ///
   /// The [DropdownButton] [items] parameters must not be null.
   ReactiveDropdownField({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     @required List<DropdownMenuItem<T>> items,
     Map<String, String> validationMessages,
     DropdownButtonBuilder selectedItemBuilder,
@@ -41,6 +50,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
         assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           validationMessages: validationMessages ?? const {},
           builder: (ReactiveFormFieldState field) {

@@ -20,13 +20,20 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 class ReactiveSlider extends ReactiveFormField<double> {
   /// Creates an instance os a [ReactiveSlider].
   ///
-  /// The [formControlName] must not be null.
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
   ///
   /// The [labelBuilder] is called each time the [FormControl] changes its value
   /// so you can supply a label to the Slider.
   ReactiveSlider({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     double min = 0.0,
     double max = 1.0,
     int divisions,
@@ -38,6 +45,7 @@ class ReactiveSlider extends ReactiveFormField<double> {
     ValueChanged<double> onChangeStart,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           validationMessages: const {},
           builder: (ReactiveFormFieldState<double> field) {

@@ -8,8 +8,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// This is a convenience widget that wraps a [CheckboxListTile] widget in a
 /// [ReactiveCheckboxListTile].
 ///
-/// The [formControlName] is required to bind this [ReactiveCheckboxListTile]
+/// Can optionally provide a [formControl] to bind this widget to a control.
+///
+/// Can optionally provide a [formControlName] to bind this ReactiveFormField
 /// to a [FormControl].
+///
+/// Must provide one of the arguments [formControl] or a [formControlName],
+/// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [CheckboxListTile]
 /// class and [new CheckboxListTile], the constructor.
@@ -21,7 +26,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
   /// See also [CheckboxListTile]
   ReactiveCheckboxListTile({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     Color activeColor,
     Color checkColor,
     Widget title,
@@ -32,6 +38,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState field) {
             return CheckboxListTile(
