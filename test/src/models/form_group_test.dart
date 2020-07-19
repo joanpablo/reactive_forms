@@ -259,5 +259,27 @@ void main() {
       // Then: form value changed fires
       expect(valueChanged, true);
     });
+
+    test('Group stop listing controls when disposed', () {
+      // Given: a form with a control
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      // And: a function that listen to changes notification
+      bool valueChanged = false;
+      form.onValueChanged.addListener(() {
+        valueChanged = true;
+      });
+
+      // When: dispose form
+      form.dispose();
+
+      // And: change value to control
+      form.control('name').value = 'Reactive Forms';
+
+      // Then: form value changed not fires
+      expect(valueChanged, false);
+    });
   });
 }

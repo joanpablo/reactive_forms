@@ -231,6 +231,28 @@ void main() {
       expect(array.controls[1].value, 'control_2');
       expect(array.controls[2].value, 'control_3');
     });
+
+    test('Array stop listing controls when disposed', () {
+      // Given: a form with a control
+      final array = FormArray<String>([
+        FormControl(),
+      ]);
+
+      // And: a function that listen to changes notification
+      bool valueChanged = false;
+      array.onValueChanged.addListener(() {
+        valueChanged = true;
+      });
+
+      // When: dispose form
+      array.dispose();
+
+      // And: change value to control
+      array.control('0').value = 'Reactive Forms';
+
+      // Then: form value changed not fires
+      expect(valueChanged, false);
+    });
   });
 }
 
