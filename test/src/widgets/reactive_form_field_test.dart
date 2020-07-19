@@ -37,14 +37,14 @@ void main() {
       'Not error if formControl',
       (WidgetTester tester) async {
         // Given: a ReactiveFormField with formControlName in null
-        final reactiveFormField = () => ReactiveFormField(
-              formControlName: null,
-              formControl: FormControl(),
-              builder: (_) => Container(),
-            );
+        final reactiveFormField = ReactiveFormField(
+          formControlName: null,
+          formControl: FormControl(),
+          builder: (_) => Container(),
+        );
 
         // Expect: an assertion error
-        expect(reactiveFormField, throwsAssertionError);
+        expect(reactiveFormField, isInstanceOf<ReactiveFormField>());
       },
     );
   });

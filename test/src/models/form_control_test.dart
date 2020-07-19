@@ -92,9 +92,5 @@ void main() {
       final formControl = () => FormControl(asyncValidatorsDebounceTime: -1);
       expect(formControl, throwsAssertionError);
     });
-
-    test('Test debounce time', () {
-      expect(true, false);
-    });
   });
 }

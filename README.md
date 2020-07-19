@@ -298,6 +298,19 @@ The previous implementation was a simple function that receives the **AbstractCo
 
 >If you want to see **Async Validators** in action with a **full example** using widgets and animations to feedback the user we strong advice you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file just to simplify things here and to not anticipate things that we will see later in this doc.
 
+### Debounce time in async validators  
+
+Asynchronous validators have a debounce time that is useful if you want to minimize requests to a remote API. The debounce time is set in milliseconds and the default value is 250 milliseconds.
+
+You can set a different debounce time as an optionally argument in the **FormControl** constructor.
+
+```dart
+final control = FormControl(
+  asyncValidators: [_uniqueEmail],
+  asyncValidatorsDebounceTime: 1000, // sets 1 second of debounce time.
+);
+```
+
 ## Composing Validators
 
 To explain what Composing Validators is, let's see an example:
