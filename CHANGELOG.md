@@ -1,3 +1,8 @@
+# 1.1.0
+
+- Async validators now have a **debounce timer** in milliseconds that can be passed as argument to
+**FormControl**
+
 # 1.0.10
 
 - Composing validators with **Validators.compose**

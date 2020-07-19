@@ -11,11 +11,23 @@ class FormControl<T> extends AbstractControl<T> {
   T _defaultValue;
   T _value;
 
-  /// Creates a new FormControl instance, optionally pass [defaultValue]
-  /// and [validators]. You can set [touched] to true to force the validation
-  /// messages to show up at the very first time the widget builds.
+  /// Creates a new FormControl instance.
   ///
-  /// You can also force the data type of this control by specifying it
+  /// The control can optionally be initialized with a [defaultValue].
+  ///
+  /// The control can optionally have [validators] that validates
+  /// the control each time the value changes.
+  ///
+  /// The control can optionally have [asyncValidators] that validates
+  /// asynchronously the control each time the value changes.
+  ///
+  /// You can set an [asyncValidatorsDebounceTime] in millisecond to set
+  /// a delay time before trigger async validators. This is useful for
+  /// minimizing request to a server. The default value is 250 milliseconds.
+  ///
+  /// You can set [touched] as true to force the validation messages
+  /// to show up at the very first time the widget that is bound to this
+  /// control builds in the UI.
   ///
   /// ### Example:
   /// ```dart
@@ -27,11 +39,13 @@ class FormControl<T> extends AbstractControl<T> {
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
     bool touched = false,
+    int asyncValidatorsDebounceTime = 250,
   })  : _defaultValue = defaultValue,
         super(
           validators: validators,
           asyncValidators: asyncValidators,
           touched: touched,
+          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
         ) {
     this.value = _defaultValue;
   }
