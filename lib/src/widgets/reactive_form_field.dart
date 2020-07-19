@@ -26,18 +26,28 @@ class ReactiveFormField<T> extends StatefulWidget {
   /// The name of the [FormControl] that is bound to this widget.
   final String formControlName;
 
+  /// The control that is bound to this widget.
+  final FormControl formControl;
+
   /// A [Map] that store custom validation messages for each error.
   final Map<String, String> validationMessages;
 
   /// Creates an instance of the [ReactiveFormField].
   ///
-  /// The [formControlName] and [builder] arguments are required.
+  /// Must provide a [forControlName] or a [formControl] but not both
+  /// at the same time.
+  ///
+  /// The [builder] arguments are required.
   const ReactiveFormField({
     Key key,
-    @required this.formControlName,
+    this.formControl,
+    this.formControlName,
     @required ReactiveFormFieldBuilder<T> builder,
     Map<String, String> validationMessages,
-  })  : assert(formControlName != null),
+  })  : assert(
+            (formControlName != null && formControl == null) ||
+                (formControlName == null && formControl != null),
+            'Must provide a formControlName or a formControl, but not both at the same time.'),
         assert(builder != null),
         _builder = builder,
         validationMessages = validationMessages ?? const {},
@@ -126,6 +136,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   }
 
   FormControl _getFormControl() {
+    if (widget.formControl != null) {
+      return widget.formControl;
+    }
+
     final form =
         ReactiveForm.of(context, listen: false) as FormControlCollection;
     if (form == null) {

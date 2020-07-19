@@ -87,5 +87,14 @@ void main() {
 
       expect(formControl.value, defaultValue);
     });
+
+    test('Assert error if debounce time < 0', () {
+      final formControl = () => FormControl(asyncValidatorsDebounceTime: -1);
+      expect(formControl, throwsAssertionError);
+    });
+
+    test('Test debounce time', () {
+      expect(true, false);
+    });
   });
 }
