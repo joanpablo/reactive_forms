@@ -37,7 +37,13 @@ typedef ReactiveDatePickerBuilder = Widget Function(
 class ReactiveDatePicker extends ReactiveFormField<DateTime> {
   /// Creates a [ReactiveDatePicker] that wraps the function [showDatePicker].
   ///
-  /// The [formControlName] is required to bind this widget to a [FormControl].
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
   ///
   /// The parameter [transitionBuilder] is the equivalent of [builder]
   /// parameter in the [showTimePicker].
@@ -46,7 +52,8 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
   /// function parameters.
   ReactiveDatePicker({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     @required ReactiveDatePickerBuilder builder,
     @required DateTime firstDate,
     @required DateTime lastDate,
@@ -69,6 +76,7 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
   })  : assert(builder != null),
         super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<DateTime> field) {
             return builder(

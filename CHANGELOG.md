@@ -1,3 +1,12 @@
+# 1.1.0
+
+- Async validators now have a **debounce timer** in milliseconds that can be passed as argument to
+**FormControl**. This is useful for example to reduce requests to an API. 
+- Now you can optionally pass a **FormControl** directly to reactive widgets instead of the 
+control's name. You must provide a **formControlName** or a **formControl** but not both at 
+the same time.
+- Set value an array value to FormArray insert missing items 
+
 # 1.0.10
 
 - Composing validators with **Validators.compose**

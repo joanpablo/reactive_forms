@@ -16,12 +16,19 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
   /// Create an instance of a [ReactiveRadioListTile].
   ///
-  /// The [formControlName] arguments must not be null.
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
   ///
   /// See also [RadioListTile]
   ReactiveRadioListTile({
     Key key,
-    @required formControlName,
+    String formControlName,
+    FormControl formControl,
     @required T value,
     Color activeColor,
     Widget title,
@@ -32,6 +39,7 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<T> field) {
             return RadioListTile<T>(

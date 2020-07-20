@@ -24,6 +24,12 @@ abstract class AbstractControl<T> {
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
 
+  /// Async validators debounce timer.
+  Timer _debounceTimer;
+
+  /// Async validators debounce time in milliseconds.
+  final int _asyncValidatorsDebounceTime;
+
   /// Gets if the control is touched or not.
   ///
   /// A control is touched when the user taps on the ReactiveFormField widget
@@ -41,12 +47,16 @@ abstract class AbstractControl<T> {
     this._onTouched.value = false;
   }
 
+  /// Constructor of the [AbstractControl].
   AbstractControl({
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
     bool touched = false,
-  })  : _validators = validators ?? const [],
-        _asyncValidators = asyncValidators ?? const [] {
+    int asyncValidatorsDebounceTime = 250,
+  })  : assert(asyncValidatorsDebounceTime >= 0),
+        _validators = validators ?? const [],
+        _asyncValidators = asyncValidators ?? const [],
+        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
     _onTouched.value = touched;
   }
 
@@ -141,7 +151,6 @@ abstract class AbstractControl<T> {
   ///```
   ///
   /// See also [AbstractControl.removeError]
-  ///
   void addError(Map<String, dynamic> error) {
     this._errors.addAll(error);
     checkValidityAndUpdateStatus();
@@ -158,7 +167,6 @@ abstract class AbstractControl<T> {
   ///```
   ///
   /// See also [AbstractControl.addError]
-  ///
   void removeError(String errorName) {
     this._errors.remove(errorName);
     checkValidityAndUpdateStatus();
@@ -166,7 +174,6 @@ abstract class AbstractControl<T> {
 
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
-  ///
   void setErrors(Map<String, dynamic> errors) {
     this._errors.clear();
     this._errors.addAll(errors);
@@ -180,6 +187,7 @@ abstract class AbstractControl<T> {
     notifyStatusChanged(status);
   }
 
+  /// Validates the current control.
   @protected
   void validate() {
     this.notifyStatusChanged(ControlStatus.pending);
@@ -195,12 +203,20 @@ abstract class AbstractControl<T> {
     if (_errors.keys.isNotEmpty || this.asyncValidators.isEmpty) {
       checkValidityAndUpdateStatus();
     } else {
-      validateAsync();
+      if (_debounceTimer != null) {
+        _debounceTimer.cancel();
+      }
+
+      _debounceTimer =
+          Timer(Duration(milliseconds: _asyncValidatorsDebounceTime), () {
+        validateAsync();
+      });
     }
   }
 
   StreamSubscription _runningAsyncValidators;
 
+  /// runs async validators to validate the value of current control
   @protected
   Future<void> validateAsync() async {
     if (_runningAsyncValidators != null) {

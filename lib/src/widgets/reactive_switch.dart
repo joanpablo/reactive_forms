@@ -9,22 +9,33 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// This is a convenience widget that wraps a [Switch] widget in a
 /// [ReactiveSwitch].
 ///
-/// The [formControlName] is required to bind this [ReactiveSwitch]
+/// Can optionally provide a [formControl] to bind this widget to a control.
+///
+/// Can optionally provide a [formControlName] to bind this ReactiveFormField
 /// to a [FormControl].
+///
+/// Must provide one of the arguments [formControl] or a [formControlName],
+/// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [Switch] class
 /// and [new Switch], the constructor.
 class ReactiveSwitch extends ReactiveFormField<bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
-  /// The [formControlName] is required to bind this ReactiveFormField
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
   /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
   ///
   /// For documentation about the various parameters, see the [Switch] class
   /// and [new Switch], the constructor.
   ReactiveSwitch({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     Color activeColor,
     Color activeTrackColor,
     Color inactiveThumbColor,
@@ -40,6 +51,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     bool autofocus = false,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch(
@@ -70,14 +82,22 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
   /// [activeThumbImage], [onActiveThumbImageError], [inactiveThumbImage],
   /// [onInactiveImageThumbError], [materialTapTargetSize].
   ///
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
+  ///
   /// The target platform is based on the current [Theme]: [ThemeData.platform].
   ///
   /// For documentation about the various parameters, see the [Switch.adaptive]
   /// constructor.
-  ///
   ReactiveSwitch.adaptive({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     Color activeColor,
     Color activeTrackColor,
     Color inactiveThumbColor,
@@ -92,6 +112,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
     Color hoverColor,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch.adaptive(

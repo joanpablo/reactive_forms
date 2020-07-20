@@ -56,11 +56,14 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Sets the value of the [FormArray].
   ///
   /// It accepts an array that matches the structure of the control.
+  /// It accepts both super-sets and sub-sets of the array.
   @override
   set value(Iterable<T> newValue) {
     newValue.toList().asMap().forEach((index, value) {
       if (index < this._controls.length) {
         this._controls[index].value = value;
+      } else {
+        this.insert(index, FormControl<T>(defaultValue: value));
       }
     });
   }
@@ -80,12 +83,20 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this._controls.forEach((control) => control.reset());
   }
 
-  /// Insert a new [AbstractControl] at the end of the array.
+  /// Insert a new [control] at the [index] position.
+  void insert(int index, AbstractControl<T> control) {
+    this._controls.insert(index, control);
+    this.validate();
+    _registerControlListeners([control]);
+    _notifyCollectionChanged();
+  }
+
+  /// Insert a new [control] at the end of the array.
   void add(AbstractControl<T> control) {
     this.addAll([control]);
   }
 
-  /// Appends all [AbstractControl] of [iterable] to the end of this array.
+  /// Appends all [controls] to the end of this array.
   void addAll(Iterable<AbstractControl<T>> controls) {
     this._controls.addAll(controls);
     this.validate();

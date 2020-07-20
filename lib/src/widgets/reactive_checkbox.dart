@@ -8,8 +8,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// This is a convenience widget that wraps a [Checkbox] widget in a
 /// [ReactiveCheckbox].
 ///
-/// The [formControlName] is required to bind this [ReactiveCheckbox]
+/// Can optionally provide a [formControl] to bind this widget to a control.
+///
+/// Can optionally provide a [formControlName] to bind this ReactiveFormField
 /// to a [FormControl].
+///
+/// Must provide one of the arguments [formControl] or a [formControlName],
+/// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [Checkbox] class
 /// and [new Checkbox], the constructor.
@@ -19,7 +24,8 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
   /// The [formControlName] arguments must not be null.
   ReactiveCheckbox({
     Key key,
-    @required String formControlName,
+    String formControlName,
+    FormControl formControl,
     bool tristate = false,
     Color activeColor,
     Color checkColor,
@@ -30,6 +36,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
     bool autofocus = false,
   }) : super(
           key: key,
+          formControl: formControl,
           formControlName: formControlName,
           validationMessages: const {},
           builder: (ReactiveFormFieldState<bool> field) {
