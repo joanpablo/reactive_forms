@@ -420,17 +420,17 @@ Let's see a simple example:
 
 ```dart
 final form = FormGroup({
-  'emails': FormArray([]), // an empty array of controls
+  'emails': FormArray<String>([]), // an empty array of emails
 });
 ```
 
-We have defined just an empty form array. Let's define another array with two controls:
+We have defined just an empty array. Let's define another array with two controls:
 
 ```dart
 final form = FormGroup({
   'emails': FormArray<String>([
     FormControl<String>(defaultValue: 'john@email.com'),
-    FormControl<String>(defaultValue: 'paul@email.com'),
+    FormControl<String>(defaultValue: 'susan@email.com'),
   ]),
 });
 ```
@@ -447,9 +447,47 @@ void printFormValue(FormGroup form) {
 
 ```json
 {
-  "emails": ["john@email.com", "paul@email.com"]
+  "emails": ["john@email.com", "susan@email.com"]
 }
 ```
+
+Lets dynamically add another control:
+
+```dart
+final array = form.control('emails') as FormArray<String>;
+
+// adding another email
+array.add(
+  FormControl<String>(defaultValue: 'caroline@email.com'),
+);
+
+printFormValue(form);
+``` 
+
+```json
+{
+  "emails": ["john@email.com", "susan@email.com", "caroline@email.com"]
+}
+```
+
+Another way of add controls to an array:
+
+```dart
+// Given: an empty array of strings
+final array = FormArray<String>([]);
+
+// When: set a value to array
+array.value = ["john@email.com", "susan@email.com", "caroline@email.com"];
+
+// Then: the array is no longer empty
+expect(array.controls.length, 3);
+
+// And: array has a control for each inserted value
+expect(array.controls('0').value, "john@email.com");
+expect(array.controls('1').value, "susan@email.com");
+expect(array.controls('2').value, "caroline@email.com");
+```
+> To get a control from the array you must pass the index position as a *String*. This is because **FormGroup** and **FormArray** inherited from the same parent class and **FormControl** gets the controls by name (String).
 
 A more advanced example:
 
@@ -927,3 +965,16 @@ This way you can separate UI logic from business logic and you can define the **
 **Reactive Forms** is not limited just to common widgets in *Forms* like text, dropdowns, sliders switch fields and etc, you can easily create **custom widgets** that **two-way** binds to **FormControls** and create your own set of *Reactive Widgets* ;)
 
 In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-Widgets) you can find a tutorial of how to create your custom Reactive Widget. 
+
+## What is not **Reactive Forms**
+
+- **Reactive Forms** is not a fancy widgets package. It is not a library that brings some new Widgets with new shapes, colors or animations. It lets you to decide the shapes, colors, and animations you want for your widgets, but frees you from the responsibility of gathering and validating the data. And keeps the data in sync between your model and your widgets.
+
+- **Reactive Forms** does not pretend to replace the native widgets that you commonly use in your Flutter projects like *TextFormField*, *DropdownButtonFormField* or *CheckboxListTile*. Instead of that it brings new two-way binding capabilities and much more features to those same widgets.
+
+## What is **Reactive Forms**
+
+- **Reactive Forms** provides a model-driven approach to handling form inputs whose values change over time. It's heavily inspired in Angular Reactive Form.
+- It lets you focus on business logic and save you time from collect, validate and mantain synchronization between your models and widgets.
+- Remove boilerplate code and brings you the posibility to write clean code defining a separation between model and UI with minimal efforts.
+- And it integrates perfectly well with common state management libraries like [Provider](https://pub.dev/packages/provider), [Bloc](https://pub.dev/packages/bloc) and many others good libraries the community has created.

@@ -5,6 +5,7 @@
 - Now you can optionally pass a **FormControl** directly to reactive widgets instead of the 
 control's name. You must provide a **formControlName** or a **formControl** but not both at 
 the same time.
+- Set value an array value to FormArray insert missing items 
 
 # 1.0.10
 
