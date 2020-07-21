@@ -11,6 +11,14 @@ void main() {
       expect(control.isNull, true);
     });
 
+    test('Test control is not null', () {
+      // Given: a control
+      final control = FormControl(defaultValue: 'reactive forms');
+
+      // Expect: value is null
+      expect(control.isNotNull, true);
+    });
+
     test('Test string control is null or empty whites paces', () {
       // Given: a control with null value
       final control = FormControl<String>();
@@ -33,6 +41,14 @@ void main() {
 
       // Expect: value is null
       expect(control.isNullOrEmpty, true);
+    });
+
+    test('Test string control is not null or empty whites paces', () {
+      // Given: a control with null value
+      final control = FormControl<String>(defaultValue: 'reactive forms');
+
+      // Expect: value is not null or empty
+      expect(control.isNotNullOrEmpty, true);
     });
   });
 }

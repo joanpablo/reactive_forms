@@ -671,7 +671,7 @@ class MySubmitButton extends StatelessWidget {
     final form = ReactiveForm.of(context);
     return RaisedButton(
       child: Text('Submit'),
-      onPressed: form.invalid ? null : _onPressed,
+      onPressed: form.valid ? _onPressed : null,
     );
   }
 
@@ -719,7 +719,7 @@ Widget build(BuildContext context) {
           builder: (context, form, child) {
             return RaisedButton(
               child: Text('Submit'),
-              onPressed: form.invalid ? null : _onSubmit,
+              onPressed: form.valid ? _onSubmit : null,
             );
           },
         ),
