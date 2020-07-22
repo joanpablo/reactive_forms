@@ -2,6 +2,8 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -58,7 +60,6 @@ class ReactiveTextField extends ReactiveFormField<String> {
     int maxLength,
     GestureTapCallback onTap,
     List<TextInputFormatter> inputFormatters,
-    bool enabled = true,
     double cursorWidth = 2.0,
     Radius cursorRadius,
     Color cursorColor,
@@ -116,7 +117,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
               onTap: onTap,
               onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
               inputFormatters: inputFormatters,
-              enabled: enabled,
+              enabled: field.control.enabled,
               cursorWidth: cursorWidth,
               cursorRadius: cursorRadius,
               cursorColor: cursorColor,
@@ -136,6 +137,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
 class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   TextEditingController _textController;
   FocusNode _focusNode = FocusNode();
+  StreamSubscription _focusChangesSubscription;
 
   @override
   String get value =>
@@ -159,29 +161,32 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   @override
   void subscribeControl() {
     super.subscribeControl();
-    this.control.onFocusChanged.addListener(_onFormControlFocusChanged);
+    _focusChangesSubscription =
+        this.control.focusChanges.listen(_onFormControlFocusChanged);
   }
 
   @override
-  void unsubscribeControl() {
-    super.unsubscribeControl();
-    this.control.onFocusChanged.removeListener(_onFormControlFocusChanged);
+  Future<void> unsubscribeControl() async {
+    await Future.wait([
+      _focusChangesSubscription?.cancel(),
+      super.unsubscribeControl(),
+    ]);
   }
 
   @override
   void updateValueFromControl() {
-    if (_textController.text == this.value) {
+    if (_textController.text == this.value.toString()) {
       return;
     }
 
-    _textController.text = this.value;
+    _textController.text = this.value.toString();
     super.updateValueFromControl();
   }
 
-  void _onFormControlFocusChanged() {
-    if (this.control.focused && !_focusNode.hasFocus) {
+  void _onFormControlFocusChanged(bool focused) {
+    if (focused && !_focusNode.hasFocus) {
       _focusNode.requestFocus();
-    } else if (!this.control.focused && _focusNode.hasFocus) {
+    } else if (!focused && _focusNode.hasFocus) {
       _focusNode.unfocus();
     }
   }

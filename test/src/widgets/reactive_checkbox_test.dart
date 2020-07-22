@@ -111,5 +111,64 @@ void main() {
         expect(checkbox.value, false);
       },
     );
+
+    testWidgets(
+      'Control disabled by default disable Checkbox',
+      (WidgetTester tester) async {
+        // Given: a form with disable control
+        final form = FormGroup({
+          'isChecked': FormControl<bool>(disabled: true),
+        });
+
+        // When: a checkbox is bind to the form
+        await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
+
+        // Then: the checkbox is disabled
+        final checkbox = tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        expect(checkbox.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Disable a control disable Checkbox',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'isChecked': FormControl<bool>(),
+        });
+
+        // And: a checkbox is bind to the form
+        await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
+
+        // When: disable form
+        form.disable();
+        await tester.pump();
+
+        // Then: the checkbox is disabled
+        final checkbox = tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        expect(checkbox.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Enable a control enable Checkbox',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'isChecked': FormControl<bool>(disabled: true),
+        });
+
+        // And: a checkbox is bind to the form
+        await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
+
+        // When: enable form
+        form.enable();
+        await tester.pump();
+
+        // Then: the checkbox is enable
+        final checkbox = tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        expect(checkbox.onChanged != null, true);
+      },
+    );
   });
 }

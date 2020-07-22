@@ -2,7 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -14,9 +13,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
 class FormArray<T> extends AbstractControl<Iterable<T>>
-    implements FormControlCollection {
+    with FormControlCollection {
   final List<AbstractControl<T>> _controls = [];
-  final _onCollectionChanged = ValueNotifier<Iterable<AbstractControl<T>>>([]);
 
   /// Creates a new [FormArray] instance.
   ///
@@ -47,8 +45,11 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   /// Gets the values of controls as an [Iterable].
   @override
-  Iterable<T> get value =>
-      this._controls.map((control) => control.value).toList();
+  Iterable<T> get value => this
+      ._controls
+      .where((control) => control.enabled)
+      .map((control) => control.value)
+      .toList();
 
   /// Gets the list of child controls.
   List<AbstractControl<T>> get controls => List.unmodifiable(this._controls);
@@ -68,10 +69,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     });
   }
 
-  /// Emits when a control is added or removed from collection.
-  @override
-  Listenable get onCollectionChanged => this._onCollectionChanged;
-
   /// Resets all the controls of the array to default.
   ///
   /// Marks them as untouched and sets the
@@ -83,12 +80,41 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this._controls.forEach((control) => control.reset());
   }
 
+  /// Disables the control.
+  ///
+  /// This means the control is exempt from validation checks and excluded
+  /// from the aggregate value of any parent. Its status is `DISABLED`.
+  ///
+  /// If the control has children, all children are also disabled.
+  ///
+  /// When [onlySelf] is true, mark only this control.
+  /// When false or not supplied, marks all direct ancestors.
+  /// Default is false.
+  @override
+  void disable({bool onlySelf: false}) {
+    this._controls.forEach((control) {
+      control.disable(onlySelf: true);
+    });
+    super.disable(onlySelf: onlySelf);
+  }
+
+  /// Enables the control. This means the control is included in validation
+  /// checks and the aggregate value of its parent. Its status recalculates
+  /// based on its value and its validators.
+  @override
+  void enable({bool onlySelf: false}) {
+    this.controls.forEach((control) {
+      control.enable(onlySelf: true);
+    });
+    super.enable(onlySelf: onlySelf);
+  }
+
   /// Insert a new [control] at the [index] position.
   void insert(int index, AbstractControl<T> control) {
-    this._controls.insert(index, control);
-    this.validate();
-    _registerControlListeners([control]);
-    _notifyCollectionChanged();
+    _controls.insert(index, control);
+    control.parent = this;
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
   }
 
   /// Insert a new [control] at the end of the array.
@@ -99,24 +125,26 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Appends all [controls] to the end of this array.
   void addAll(Iterable<AbstractControl<T>> controls) {
     this._controls.addAll(controls);
-    this.validate();
-    _registerControlListeners(controls);
-    _notifyCollectionChanged();
+    controls.forEach((control) {
+      control.parent = this;
+    });
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
   }
 
   /// Removes control at [index]
   void removeAt(int index) {
-    final removedControl = this._controls.removeAt(index);
-    this.validate();
-    this._removeControlListeners([removedControl]);
-    this._notifyCollectionChanged();
+    final removedControl = _controls.removeAt(index);
+    removedControl.parent = null;
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
   }
 
   /// Removes [control].
   ///
   /// Throws [FormControlNotFoundException] if no control found.
   void remove(AbstractControl<T> control) {
-    final index = this._controls.indexOf(control);
+    final index = _controls.indexOf(control);
     if (index == -1) {
       throw FormControlNotFoundException();
     }
@@ -154,86 +182,62 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     int index = int.tryParse(name);
     if (index == null) {
       throw FormArrayInvalidIndexException(name);
-    } else if (index >= this._controls.length) {
+    } else if (index >= _controls.length) {
       throw FormControlNotFoundException(controlName: name);
     }
 
-    return this._controls[index];
+    return _controls[index];
   }
 
-  @override
-  ControlStatus get childrenStatus {
-    final isPending = this._controls.any((control) => control.pending);
-    if (isPending) {
-      return ControlStatus.pending;
-    }
-
-    final isInvalid = this._controls.any((control) => control.invalid);
-    return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
-  }
-
+  /// Disposes the array.
   @override
   void dispose() {
-    this._removeControlListeners(this._controls);
+    _controls.forEach((control) {
+      control.parent = null;
+      control.dispose();
+    });
+    this.closeCollectionEvents();
     super.dispose();
   }
 
+  /// Returns true if all children disabled, otherwise returns false.
+  ///
+  /// This is for internal use only.
   @override
-  void validate() {
-    this.notifyStatusChanged(ControlStatus.pending);
+  bool allControlsDisabled() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.every((control) => control.disabled);
+  }
 
-    final errors = Map<String, dynamic>();
+  /// Returns true if all children has the specified [status], otherwise
+  /// returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool anyControlsHaveStatus(ControlStatus status) {
+    return _controls.any((control) => control.status == status);
+  }
 
-    this.validators.forEach((validator) {
-      final error = validator(this);
-      if (error != null) {
-        errors.addAll(error);
-      }
-    });
-
-    this._controls.asMap().entries.forEach((entry) {
+  /// Gets all errors of the array.
+  ///
+  /// Contains all the errors of the array and the child errors.
+  @override
+  Map<String, dynamic> get errors {
+    final allErrors = Map.of(super.errors);
+    _controls.asMap().entries.forEach((entry) {
       final control = entry.value;
-      final key = entry.key.toString();
-      if (control.hasErrors) {
-        errors.addAll({key: control.errors});
+      final name = entry.key.toString();
+      if (control.enabled && control.hasErrors) {
+        allErrors.update(
+          name,
+          (_) => control.errors,
+          ifAbsent: () => control.errors,
+        );
       }
     });
 
-    this.setErrors(errors);
-  }
-
-  void _registerControlListeners(Iterable<AbstractControl> controls) {
-    controls.toList().forEach((control) {
-      control.onStatusChanged.addListener(this._onControlStatusChanged);
-      control.onValueChanged.addListener(this._onControlValueChanged);
-    });
-  }
-
-  void _removeControlListeners(Iterable<AbstractControl> controls) {
-    controls.forEach((control) {
-      control.onStatusChanged.removeListener(this._onControlStatusChanged);
-      control.onValueChanged.removeListener(this._onControlValueChanged);
-    });
-  }
-
-  void _onControlValueChanged() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      this.notifyValueChanged(this.value);
-    } else {
-      this.validate();
-      this.notifyValueChanged(this.value);
-    }
-  }
-
-  void _onControlStatusChanged() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      notifyStatusChanged(ControlStatus.pending);
-    } else {
-      this.validate();
-    }
-  }
-
-  void _notifyCollectionChanged() {
-    this._onCollectionChanged.value = List.unmodifiable(this._controls);
+    return allErrors;
   }
 }

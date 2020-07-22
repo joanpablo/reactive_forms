@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^1.1.0
+  reactive_forms: ^2.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -909,9 +909,6 @@ Widget build(BuildContext context) {
               child: Text('PayPal'),
             ),
           ],
-          validationMessages: {
-            ValidationMessage.required: 'You must select a payment method',
-          },
         ),
       ],
     ),
@@ -978,3 +975,46 @@ In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-W
 - It lets you focus on business logic and save you time from collect, validate and mantain synchronization between your models and widgets.
 - Remove boilerplate code and brings you the posibility to write clean code defining a separation between model and UI with minimal efforts.
 - And it integrates perfectly well with common state management libraries like [Provider](https://pub.dev/packages/provider), [Bloc](https://pub.dev/packages/bloc) and many others good libraries the community has created.
+
+## Migrate from 1.x to 2.x
+
+Events renamed:
+
+- In **AbstractControl**
+  - *onValueChanged* to **valueChanges**
+  - *onStatusChanged* to **statusChanges**
+  - *onTouched* to **touchChanges**  
+
+- In **FormGroup** and **FormArray**
+  - *onCollectionChanged* to **collectionChanges**
+
+- In **FormControl**
+  - *onFocusChanged* to **focusChanges**  
+
+All events are now **Streams** so previous codes like the following one:
+
+```dart
+final control = FormControl<String>();
+
+// listen to control changes
+control.onValueChanged.addListener((){
+  // must access the control to get the value 
+  print(control.value);
+});
+
+control.value = 'Hello Reactive Forms!';
+```
+
+converts now to:
+
+```dart
+final control = FormControl<String>();
+
+// listen to control changes
+control.valueChanges.listen((String value){
+  // the value arrives from the arguments :)
+  print(value);
+});
+
+control.value = 'Hello Reactive Forms!';
+```

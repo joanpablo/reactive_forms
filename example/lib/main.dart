@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   // or any other state management library.
   //
   // We have declared the FormGroup within a Stateful Widget only for
-  // demonstration purposes and to simplify the explanation in this example.
+  // demonstration purposes and to simplify this example.
   final form = FormGroup({
     'email': FormControl(
       validators: [
@@ -128,7 +128,11 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, form, child) {
                     return RaisedButton(
                       child: Text('Sign Up'),
-                      onPressed: form.valid ? () => print(form.value) : null,
+                      onPressed: form.valid
+                          ? () {
+                              print(form.value);
+                            }
+                          : null,
                     );
                   },
                 ),

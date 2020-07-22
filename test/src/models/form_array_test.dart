@@ -173,17 +173,13 @@ void main() {
         FormControl(),
       ]);
 
-      // When: listen to changes notification
-      bool valueChanged = false;
-      array.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
+      final value = 'Reactive Forms';
 
-      // And: change value to control
-      array.control('0').value = 'Reactive Forms';
+      // Expect: array notify value changes
+      expectLater(array.valueChanges, emits([value]));
 
-      // Then: array value changed fires
-      expect(valueChanged, true);
+      // When: change value of a control
+      array.control('0').value = value;
     });
 
     test('Remove control', () {
@@ -232,26 +228,105 @@ void main() {
       expect(array.controls[2].value, 'control_3');
     });
 
-    test('Array stop listing controls when disposed', () {
-      // Given: a form with a control
-      final array = FormArray<String>([
+    test('When an array is disable then all children are disabled', () {
+      // Given: a form with controls
+      final array = FormArray([
         FormControl(),
       ]);
 
-      // And: a function that listen to changes notification
-      bool valueChanged = false;
-      array.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
+      // When: disable group
+      array.disable();
 
-      // When: dispose form
+      // Then: children are disabled
+      expect(array.control('0').disabled, true);
+      expect(array.disabled, true);
+    });
+
+    test('A control disabled is not part of array value', () {
+      // Given: an array with a disable control
+      final array = FormArray<String>([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(defaultValue: 'Forms', disabled: true),
+      ]);
+
+      // When: get form value
+      final arrayValue = array.value;
+
+      // Then: disabled control not in value
+      expect(arrayValue.length, 1);
+      expect(arrayValue.first, 'Reactive');
+    });
+
+    test('Enable a array enable children', () {
+      // Given: a form with a disable control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(defaultValue: 'Forms', disabled: true),
+      ]);
+
+      // When: enable form
+      array.enable();
+
+      // Then: all controls are enabled
+      expect(array.controls.every((control) => control.enabled), true);
+    });
+
+    test('Array valid when invalid control is disable', () {
+      // Given: an array with an invalid disable control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(disabled: true, validators: [Validators.required]),
+      ]);
+
+      // Expect: form is valid
+      expect(array.valid, true);
+      expect(array.hasErrors, false);
+    });
+
+    test('Array valid when invalid control is disable', () {
+      // Given: an array with an invalid control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(validators: [Validators.required]),
+      ]);
+
+      // When: disable invalid control
+      array.control('1').disable();
+
+      // Then: form is valid
+      expect(array.valid, true);
+      expect(array.hasErrors, false);
+    });
+
+    test('Array invalid when enable invalid control', () {
+      // Given: an array with a invalid disable control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(disabled: true, validators: [Validators.required]),
+      ]);
+
+      // When: enable invalid control
+      array.control('1').enable();
+
+      // Then: form is invalid
+      expect(array.invalid, true, reason: 'array is valid');
+      expect(array.hasErrors, true, reason: 'array has errors');
+    });
+
+    test('State error if dispose an array and try to change value', () {
+      // Given: an array
+      final array = FormArray([
+        FormControl(),
+      ]);
+
+      // When: dispose the array
       array.dispose();
 
-      // And: change value to control
-      array.control('0').value = 'Reactive Forms';
+      // And: try to change value of children
+      final addValue = () => array.control('0').value = 'some';
 
-      // Then: form value changed not fires
-      expect(valueChanged, false);
+      // Then: state error
+      expect(() => addValue(), throwsStateError);
     });
   });
 }

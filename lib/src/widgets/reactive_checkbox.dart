@@ -42,7 +42,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
           builder: (ReactiveFormFieldState<bool> field) {
             return Checkbox(
               value: field.value ?? false,
-              onChanged: field.didChange,
+              onChanged: field.control.enabled ? field.didChange : null,
               tristate: tristate,
               activeColor: activeColor,
               checkColor: checkColor,

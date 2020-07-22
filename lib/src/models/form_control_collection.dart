@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -5,6 +7,9 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Its provides methods for get a control by [name] and a [Listenable]
 /// that emits events each time you add or remove a control to the collection.
 abstract class FormControlCollection {
+  final _collectionChanges =
+      StreamController<Iterable<AbstractControl>>.broadcast();
+
   /// Returns a [AbstractControl] by its name.
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
@@ -12,9 +17,19 @@ abstract class FormControlCollection {
   AbstractControl control(String name);
 
   /// Emits when a control is added or removed from collection.
-  Listenable get onCollectionChanged;
+  Stream<Iterable<AbstractControl>> get collectionChanges =>
+      _collectionChanges.stream;
 
-  /// Returns the calculated status depending of the status of the children
-  /// controls
-  ControlStatus get childrenStatus;
+  /// Close stream that emit collection change events
+  void closeCollectionEvents() {
+    _collectionChanges.close();
+  }
+
+  /// Notify to listeners that the collection changed.
+  ///
+  /// This is for internal use only.
+  @protected
+  void emitsCollectionChanged(Iterable<AbstractControl> controls) {
+    _collectionChanges.add(List.unmodifiable(controls));
+  }
 }

@@ -8,15 +8,28 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../widgets/form_control_inherited_notifier.dart';
 
-/// This class is responsible for create a [FormControlInheritedNotifier] for
+/// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
 ///
-/// It also configures the inner [FormControlInheritedNotifier] to rebuild
+/// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
 ///
 class ReactiveForm extends StatefulWidget {
   final Widget child;
   final FormGroup formGroup;
+  final bool enabled;
+
+  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
+  /// that contains the form.
+  ///
+  /// If the callback returns a Future that resolves to false, the form's route
+  /// will not be popped.
+  ///
+  /// See also:
+  ///
+  ///  * [WillPopScope], another widget that provides a way to intercept the
+  ///    back button.
+  final WillPopCallback onWillPop;
 
   /// Creates and instance of [ReactiveForm].
   ///
@@ -25,6 +38,8 @@ class ReactiveForm extends StatefulWidget {
     Key key,
     @required this.formGroup,
     @required this.child,
+    this.enabled = true,
+    this.onWillPop,
   })  : assert(formGroup != null),
         assert(child != null),
         super(key: key);
@@ -39,13 +54,13 @@ class ReactiveForm extends StatefulWidget {
   static AbstractControl of(BuildContext context, {bool listen: true}) {
     if (listen) {
       return context
-          .dependOnInheritedWidgetOfExactType<FormControlInheritedNotifier>()
+          .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()
           .control;
     }
 
     final element = context.getElementForInheritedWidgetOfExactType<
-        FormControlInheritedNotifier>();
-    return (element?.widget as FormControlInheritedNotifier)?.control;
+        FormControlInheritedStreamer>();
+    return (element?.widget as FormControlInheritedStreamer)?.control;
   }
 
   @override
@@ -56,10 +71,13 @@ class ReactiveForm extends StatefulWidget {
 class _ReactiveFormState extends State<ReactiveForm> {
   @override
   Widget build(BuildContext context) {
-    return FormControlInheritedNotifier(
+    return FormControlInheritedStreamer(
       control: widget.formGroup,
-      notifierDelegate: () => widget.formGroup.onStatusChanged,
-      child: widget.child,
+      stream: widget.formGroup.statusChanged,
+      child: WillPopScope(
+        onWillPop: widget.onWillPop,
+        child: widget.child,
+      ),
     );
   }
 }

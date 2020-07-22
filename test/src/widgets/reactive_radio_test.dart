@@ -115,5 +115,82 @@ void main() {
         expect(radio.groupValue, false);
       },
     );
+
+    testWidgets(
+      'Control disabled by default disable Radio',
+      (WidgetTester tester) async {
+        // Given: a form with and a control with default true
+        final form = FormGroup({
+          'radio': FormControl<bool>(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveRadioTestingWidget(form: form));
+
+        // Then: the radio is disabled
+        Type radioType = Radio<bool>(
+          value: null,
+          groupValue: null,
+          onChanged: null,
+        ).runtimeType;
+        Radio<bool> radio =
+            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
+        expect(radio.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Disable a control disable Radio',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'radio': FormControl<bool>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveRadioTestingWidget(form: form));
+
+        // When: disable form
+        form.disable();
+        await tester.pump();
+
+        // Then: the radio is disabled
+        Type radioType = Radio<bool>(
+          value: null,
+          groupValue: null,
+          onChanged: null,
+        ).runtimeType;
+        Radio<bool> radio =
+            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
+        expect(radio.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Enable a control enable Radio',
+      (WidgetTester tester) async {
+        // Given: a form with disabled
+        final form = FormGroup({
+          'radio': FormControl<bool>(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveRadioTestingWidget(form: form));
+
+        // When: enable form
+        form.enable();
+        await tester.pump();
+
+        // Then: the radio is enabled
+        Type radioType = Radio<bool>(
+          value: null,
+          groupValue: null,
+          onChanged: null,
+        ).runtimeType;
+        Radio<bool> radio =
+            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
+        expect(radio.onChanged != null, true);
+      },
+    );
   });
 }

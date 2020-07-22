@@ -5,8 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-
-typedef FormControlInheritedNotifierDelegate = Listenable Function();
+import 'package:reactive_forms/src/widgets/inherited_streamer.dart';
 
 /// Represents an Inherited Widget that exposes an [AbstractControl]
 /// to its descendants and listen to changes in control
@@ -14,17 +13,18 @@ typedef FormControlInheritedNotifierDelegate = Listenable Function();
 ///
 /// The [Listenable] is provided by the [notifierDelegate].
 ///
-class FormControlInheritedNotifier extends InheritedNotifier<Listenable> {
+class FormControlInheritedStreamer extends InheritedStreamer {
   final AbstractControl control;
 
-  FormControlInheritedNotifier({
+  FormControlInheritedStreamer({
     Key key,
     @required this.control,
-    @required FormControlInheritedNotifierDelegate notifierDelegate,
+    @required Stream stream,
     @required Widget child,
-  }) : super(
+  })  : assert(control != null),
+        super(
           key: key,
-          notifier: notifierDelegate(),
+          stream: stream,
           child: child,
         );
 }
