@@ -180,7 +180,7 @@ abstract class AbstractControl<T> {
   void dispose() {
     _onStatusChanged.dispose();
     _onValueChanged.dispose();
-    _runningAsyncValidators?.cancel();
+    _asyncValidationSubscription?.cancel();
   }
 
   /// Resets the control.
@@ -248,8 +248,10 @@ abstract class AbstractControl<T> {
   /// This method is for internal use
   @protected
   void checkValidityAndUpdateStatus({bool onlySelf: false}) {
-    final status = this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
-    this.updateStatus(status, onlySelf: onlySelf);
+    this.updateStatus(
+      this.hasErrors ? ControlStatus.invalid : ControlStatus.valid,
+      onlySelf: onlySelf,
+    );
   }
 
   /// Validates the current control.
@@ -278,26 +280,29 @@ abstract class AbstractControl<T> {
 
       _debounceTimer =
           Timer(Duration(milliseconds: _asyncValidatorsDebounceTime), () {
-        validateAsync();
+        _runAsyncValidator();
       });
     }
   }
 
-  StreamSubscription _runningAsyncValidators;
+  StreamSubscription _asyncValidationSubscription;
+
+  Future<void> _cancelExistingSubscription() async {
+    if (_asyncValidationSubscription != null) {
+      await _asyncValidationSubscription.cancel();
+      _asyncValidationSubscription = null;
+    }
+  }
 
   /// runs async validators to validate the value of current control
-  @protected
-  Future<void> validateAsync() async {
-    if (_runningAsyncValidators != null) {
-      await _runningAsyncValidators.cancel();
-      _runningAsyncValidators = null;
-    }
+  Future<void> _runAsyncValidator() async {
+    await _cancelExistingSubscription();
 
     final validatorsStream = Stream.fromFutures(
         this.asyncValidators.map((validator) => validator(this)));
 
     final errors = Map<String, dynamic>();
-    _runningAsyncValidators = validatorsStream.listen(
+    _asyncValidationSubscription = validatorsStream.listen(
       (error) {
         if (error != null) {
           errors.addAll(error);

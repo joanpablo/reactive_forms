@@ -277,7 +277,7 @@ void main() {
       expect(arrayValue.first, 'Reactive');
     });
 
-    test('Enable a array enable children and recalculate validity', () {
+    test('Enable a array enable children', () {
       // Given: a form with a disable control
       final array = FormArray([
         FormControl(defaultValue: 'Reactive'),
