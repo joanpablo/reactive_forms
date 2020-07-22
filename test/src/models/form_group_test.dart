@@ -305,5 +305,19 @@ void main() {
       expect(formValue.keys.first, 'name');
       expect(formValue.values.first, 'Reactive');
     });
+
+    test('Enable a group enable children and recalculate validity', () {
+      // Given: a form with a disable control
+      final form = FormGroup({
+        'name': FormControl(defaultValue: 'Reactive'),
+        'email': FormControl(defaultValue: 'Forms', disabled: true),
+      });
+
+      // When: enable form
+      form.enable();
+
+      // Then: all controls are enabled
+      expect(form.controls.values.every((control) => control.enabled), true);
+    });
   });
 }

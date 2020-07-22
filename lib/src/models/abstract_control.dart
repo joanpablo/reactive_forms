@@ -52,9 +52,6 @@ abstract class AbstractControl<T> {
     this._onTouched.value = false;
   }
 
-  /// The initial status of control.
-  ControlStatus _defaultStatus;
-
   /// Constructor of the [AbstractControl].
   AbstractControl({
     List<ValidatorFunction> validators,
@@ -66,8 +63,8 @@ abstract class AbstractControl<T> {
         _validators = validators ?? const [],
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
-    _defaultStatus = disabled ? ControlStatus.disabled : ControlStatus.valid;
-    _onStatusChanged = ValueNotifier<ControlStatus>(_defaultStatus);
+    _onStatusChanged = ValueNotifier<ControlStatus>(
+        disabled ? ControlStatus.disabled : ControlStatus.valid);
     _onTouched.value = touched;
   }
 
@@ -151,12 +148,17 @@ abstract class AbstractControl<T> {
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
-  void enable() {
+  ///
+  /// When [onlySelf] is true, mark only this control.
+  /// When false or not supplied, marks all direct ancestors.
+  /// Default is false.
+  void enable({bool onlySelf: false}) {
     if (this.enabled) {
       return;
     }
-    this.updateStatus(ControlStatus.pending);
-    this.validate();
+    //this.updateStatus(ControlStatus.pending, onlySelf: onlySelf);
+    //this.validate();
+    this.checkValidityAndUpdateStatus(onlySelf: onlySelf);
   }
 
   /// Disables the control.
@@ -170,7 +172,7 @@ abstract class AbstractControl<T> {
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   void disable({bool onlySelf: false}) {
-    this._errors.clear();
+    //this._errors.clear();
     this.updateStatus(ControlStatus.disabled, onlySelf: onlySelf);
   }
 
@@ -245,9 +247,9 @@ abstract class AbstractControl<T> {
 
   /// This method is for internal use
   @protected
-  void checkValidityAndUpdateStatus() {
+  void checkValidityAndUpdateStatus({bool onlySelf: false}) {
     final status = this.hasErrors ? ControlStatus.invalid : ControlStatus.valid;
-    this.updateStatus(status);
+    this.updateStatus(status, onlySelf: onlySelf);
   }
 
   /// Validates the current control.

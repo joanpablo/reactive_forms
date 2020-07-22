@@ -276,6 +276,20 @@ void main() {
       expect(arrayValue.length, 1);
       expect(arrayValue.first, 'Reactive');
     });
+
+    test('Enable a array enable children and recalculate validity', () {
+      // Given: a form with a disable control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(defaultValue: 'Forms', disabled: true),
+      ]);
+
+      // When: enable form
+      array.enable();
+
+      // Then: all controls are enabled
+      expect(array.controls.every((control) => control.enabled), true);
+    });
   });
 }
 

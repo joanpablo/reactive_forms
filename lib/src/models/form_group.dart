@@ -135,8 +135,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// See also [FormControl.reset()]
   @override
   void reset() {
-    this._controls.forEach((key, formControl) {
-      formControl.reset();
+    this._controls.forEach((key, control) {
+      control.reset();
     });
   }
 
@@ -145,7 +145,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this._controls.forEach((_, control) {
       control.disable(onlySelf: true);
     });
-    super.disable();
+    super.disable(onlySelf: onlySelf);
+  }
+
+  @override
+  void enable({bool onlySelf: false}) {
+    this.controls.forEach((_, control) {
+      control.enable(onlySelf: true);
+    });
+    super.enable(onlySelf: onlySelf);
   }
 
   /// A group is touched if at least one of its children is mark as touched.
@@ -209,16 +217,31 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void updateValueAndValidity() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      this.updateValue(this.value);
-    } else {
-      this.validate();
-      this.updateValue(this.value);
-    }
+    this.validate();
+    this.updateValue(this.value);
   }
 
   @override
   void updateStatusAndValidity() {
-    this.updateStatus(this.childrenStatus);
+    switch (this.childrenStatus) {
+      case ControlStatus.pending:
+        this.updateStatus(ControlStatus.pending);
+        break;
+      case ControlStatus.valid:
+        this.setErrors({});
+        break;
+      case ControlStatus.invalid:
+        final errors = Map<String, dynamic>();
+        this._controls.forEach((key, control) {
+          if (control.hasErrors) {
+            errors.addAll({key: control.errors});
+          }
+        });
+
+        this.setErrors(errors);
+        break;
+      case ControlStatus.disabled:
+        break;
+    }
   }
 }

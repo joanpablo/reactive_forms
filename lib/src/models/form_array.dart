@@ -86,12 +86,33 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this._controls.forEach((control) => control.reset());
   }
 
+  /// Disables the control.
+  ///
+  /// This means the control is exempt from validation checks and excluded
+  /// from the aggregate value of any parent. Its status is `DISABLED`.
+  ///
+  /// If the control has children, all children are also disabled.
+  ///
+  /// When [onlySelf] is true, mark only this control.
+  /// When false or not supplied, marks all direct ancestors.
+  /// Default is false.
   @override
   void disable({bool onlySelf: false}) {
     this._controls.forEach((control) {
       control.disable(onlySelf: true);
     });
-    super.disable();
+    super.disable(onlySelf: onlySelf);
+  }
+
+  /// Enables the control. This means the control is included in validation
+  /// checks and the aggregate value of its parent. Its status recalculates
+  /// based on its value and its validators.
+  @override
+  void enable({bool onlySelf: false}) {
+    this.controls.forEach((control) {
+      control.enable(onlySelf: true);
+    });
+    super.enable(onlySelf: onlySelf);
   }
 
   /// Insert a new [control] at the [index] position.
