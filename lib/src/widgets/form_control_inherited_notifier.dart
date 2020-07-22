@@ -21,7 +21,8 @@ class FormControlInheritedStreamer extends InheritedStreamer {
     @required this.control,
     @required Stream stream,
     @required Widget child,
-  }) : super(
+  })  : assert(control != null),
+        super(
           key: key,
           stream: stream,
           child: child,
