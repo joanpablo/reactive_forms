@@ -231,12 +231,9 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void updateValueAndValidity() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      this.updateStatus(ControlStatus.pending);
-    } else {
-      this.validate();
-      this.updateValue(this.value);
-    }
+    this.validate();
+    this.updateValue(this.value);
+    this.updateStatusAndValidity();
   }
 
   @override
