@@ -2,12 +2,15 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final _focusChanges = ValueNotifier<bool>(false);
+  final _focusChanges = StreamController<bool>.broadcast();
+  bool _focused = false;
   T _defaultValue;
 
   /// Creates a new FormControl instance.
@@ -59,19 +62,18 @@ class FormControl<T> extends AbstractControl<T> {
   T get defaultValue => _defaultValue;
 
   /// True if the control is marked as focused.
-  bool get focused => _focusChanges.value;
+  bool get focused => _focused;
 
   /// Disposes the control
   @override
   void dispose() {
-    _focusChanges.dispose();
-
+    _focusChanges.close();
     super.dispose();
   }
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
-  ChangeNotifier get focusChanges => _focusChanges;
+  Stream<bool> get focusChanges => _focusChanges.stream;
 
   /// Resets the form control, marking it as untouched,
   /// and setting the [value] to [defaultValue].
@@ -95,7 +97,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   void unfocus() {
     if (this.focused) {
-      _focusChanges.value = false;
+      _updateFocused(false);
     }
   }
 
@@ -113,7 +115,12 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   void focus() {
     if (!this.focused) {
-      _focusChanges.value = true;
+      _updateFocused(true);
     }
+  }
+
+  void _updateFocused(bool value) {
+    _focused = value;
+    _focusChanges.add(value);
   }
 }
