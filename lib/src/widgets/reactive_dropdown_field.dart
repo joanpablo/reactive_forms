@@ -76,7 +76,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: field.didChange,
+                  onChanged: field.control.enabled ? field.didChange : null,
                   onTap: onTap,
                   disabledHint: disabledHint,
                   elevation: elevation,

@@ -312,6 +312,22 @@ void main() {
       expect(array.invalid, true, reason: 'array is valid');
       expect(array.hasErrors, true, reason: 'array has errors');
     });
+
+    test('State error if dispose an array and try to change value', () {
+      // Given: an array
+      final array = FormArray([
+        FormControl(),
+      ]);
+
+      // When: dispose the array
+      array.dispose();
+
+      // And: try to change value of children
+      final addValue = () => array.control('0').value = 'some';
+
+      // Then: state error
+      expect(() => addValue(), throwsStateError);
+    });
   });
 }
 

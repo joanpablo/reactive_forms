@@ -105,6 +105,9 @@ abstract class AbstractControl<T> {
   /// Gets the parent control.
   AbstractControl get parent => this._parent;
 
+  /// Sets the parent of the control.
+  ///
+  /// This is for internal use only.
   @protected
   set parent(AbstractControl parent) {
     this._parent = parent;
@@ -227,11 +230,18 @@ abstract class AbstractControl<T> {
     return errors;
   }
 
+  /// Returns true if all children disabled, otherwise returns false.
+  ///
+  /// This is for internal use only.
   @protected
   bool allControlsDisabled() {
     return this.disabled;
   }
 
+  /// Returns true if all children has the specified [status], otherwise
+  /// returns false.
+  ///
+  /// This is for internal use only.
   @protected
   bool anyControlsHaveStatus(ControlStatus status) {
     return false;

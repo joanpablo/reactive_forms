@@ -189,15 +189,20 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     return _controls[index];
   }
 
+  /// Disposes the array.
   @override
   void dispose() {
     _controls.forEach((control) {
       control.parent = null;
       control.dispose();
     });
+    this.closeCollectionEvents();
     super.dispose();
   }
 
+  /// Returns true if all children disabled, otherwise returns false.
+  ///
+  /// This is for internal use only.
   @override
   bool allControlsDisabled() {
     if (_controls.isEmpty) {
@@ -206,11 +211,18 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     return _controls.every((control) => control.disabled);
   }
 
+  /// Returns true if all children has the specified [status], otherwise
+  /// returns false.
+  ///
+  /// This is for internal use only.
   @override
   bool anyControlsHaveStatus(ControlStatus status) {
     return _controls.any((control) => control.status == status);
   }
 
+  /// Gets all errors of the array.
+  ///
+  /// Contains all the errors of the array and the child errors.
   @override
   Map<String, dynamic> get errors {
     final allErrors = Map.of(super.errors);

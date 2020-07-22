@@ -20,10 +20,15 @@ abstract class FormControlCollection {
   Stream<Iterable<AbstractControl>> get collectionChanges =>
       _collectionChanges.stream;
 
+  /// Close stream that emit collection change events
   void closeCollectionEvents() {
     _collectionChanges.close();
   }
 
+  /// Notify to listeners that the collection changed.
+  ///
+  /// This is for internal use only.
+  @protected
   void emitsCollectionChanged(Iterable<AbstractControl> controls) {
     _collectionChanges.add(List.unmodifiable(controls));
   }

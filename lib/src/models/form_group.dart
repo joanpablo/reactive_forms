@@ -186,15 +186,20 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this._controls.values.forEach((control) => control.untouch());
   }
 
+  /// Disposes the group.
   @override
   void dispose() {
     this._controls.forEach((_, control) {
       control.parent = null;
       control.dispose();
     });
+    this.closeCollectionEvents();
     super.dispose();
   }
 
+  /// Returns true if all children disabled, otherwise returns false.
+  ///
+  /// This is for internal use only.
   @override
   bool allControlsDisabled() {
     if (_controls.isEmpty) {
@@ -203,11 +208,18 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return _controls.values.every((control) => control.disabled);
   }
 
+  /// Returns true if all children has the specified [status], otherwise
+  /// returns false.
+  ///
+  /// This is for internal use only.
   @override
   bool anyControlsHaveStatus(ControlStatus status) {
     return _controls.values.any((control) => control.status == status);
   }
 
+  /// Gets all errors of the group.
+  ///
+  /// Contains all the errors of the group and the child errors.
   @override
   Map<String, dynamic> get errors {
     final allErrors = Map.of(super.errors);

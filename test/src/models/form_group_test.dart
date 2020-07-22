@@ -341,5 +341,21 @@ void main() {
       expect(form.invalid, true, reason: 'form is valid');
       expect(form.hasErrors, true, reason: 'form has errors');
     });
+
+    test('State error if dispose a Group and try to change control value', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      // When: dispose the form
+      form.dispose();
+
+      // And: try to change value of children
+      final addValue = () => form.control('name').value = 'some';
+
+      // Then: state error
+      expect(() => addValue(), throwsStateError);
+    });
   });
 }
