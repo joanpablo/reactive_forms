@@ -247,33 +247,13 @@ void main() {
         'name': FormControl(),
       });
 
-      // When: listen to changes notification
-      bool valueChanged = false;
-      form.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
+      final value = 'Reactive Forms';
 
-      // And: change value to control
+      // Expect: form notify value changes
+      expectLater(form.valueChanges, emits({'name': value}));
+
+      // When: change value of the control
       form.control('name').value = 'Reactive Forms';
-
-      // Then: form value changed fires
-      expect(valueChanged, true);
-    });
-
-    test('Group stop listing controls when disposed', () {
-      // Given: a form with a control
-      final form = FormGroup({
-        'name': FormControl(),
-      });
-
-      // When: dispose form
-      form.dispose();
-
-      // And: change value to control
-      final setValue = () => form.control('name').value = 'Reactive Forms';
-
-      // Then: assert error
-      expect(setValue, throwsAssertionError);
     });
 
     test('When a group is disable then all children are disabled', () {

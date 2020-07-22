@@ -2,7 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -14,9 +13,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
 class FormArray<T> extends AbstractControl<Iterable<T>>
-    implements FormControlCollection {
+    with FormControlCollection {
   final List<AbstractControl<T>> _controls = [];
-  final _onCollectionChanged = ValueNotifier<Iterable<AbstractControl<T>>>([]);
 
   /// Creates a new [FormArray] instance.
   ///
@@ -71,10 +69,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     });
   }
 
-  /// Emits when a control is added or removed from collection.
-  @override
-  Listenable get onCollectionChanged => this._onCollectionChanged;
-
   /// Resets all the controls of the array to default.
   ///
   /// Marks them as untouched and sets the
@@ -117,10 +111,10 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   /// Insert a new [control] at the [index] position.
   void insert(int index, AbstractControl<T> control) {
-    this._controls.insert(index, control);
+    _controls.insert(index, control);
     this.validate();
     control.parent = this;
-    _notifyCollectionChanged();
+    emitsCollectionChanged(_controls);
   }
 
   /// Insert a new [control] at the end of the array.
@@ -135,22 +129,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     controls.forEach((control) {
       control.parent = this;
     });
-    _notifyCollectionChanged();
+    emitsCollectionChanged(_controls);
   }
 
   /// Removes control at [index]
   void removeAt(int index) {
-    final removedControl = this._controls.removeAt(index);
+    final removedControl = _controls.removeAt(index);
     this.validate();
     removedControl.parent = null;
-    this._notifyCollectionChanged();
+    this.emitsCollectionChanged(_controls);
   }
 
   /// Removes [control].
   ///
   /// Throws [FormControlNotFoundException] if no control found.
   void remove(AbstractControl<T> control) {
-    final index = this._controls.indexOf(control);
+    final index = _controls.indexOf(control);
     if (index == -1) {
       throw FormControlNotFoundException();
     }
@@ -188,21 +182,21 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     int index = int.tryParse(name);
     if (index == null) {
       throw FormArrayInvalidIndexException(name);
-    } else if (index >= this._controls.length) {
+    } else if (index >= _controls.length) {
       throw FormControlNotFoundException(controlName: name);
     }
 
-    return this._controls[index];
+    return _controls[index];
   }
 
   @override
   ControlStatus get childrenStatus {
-    final isPending = this._controls.any((control) => control.pending);
+    final isPending = _controls.any((control) => control.pending);
     if (isPending) {
       return ControlStatus.pending;
     }
 
-    final isInvalid = this._controls.any((control) => control.invalid);
+    final isInvalid = _controls.any((control) => control.invalid);
     return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
   }
 
@@ -219,7 +213,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
       }
     });
 
-    this._controls.asMap().entries.forEach((entry) {
+    _controls.asMap().entries.forEach((entry) {
       final control = entry.value;
       final key = entry.key.toString();
       if (control.hasErrors) {
@@ -232,7 +226,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   @override
   void dispose() {
-    this._controls.forEach((control) {
+    _controls.forEach((control) {
       control.parent = null;
       control.dispose();
     });
@@ -260,7 +254,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
         break;
       case ControlStatus.invalid:
         final errors = Map<String, dynamic>();
-        this._controls.asMap().entries.forEach((entry) {
+        _controls.asMap().entries.forEach((entry) {
           if (entry.value.hasErrors) {
             errors.addAll({'${entry.key}': entry.value.errors});
           }
@@ -271,9 +265,5 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
       case ControlStatus.disabled:
         break;
     }
-  }
-
-  void _notifyCollectionChanged() {
-    this._onCollectionChanged.value = List.unmodifiable(this._controls);
   }
 }

@@ -2,12 +2,15 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final _onFocusChanged = ValueNotifier<bool>(false);
+  final _focusChanges = StreamController<bool>.broadcast();
+  bool _focused = false;
   T _defaultValue;
 
   /// Creates a new FormControl instance.
@@ -48,26 +51,29 @@ class FormControl<T> extends AbstractControl<T> {
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
         ) {
-    this.value = _defaultValue;
+    if (_defaultValue != null) {
+      this.value = _defaultValue;
+    } else {
+      this.validate();
+    }
   }
 
   /// Returns the default value of the control.
   T get defaultValue => _defaultValue;
 
   /// True if the control is marked as focused.
-  bool get focused => _onFocusChanged.value;
+  bool get focused => _focused;
 
   /// Disposes the control
   @override
   void dispose() {
-    _onFocusChanged.dispose();
-
+    _focusChanges.close();
     super.dispose();
   }
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
-  ChangeNotifier get onFocusChanged => _onFocusChanged;
+  Stream<bool> get focusChanges => _focusChanges.stream;
 
   /// Resets the form control, marking it as untouched,
   /// and setting the [value] to [defaultValue].
@@ -91,7 +97,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   void unfocus() {
     if (this.focused) {
-      _onFocusChanged.value = false;
+      _updateFocused(false);
     }
   }
 
@@ -109,7 +115,12 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   void focus() {
     if (!this.focused) {
-      _onFocusChanged.value = true;
+      _updateFocused(true);
     }
+  }
+
+  void _updateFocused(bool value) {
+    _focused = value;
+    _focusChanges.add(value);
   }
 }

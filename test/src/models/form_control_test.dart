@@ -126,15 +126,10 @@ void main() {
       // When: call disabled()
       control.disable();
 
-      // And: change value
-      bool statusChanged = false;
-      control.onStatusChanged.addListener(() {
-        statusChanged = true;
-      });
+      // When: set value to control
       control.value = 'disabled control';
 
-      // Then: status does not changed
-      expect(statusChanged, false);
+      // Expect: disable control
       expect(control.disabled, true);
       expect(control.status, ControlStatus.disabled);
     });

@@ -2,6 +2,8 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -62,6 +64,9 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// The [FormControl] that is bound to this state.
   FormControl control;
   bool _touched;
+  StreamSubscription _valueChangesSubscription;
+  StreamSubscription _statusChangesSubscription;
+  StreamSubscription _touchChangesSubscription;
 
   /// The current value of the [FormControl].
   T get value => this.control.value;
@@ -102,10 +107,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     final newControl = _getFormControl();
     if (this.control != newControl) {
-      this.unsubscribeControl();
+      await this.unsubscribeControl();
       this.control = newControl;
       subscribeControl();
     }
@@ -121,18 +126,23 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void subscribeControl() {
-    this.control.onStatusChanged.addListener(_onControlStatusChanged);
-    this.control.onValueChanged.addListener(_onControlValueChanged);
-    this.control.onTouched.addListener(_onControlTouched);
+    _statusChangesSubscription =
+        this.control.statusChanged.listen(_onControlStatusChanged);
+    _valueChangesSubscription =
+        this.control.valueChanges.listen(_onControlValueChanged);
+    _touchChangesSubscription =
+        this.control.touchChanges.listen(_onControlTouched);
 
     this._touched = this.control.touched;
   }
 
   @protected
-  void unsubscribeControl() {
-    this.control.onStatusChanged.removeListener(_onControlStatusChanged);
-    this.control.onValueChanged.removeListener(_onControlValueChanged);
-    this.control.onTouched.removeListener(_onControlTouched);
+  Future<void> unsubscribeControl() async {
+    await Future.wait([
+      _statusChangesSubscription.cancel(),
+      _valueChangesSubscription.cancel(),
+      _touchChangesSubscription.cancel(),
+    ]);
   }
 
   FormControl _getFormControl() {
@@ -149,8 +159,16 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     return form.control(widget.formControlName);
   }
 
-  void _onControlValueChanged() {
+  void _onControlValueChanged(T value) {
     this.updateValueFromControl();
+  }
+
+  void _onControlStatusChanged(ControlStatus status) {
+    setState(() {});
+  }
+
+  void _onControlTouched(bool touched) {
+    this.touched = touched;
   }
 
   @protected
@@ -161,14 +179,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @protected
   void touch() {
     this.control.touch();
-  }
-
-  void _onControlStatusChanged() {
-    setState(() {});
-  }
-
-  void _onControlTouched() {
-    this.touched = this.control.touched;
   }
 
   /// Updates this field's state to the new value. Useful for responding to

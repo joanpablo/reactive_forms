@@ -173,17 +173,13 @@ void main() {
         FormControl(),
       ]);
 
-      // When: listen to changes notification
-      bool valueChanged = false;
-      array.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
+      final value = 'Reactive Forms';
 
-      // And: change value to control
-      array.control('0').value = 'Reactive Forms';
+      // Expect: array notify value changes
+      expectLater(array.valueChanges, emits([value]));
 
-      // Then: array value changed fires
-      expect(valueChanged, true);
+      // When: change value of a control
+      array.control('0').value = value;
     });
 
     test('Remove control', () {
@@ -230,22 +226,6 @@ void main() {
       expect(array.controls[0].value, 'control_1');
       expect(array.controls[1].value, 'control_2');
       expect(array.controls[2].value, 'control_3');
-    });
-
-    test('Array stop listing controls when disposed', () {
-      // Given: a form with a control
-      final array = FormArray<String>([
-        FormControl(),
-      ]);
-
-      // When: dispose form
-      array.dispose();
-
-      // And: change value to control
-      final setValue = () => array.control('0').value = 'Reactive Forms';
-
-      // Then: assert error
-      expect(setValue, throwsAssertionError);
     });
 
     test('When an array is disable then all children are disabled', () {
