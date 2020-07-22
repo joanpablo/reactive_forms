@@ -49,5 +49,64 @@ void main() {
         expect(sliderValue, form.control('sliderValue').value);
       },
     );
+
+    testWidgets(
+      'Control disabled by default disable Slider',
+      (WidgetTester tester) async {
+        // Given: a form with disabled control
+        final form = FormGroup({
+          'sliderValue': FormControl(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // Then: the slider is disabled
+        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        expect(slider.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Disable a control disable Slider',
+      (WidgetTester tester) async {
+        // Given: a form with disabled control
+        final form = FormGroup({
+          'sliderValue': FormControl(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // When: disable form
+        form.disable();
+        await tester.pump();
+
+        // Then: the slider is disabled
+        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        expect(slider.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Enable a control enable Slider',
+      (WidgetTester tester) async {
+        // Given: a form with disabled control
+        final form = FormGroup({
+          'sliderValue': FormControl(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // When: enable form
+        form.enable();
+        await tester.pump();
+
+        // Then: the slider is enabled
+        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        expect(slider.onChanged != null, true);
+      },
+    );
   });
 }

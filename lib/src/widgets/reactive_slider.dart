@@ -50,7 +50,7 @@ class ReactiveSlider extends ReactiveFormField<double> {
           validationMessages: const {},
           builder: (ReactiveFormFieldState<double> field) {
             return Slider(
-              value: field.value,
+              value: field.value ?? min,
               onChanged: field.control.enabled ? field.didChange : null,
               min: min,
               max: max,

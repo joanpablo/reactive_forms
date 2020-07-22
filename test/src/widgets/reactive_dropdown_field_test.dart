@@ -277,5 +277,79 @@ void main() {
         expect(form.control('dropdown').value, null);
       },
     );
+
+    testWidgets(
+      'Control disabled by default disable Dropdown',
+      (WidgetTester tester) async {
+        // Given: a form and a control
+        final form = FormGroup({
+          'dropdown': FormControl<String>(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
+
+        // Then: the dropdown is disabled
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        expect(dropdown.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Disable a control disable Dropdown',
+      (WidgetTester tester) async {
+        // Given: a form and a control
+        final form = FormGroup({
+          'dropdown': FormControl<String>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
+
+        // When: disable form
+        form.disable();
+        await tester.pump();
+
+        // Then: the dropdown is disabled
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        expect(dropdown.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'Enable a control enable Checkbox',
+      (WidgetTester tester) async {
+        // Given: a form and a control
+        final form = FormGroup({
+          'dropdown': FormControl<String>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
+
+        // When: enable form
+        form.enable();
+        await tester.pump();
+
+        // Then: the dropdown is enable
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        expect(dropdown.onChanged != null, true);
+      },
+    );
   });
 }

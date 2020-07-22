@@ -194,5 +194,65 @@ void main() {
         await tester.pumpWidget(ReactiveTextField(formControlName: 'name'));
       },
     );
+
+    testWidgets('Control disabled by default disable Text field',
+        (WidgetTester tester) async {
+      // Given: An form with disabled control
+      final form = FormGroup({
+        'name': FormControl(disabled: true),
+      });
+
+      // And: a widget that is bind to the form
+      await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+      // Then: the text field is disabled
+      TextField textField =
+          tester.firstWidget(find.byType(TextField)) as TextField;
+      expect(textField.enabled, false);
+    });
+
+    testWidgets(
+      'Disable a control disable text field',
+      (WidgetTester tester) async {
+        // Given: An form
+        final form = FormGroup({
+          'name': FormControl(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // When: disable form
+        form.disable();
+        await tester.pump();
+
+        // Then: the text field is disabled
+        TextField textField =
+            tester.firstWidget(find.byType(TextField)) as TextField;
+        expect(textField.enabled, false);
+      },
+    );
+
+    testWidgets(
+      'Enable a control enable Checkbox',
+      (WidgetTester tester) async {
+        // Given: An form with disabled control
+        final form = FormGroup({
+          'name': FormControl(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // When: enable form
+        form.enable();
+        await tester.pump();
+
+        // Then: the text field is enable
+        TextField textField =
+            tester.firstWidget(find.byType(TextField)) as TextField;
+        expect(textField.enabled, true);
+      },
+    );
   });
 }

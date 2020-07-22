@@ -129,5 +129,79 @@ void main() {
         });
       },
     );
+
+    testWidgets(
+      'Control disabled by default disable Switch',
+      (WidgetTester tester) async {
+        // Given: a form with disabled control
+        final form = FormGroup({
+          'switch': FormControl<bool>(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
+
+        // Then: the switch is disabled
+        List<Switch> switches = tester
+            .widgetList(find.byType(Switch))
+            .map((widget) => widget as Switch)
+            .toList();
+        switches.forEach((switchWidget) {
+          expect(switchWidget.onChanged, null);
+        });
+      },
+    );
+
+    testWidgets(
+      'Disable a control disable the Switch',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'switch': FormControl<bool>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
+
+        // When: disable form
+        form.disable();
+        await tester.pump();
+
+        // Then: the switch is disabled
+        List<Switch> switches = tester
+            .widgetList(find.byType(Switch))
+            .map((widget) => widget as Switch)
+            .toList();
+        switches.forEach((switchWidget) {
+          expect(switchWidget.onChanged, null);
+        });
+      },
+    );
+
+    testWidgets(
+      'Enable a control enable switch',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'switch': FormControl<bool>(disabled: true),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
+
+        // When: enable form
+        form.enable();
+        await tester.pump();
+
+        // Then: the switch is disabled
+        List<Switch> switches = tester
+            .widgetList(find.byType(Switch))
+            .map((widget) => widget as Switch)
+            .toList();
+        switches.forEach((switchWidget) {
+          expect(switchWidget.onChanged != null, true);
+        });
+      },
+    );
   });
 }
