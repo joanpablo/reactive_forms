@@ -44,8 +44,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
         super(
           validators: validators,
         ) {
+    this._controls.forEach((_, control) {
+      control.parent = this;
+    });
     this.validate();
-    _registerControlListeners();
   }
 
   /// Returns a [AbstractControl] by [name].
@@ -90,8 +92,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///```
   Map<String, dynamic> get value {
     final map = Map<String, dynamic>();
-    this._controls.forEach((key, formControl) {
-      map[key] = formControl.value;
+    this._controls.forEach((key, control) {
+      if (control.enabled) {
+        map[key] = control.value;
+      }
     });
 
     return map;
@@ -138,8 +142,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void disable({bool onlySelf: false}) {
-    this._controls.forEach((key, formControl) {
-      formControl.disable();
+    this._controls.forEach((_, control) {
+      control.disable(onlySelf: true);
     });
     super.disable();
   }
@@ -174,7 +178,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void validate() {
-    this.notifyStatusChanged(ControlStatus.pending);
+    this.updateStatus(ControlStatus.pending);
 
     final errors = Map<String, dynamic>();
 
@@ -196,34 +200,25 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void dispose() {
-    this._controls.values.forEach((control) {
-      control.onStatusChanged.removeListener(this._onControlStatusChanged);
-      control.onValueChanged.removeListener(this._onControlValueChanged);
+    this._controls.forEach((_, control) {
+      control.parent = null;
+      control.dispose();
     });
     super.dispose();
   }
 
-  void _registerControlListeners() {
-    this._controls.values.forEach((control) {
-      control.onValueChanged.addListener(this._onControlValueChanged);
-      control.onStatusChanged.addListener(this._onControlStatusChanged);
-    });
-  }
-
-  void _onControlValueChanged() {
+  @override
+  void updateValueAndValidity() {
     if (this.childrenStatus == ControlStatus.pending) {
-      this.notifyValueChanged(this.value);
+      this.updateValue(this.value);
     } else {
       this.validate();
-      this.notifyValueChanged(this.value);
+      this.updateValue(this.value);
     }
   }
 
-  void _onControlStatusChanged() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      notifyStatusChanged(ControlStatus.pending);
-    } else {
-      this.validate();
-    }
+  @override
+  void updateStatusAndValidity() {
+    this.updateStatus(this.childrenStatus);
   }
 }

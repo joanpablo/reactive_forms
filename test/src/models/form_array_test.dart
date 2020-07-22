@@ -238,20 +238,43 @@ void main() {
         FormControl(),
       ]);
 
-      // And: a function that listen to changes notification
-      bool valueChanged = false;
-      array.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
-
       // When: dispose form
       array.dispose();
 
       // And: change value to control
-      array.control('0').value = 'Reactive Forms';
+      final setValue = () => array.control('0').value = 'Reactive Forms';
 
-      // Then: form value changed not fires
-      expect(valueChanged, false);
+      // Then: assert error
+      expect(setValue, throwsAssertionError);
+    });
+
+    test('When an array is disable then all children are disabled', () {
+      // Given: a form with controls
+      final array = FormArray([
+        FormControl(),
+      ]);
+
+      // When: disable group
+      array.disable();
+
+      // Then: children are disabled
+      expect(array.control('0').disabled, true);
+      expect(array.disabled, true);
+    });
+
+    test('A control disabled is not part of array value', () {
+      // Given: an array with a disable control
+      final array = FormArray<String>([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(defaultValue: 'Forms', disabled: true),
+      ]);
+
+      // When: get form value
+      final arrayValue = array.value;
+
+      // Then: disabled control not in value
+      expect(arrayValue.length, 1);
+      expect(arrayValue.first, 'Reactive');
     });
   });
 }

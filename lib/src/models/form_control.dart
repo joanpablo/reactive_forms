@@ -9,7 +9,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 class FormControl<T> extends AbstractControl<T> {
   final _onFocusChanged = ValueNotifier<bool>(false);
   T _defaultValue;
-  T _value;
 
   /// Creates a new FormControl instance.
   ///
@@ -52,23 +51,11 @@ class FormControl<T> extends AbstractControl<T> {
     this.value = _defaultValue;
   }
 
-  /// Returns the current value of the control.
-  @override
-  T get value => this._value;
-
   /// Returns the default value of the control.
   T get defaultValue => _defaultValue;
 
   /// True if the control is marked as focused.
   bool get focused => _onFocusChanged.value;
-
-  /// Sets the [newValue] as value for the form control.
-  @override
-  set value(T newValue) {
-    this._value = newValue;
-    this.validate();
-    this.notifyValueChanged(this._value);
-  }
 
   /// Disposes the control
   @override

@@ -266,20 +266,14 @@ void main() {
         'name': FormControl(),
       });
 
-      // And: a function that listen to changes notification
-      bool valueChanged = false;
-      form.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
-
       // When: dispose form
       form.dispose();
 
       // And: change value to control
-      form.control('name').value = 'Reactive Forms';
+      final setValue = () => form.control('name').value = 'Reactive Forms';
 
-      // Then: form value changed not fires
-      expect(valueChanged, false);
+      // Then: assert error
+      expect(setValue, throwsAssertionError);
     });
 
     test('When a group is disable then all children are disabled', () {
@@ -293,6 +287,23 @@ void main() {
 
       // Then: children are disabled
       expect(form.control('name').disabled, true);
+      expect(form.disabled, true);
+    });
+
+    test('A control disabled is not part of group value', () {
+      // Given: a form with a disable control
+      final form = FormGroup({
+        'name': FormControl(defaultValue: 'Reactive'),
+        'email': FormControl(defaultValue: 'Forms', disabled: true),
+      });
+
+      // When: get form value
+      final formValue = form.value;
+
+      // Then: disabled control not in value
+      expect(formValue.length, 1);
+      expect(formValue.keys.first, 'name');
+      expect(formValue.values.first, 'Reactive');
     });
   });
 }

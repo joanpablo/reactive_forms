@@ -71,7 +71,7 @@ void main() {
         );
 
         // When: change status of control to pending
-        form.control('control').notifyStatusChanged(ControlStatus.pending);
+        form.control('control').updateStatus(ControlStatus.pending);
         await tester.pump();
 
         // When: get text widget

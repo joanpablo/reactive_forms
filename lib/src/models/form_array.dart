@@ -47,8 +47,11 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   /// Gets the values of controls as an [Iterable].
   @override
-  Iterable<T> get value =>
-      this._controls.map((control) => control.value).toList();
+  Iterable<T> get value => this
+      ._controls
+      .where((control) => control.enabled)
+      .map((control) => control.value)
+      .toList();
 
   /// Gets the list of child controls.
   List<AbstractControl<T>> get controls => List.unmodifiable(this._controls);
@@ -83,11 +86,19 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this._controls.forEach((control) => control.reset());
   }
 
+  @override
+  void disable({bool onlySelf: false}) {
+    this._controls.forEach((control) {
+      control.disable(onlySelf: true);
+    });
+    super.disable();
+  }
+
   /// Insert a new [control] at the [index] position.
   void insert(int index, AbstractControl<T> control) {
     this._controls.insert(index, control);
     this.validate();
-    _registerControlListeners([control]);
+    control.parent = this;
     _notifyCollectionChanged();
   }
 
@@ -100,7 +111,9 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   void addAll(Iterable<AbstractControl<T>> controls) {
     this._controls.addAll(controls);
     this.validate();
-    _registerControlListeners(controls);
+    controls.forEach((control) {
+      control.parent = this;
+    });
     _notifyCollectionChanged();
   }
 
@@ -108,7 +121,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   void removeAt(int index) {
     final removedControl = this._controls.removeAt(index);
     this.validate();
-    this._removeControlListeners([removedControl]);
+    removedControl.parent = null;
     this._notifyCollectionChanged();
   }
 
@@ -173,14 +186,8 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   @override
-  void dispose() {
-    this._removeControlListeners(this._controls);
-    super.dispose();
-  }
-
-  @override
   void validate() {
-    this.notifyStatusChanged(ControlStatus.pending);
+    this.updateStatus(ControlStatus.pending);
 
     final errors = Map<String, dynamic>();
 
@@ -202,35 +209,28 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.setErrors(errors);
   }
 
-  void _registerControlListeners(Iterable<AbstractControl> controls) {
-    controls.toList().forEach((control) {
-      control.onStatusChanged.addListener(this._onControlStatusChanged);
-      control.onValueChanged.addListener(this._onControlValueChanged);
+  @override
+  void dispose() {
+    this._controls.forEach((control) {
+      control.parent = null;
+      control.dispose();
     });
+    super.dispose();
   }
 
-  void _removeControlListeners(Iterable<AbstractControl> controls) {
-    controls.forEach((control) {
-      control.onStatusChanged.removeListener(this._onControlStatusChanged);
-      control.onValueChanged.removeListener(this._onControlValueChanged);
-    });
-  }
-
-  void _onControlValueChanged() {
+  @override
+  void updateValueAndValidity() {
     if (this.childrenStatus == ControlStatus.pending) {
-      this.notifyValueChanged(this.value);
+      this.updateValue(this.value);
     } else {
       this.validate();
-      this.notifyValueChanged(this.value);
+      this.updateValue(this.value);
     }
   }
 
-  void _onControlStatusChanged() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      notifyStatusChanged(ControlStatus.pending);
-    } else {
-      this.validate();
-    }
+  @override
+  void updateStatusAndValidity() {
+    this.updateStatus(this.childrenStatus);
   }
 
   void _notifyCollectionChanged() {
