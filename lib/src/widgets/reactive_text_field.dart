@@ -158,13 +158,13 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
   @override
   void subscribeControl() {
     super.subscribeControl();
-    this.control.onFocusChanged.addListener(_onFormControlFocusChanged);
+    this.control.focusChanges.addListener(_onFormControlFocusChanged);
   }
 
   @override
   Future<void> unsubscribeControl() async {
     await super.unsubscribeControl();
-    this.control.onFocusChanged.removeListener(_onFormControlFocusChanged);
+    this.control.focusChanges.removeListener(_onFormControlFocusChanged);
   }
 
   @override

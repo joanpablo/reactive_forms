@@ -86,10 +86,12 @@ abstract class AbstractControl<T> {
   T get value => this._value;
 
   /// Sets the value to the control
-  set value(T newValue) {
-    this._value = newValue;
-    this.validate();
-    this.updateValue(this._value);
+  set value(T value) {
+    if (_value != value) {
+      _value = value;
+      this.validate();
+      this.updateValue(_value);
+    }
   }
 
   /// Gets the parent control.
@@ -196,11 +198,13 @@ abstract class AbstractControl<T> {
   @visibleForTesting
   @protected
   void updateStatus(ControlStatus status, {bool onlySelf: false}) {
-    _status = status;
-    _statusChanges.add(_status);
+    if (this.status != status) {
+      _status = status;
+      _statusChanges.add(_status);
 
-    if (_parent != null && !onlySelf) {
-      _parent.updateStatusAndValidity();
+      if (_parent != null && !onlySelf) {
+        _parent.updateStatusAndValidity();
+      }
     }
   }
 

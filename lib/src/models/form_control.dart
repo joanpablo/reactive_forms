@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final _onFocusChanged = ValueNotifier<bool>(false);
+  final _focusChanges = ValueNotifier<bool>(false);
   T _defaultValue;
 
   /// Creates a new FormControl instance.
@@ -48,26 +48,30 @@ class FormControl<T> extends AbstractControl<T> {
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
         ) {
-    this.value = _defaultValue;
+    if (_defaultValue != null) {
+      this.value = _defaultValue;
+    } else {
+      this.validate();
+    }
   }
 
   /// Returns the default value of the control.
   T get defaultValue => _defaultValue;
 
   /// True if the control is marked as focused.
-  bool get focused => _onFocusChanged.value;
+  bool get focused => _focusChanges.value;
 
   /// Disposes the control
   @override
   void dispose() {
-    _onFocusChanged.dispose();
+    _focusChanges.dispose();
 
     super.dispose();
   }
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
-  ChangeNotifier get onFocusChanged => _onFocusChanged;
+  ChangeNotifier get focusChanges => _focusChanges;
 
   /// Resets the form control, marking it as untouched,
   /// and setting the [value] to [defaultValue].
@@ -91,7 +95,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   void unfocus() {
     if (this.focused) {
-      _onFocusChanged.value = false;
+      _focusChanges.value = false;
     }
   }
 
@@ -109,7 +113,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   void focus() {
     if (!this.focused) {
-      _onFocusChanged.value = true;
+      _focusChanges.value = true;
     }
   }
 }

@@ -14,7 +14,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// becomes invalid.
 class FormGroup extends AbstractControl<Map<String, dynamic>>
     with FormControlCollection {
-  final Map<String, AbstractControl> _controls;
+  final Map<String, AbstractControl> _controls = {};
 
   /// Creates a new FormGroup instance.
   ///
@@ -38,14 +38,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     Map<String, AbstractControl> controls, {
     List<ValidatorFunction> validators,
   })  : assert(controls != null),
-        _controls = controls,
-        super(
-          validators: validators,
-        ) {
-    this._controls.forEach((_, control) {
-      control.parent = this;
-    });
-    this.validate();
+        super(validators: validators) {
+    this.addAll(controls);
   }
 
   /// Returns a [AbstractControl] by [name].
@@ -134,6 +128,16 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
   }
 
+  /// Disables the control.
+  ///
+  /// This means the control is exempt from validation checks and excluded
+  /// from the aggregate value of any parent. Its status is `DISABLED`.
+  ///
+  /// If the control has children, all children are also disabled.
+  ///
+  /// When [onlySelf] is true, mark only this control.
+  /// When false or not supplied, marks all direct ancestors.
+  /// Default is false.
   @override
   void disable({bool onlySelf: false}) {
     this._controls.forEach((_, control) {
@@ -142,12 +146,28 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     super.disable(onlySelf: onlySelf);
   }
 
+  /// Enables the control. This means the control is included in validation
+  /// checks and the aggregate value of its parent. Its status recalculates
+  /// based on its value and its validators.
+  ///
+  /// When [onlySelf] is true, mark only this control.
+  /// When false or not supplied, marks all direct ancestors.
+  /// Default is false.
   @override
   void enable({bool onlySelf: false}) {
     this.controls.forEach((_, control) {
       control.enable(onlySelf: true);
     });
     super.enable(onlySelf: onlySelf);
+  }
+
+  /// Appends all [controls] to the group.
+  void addAll(Map<String, AbstractControl> controls) {
+    _controls.addAll(controls);
+    controls.forEach((name, control) {
+      control.parent = this;
+    });
+    this.validate();
   }
 
   /// A group is touched if at least one of its children is mark as touched.
