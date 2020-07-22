@@ -14,10 +14,10 @@ import '../widgets/form_control_inherited_notifier.dart';
 typedef ReactiveFormArrayBuilder<T> = Widget Function(
     BuildContext context, FormArray<T> formArray, Widget child);
 
-/// This class is responsible for create a [FormControlInheritedNotifier] for
+/// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormArray] to all descendants widgets.
 ///
-/// It also configures the inner [FormControlInheritedNotifier] to refresh
+/// It also configures the inner [FormControlInheritedStreamer] to refresh
 /// context each time the [FormArray] append or remove new controls.
 ///
 class ReactiveFormArray<T> extends StatefulWidget {
@@ -58,9 +58,9 @@ class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return FormControlInheritedNotifier(
+    return FormControlInheritedStreamer(
       control: _formArray,
-      notifierDelegate: () => _formArray.onCollectionChanged,
+      stream: _formArray.collectionChanges,
       child: Builder(builder: (context) {
         return widget.builder(
           context,

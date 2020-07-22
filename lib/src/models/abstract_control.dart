@@ -17,14 +17,16 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
-  ValueNotifier<ControlStatus> _onStatusChanged;
-  final _valueChangesController = StreamController<T>.broadcast();
+  final _statusChanges = StreamController<ControlStatus>.broadcast();
+  final _valueChanges = StreamController<T>.broadcast();
   final _onTouched = ValueNotifier<bool>(false);
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
 
   T _value;
+
+  ControlStatus _status;
 
   /// The parent control.
   FormControlCollection _parent;
@@ -63,8 +65,7 @@ abstract class AbstractControl<T> {
         _validators = validators ?? const [],
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
-    _onStatusChanged = ValueNotifier<ControlStatus>(
-        disabled ? ControlStatus.disabled : ControlStatus.valid);
+    updateStatus(disabled ? ControlStatus.disabled : ControlStatus.valid);
     _onTouched.value = touched;
   }
 
@@ -103,12 +104,11 @@ abstract class AbstractControl<T> {
   /// or empty [Map] if there are no errors.
   Map<String, dynamic> get errors => Map.unmodifiable(_errors);
 
-  /// A [ValueListenable] that emits an event every time the validation status
-  /// of the control changes.
-  ValueListenable<ControlStatus> get onStatusChanged => _onStatusChanged;
+  /// A [Stream] that emits the status every time it changes.
+  Stream<ControlStatus> get statusChanged => _statusChanges.stream;
 
   /// A [Stream] that emits the value of the control every time it changes.
-  Stream<T> get valueChanges => _valueChangesController.stream;
+  Stream<T> get valueChanges => _valueChanges.stream;
 
   /// A [ValueListenable] that emits an event every time the control
   /// is touched or untouched.
@@ -131,7 +131,7 @@ abstract class AbstractControl<T> {
   bool get enabled => !this.disabled;
 
   /// True whether the control has validation errors.
-  bool get hasErrors => this._errors.keys.length > 0;
+  bool get hasErrors => _errors.keys.length > 0;
 
   /// The validation status of the control.
   ///
@@ -142,7 +142,7 @@ abstract class AbstractControl<T> {
   ///
   /// These status values are mutually exclusive, so a control cannot be both
   /// valid AND invalid or invalid AND pending.
-  ControlStatus get status => _onStatusChanged.value;
+  ControlStatus get status => _status;
 
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
@@ -170,14 +170,14 @@ abstract class AbstractControl<T> {
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   void disable({bool onlySelf: false}) {
-    this._errors.clear();
+    _errors.clear();
     this.updateStatus(ControlStatus.disabled, onlySelf: onlySelf);
   }
 
   /// Disposes the control
   void dispose() {
-    _onStatusChanged.dispose();
-    _valueChangesController.close();
+    _statusChanges.close();
+    _valueChanges.close();
     _asyncValidationSubscription?.cancel();
   }
 
@@ -186,7 +186,7 @@ abstract class AbstractControl<T> {
 
   @protected
   void updateValue(T value, {bool onlySelf: false}) {
-    _valueChangesController.add(value);
+    _valueChanges.add(value);
 
     if (this.parent != null && !onlySelf) {
       this.parent.updateValueAndValidity();
@@ -196,7 +196,8 @@ abstract class AbstractControl<T> {
   @visibleForTesting
   @protected
   void updateStatus(ControlStatus status, {bool onlySelf: false}) {
-    _onStatusChanged.value = status;
+    _status = status;
+    _statusChanges.add(_status);
 
     if (_parent != null && !onlySelf) {
       _parent.updateStatusAndValidity();
@@ -215,7 +216,7 @@ abstract class AbstractControl<T> {
   ///
   /// See also [AbstractControl.removeError]
   void addError(Map<String, dynamic> error) {
-    this._errors.addAll(error);
+    _errors.addAll(error);
     checkValidityAndUpdateStatus();
   }
 
@@ -231,15 +232,15 @@ abstract class AbstractControl<T> {
   ///
   /// See also [AbstractControl.addError]
   void removeError(String errorName) {
-    this._errors.remove(errorName);
+    _errors.remove(errorName);
     checkValidityAndUpdateStatus();
   }
 
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
   void setErrors(Map<String, dynamic> errors) {
-    this._errors.clear();
-    this._errors.addAll(errors);
+    _errors.clear();
+    _errors.addAll(errors);
     checkValidityAndUpdateStatus();
   }
 

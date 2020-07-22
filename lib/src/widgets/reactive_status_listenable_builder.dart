@@ -5,7 +5,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// in [formControlName] property and call [builder] function to rebuild widgets.
 ///
 /// This widget is just a wrapper around [ValueListenableBuilder]
-/// that listen [AbstractControl.onStatusChanged]
+/// that listen [AbstractControl.statusChanged]
 ///
 class ReactiveStatusListenableBuilder extends StatelessWidget {
   /// The name of the control bound to this widgets
@@ -34,11 +34,10 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final form =
         ReactiveForm.of(context, listen: false) as FormControlCollection;
-    final formControl = form.control(this.formControlName);
-    return ValueListenableBuilder<ControlStatus>(
-      valueListenable: formControl.onStatusChanged,
-      builder: (context, status, child) =>
-          this.builder(context, formControl, child),
+    final control = form.control(this.formControlName);
+    return StreamBuilder<ControlStatus>(
+      stream: control.statusChanged,
+      builder: (context, snapshot) => this.builder(context, control, child),
     );
   }
 }

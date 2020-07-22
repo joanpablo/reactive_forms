@@ -228,22 +228,6 @@ void main() {
       expect(array.controls[2].value, 'control_3');
     });
 
-    test('Array stop listing controls when disposed', () {
-      // Given: a form with a control
-      final array = FormArray<String>([
-        FormControl(),
-      ]);
-
-      // When: dispose form
-      array.dispose();
-
-      // And: change value to control
-      final setValue = () => array.control('0').value = 'Reactive Forms';
-
-      // Then: assert error
-      expect(setValue, throwsAssertionError);
-    });
-
     test('When an array is disable then all children are disabled', () {
       // Given: a form with controls
       final array = FormArray([

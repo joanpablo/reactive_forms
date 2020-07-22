@@ -256,22 +256,6 @@ void main() {
       form.control('name').value = 'Reactive Forms';
     });
 
-    test('Group stop listing controls when disposed', () {
-      // Given: a form with a control
-      final form = FormGroup({
-        'name': FormControl(),
-      });
-
-      // When: dispose form
-      form.dispose();
-
-      // And: change value to control
-      final setValue = () => form.control('name').value = 'Reactive Forms';
-
-      // Then: assert error
-      expect(setValue, throwsAssertionError);
-    });
-
     test('When a group is disable then all children are disabled', () {
       // Given: a form with controls
       final form = FormGroup({

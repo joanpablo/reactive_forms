@@ -2,7 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -14,9 +13,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
 class FormGroup extends AbstractControl<Map<String, dynamic>>
-    implements FormControlCollection {
+    with FormControlCollection {
   final Map<String, AbstractControl> _controls;
-  final _onCollectionChanged = ValueNotifier<Iterable<AbstractControl>>([]);
 
   /// Creates a new FormGroup instance.
   ///
@@ -67,10 +65,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// The key for each child is the name under which it is registered.
   Map<String, AbstractControl> get controls => Map.unmodifiable(this._controls);
-
-  /// Emits when a control is added or removed from collection.
-  @override
-  Listenable get onCollectionChanged => this._onCollectionChanged;
 
   /// Returns the current value of the group.
   ///
@@ -217,8 +211,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void updateValueAndValidity() {
-    this.validate();
-    this.updateValue(this.value);
+    if (this.childrenStatus == ControlStatus.pending) {
+      this.updateStatus(ControlStatus.pending);
+    } else {
+      this.validate();
+      this.updateValue(this.value);
+    }
   }
 
   @override
