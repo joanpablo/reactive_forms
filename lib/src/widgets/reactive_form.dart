@@ -17,6 +17,19 @@ import '../widgets/form_control_inherited_notifier.dart';
 class ReactiveForm extends StatefulWidget {
   final Widget child;
   final FormGroup formGroup;
+  final bool enabled;
+
+  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
+  /// that contains the form.
+  ///
+  /// If the callback returns a Future that resolves to false, the form's route
+  /// will not be popped.
+  ///
+  /// See also:
+  ///
+  ///  * [WillPopScope], another widget that provides a way to intercept the
+  ///    back button.
+  final WillPopCallback onWillPop;
 
   /// Creates and instance of [ReactiveForm].
   ///
@@ -25,6 +38,8 @@ class ReactiveForm extends StatefulWidget {
     Key key,
     @required this.formGroup,
     @required this.child,
+    this.enabled = true,
+    this.onWillPop,
   })  : assert(formGroup != null),
         assert(child != null),
         super(key: key);
@@ -59,7 +74,10 @@ class _ReactiveFormState extends State<ReactiveForm> {
     return FormControlInheritedNotifier(
       control: widget.formGroup,
       notifierDelegate: () => widget.formGroup.onStatusChanged,
-      child: widget.child,
+      child: WillPopScope(
+        onWillPop: widget.onWillPop,
+        child: widget.child,
+      ),
     );
   }
 }

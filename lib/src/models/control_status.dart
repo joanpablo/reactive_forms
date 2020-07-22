@@ -17,4 +17,7 @@ enum ControlStatus {
 
   /// The control has failed at least one validation check.
   invalid,
+
+  /// This control is exempt from validation checks.
+  disabled,
 }

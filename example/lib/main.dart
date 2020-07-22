@@ -128,7 +128,20 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, form, child) {
                     return RaisedButton(
                       child: Text('Sign Up'),
-                      onPressed: form.valid ? () => print(form.value) : null,
+                      onPressed: form.valid
+                          ? () async {
+                              form.disable();
+                              await Future.delayed(Duration(seconds: 1));
+                              form.enable();
+                              Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    form.value.toString(),
+                                  ),
+                                ),
+                              );
+                            }
+                          : null,
                     );
                   },
                 ),

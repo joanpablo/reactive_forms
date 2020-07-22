@@ -44,8 +44,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
         super(
           validators: validators,
         ) {
+    this._controls.forEach((_, control) {
+      control.parent = this;
+    });
     this.validate();
-    _registerControlListeners();
   }
 
   /// Returns a [AbstractControl] by [name].
@@ -90,8 +92,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///```
   Map<String, dynamic> get value {
     final map = Map<String, dynamic>();
-    this._controls.forEach((key, formControl) {
-      map[key] = formControl.value;
+    this._controls.forEach((key, control) {
+      if (control.enabled) {
+        map[key] = control.value;
+      }
     });
 
     return map;
@@ -131,9 +135,25 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// See also [FormControl.reset()]
   @override
   void reset() {
-    this._controls.forEach((key, formControl) {
-      formControl.reset();
+    this._controls.forEach((key, control) {
+      control.reset();
     });
+  }
+
+  @override
+  void disable({bool onlySelf: false}) {
+    this._controls.forEach((_, control) {
+      control.disable(onlySelf: true);
+    });
+    super.disable(onlySelf: onlySelf);
+  }
+
+  @override
+  void enable({bool onlySelf: false}) {
+    this.controls.forEach((_, control) {
+      control.enable(onlySelf: true);
+    });
+    super.enable(onlySelf: onlySelf);
   }
 
   /// A group is touched if at least one of its children is mark as touched.
@@ -166,7 +186,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void validate() {
-    this.notifyStatusChanged(ControlStatus.pending);
+    this.updateStatus(ControlStatus.pending);
 
     final errors = Map<String, dynamic>();
 
@@ -188,34 +208,40 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void dispose() {
-    this._controls.values.forEach((control) {
-      control.onStatusChanged.removeListener(this._onControlStatusChanged);
-      control.onValueChanged.removeListener(this._onControlValueChanged);
+    this._controls.forEach((_, control) {
+      control.parent = null;
+      control.dispose();
     });
     super.dispose();
   }
 
-  void _registerControlListeners() {
-    this._controls.values.forEach((control) {
-      control.onValueChanged.addListener(this._onControlValueChanged);
-      control.onStatusChanged.addListener(this._onControlStatusChanged);
-    });
+  @override
+  void updateValueAndValidity() {
+    this.validate();
+    this.updateValue(this.value);
   }
 
-  void _onControlValueChanged() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      this.notifyValueChanged(this.value);
-    } else {
-      this.validate();
-      this.notifyValueChanged(this.value);
-    }
-  }
+  @override
+  void updateStatusAndValidity() {
+    switch (this.childrenStatus) {
+      case ControlStatus.pending:
+        this.updateStatus(ControlStatus.pending);
+        break;
+      case ControlStatus.valid:
+        this.setErrors({});
+        break;
+      case ControlStatus.invalid:
+        final errors = Map<String, dynamic>();
+        this._controls.forEach((key, control) {
+          if (control.hasErrors) {
+            errors.addAll({key: control.errors});
+          }
+        });
 
-  void _onControlStatusChanged() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      notifyStatusChanged(ControlStatus.pending);
-    } else {
-      this.validate();
+        this.setErrors(errors);
+        break;
+      case ControlStatus.disabled:
+        break;
     }
   }
 }

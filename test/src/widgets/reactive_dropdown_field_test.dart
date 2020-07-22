@@ -15,11 +15,16 @@ void main() {
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
+        await tester.pumpWidget(
+          ReactiveDropdownTestingWidget(
+            form: form,
+            items: ['true', 'false'],
+          ),
+        );
 
         // When: gets dropdown
         Type dropdownType =
-            DropdownButton<bool>(items: null, onChanged: null).runtimeType;
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
         // Expect: dropdown value is null
@@ -32,19 +37,22 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<bool>(defaultValue: true),
+          'dropdown': FormControl<String>(defaultValue: 'true'),
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
 
         // When: gets dropdown
         Type dropdownType =
-            DropdownButton<bool>(items: null, onChanged: null).runtimeType;
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
         // Expect: dropdown value is null
-        expect(dropdown.value, true);
+        expect(dropdown.value, 'true');
       },
     );
 
@@ -53,19 +61,22 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<bool>(defaultValue: false),
+          'dropdown': FormControl<String>(defaultValue: 'false'),
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
 
         // When: gets dropdown
         Type dropdownType =
-            DropdownButton<bool>(items: null, onChanged: null).runtimeType;
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
         // Expect: dropdown value is null
-        expect(dropdown.value, false);
+        expect(dropdown.value, 'false');
       },
     );
 
@@ -74,19 +85,22 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<bool>(defaultValue: false),
+          'dropdown': FormControl<String>(defaultValue: 'false'),
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
 
         // When: changes control value
-        form.control('dropdown').value = true;
+        form.control('dropdown').value = 'true';
         await tester.pump();
 
         // Then: dropdown value is equals to control
         Type dropdownType =
-            DropdownButton<bool>(items: null, onChanged: null).runtimeType;
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
         expect(dropdown.value, form.control('dropdown').value);
@@ -98,19 +112,22 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<bool>(defaultValue: true),
+          'dropdown': FormControl<String>(defaultValue: 'true'),
         });
 
         // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(form: form));
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
 
         // When: changes control value
-        form.control('dropdown').value = false;
+        form.control('dropdown').value = 'false';
         await tester.pump();
 
         // Then: dropdown value is equals to control
         Type dropdownType =
-            DropdownButton<bool>(items: null, onChanged: null).runtimeType;
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
         expect(dropdown.value, form.control('dropdown').value);
@@ -124,19 +141,6 @@ void main() {
         final dropdown = () => ReactiveDropdownField(
               formControlName: 'someName',
               items: null,
-            );
-
-        expect(dropdown, throwsAssertionError);
-      },
-    );
-
-    testWidgets(
-      'Assert error if items is empty list',
-      (WidgetTester tester) async {
-        // Given: a form with and control with default value
-        final dropdown = () => ReactiveDropdownField(
-              formControlName: 'someName',
-              items: [],
             );
 
         expect(dropdown, throwsAssertionError);
@@ -211,6 +215,66 @@ void main() {
           throwsAssertionError,
           reason: 'itemHeight == null || itemHeight > 0',
         );
+      },
+    );
+
+    testWidgets(
+      'Dropdown value sets to null if control default value is not in item list',
+      (WidgetTester tester) async {
+        // Given: a form and a control with default value
+        final form = FormGroup({
+          'dropdown': FormControl<String>(defaultValue: 'someValue'),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
+
+        // When: changes control value
+        //form.control('dropdown').value = 'false';
+        await tester.pump();
+
+        // Then: dropdown value is null
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+
+        expect(dropdown.value, null);
+
+        // And: control value is null
+        expect(form.control('dropdown').value, null);
+      },
+    );
+
+    testWidgets(
+      'Dropdown value sets to null if control default value is not in item list',
+      (WidgetTester tester) async {
+        // Given: a form and a control
+        final form = FormGroup({
+          'dropdown': FormControl<String>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
+
+        // When: changes control value to a value that doesn't exist in list
+        form.control('dropdown').value = 'some value';
+        await tester.pump();
+
+        // Then: dropdown value is null
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+
+        expect(dropdown.value, null);
+
+        // And: control value is null
+        expect(form.control('dropdown').value, null);
       },
     );
   });
