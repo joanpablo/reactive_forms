@@ -22,10 +22,10 @@ class MustMatchValidator extends Validator {
     final matchingFormControl = form.control(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
-      matchingFormControl.addError(error);
+      matchingFormControl.setErrors(error);
       matchingFormControl.touch();
     } else {
-      matchingFormControl.removeError(ValidationMessage.mustMatch);
+      matchingFormControl.setErrors({});
     }
 
     return null;

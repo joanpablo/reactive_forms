@@ -53,36 +53,6 @@ void main() {
     );
 
     testWidgets(
-      'Text widget display pending if control change status to pending',
-      (WidgetTester tester) async {
-        // Given: a form with a valid field
-        final form = FormGroup({
-          'control': FormControl<String>(
-            defaultValue: 'some valid value',
-            validators: [Validators.required],
-          ),
-        });
-
-        // And: a widget is bind to the form
-        await tester.pumpWidget(
-          ReactiveStatusListenableTestingWidget(
-            form: form,
-          ),
-        );
-
-        // When: change status of control to pending
-        form.control('control').updateStatus(ControlStatus.pending);
-        await tester.pump();
-
-        // When: get text widget
-        Text text = tester.widget(find.byType(Text));
-
-        // Then: the text is displaying status invalid
-        expect(text.data, 'pending');
-      },
-    );
-
-    testWidgets(
       'Text widget display valid if control change status to valid',
       (WidgetTester tester) async {
         // Given: a form with an invalid field
@@ -188,9 +158,7 @@ void main() {
 
         // And: a widget is bind to the form
         await tester.pumpWidget(
-          ReactiveStatusListenableTestingWidget(
-            form: form,
-          ),
+          ReactiveStatusListenableTestingWidget(form: form),
         );
 
         // When: change status of control
@@ -223,9 +191,7 @@ void main() {
 
         // And: a widget is bind to the form
         await tester.pumpWidget(
-          ReactiveStatusListenableTestingWidget(
-            form: form,
-          ),
+          ReactiveStatusListenableTestingWidget(form: form),
         );
 
         // When: change status of control

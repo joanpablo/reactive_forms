@@ -167,7 +167,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     controls.forEach((name, control) {
       control.parent = this;
     });
-    this.validate();
+    this.updateValueAndValidity();
   }
 
   /// A group is touched if at least one of its children is mark as touched.
@@ -186,40 +186,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this._controls.values.forEach((control) => control.untouch());
   }
 
-  /// Calculates status based on status of controls
-  @override
-  ControlStatus get childrenStatus {
-    final isPending = this._controls.values.any((control) => control.pending);
-    if (isPending) {
-      return ControlStatus.pending;
-    }
-
-    final isInvalid = this._controls.values.any((control) => control.invalid);
-    return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
-  }
-
-  @override
-  void validate() {
-    this.updateStatus(ControlStatus.pending);
-
-    final errors = Map<String, dynamic>();
-
-    this.validators.forEach((validator) {
-      final error = validator(this);
-      if (error != null) {
-        errors.addAll(error);
-      }
-    });
-
-    this._controls.forEach((key, control) {
-      if (control.hasErrors) {
-        errors.addAll({key: control.errors});
-      }
-    });
-
-    this.setErrors(errors);
-  }
-
   @override
   void dispose() {
     this._controls.forEach((_, control) {
@@ -230,33 +196,31 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }
 
   @override
-  void updateValueAndValidity() {
-    this.validate();
-    this.updateValue(this.value);
-    this.updateStatusAndValidity();
+  bool allControlsDisabled() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.values.every((control) => control.disabled);
   }
 
   @override
-  void updateStatusAndValidity() {
-    switch (this.childrenStatus) {
-      case ControlStatus.pending:
-        this.updateStatus(ControlStatus.pending);
-        break;
-      case ControlStatus.valid:
-        this.setErrors({});
-        break;
-      case ControlStatus.invalid:
-        final errors = Map<String, dynamic>();
-        this._controls.forEach((key, control) {
-          if (control.hasErrors) {
-            errors.addAll({key: control.errors});
-          }
-        });
+  bool anyControlsHaveStatus(ControlStatus status) {
+    return _controls.values.any((control) => control.status == status);
+  }
 
-        this.setErrors(errors);
-        break;
-      case ControlStatus.disabled:
-        break;
-    }
+  @override
+  Map<String, dynamic> get errors {
+    final allErrors = Map.of(super.errors);
+    _controls.forEach((name, control) {
+      if (control.enabled && control.hasErrors) {
+        allErrors.update(
+          name,
+          (_) => control.errors,
+          ifAbsent: () => control.errors,
+        );
+      }
+    });
+
+    return allErrors;
   }
 }

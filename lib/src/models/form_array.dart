@@ -112,9 +112,9 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Insert a new [control] at the [index] position.
   void insert(int index, AbstractControl<T> control) {
     _controls.insert(index, control);
-    this.validate();
     control.parent = this;
-    emitsCollectionChanged(_controls);
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
   }
 
   /// Insert a new [control] at the end of the array.
@@ -125,18 +125,18 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Appends all [controls] to the end of this array.
   void addAll(Iterable<AbstractControl<T>> controls) {
     this._controls.addAll(controls);
-    this.validate();
     controls.forEach((control) {
       control.parent = this;
     });
-    emitsCollectionChanged(_controls);
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
   }
 
   /// Removes control at [index]
   void removeAt(int index) {
     final removedControl = _controls.removeAt(index);
-    this.validate();
     removedControl.parent = null;
+    this.updateValueAndValidity();
     this.emitsCollectionChanged(_controls);
   }
 
@@ -190,41 +190,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   @override
-  ControlStatus get childrenStatus {
-    final isPending = _controls.any((control) => control.pending);
-    if (isPending) {
-      return ControlStatus.pending;
-    }
-
-    final isInvalid = _controls.any((control) => control.invalid);
-    return isInvalid ? ControlStatus.invalid : ControlStatus.valid;
-  }
-
-  @override
-  void validate() {
-    this.updateStatus(ControlStatus.pending);
-
-    final errors = Map<String, dynamic>();
-
-    this.validators.forEach((validator) {
-      final error = validator(this);
-      if (error != null) {
-        errors.addAll(error);
-      }
-    });
-
-    _controls.asMap().entries.forEach((entry) {
-      final control = entry.value;
-      final key = entry.key.toString();
-      if (control.hasErrors) {
-        errors.addAll({key: control.errors});
-      }
-    });
-
-    this.setErrors(errors);
-  }
-
-  @override
   void dispose() {
     _controls.forEach((control) {
       control.parent = null;
@@ -234,36 +199,33 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   @override
-  void updateValueAndValidity() {
-    if (this.childrenStatus == ControlStatus.pending) {
-      this.updateValue(this.value);
-    } else {
-      this.validate();
-      this.updateValue(this.value);
+  bool allControlsDisabled() {
+    if (_controls.isEmpty) {
+      return false;
     }
+    return _controls.every((control) => control.disabled);
   }
 
   @override
-  void updateStatusAndValidity() {
-    switch (this.childrenStatus) {
-      case ControlStatus.pending:
-        this.updateStatus(ControlStatus.pending);
-        break;
-      case ControlStatus.valid:
-        this.setErrors({});
-        break;
-      case ControlStatus.invalid:
-        final errors = Map<String, dynamic>();
-        _controls.asMap().entries.forEach((entry) {
-          if (entry.value.hasErrors) {
-            errors.addAll({'${entry.key}': entry.value.errors});
-          }
-        });
+  bool anyControlsHaveStatus(ControlStatus status) {
+    return _controls.any((control) => control.status == status);
+  }
 
-        this.setErrors(errors);
-        break;
-      case ControlStatus.disabled:
-        break;
-    }
+  @override
+  Map<String, dynamic> get errors {
+    final allErrors = Map.of(super.errors);
+    _controls.asMap().entries.forEach((entry) {
+      final control = entry.value;
+      final name = entry.key.toString();
+      if (control.enabled && control.hasErrors) {
+        allErrors.update(
+          name,
+          (_) => control.errors,
+          ifAbsent: () => control.errors,
+        );
+      }
+    });
+
+    return allErrors;
   }
 }

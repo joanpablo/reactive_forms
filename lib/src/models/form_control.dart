@@ -54,7 +54,7 @@ class FormControl<T> extends AbstractControl<T> {
     if (_defaultValue != null) {
       this.value = _defaultValue;
     } else {
-      this.validate();
+      this.updateValueAndValidity();
     }
   }
 

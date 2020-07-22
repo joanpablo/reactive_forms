@@ -22,14 +22,14 @@ abstract class AbstractControl<T> {
   final _touchChanges = StreamController<bool>.broadcast();
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
-  final Map<String, dynamic> _errors = {};
+  Map<String, dynamic> _errors = {};
 
   T _value;
 
   ControlStatus _status;
 
   /// The parent control.
-  FormControlCollection _parent;
+  AbstractControl _parent;
 
   /// Async validators debounce timer.
   Timer _debounceTimer;
@@ -74,7 +74,7 @@ abstract class AbstractControl<T> {
         _validators = validators ?? const [],
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
-    updateStatus(disabled ? ControlStatus.disabled : ControlStatus.valid);
+    _status = disabled ? ControlStatus.disabled : ControlStatus.valid;
     _updateTouched(touched);
   }
 
@@ -98,16 +98,15 @@ abstract class AbstractControl<T> {
   set value(T value) {
     if (_value != value) {
       _value = value;
-      this.validate();
-      this.updateValue(_value);
+      this.updateValueAndValidity();
     }
   }
 
   /// Gets the parent control.
-  FormControlCollection get parent => this._parent;
+  AbstractControl get parent => this._parent;
 
   @protected
-  set parent(FormControlCollection parent) {
+  set parent(AbstractControl parent) {
     this._parent = parent;
   }
 
@@ -142,7 +141,7 @@ abstract class AbstractControl<T> {
   bool get enabled => !this.disabled;
 
   /// True whether the control has validation errors.
-  bool get hasErrors => _errors.keys.length > 0;
+  bool get hasErrors => this.errors.isNotEmpty;
 
   /// The validation status of the control.
   ///
@@ -166,8 +165,9 @@ abstract class AbstractControl<T> {
     if (this.enabled) {
       return;
     }
-    this.updateStatus(ControlStatus.pending, onlySelf: onlySelf);
-    this.validate();
+    _status = ControlStatus.valid;
+    this.updateValueAndValidity(onlySelf: true);
+    _updateAncestors(onlySelf);
   }
 
   /// Disables the control.
@@ -182,7 +182,9 @@ abstract class AbstractControl<T> {
   /// Default is false.
   void disable({bool onlySelf: false}) {
     _errors.clear();
-    this.updateStatus(ControlStatus.disabled, onlySelf: onlySelf);
+    _status = ControlStatus.disabled;
+    _statusChanges.add(_status);
+    _updateAncestors(onlySelf);
   }
 
   /// Disposes the control
@@ -195,106 +197,87 @@ abstract class AbstractControl<T> {
   /// Resets the control.
   void reset();
 
-  @protected
-  void updateValue(T value, {bool onlySelf: false}) {
-    _valueChanges.add(value);
-
-    if (this.parent != null && !onlySelf) {
-      this.parent.updateValueAndValidity();
-    }
-  }
-
-  @visibleForTesting
-  @protected
-  void updateStatus(ControlStatus status, {bool onlySelf: false}) {
-    if (this.status != status) {
-      _status = status;
-      _statusChanges.add(_status);
-
-      if (_parent != null && !onlySelf) {
-        _parent.updateStatusAndValidity();
-      }
-    }
-  }
-
-  /// Add errors when running validations manually, rather than automatically.
-  ///
-  /// ### Example:
-  ///
-  /// ```dart
-  /// final passwordConfirmation = FormControl();
-  ///
-  /// passwordConfirmation.addError({'mustMatch': true});
-  ///```
-  ///
-  /// See also [AbstractControl.removeError]
-  void addError(Map<String, dynamic> error) {
-    _errors.addAll(error);
-    checkValidityAndUpdateStatus();
-  }
-
-  /// Remove errors by name.
-  ///
-  /// ### Example:
-  ///
-  ///```dart
-  /// final passwordConfirmation = FormControl();
-  ///
-  /// passwordConfirmation.removeError('mustMatch');
-  ///```
-  ///
-  /// See also [AbstractControl.addError]
-  void removeError(String errorName) {
-    _errors.remove(errorName);
-    checkValidityAndUpdateStatus();
-  }
-
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
   void setErrors(Map<String, dynamic> errors) {
     _errors.clear();
     _errors.addAll(errors);
-    checkValidityAndUpdateStatus();
+
+    _updateControlsErrors();
   }
 
-  /// This method is for internal use
-  @protected
-  void checkValidityAndUpdateStatus({bool onlySelf: false}) {
-    this.updateStatus(
-      this.hasErrors ? ControlStatus.invalid : ControlStatus.valid,
-      onlySelf: onlySelf,
-    );
-  }
+  _updateControlsErrors() {
+    _status = _calculateStatus();
+    _statusChanges.add(_status);
 
-  /// Validates the current control.
-  @protected
-  void validate() {
-    if (this.disabled) {
-      return;
+    if (_parent != null) {
+      _parent._updateControlsErrors();
     }
+  }
 
-    this.updateStatus(ControlStatus.pending);
-
-    _errors.clear();
+  Map<String, dynamic> _runValidators() {
+    final errors = Map<String, dynamic>();
     this.validators.forEach((validator) {
       final error = validator(this);
       if (error != null) {
-        _errors.addAll(error);
+        errors.addAll(error);
       }
     });
 
-    if (_errors.keys.isNotEmpty || this.asyncValidators.isEmpty) {
-      checkValidityAndUpdateStatus();
-    } else {
-      if (_debounceTimer != null) {
-        _debounceTimer.cancel();
-      }
+    return errors;
+  }
 
-      _debounceTimer =
-          Timer(Duration(milliseconds: _asyncValidatorsDebounceTime), () {
-        _runAsyncValidator();
-      });
+  @protected
+  bool allControlsDisabled() {
+    return this.disabled;
+  }
+
+  @protected
+  bool anyControlsHaveStatus(ControlStatus status) {
+    return false;
+  }
+
+  ControlStatus _calculateStatus() {
+    if (this.allControlsDisabled()) {
+      return ControlStatus.disabled;
+    } else if (this.hasErrors) {
+      return ControlStatus.invalid;
+    } else if (this.anyControlsHaveStatus(ControlStatus.pending)) {
+      return ControlStatus.pending;
+    } else if (this.anyControlsHaveStatus(ControlStatus.invalid)) {
+      return ControlStatus.invalid;
     }
+
+    return ControlStatus.valid;
+  }
+
+  _setInitialStatus() {
+    _status = this.allControlsDisabled()
+        ? ControlStatus.disabled
+        : ControlStatus.valid;
+  }
+
+  void _updateAncestors(bool onlySelf) {
+    if (_parent != null && !onlySelf) {
+      _parent.updateValueAndValidity(onlySelf: onlySelf);
+    }
+  }
+
+  void updateValueAndValidity({bool onlySelf: false}) {
+    _setInitialStatus();
+    if (this.enabled) {
+      _cancelExistingSubscription();
+      _errors = _runValidators();
+      _status = _calculateStatus();
+      if (_status == ControlStatus.valid || _status == ControlStatus.pending) {
+        _runAsyncValidators();
+      }
+    }
+
+    _valueChanges.add(this.value);
+    _statusChanges.add(_status);
+
+    _updateAncestors(onlySelf);
   }
 
   StreamSubscription _asyncValidationSubscription;
@@ -307,24 +290,34 @@ abstract class AbstractControl<T> {
   }
 
   /// runs async validators to validate the value of current control
-  Future<void> _runAsyncValidator() async {
-    await _cancelExistingSubscription();
+  Future<void> _runAsyncValidators() async {
+    if (_asyncValidators.isEmpty) {
+      return;
+    }
 
-    final validatorsStream = Stream.fromFutures(
-        this.asyncValidators.map((validator) => validator(this)));
+    this._status = ControlStatus.pending;
 
-    final errors = Map<String, dynamic>();
-    _asyncValidationSubscription = validatorsStream.listen(
-      (error) {
-        if (error != null) {
-          errors.addAll(error);
-        }
-      },
-      onDone: () {
-        _errors.addAll(errors);
-        if (this.pending) {
-          checkValidityAndUpdateStatus();
-        }
+    if (_debounceTimer != null) {
+      _debounceTimer.cancel();
+    }
+
+    _debounceTimer = Timer(
+      Duration(milliseconds: _asyncValidatorsDebounceTime),
+      () {
+        final validatorsStream = Stream.fromFutures(
+            this.asyncValidators.map((validator) => validator(this)));
+
+        final errors = Map<String, dynamic>();
+        _asyncValidationSubscription = validatorsStream.listen(
+          (error) {
+            if (error != null) {
+              errors.addAll(error);
+            }
+          },
+          onDone: () {
+            this.setErrors(errors);
+          },
+        );
       },
     );
   }

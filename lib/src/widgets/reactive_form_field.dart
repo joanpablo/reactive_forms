@@ -159,7 +159,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     return form.control(widget.formControlName);
   }
 
-  void _onControlValueChanged(T value) {
+  void _onControlValueChanged(_) {
     this.updateValueFromControl();
   }
 

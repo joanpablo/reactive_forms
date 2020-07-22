@@ -175,11 +175,11 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
 
   @override
   void updateValueFromControl() {
-    if (_textController.text == this.value) {
+    if (_textController.text == this.value.toString()) {
       return;
     }
 
-    _textController.text = this.value;
+    _textController.text = this.value.toString();
     super.updateValueFromControl();
   }
 

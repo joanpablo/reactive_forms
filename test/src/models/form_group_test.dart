@@ -313,7 +313,7 @@ void main() {
     });
 
     test('Group valid when invalid control is disable', () {
-      // Given: a form with an invalidcontrol
+      // Given: a form with an invalid control
       final form = FormGroup({
         'name': FormControl(defaultValue: 'Reactive'),
         'email': FormControl(validators: [Validators.required]),
@@ -338,8 +338,8 @@ void main() {
       form.control('email').enable();
 
       // Then: form is invalid
-      expect(form.invalid, true);
-      expect(form.hasErrors, true);
+      expect(form.invalid, true, reason: 'form is valid');
+      expect(form.hasErrors, true, reason: 'form has errors');
     });
   });
 }

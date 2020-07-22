@@ -309,8 +309,8 @@ void main() {
       array.control('1').enable();
 
       // Then: form is invalid
-      expect(array.invalid, true);
-      expect(array.hasErrors, true);
+      expect(array.invalid, true, reason: 'array is valid');
+      expect(array.hasErrors, true, reason: 'array has errors');
     });
   });
 }

@@ -20,17 +20,6 @@ abstract class FormControlCollection {
   Stream<Iterable<AbstractControl>> get collectionChanges =>
       _collectionChanges.stream;
 
-  /// Returns the calculated status depending of the status of the children
-  /// controls
-  ControlStatus get childrenStatus;
-
-  /// Recalculates the validation status of the control based on children.
-  void updateStatusAndValidity();
-
-  /// Recalculates the value and validation status of the control
-  /// based on children.
-  void updateValueAndValidity();
-
   void closeCollectionEvents() {
     _collectionChanges.close();
   }
