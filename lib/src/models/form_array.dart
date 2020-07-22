@@ -251,7 +251,26 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   @override
   void updateStatusAndValidity() {
-    this.updateStatus(this.childrenStatus);
+    switch (this.childrenStatus) {
+      case ControlStatus.pending:
+        this.updateStatus(ControlStatus.pending);
+        break;
+      case ControlStatus.valid:
+        this.setErrors({});
+        break;
+      case ControlStatus.invalid:
+        final errors = Map<String, dynamic>();
+        this._controls.asMap().entries.forEach((entry) {
+          if (entry.value.hasErrors) {
+            errors.addAll({'${entry.key}': entry.value.errors});
+          }
+        });
+
+        this.setErrors(errors);
+        break;
+      case ControlStatus.disabled:
+        break;
+    }
   }
 
   void _notifyCollectionChanged() {

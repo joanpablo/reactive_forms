@@ -290,6 +290,48 @@ void main() {
       // Then: all controls are enabled
       expect(array.controls.every((control) => control.enabled), true);
     });
+
+    test('Array valid when invalid control is disable', () {
+      // Given: an array with an invalid disable control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(disabled: true, validators: [Validators.required]),
+      ]);
+
+      // Expect: form is valid
+      expect(array.valid, true);
+      expect(array.hasErrors, false);
+    });
+
+    test('Array valid when invalid control is disable', () {
+      // Given: an array with an invalid control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(validators: [Validators.required]),
+      ]);
+
+      // When: disable invalid control
+      array.control('1').disable();
+
+      // Then: form is valid
+      expect(array.valid, true);
+      expect(array.hasErrors, false);
+    });
+
+    test('Array invalid when enable invalid control', () {
+      // Given: an array with a invalid disable control
+      final array = FormArray([
+        FormControl(defaultValue: 'Reactive'),
+        FormControl(disabled: true, validators: [Validators.required]),
+      ]);
+
+      // When: enable invalid control
+      array.control('1').enable();
+
+      // Then: form is invalid
+      expect(array.invalid, true);
+      expect(array.hasErrors, true);
+    });
   });
 }
 
