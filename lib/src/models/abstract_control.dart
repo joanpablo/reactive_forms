@@ -19,7 +19,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T>.broadcast();
-  final _onTouched = ValueNotifier<bool>(false);
+  final _touchChanges = StreamController<bool>.broadcast();
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
   final Map<String, dynamic> _errors = {};
@@ -37,21 +37,30 @@ abstract class AbstractControl<T> {
   /// Async validators debounce time in milliseconds.
   final int _asyncValidatorsDebounceTime;
 
+  bool _touched = false;
+
   /// Gets if the control is touched or not.
   ///
   /// A control is touched when the user taps on the ReactiveFormField widget
   /// and then remove focus or completes the text edition. Validation messages
   /// will begin to show up when the FormControl is touched.
-  bool get touched => _onTouched.value;
+  bool get touched => _touched;
 
   /// Marks the control as touched.
   void touch() {
-    this._onTouched.value = true;
+    _updateTouched(true);
   }
 
   /// Marks the control as untouched.
   void untouch() {
-    this._onTouched.value = false;
+    _updateTouched(false);
+  }
+
+  void _updateTouched(bool value) {
+    if (_touched != value) {
+      _touched = value;
+      _touchChanges.add(_touched);
+    }
   }
 
   /// Constructor of the [AbstractControl].
@@ -66,7 +75,7 @@ abstract class AbstractControl<T> {
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
     updateStatus(disabled ? ControlStatus.disabled : ControlStatus.valid);
-    _onTouched.value = touched;
+    _updateTouched(touched);
   }
 
   /// The list of functions that determines the validity of this control.
@@ -83,7 +92,7 @@ abstract class AbstractControl<T> {
       List.unmodifiable(_asyncValidators);
 
   /// The current value of the control.
-  T get value => this._value;
+  T get value => _value;
 
   /// Sets the value to the control
   set value(T value) {
@@ -112,9 +121,9 @@ abstract class AbstractControl<T> {
   /// A [Stream] that emits the value of the control every time it changes.
   Stream<T> get valueChanges => _valueChanges.stream;
 
-  /// A [ValueListenable] that emits an event every time the control
+  /// A [Stream] that emits an event every time the control
   /// is touched or untouched.
-  ValueListenable<bool> get onTouched => _onTouched;
+  Stream<bool> get touchChanges => _touchChanges.stream;
 
   /// A control is valid when its [status] is ControlStatus.valid.
   bool get valid => this.status == ControlStatus.valid;

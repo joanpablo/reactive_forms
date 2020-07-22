@@ -66,6 +66,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   bool _touched;
   StreamSubscription _valueChangesSubscription;
   StreamSubscription _statusChangesSubscription;
+  StreamSubscription _touchChangesSubscription;
 
   /// The current value of the [FormControl].
   T get value => this.control.value;
@@ -129,7 +130,8 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
         this.control.statusChanged.listen(_onControlStatusChanged);
     _valueChangesSubscription =
         this.control.valueChanges.listen(_onControlValueChanged);
-    this.control.onTouched.addListener(_onControlTouched);
+    _touchChangesSubscription =
+        this.control.touchChanges.listen(_onControlTouched);
 
     this._touched = this.control.touched;
   }
@@ -139,8 +141,8 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     await Future.wait([
       _statusChangesSubscription.cancel(),
       _valueChangesSubscription.cancel(),
+      _touchChangesSubscription.cancel(),
     ]);
-    this.control.onTouched.removeListener(_onControlTouched);
   }
 
   FormControl _getFormControl() {
@@ -157,8 +159,16 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     return form.control(widget.formControlName);
   }
 
-  void _onControlValueChanged(value) {
+  void _onControlValueChanged(T value) {
     this.updateValueFromControl();
+  }
+
+  void _onControlStatusChanged(ControlStatus status) {
+    setState(() {});
+  }
+
+  void _onControlTouched(bool touched) {
+    this.touched = touched;
   }
 
   @protected
@@ -169,14 +179,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @protected
   void touch() {
     this.control.touch();
-  }
-
-  void _onControlStatusChanged(status) {
-    setState(() {});
-  }
-
-  void _onControlTouched() {
-    this.touched = this.control.touched;
   }
 
   /// Updates this field's state to the new value. Useful for responding to
