@@ -40,12 +40,14 @@ class FormControl<T> extends AbstractControl<T> {
     List<AsyncValidatorFunction> asyncValidators,
     bool touched = false,
     int asyncValidatorsDebounceTime = 250,
+    bool disabled = false,
   })  : _defaultValue = defaultValue,
         super(
           validators: validators,
           asyncValidators: asyncValidators,
           touched: touched,
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+          disabled: disabled,
         ) {
     this.value = _defaultValue;
   }

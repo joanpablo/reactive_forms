@@ -17,6 +17,7 @@ import '../widgets/form_control_inherited_notifier.dart';
 class ReactiveForm extends StatefulWidget {
   final Widget child;
   final FormGroup formGroup;
+  final bool enabled;
 
   /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
   /// that contains the form.
@@ -37,6 +38,7 @@ class ReactiveForm extends StatefulWidget {
     Key key,
     @required this.formGroup,
     @required this.child,
+    this.enabled = true,
     this.onWillPop,
   })  : assert(formGroup != null),
         assert(child != null),

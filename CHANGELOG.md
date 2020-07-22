@@ -1,3 +1,8 @@
+# 1.2.0  
+
+- Removed restriction of empty item's array in ReactiveDropdown.
+- Added onWillPop to ReactiveForm widget.
+
 # 1.1.0
 
 - Async validators now have a **debounce timer** in milliseconds that can be passed as argument to

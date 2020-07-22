@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
@@ -38,10 +39,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
     bool isDense = true,
     bool isExpanded = false,
     double itemHeight,
-  })  : assert(
-          items != null && items.isNotEmpty,
-          'Items must not be empty',
-        ),
+  })  : assert(items != null),
         assert(decoration != null),
         assert(elevation != null),
         assert(iconSize != null),
@@ -54,22 +52,31 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
           formControlName: formControlName,
           validationMessages: validationMessages ?? const {},
           builder: (ReactiveFormFieldState field) {
-            final state = field as _ReactiveDropdownFieldState<T>;
             final InputDecoration effectiveDecoration =
                 decoration.applyDefaults(
-              Theme.of(state.context).inputDecorationTheme,
+              Theme.of(field.context).inputDecorationTheme,
             );
+
+            T effectiveValue = field.value;
+            if (effectiveValue != null &&
+                !items.any((item) => item.value == effectiveValue)) {
+              effectiveValue = null;
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                field.didChange(null);
+              });
+            }
+
             return InputDecorator(
               decoration:
-                  effectiveDecoration.copyWith(errorText: state.errorText),
-              isEmpty: state.value == null,
+                  effectiveDecoration.copyWith(errorText: field.errorText),
+              isEmpty: effectiveValue == null,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<T>(
-                  value: state.value,
+                  value: effectiveValue,
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: state.didChange,
+                  onChanged: field.didChange,
                   onTap: onTap,
                   disabledHint: disabledHint,
                   elevation: elevation,

@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
-  final _onStatusChanged = ValueNotifier<ControlStatus>(ControlStatus.valid);
+  ValueNotifier<ControlStatus> _onStatusChanged;
   final _onValueChanged = ValueNotifier<T>(null);
   final _onTouched = ValueNotifier<bool>(false);
   final List<ValidatorFunction> _validators;
@@ -47,16 +47,21 @@ abstract class AbstractControl<T> {
     this._onTouched.value = false;
   }
 
+  ControlStatus _defaultStatus;
+
   /// Constructor of the [AbstractControl].
   AbstractControl({
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
     bool touched = false,
     int asyncValidatorsDebounceTime = 250,
+    bool disabled = false,
   })  : assert(asyncValidatorsDebounceTime >= 0),
         _validators = validators ?? const [],
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
+    _defaultStatus = disabled ? ControlStatus.disabled : ControlStatus.valid;
+    _onStatusChanged = ValueNotifier<ControlStatus>(_defaultStatus);
     _onTouched.value = touched;
   }
 
@@ -104,6 +109,10 @@ abstract class AbstractControl<T> {
   /// A control is pending when its [status] is ControlStatus.pending.
   bool get pending => this.status == ControlStatus.pending;
 
+  bool get disabled => this.status == ControlStatus.disabled;
+
+  bool get enabled => !this.disabled;
+
   /// True whether the control has validation errors.
   bool get hasErrors => this._errors.keys.length > 0;
 
@@ -117,6 +126,19 @@ abstract class AbstractControl<T> {
   /// These status values are mutually exclusive, so a control cannot be both
   /// valid AND invalid or invalid AND pending.
   ControlStatus get status => _onStatusChanged.value;
+
+  void enable() {
+    if (this.enabled) {
+      return;
+    }
+    this.notifyStatusChanged(ControlStatus.pending);
+    this.validate();
+  }
+
+  void disable() {
+    this._errors.clear();
+    this.notifyStatusChanged(ControlStatus.disabled);
+  }
 
   /// Disposes the control
   @protected
@@ -190,6 +212,10 @@ abstract class AbstractControl<T> {
   /// Validates the current control.
   @protected
   void validate() {
+    if (this.disabled) {
+      return;
+    }
+
     this.notifyStatusChanged(ControlStatus.pending);
 
     _errors.clear();

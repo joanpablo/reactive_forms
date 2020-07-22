@@ -92,5 +92,51 @@ void main() {
       final formControl = () => FormControl(asyncValidatorsDebounceTime: -1);
       expect(formControl, throwsAssertionError);
     });
+
+    test('Call enable() set enabled status', () {
+      // Given: a control
+      final control = FormControl();
+
+      // Expect: is enabled
+      expect(control.enabled, true);
+
+      // When: call disabled()
+      control.disable();
+
+      // Then: the control change status to disabled
+      expect(control.disabled, true);
+      expect(control.enabled, false);
+      expect(control.status, ControlStatus.disabled);
+    });
+
+    test('Create control with disabled status', () {
+      // Given: a control disabled
+      final control = FormControl(disabled: true);
+
+      // Expect: is disabled
+      expect(control.disabled, true);
+      expect(control.enabled, false);
+      expect(control.status, ControlStatus.disabled);
+    });
+
+    test('Control disabled does not validate', () {
+      // Given: a required control
+      final control = FormControl<String>(validators: [Validators.required]);
+
+      // When: call disabled()
+      control.disable();
+
+      // And: change value
+      bool statusChanged = false;
+      control.onStatusChanged.addListener(() {
+        statusChanged = true;
+      });
+      control.value = 'disabled control';
+
+      // Then: status does not changed
+      expect(statusChanged, false);
+      expect(control.disabled, true);
+      expect(control.status, ControlStatus.disabled);
+    });
   });
 }

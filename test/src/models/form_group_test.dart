@@ -281,5 +281,18 @@ void main() {
       // Then: form value changed not fires
       expect(valueChanged, false);
     });
+
+    test('When a group is disable then all children are disabled', () {
+      // Given: a form with controls
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      // When: disable group
+      form.disable();
+
+      // Then: children are disabled
+      expect(form.control('name').disabled, true);
+    });
   });
 }

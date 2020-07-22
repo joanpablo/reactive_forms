@@ -136,6 +136,14 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
   }
 
+  @override
+  void disable() {
+    this._controls.forEach((key, formControl) {
+      formControl.disable();
+    });
+    super.disable();
+  }
+
   /// A group is touched if at least one of its children is mark as touched.
   @override
   bool get touched => this._controls.values.any((control) => control.touched);
