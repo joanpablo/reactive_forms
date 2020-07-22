@@ -1,7 +1,22 @@
-# 1.2.0  
+# 2.0.0  
+
+- Added onWillPop to ReactiveForm widget.
+- Enable/disable controls, groups and arrays.
+- Now you can access the parent group or array with the property *FormControl.parent*.
+
+## Fixes  
 
 - Removed restriction of empty item's array in ReactiveDropdown.
-- Added onWillPop to ReactiveForm widget.
+- Assert error in ReactiveDropdown when *control* value not match any *items* value.
+- Slider assert error when control bounded to slider initialize in null value.  
+
+## Breaking Changes  
+
+- Use of **Streams** to notify events.
+- Renamed event names.
+
+See [Migration Guide](https://github.com/joanpablo/reactive_forms/wiki/Migration-Guide) to see how
+to migrate from version 1.x to 2.x.
 
 # 1.1.0
 
