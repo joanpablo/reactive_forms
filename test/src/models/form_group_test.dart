@@ -319,5 +319,47 @@ void main() {
       // Then: all controls are enabled
       expect(form.controls.values.every((control) => control.enabled), true);
     });
+
+    test('Group valid when invalid control is disable', () {
+      // Given: a form with an invalid disable control
+      final form = FormGroup({
+        'name': FormControl(defaultValue: 'Reactive'),
+        'email': FormControl(disabled: true, validators: [Validators.required]),
+      });
+
+      // Expect: form is valid
+      expect(form.valid, true);
+      expect(form.hasErrors, false);
+    });
+
+    test('Group valid when invalid control is disable', () {
+      // Given: a form with an invalidcontrol
+      final form = FormGroup({
+        'name': FormControl(defaultValue: 'Reactive'),
+        'email': FormControl(validators: [Validators.required]),
+      });
+
+      // When: disable invalid control
+      form.control('email').disable();
+
+      // Then: form is valid
+      expect(form.valid, true);
+      expect(form.hasErrors, false);
+    });
+
+    test('Group invalid when enable invalid control', () {
+      // Given: a form with a invalid disable control
+      final form = FormGroup({
+        'name': FormControl(defaultValue: 'Reactive'),
+        'email': FormControl(disabled: true, validators: [Validators.required]),
+      });
+
+      // When: enable invalid control
+      form.control('email').enable();
+
+      // Then: form is invalid
+      expect(form.invalid, true);
+      expect(form.hasErrors, true);
+    });
   });
 }

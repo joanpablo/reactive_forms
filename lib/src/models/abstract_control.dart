@@ -156,9 +156,8 @@ abstract class AbstractControl<T> {
     if (this.enabled) {
       return;
     }
-    //this.updateStatus(ControlStatus.pending, onlySelf: onlySelf);
-    //this.validate();
-    this.checkValidityAndUpdateStatus(onlySelf: onlySelf);
+    this.updateStatus(ControlStatus.pending, onlySelf: onlySelf);
+    this.validate();
   }
 
   /// Disables the control.
@@ -172,7 +171,7 @@ abstract class AbstractControl<T> {
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   void disable({bool onlySelf: false}) {
-    //this._errors.clear();
+    this._errors.clear();
     this.updateStatus(ControlStatus.disabled, onlySelf: onlySelf);
   }
 
