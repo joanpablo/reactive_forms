@@ -173,17 +173,13 @@ void main() {
         FormControl(),
       ]);
 
-      // When: listen to changes notification
-      bool valueChanged = false;
-      array.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
+      final value = 'Reactive Forms';
 
-      // And: change value to control
-      array.control('0').value = 'Reactive Forms';
+      // Expect: array notify value changes
+      expectLater(array.valueChanges, emits([value]));
 
-      // Then: array value changed fires
-      expect(valueChanged, true);
+      // When: change value of a control
+      array.control('0').value = value;
     });
 
     test('Remove control', () {

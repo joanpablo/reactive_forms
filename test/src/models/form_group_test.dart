@@ -247,17 +247,13 @@ void main() {
         'name': FormControl(),
       });
 
-      // When: listen to changes notification
-      bool valueChanged = false;
-      form.onValueChanged.addListener(() {
-        valueChanged = true;
-      });
+      final value = 'Reactive Forms';
 
-      // And: change value to control
+      // Expect: form notify value changes
+      expectLater(form.valueChanges, emits({'name': value}));
+
+      // When: change value of the control
       form.control('name').value = 'Reactive Forms';
-
-      // Then: form value changed fires
-      expect(valueChanged, true);
     });
 
     test('Group stop listing controls when disposed', () {

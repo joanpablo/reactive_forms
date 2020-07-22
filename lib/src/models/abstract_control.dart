@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
   ValueNotifier<ControlStatus> _onStatusChanged;
-  final _onValueChanged = ValueNotifier<T>(null);
+  final _valueChangesController = StreamController<T>.broadcast();
   final _onTouched = ValueNotifier<bool>(false);
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
@@ -107,9 +107,8 @@ abstract class AbstractControl<T> {
   /// of the control changes.
   ValueListenable<ControlStatus> get onStatusChanged => _onStatusChanged;
 
-  /// A [ValueListenable] that emits an event every time the value
-  /// of the control changes.
-  ValueListenable<T> get onValueChanged => _onValueChanged;
+  /// A [Stream] that emits the value of the control every time it changes.
+  Stream<T> get valueChanges => _valueChangesController.stream;
 
   /// A [ValueListenable] that emits an event every time the control
   /// is touched or untouched.
@@ -178,7 +177,7 @@ abstract class AbstractControl<T> {
   /// Disposes the control
   void dispose() {
     _onStatusChanged.dispose();
-    _onValueChanged.dispose();
+    _valueChangesController.close();
     _asyncValidationSubscription?.cancel();
   }
 
@@ -187,7 +186,7 @@ abstract class AbstractControl<T> {
 
   @protected
   void updateValue(T value, {bool onlySelf: false}) {
-    _onValueChanged.value = value;
+    _valueChangesController.add(value);
 
     if (this.parent != null && !onlySelf) {
       this.parent.updateValueAndValidity();

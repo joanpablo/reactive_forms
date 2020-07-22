@@ -2,6 +2,8 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -62,6 +64,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// The [FormControl] that is bound to this state.
   FormControl control;
   bool _touched;
+  StreamSubscription _valueChangesSubscription;
 
   /// The current value of the [FormControl].
   T get value => this.control.value;
@@ -102,10 +105,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     final newControl = _getFormControl();
     if (this.control != newControl) {
-      this.unsubscribeControl();
+      await this.unsubscribeControl();
       this.control = newControl;
       subscribeControl();
     }
@@ -122,16 +125,17 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @protected
   void subscribeControl() {
     this.control.onStatusChanged.addListener(_onControlStatusChanged);
-    this.control.onValueChanged.addListener(_onControlValueChanged);
+    _valueChangesSubscription =
+        this.control.valueChanges.listen(_onControlValueChanged);
     this.control.onTouched.addListener(_onControlTouched);
 
     this._touched = this.control.touched;
   }
 
   @protected
-  void unsubscribeControl() {
+  Future<void> unsubscribeControl() async {
     this.control.onStatusChanged.removeListener(_onControlStatusChanged);
-    this.control.onValueChanged.removeListener(_onControlValueChanged);
+    await _valueChangesSubscription.cancel();
     this.control.onTouched.removeListener(_onControlTouched);
   }
 
@@ -149,7 +153,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     return form.control(widget.formControlName);
   }
 
-  void _onControlValueChanged() {
+  void _onControlValueChanged(value) {
     this.updateValueFromControl();
   }
 
