@@ -219,66 +219,6 @@ void main() {
     );
 
     testWidgets(
-      'Dropdown value sets to null if control default value is not in item list',
-      (WidgetTester tester) async {
-        // Given: a form and a control with default value
-        final form = FormGroup({
-          'dropdown': FormControl<String>(defaultValue: 'someValue'),
-        });
-
-        // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(
-          form: form,
-          items: ['true', 'false'],
-        ));
-
-        // When: changes control value
-        //form.control('dropdown').value = 'false';
-        await tester.pump();
-
-        // Then: dropdown value is null
-        Type dropdownType =
-            DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
-
-        expect(dropdown.value, null);
-
-        // And: control value is null
-        expect(form.control('dropdown').value, null);
-      },
-    );
-
-    testWidgets(
-      'Dropdown value sets to null if control default value is not in item list',
-      (WidgetTester tester) async {
-        // Given: a form and a control
-        final form = FormGroup({
-          'dropdown': FormControl<String>(),
-        });
-
-        // And: a widget that is bind to the form
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(
-          form: form,
-          items: ['true', 'false'],
-        ));
-
-        // When: changes control value to a value that doesn't exist in list
-        form.control('dropdown').value = 'some value';
-        await tester.pump();
-
-        // Then: dropdown value is null
-        Type dropdownType =
-            DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
-
-        expect(dropdown.value, null);
-
-        // And: control value is null
-        expect(form.control('dropdown').value, null);
-      },
-    );
-
-    testWidgets(
       'Control disabled by default disable Dropdown',
       (WidgetTester tester) async {
         // Given: a form and a control

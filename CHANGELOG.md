@@ -1,3 +1,7 @@
+# 2.0.1  
+
+- Now ReactiveDropdown not set value of control to null when no matching item founded.  
+
 # 2.0.0  
 
 - Added onWillPop to ReactiveForm widget.
@@ -7,7 +11,7 @@
 ## Fixes  
 
 - Removed restriction of empty item's array in ReactiveDropdown.
-- Assert error in ReactiveDropdown when *control* value not match any *items* value.
+- Assert error in ReactiveDropdown when *control* value not match any item values.
 - Slider assert error when control bounded to slider initialize in null value.  
 
 ## Breaking Changes  
