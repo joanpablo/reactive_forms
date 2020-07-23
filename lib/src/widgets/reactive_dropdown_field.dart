@@ -61,9 +61,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
             if (effectiveValue != null &&
                 !items.any((item) => item.value == effectiveValue)) {
               effectiveValue = null;
-              SchedulerBinding.instance.addPostFrameCallback((_) {
-                field.didChange(null);
-              });
             }
 
             return InputDecorator(
