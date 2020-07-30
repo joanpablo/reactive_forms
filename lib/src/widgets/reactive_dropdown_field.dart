@@ -39,6 +39,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
     bool isDense = true,
     bool isExpanded = false,
     double itemHeight,
+    ValueChanged<T> onChanged,
   })  : assert(items != null),
         assert(decoration != null),
         assert(elevation != null),
@@ -52,6 +53,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
           formControlName: formControlName,
           validationMessages: validationMessages ?? const {},
           builder: (ReactiveFormFieldState field) {
+            final state = field as _ReactiveDropdownFieldState<T>;
+
             final InputDecoration effectiveDecoration =
                 decoration.applyDefaults(
               Theme.of(field.context).inputDecorationTheme,
@@ -73,7 +76,10 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: field.control.enabled ? field.didChange : null,
+                  onChanged: field.control.enabled
+                      ? (T value) =>
+                          state._onViewToModelValueChanged(value, onChanged)
+                      : null,
                   onTap: onTap,
                   disabledHint: disabledHint,
                   elevation: elevation,
@@ -104,4 +110,11 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
   ReactiveFormFieldState<T> createState() => _ReactiveDropdownFieldState<T>();
 }
 
-class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {}
+class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
+  void _onViewToModelValueChanged(T value, ValueChanged<T> callBack) {
+    this.didChange(value);
+    if (callBack != null) {
+      callBack(value);
+    }
+  }
+}

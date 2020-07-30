@@ -11,6 +11,9 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   /// The name of the control bound to this widgets
   final String formControlName;
 
+  // The control bound to this widget
+  final AbstractControl formControl;
+
   /// Optionally child widget
   final Widget child;
 
@@ -19,22 +22,33 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
 
   /// Creates an instance of [ReactiveStatusListenableBuilder].
   ///
-  /// The [formControlName] and the [builder] function must not be null.
+  /// The [builder] function must not be null.
+  ///
+  /// Must provide a [forControlName] or a [formControl] but not both
+  /// at the same time.
   ///
   const ReactiveStatusListenableBuilder({
     Key key,
-    @required this.formControlName,
+    this.formControlName,
+    this.formControl,
     @required this.builder,
     this.child,
-  })  : assert(formControlName != null),
+  })  : assert(
+            (formControlName != null && formControl == null) ||
+                (formControlName == null && formControl != null),
+            'Must provide a formControlName or a formControl, but not both at the same time.'),
         assert(builder != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final form =
-        ReactiveForm.of(context, listen: false) as FormControlCollection;
-    final control = form.control(this.formControlName);
+    AbstractControl control = this.formControl;
+    if (control == null) {
+      final form =
+          ReactiveForm.of(context, listen: false) as FormControlCollection;
+      control = form.control(this.formControlName);
+    }
+
     return StreamBuilder<ControlStatus>(
       stream: control.statusChanged,
       builder: (context, snapshot) => this.builder(context, control, child),
