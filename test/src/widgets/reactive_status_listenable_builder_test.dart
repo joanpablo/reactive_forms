@@ -221,6 +221,6 @@ void main() {
       },
     );
 
-    // TODO: add test to test that widget change when control status change
+    // TODO: test that widget change when control status change
   });
 }
