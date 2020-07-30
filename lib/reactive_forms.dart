@@ -10,6 +10,7 @@ export 'src/exceptions/form_control_parent_not_found_exception.dart';
 export 'src/models/abstract_control.dart';
 export 'src/models/control_status.dart';
 export 'src/models/form_array.dart';
+export 'src/models/form_builder.dart';
 export 'src/models/form_control.dart';
 export 'src/models/form_control_collection.dart';
 export 'src/models/form_group.dart';
