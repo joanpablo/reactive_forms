@@ -1,9 +1,46 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/exceptions/form_builder_invalid_initialization_exception.dart';
 
+/// Creates an [AbstractControl] from a user-specified configuration.
 class FormBuilder {
-  const FormBuilder();
-
+  /// Construct a new [FormGroup] instance.
+  ///
+  /// ### Example:
+  ///
+  /// Creates a group with a control that has a default value.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': 'John Doe',
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has a default value.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': ['John Doe'],
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has a default value and a validator.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': ['John Doe', Validators.required],
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has a validator.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': Validators.required,
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has several validators.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'email': [Validators.required, Validators.email],
+  /// });
+  /// ```
   FormGroup group(Map<String, dynamic> controls) {
     final map = controls.map((key, value) {
       if (value is String) {
@@ -25,12 +62,11 @@ class FormBuilder {
           return MapEntry(key, FormControl());
         } else {
           final defaultValue = value.first;
-          final validators = List.of(value
-              .skip(1)
-              .map<ValidatorFunction>((v) => v as ValidatorFunction));
+          final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators.any((validator) => validator == null)) {
+              validators
+                  .any((validator) => !(validator is ValidatorFunction))) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
@@ -40,7 +76,10 @@ class FormBuilder {
                 'Expected first value in array to be default value of the control and not a validator.');
           }
 
-          final control = _control(defaultValue, validators);
+          final effectiveValidators = validators
+              .map<ValidatorFunction>((v) => v as ValidatorFunction)
+              .toList();
+          final control = _control(defaultValue, effectiveValidators);
           return MapEntry(key, control);
         }
       }
@@ -71,4 +110,5 @@ class FormBuilder {
   }
 }
 
-const fb = const FormBuilder();
+/// Global [FormBuilder] instance.
+final fb = FormBuilder();
