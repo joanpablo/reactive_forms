@@ -205,5 +205,22 @@ void main() {
         expect(text.data, 'valid');
       },
     );
+
+    testWidgets(
+      'Assert error if formControlName and formControl null',
+      (WidgetTester tester) async {
+        // Given: the widget null values
+        final statusListenable = () => ReactiveStatusListenableBuilder(
+              formControl: null,
+              formControlName: null,
+              builder: (context, form, child) => Container(),
+            );
+
+        // Expect: assert error
+        expect(() => statusListenable(), throwsAssertionError);
+      },
+    );
+
+    // TODO: test that widget change when control status change
   });
 }

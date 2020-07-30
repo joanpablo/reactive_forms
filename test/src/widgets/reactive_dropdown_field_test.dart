@@ -267,7 +267,7 @@ void main() {
     );
 
     testWidgets(
-      'Enable a control enable Checkbox',
+      'Enable a control enable Dropdown',
       (WidgetTester tester) async {
         // Given: a form and a control
         final form = FormGroup({
@@ -287,7 +287,8 @@ void main() {
         // Then: the dropdown is enable
         Type dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        DropdownButton<String> dropdown =
+            tester.firstWidget(find.byType(dropdownType));
         expect(dropdown.onChanged != null, true);
       },
     );
