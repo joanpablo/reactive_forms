@@ -156,6 +156,68 @@ void main() {
       expect(form.control('control').value, '',
           reason: 'control default value not set');
     });
+
+    test('Build a group with invalid configuration throws exception', () {
+      // Given: a form group builder creation
+      final createGroup = () => fb.group({
+            'control': [Validators.required, ''],
+          });
+
+      // Expect an exception
+      expect(() => createGroup(),
+          throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
+    });
+
+    test('Build a group with invalid validators configuration throws exception',
+        () {
+      // Given: a form group builder creation
+      final createGroup = () => fb.group({
+            'control': ['', Validators.required, ''],
+          });
+
+      // Expect an exception
+      expect(() => createGroup(),
+          throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
+    });
+
+    test('Build a group with default bool value as array', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'control': [true],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<bool>, true,
+          reason: 'control is not instance of FormControl<bool>');
+      expect(form.control('control').value, true,
+          reason: 'control default value not set');
+    });
+
+    test('Build a group with default int value as array', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'control': [50],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<int>, true,
+          reason: 'control is not instance of FormControl<int>');
+      expect(form.control('control').value, 50,
+          reason: 'control default value not set');
+    });
+
+    test('Build a group with default double value as array', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'control': [50.0],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<double>, true,
+          reason: 'control is not instance of FormControl<double>');
+      expect(form.control('control').value, 50.0,
+          reason: 'control default value not set');
+    });
   });
 }
 

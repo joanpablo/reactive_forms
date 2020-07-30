@@ -3,8 +3,6 @@ import 'package:reactive_forms/src/exceptions/form_builder_invalid_initializatio
 
 /// Creates an [AbstractControl] from a user-specified configuration.
 class FormBuilder {
-  const FormBuilder();
-
   /// Construct a new [FormGroup] instance.
   ///
   /// ### Example:
@@ -64,12 +62,11 @@ class FormBuilder {
           return MapEntry(key, FormControl());
         } else {
           final defaultValue = value.first;
-          final validators = List.of(value
-              .skip(1)
-              .map<ValidatorFunction>((v) => v as ValidatorFunction));
+          final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators.any((validator) => validator == null)) {
+              validators
+                  .any((validator) => !(validator is ValidatorFunction))) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
@@ -79,7 +76,10 @@ class FormBuilder {
                 'Expected first value in array to be default value of the control and not a validator.');
           }
 
-          final control = _control(defaultValue, validators);
+          final effectiveValidators = validators
+              .map<ValidatorFunction>((v) => v as ValidatorFunction)
+              .toList();
+          final control = _control(defaultValue, effectiveValidators);
           return MapEntry(key, control);
         }
       }
@@ -110,5 +110,5 @@ class FormBuilder {
   }
 }
 
-/// Global const [FormBuilder] instance.
-const fb = const FormBuilder();
+/// Global [FormBuilder] instance.
+final fb = FormBuilder();
