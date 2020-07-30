@@ -132,6 +132,30 @@ void main() {
       expect(form.control('control').validators[0], requiredValidator,
           reason: 'not set required validator');
     });
+
+    test('Build a group with empty array', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'control': [],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<dynamic>, true,
+          reason: 'control is not instance of FormControl<dynamic>');
+    });
+
+    test('Build a group with default value as array', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'control': [''],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<String>, true,
+          reason: 'control is not instance of FormControl<String>');
+      expect(form.control('control').value, '',
+          reason: 'control default value not set');
+    });
   });
 }
 
