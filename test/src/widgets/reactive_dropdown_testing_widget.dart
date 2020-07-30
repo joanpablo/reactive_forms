@@ -4,11 +4,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveDropdownTestingWidget extends StatelessWidget {
   final FormGroup form;
   final List<String> items;
+  final ValueChanged<String> onChanged;
 
   const ReactiveDropdownTestingWidget({
     Key key,
     @required this.form,
     @required this.items,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
           formGroup: this.form,
           child: ReactiveDropdownField<String>(
             formControlName: 'dropdown',
+            onChanged: this.onChanged,
             items: this.items.map<DropdownMenuItem<String>>(
               (item) {
                 return DropdownMenuItem<String>(
