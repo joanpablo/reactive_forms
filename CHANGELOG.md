@@ -1,6 +1,11 @@
+# 2.0.2  
+
+- Added basic implementation of **FormBuilder** to build *FormGroup* easily.
+- Added *onChanged* callback to *ReactiveDropdownField*.  
+
 # 2.0.1  
 
-- Now ReactiveDropdown not set value of control to null when no matching item founded.  
+- Now ReactiveDropdownField not set value of control to null when no matching item founded.  
 
 # 2.0.0  
 
