@@ -29,9 +29,8 @@ class FormBuilder {
               .skip(1)
               .map<ValidatorFunction>((v) => v as ValidatorFunction));
 
-          final validValidatorInstances =
-              validators.every((validator) => validator is ValidatorFunction);
-          if (!validValidatorInstances) {
+          if (validators.isNotEmpty &&
+              validators.any((validator) => validator == null)) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
