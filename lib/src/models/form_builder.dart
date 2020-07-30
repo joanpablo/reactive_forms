@@ -1,9 +1,48 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/exceptions/form_builder_invalid_initialization_exception.dart';
 
+/// Creates an [AbstractControl] from a user-specified configuration.
 class FormBuilder {
   const FormBuilder();
 
+  /// Construct a new [FormGroup] instance.
+  ///
+  /// ### Example:
+  ///
+  /// Creates a group with a control that has a default value.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': 'John Doe',
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has a default value.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': ['John Doe'],
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has a default value and a validator.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': ['John Doe', Validators.required],
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has a validator.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': Validators.required,
+  /// });
+  /// ```
+  ///
+  /// Creates a group with a control that has several validators.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'email': [Validators.required, Validators.email],
+  /// });
+  /// ```
   FormGroup group(Map<String, dynamic> controls) {
     final map = controls.map((key, value) {
       if (value is String) {
@@ -71,4 +110,5 @@ class FormBuilder {
   }
 }
 
+/// Global const [FormBuilder] instance.
 const fb = const FormBuilder();
