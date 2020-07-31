@@ -1,3 +1,7 @@
+# 2.0.4
+
+- Minor fixes in *ReactiveDropdownField*.  
+
 # 2.0.3  
 
 - Minor fixes.  
