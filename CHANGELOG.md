@@ -1,3 +1,7 @@
+# 2.0.5
+
+- fixed ReactiveDropdownField.onChanged not triggered when control value didn't changes
+
 # 2.0.4
 
 - Minor fixes in *ReactiveDropdownField*.  
