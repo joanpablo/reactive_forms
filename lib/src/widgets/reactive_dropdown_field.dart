@@ -66,8 +66,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
               effectiveValue = null;
             }
 
-            state._onViewToModelValueChanged(field.value, onChanged);
-
             return InputDecorator(
               decoration:
                   effectiveDecoration.copyWith(errorText: field.errorText),

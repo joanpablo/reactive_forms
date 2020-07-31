@@ -327,36 +327,5 @@ void main() {
         expect(callbackCalled, true);
       },
     );
-
-    testWidgets(
-      'set value to control trigger onChanged callback',
-      (WidgetTester tester) async {
-        // Given: a form
-        final form = FormGroup({
-          'dropdown': FormControl<String>(),
-        });
-
-        // And: a onChanged callback
-        bool callbackCalled = false;
-        final onChanged = (String value) {
-          callbackCalled = true;
-        };
-
-        // And: a widget that is bind to the form
-        final items = ['true', 'false'];
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(
-          form: form,
-          items: items,
-          onChanged: onChanged,
-        ));
-
-        // When: change control value
-        form.control('dropdown').value = items[0];
-        await tester.pump();
-
-        // Then: callback is called
-        expect(callbackCalled, true);
-      },
-    );
   });
 }
