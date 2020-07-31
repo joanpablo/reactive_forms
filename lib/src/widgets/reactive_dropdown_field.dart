@@ -114,10 +114,9 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
   void _onViewToModelValueChanged(T value, ValueChanged<T> callBack) {
     if (value != this.value) {
       this.didChange(value);
-    }
-
-    if (callBack != null) {
-      callBack(value);
+      if (callBack != null) {
+        callBack(value);
+      }
     }
   }
 }
