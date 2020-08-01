@@ -247,6 +247,10 @@ abstract class AbstractControl<T> {
     return false;
   }
 
+  /// This method for internal use only.
+  @protected
+  T reduceValue();
+
   ControlStatus _calculateStatus() {
     if (this.allControlsDisabled()) {
       return ControlStatus.disabled;
@@ -273,8 +277,13 @@ abstract class AbstractControl<T> {
     }
   }
 
+  void _updateValue() {
+    _value = this.reduceValue();
+  }
+
   void updateValueAndValidity({bool onlySelf: false}) {
     _setInitialStatus();
+    _updateValue();
     if (this.enabled) {
       _cancelExistingSubscription();
       _errors = _runValidators();

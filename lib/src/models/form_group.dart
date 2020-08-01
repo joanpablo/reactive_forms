@@ -60,9 +60,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// The key for each child is the name under which it is registered.
   Map<String, AbstractControl> get controls => Map.unmodifiable(this._controls);
 
-  /// Returns the current value of the group.
-  ///
-  /// Value of the group is a key-value pair for each control in the group.
+  /// Reduce the value of the group is a key-value pair for each control
+  /// in the group.
   ///
   /// ### Example:
   ///
@@ -78,10 +77,13 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// ```json
   /// { "name": "John Doe", "email": "johndoe@email.com" }
   ///```
-  Map<String, dynamic> get value {
+  ///
+  /// This method is for internal use only.
+  @override
+  Map<String, dynamic> reduceValue() {
     final map = Map<String, dynamic>();
     this._controls.forEach((key, control) {
-      if (control.enabled) {
+      if (control.enabled || this.disabled) {
         map[key] = control.value;
       }
     });
