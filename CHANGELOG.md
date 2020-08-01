@@ -1,3 +1,7 @@
+# 2.0.6
+
+- Optimized FormGroup and FormArray value gets.
+
 # 2.0.5
 
 - fixed ReactiveDropdownField.onChanged not triggered when control value didn't changes
