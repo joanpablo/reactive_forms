@@ -522,6 +522,28 @@ Map<String, dynamic> emptyAddressee(AbstractControl control) {
 }
 ```
 
+## FormBuilder
+
+The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup (for now). It reduces the amount of boilerplate needed to build complex forms.
+
+```dart
+final form = fb.group({
+  'name': 'John Doe',
+  'email': ['', Validators.required, Validators.email],
+  'password': Validators.required,
+});
+```
+
+The previous code is equivalent to the following one:
+
+```dart
+final form = FormGroup({
+  'name': FormControl<String>(defaultValue: 'John Doe'),
+  'email': FormControl<String>(defaultValue: '', validators: [Validators.required, Validators.email]),
+  'password': FormControl(validators: [Validators.required]),
+});
+```
+
 ## Reactive Form Widgets
 
 So far we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Forms Widgets is the answer ;)
