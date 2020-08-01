@@ -28,7 +28,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
     DropdownButtonBuilder selectedItemBuilder,
     Widget hint,
     VoidCallback onTap,
-    this.decoration = const InputDecoration(),
+    InputDecoration decoration = const InputDecoration(),
     Widget disabledHint,
     int elevation = 8,
     TextStyle style,
@@ -66,8 +66,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
               effectiveValue = null;
             }
 
-            state._onViewToModelValueChanged(field.value, onChanged);
-
             return InputDecorator(
               decoration:
                   effectiveDecoration.copyWith(errorText: field.errorText),
@@ -99,15 +97,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
           },
         );
 
-  /// The decoration to show around the dropdown button form field.
-  ///
-  /// By default, draws a horizontal line under the dropdown button field but can be
-  /// configured to show an icon, label, hint text, and error text.
-  ///
-  /// Specify null to remove the decoration entirely (including the
-  /// extra padding introduced by the decoration to save space for the labels).
-  final InputDecoration decoration;
-
   @override
   ReactiveFormFieldState<T> createState() => _ReactiveDropdownFieldState<T>();
 }
@@ -116,10 +105,9 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
   void _onViewToModelValueChanged(T value, ValueChanged<T> callBack) {
     if (value != this.value) {
       this.didChange(value);
-    }
-
-    if (callBack != null) {
-      callBack(value);
+      if (callBack != null) {
+        callBack(value);
+      }
     }
   }
 }
