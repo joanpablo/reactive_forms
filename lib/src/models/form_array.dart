@@ -43,14 +43,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.addAll(controls);
   }
 
-  /// Gets the values of controls as an [Iterable].
-  @override
-  Iterable<T> get value => this
-      ._controls
-      .where((control) => control.enabled)
-      .map((control) => control.value)
-      .toList();
-
   /// Gets the list of child controls.
   List<AbstractControl<T>> get controls => List.unmodifiable(this._controls);
 
@@ -67,6 +59,18 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
         this.insert(index, FormControl<T>(defaultValue: value));
       }
     });
+  }
+
+  /// Gets the values of controls as an [Iterable].
+  ///
+  /// This method is for internal use only.
+  @override
+  List<T> reduceValue() {
+    return this
+        ._controls
+        .where((control) => control.enabled || this.disabled)
+        .map((control) => control.value)
+        .toList();
   }
 
   /// Resets all the controls of the array to default.

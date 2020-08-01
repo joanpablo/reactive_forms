@@ -123,4 +123,8 @@ class FormControl<T> extends AbstractControl<T> {
     _focused = value;
     _focusChanges.add(value);
   }
+
+  /// This method is for internal use only.
+  @override
+  T reduceValue() => this.value;
 }
