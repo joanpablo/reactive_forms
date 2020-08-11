@@ -173,4 +173,61 @@ void main() {
       },
     );
   });
+
+  group('Credit Card Validator Tests', () {
+    test('Test card number with empty white spaces is valid', () {
+      // Given: a credit card number
+      final control = FormControl<String>(
+        defaultValue: '5500 0000 0000 0004',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is valid
+      expect(control.valid, true);
+    });
+
+    test('Validates a valid credit card number', () {
+      // Given: a credit card number
+      final control = FormControl<String>(
+        defaultValue: '5500000000000004',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is valid
+      expect(control.valid, true);
+    });
+
+    test('Validates an invalid credit card number', () {
+      // Given: a credit card number
+      final control = FormControl<String>(
+        defaultValue: '7992739871',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is not valid
+      expect(control.valid, false);
+    });
+
+    test('Validates invalid number string', () {
+      // Given: an invalid credit card number
+      final control = FormControl<String>(
+        defaultValue: '5500abc000000004',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is not valid
+      expect(control.valid, false);
+    });
+
+    test('Validates that card number must not bee empty', () {
+      // Given: an invalid credit card number
+      final control = FormControl<String>(
+        defaultValue: '',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is not valid
+      expect(control.valid, false);
+    });
+  });
 }

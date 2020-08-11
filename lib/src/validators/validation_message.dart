@@ -33,4 +33,7 @@ class ValidationMessage {
 
   /// Key text for email validation message.
   static const String email = 'email';
+
+  /// Key text for credit card numbers validation message.
+  static const String creditCard = 'creditCard';
 }

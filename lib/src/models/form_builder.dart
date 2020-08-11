@@ -5,6 +5,10 @@ import 'package:reactive_forms/src/exceptions/form_builder_invalid_initializatio
 class FormBuilder {
   /// Construct a new [FormGroup] instance.
   ///
+  /// The [controls] argument must not be null.
+  ///
+  /// Can optionally provide a [validators] collection for the group.
+  ///
   /// ### Example:
   ///
   /// Creates a group with a control that has a default value.
@@ -41,7 +45,8 @@ class FormBuilder {
   ///   'email': [Validators.required, Validators.email],
   /// });
   /// ```
-  FormGroup group(Map<String, dynamic> controls) {
+  FormGroup group(Map<String, dynamic> controls,
+      [List<ValidatorFunction> validators = const []]) {
     final map = controls.map((key, value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(defaultValue: value));
@@ -87,7 +92,7 @@ class FormBuilder {
       return MapEntry(key, FormControl(defaultValue: value));
     });
 
-    return FormGroup(map);
+    return FormGroup(map, validators: validators);
   }
 
   FormControl _control(dynamic value, List<ValidatorFunction> validators) {

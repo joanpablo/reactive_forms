@@ -4,10 +4,14 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// Validator that requires the control's value to match a regex pattern.
 class PatternValidator extends Validator {
   final Pattern pattern;
 
-  PatternValidator(this.pattern);
+  /// Constructs an instance of [PatternValidator].
+  ///
+  /// The [pattern] argument must not be null.
+  PatternValidator(this.pattern) : assert(pattern != null);
 
   @override
   Map<String, dynamic> validate(AbstractControl control) {

@@ -4,6 +4,7 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
+import 'package:reactive_forms/src/validators/credit_card_validator.dart';
 
 import './email_validator.dart';
 import './max_length_validator.dart';
@@ -28,24 +29,29 @@ class Validators {
   /// Gets a validator that requires the control have a non-empty value.
   static ValidatorFunction get required => RequiredValidator().validate;
 
-  /// Gets a validator that validates that the control's value is a valid email.
+  /// Gets a validator that requires the control's value pass an email
+  /// validation test.
   static ValidatorFunction get email => EmailValidator().validate;
 
-  /// Gets a validator that validates if control's value is an integer.
+  /// Gets a validator that validates if control's value is a numeric value.
   static ValidatorFunction get number => NumberValidator().validate;
 
-  /// Gets a validator that validates that the length of the control's value
-  /// must be greater than or equals to the [minLength] argument.
+  /// Gets a validator that validates if the control's value is a valid
+  /// credit card number.
+  static ValidatorFunction get creditCard => CreditCardValidator().validate;
+
+  /// Gets a validator that requires the length of the control's value to be
+  /// greater than or equal to the provided [minLength].
   static ValidatorFunction minLength(int minLength) =>
       MinLengthValidator(minLength).validate;
 
-  /// Gets a validator that validates that the length of the control's value
-  /// must be less than or equals to the [maxLength] argument.
+  /// Gets a validator that requires the length of the control's value to be
+  /// less than or equal to the provided [maxLength].
   static ValidatorFunction maxLength(int maxLength) =>
       MaxLengthValidator(maxLength).validate;
 
-  /// Gets a validator that validates that the control's value matches
-  /// the regex [pattern].
+  /// Gets a validator that requires the control's value to match a
+  /// regex [pattern].
   static ValidatorFunction pattern(Pattern pattern) =>
       PatternValidator(pattern).validate;
 

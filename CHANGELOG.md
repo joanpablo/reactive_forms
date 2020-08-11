@@ -1,3 +1,9 @@
+# 2.0.7
+
+- Minor changes and code documentation.
+- **New Validator**
+  - *Validators.**creditCard*** that validates a credit card number using the [Luhn algorithm](https://en.wikipedia.org/wiki/Luhn_algorithm).
+
 # 2.0.6
 
 - Optimized FormGroup and FormArray value gets.
