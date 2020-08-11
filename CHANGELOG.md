@@ -1,3 +1,8 @@
+# 2.0.7
+
+- New Validator:
+  - *Validators.creditCard*
+
 # 2.0.6
 
 - Optimized FormGroup and FormArray value gets.
