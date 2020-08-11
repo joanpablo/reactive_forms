@@ -7,6 +7,7 @@
 # 2.0.6
 
 - Optimized FormGroup and FormArray value gets.
+- **FormBuilder** docs added to README.md
 
 # 2.0.5
 

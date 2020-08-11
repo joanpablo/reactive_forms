@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^2.0.6
+  reactive_forms: ^2.0.7
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -100,6 +100,7 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.minLength
 - Validators.maxLength
 - Validators.pattern
+- Validators.creditCard
 
 ### Custom Validators
 Lets implement a custom validator that validates empty white spaces value:
@@ -520,6 +521,28 @@ Map<String, dynamic> emptyAddressee(AbstractControl control) {
       ? null
       : {'emptyAddressee': true};
 }
+```
+
+## FormBuilder
+
+The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup (for now). It reduces the amount of boilerplate needed to build complex forms.
+
+```dart
+final form = fb.group({
+  'name': 'John Doe',
+  'email': ['', Validators.required, Validators.email],
+  'password': Validators.required,
+});
+```
+
+The previous code is equivalent to the following one:
+
+```dart
+final form = FormGroup({
+  'name': FormControl<String>(defaultValue: 'John Doe'),
+  'email': FormControl<String>(defaultValue: '', validators: [Validators.required, Validators.email]),
+  'password': FormControl(validators: [Validators.required]),
+});
 ```
 
 ## Reactive Form Widgets
