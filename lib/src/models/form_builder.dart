@@ -41,7 +41,8 @@ class FormBuilder {
   ///   'email': [Validators.required, Validators.email],
   /// });
   /// ```
-  FormGroup group(Map<String, dynamic> controls) {
+  FormGroup group(Map<String, dynamic> controls,
+      [List<ValidatorFunction> validators = const []]) {
     final map = controls.map((key, value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(defaultValue: value));
@@ -87,7 +88,7 @@ class FormBuilder {
       return MapEntry(key, FormControl(defaultValue: value));
     });
 
-    return FormGroup(map);
+    return FormGroup(map, validators: validators);
   }
 
   FormControl _control(dynamic value, List<ValidatorFunction> validators) {
