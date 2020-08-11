@@ -15,7 +15,11 @@ class CreditCardValidator extends Validator {
     final cardNumber = control.value.toString().replaceAll(' ', '');
     final isNumber = NumberValidator.numberRegex.hasMatch(cardNumber);
 
-    return cardNumber == null || (isNumber && checkLuhn(cardNumber))
+    return cardNumber == null ||
+            (isNumber &&
+                cardNumber.length >= 8 &&
+                cardNumber.length <= 19 &&
+                checkLuhn(cardNumber))
         ? null
         : error;
   }
@@ -25,9 +29,9 @@ class CreditCardValidator extends Validator {
   ///
   /// See [Luhn algorithm](https://en.wikipedia.org/wiki/Luhn_algorithm)
   static bool checkLuhn(String cardNumber) {
-    int sum = int.parse(cardNumber[cardNumber.length - 1]);
+    int sum = 0;
 
-    for (int i = 0; i < cardNumber.length - 2; i++) {
+    for (int i = cardNumber.length - 1; i >= 0; i--) {
       int digit = int.parse(cardNumber[i]);
 
       if (i % 2 == 0) {
