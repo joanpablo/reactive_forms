@@ -230,10 +230,10 @@ void main() {
       expect(control.valid, false);
     });
 
-    test('Validates a card number with length lower than 8 is invalid', () {
+    test('Validates a card number with length lower than 13 is invalid', () {
       // Given: an invalid credit card number
       final control = FormControl<String>(
-        defaultValue: '2345678',
+        defaultValue: '123456789123',
         validators: [Validators.creditCard],
       );
 

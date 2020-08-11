@@ -17,7 +17,7 @@ class CreditCardValidator extends Validator {
 
     return cardNumber == null ||
             (isNumber &&
-                cardNumber.length >= 8 &&
+                cardNumber.length >= 13 &&
                 cardNumber.length <= 19 &&
                 checkLuhn(cardNumber))
         ? null
