@@ -5,6 +5,10 @@ import 'package:reactive_forms/src/exceptions/form_builder_invalid_initializatio
 class FormBuilder {
   /// Construct a new [FormGroup] instance.
   ///
+  /// The [controls] argument must not be null.
+  ///
+  /// Can optionally provide a [validators] collection for the group.
+  ///
   /// ### Example:
   ///
   /// Creates a group with a control that has a default value.
