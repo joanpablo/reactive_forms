@@ -234,8 +234,8 @@ final form = FormGroup({
   ]),
   'passwordConfirmation': FormControl(),
 }, validators: [
-  FormGroupValidators.mustMatch('email', 'emailConfirmation'),
-  FormGroupValidators.mustMatch('password', 'passwordConfirmation'),
+  Validators.mustMatch('email', 'emailConfirmation'),
+  Validators.mustMatch('password', 'passwordConfirmation'),
 ]);
 ```
 
