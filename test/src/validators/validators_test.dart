@@ -189,7 +189,7 @@ void main() {
     test('Validates a valid credit card number', () {
       // Given: a credit card number
       final control = FormControl<String>(
-        defaultValue: '5500000000000004',
+        defaultValue: '5555555555554444',
         validators: [Validators.creditCard],
       );
 
@@ -223,6 +223,28 @@ void main() {
       // Given: an invalid credit card number
       final control = FormControl<String>(
         defaultValue: '',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is not valid
+      expect(control.valid, false);
+    });
+
+    test('Validates a card number with length lower than 13 is invalid', () {
+      // Given: an invalid credit card number
+      final control = FormControl<String>(
+        defaultValue: '123456789123',
+        validators: [Validators.creditCard],
+      );
+
+      // Expect: number is not valid
+      expect(control.valid, false);
+    });
+
+    test('Validates a card number exceed 19 numbers is invalid', () {
+      // Given: an invalid credit card number
+      final control = FormControl<String>(
+        defaultValue: '12345678912345678909',
         validators: [Validators.creditCard],
       );
 

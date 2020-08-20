@@ -1,3 +1,7 @@
+# 2.0.8
+
+- Fixed card number length in *Validators.creditCard*
+
 # 2.0.7
 
 - Minor changes and code documentation.
