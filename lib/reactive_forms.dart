@@ -20,6 +20,7 @@ export 'src/utils/control_utils.dart';
 export 'src/validators/validation_message.dart';
 export 'src/validators/validator.dart';
 export 'src/validators/validators.dart';
+export 'src/value_accessors/input_parsers.dart';
 export 'src/widgets/reactive_checkbox.dart';
 export 'src/widgets/reactive_checkbox_list_tile.dart';
 export 'src/widgets/reactive_date_picker.dart';
