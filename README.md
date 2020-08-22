@@ -769,11 +769,11 @@ final form = FormGroup({
   'name': FormControl(defaultValue: 'John Doe'),
 });
 
-final formControl = form.control('name');
+FormControl control = form.control('name');
 
-formControl.focus(); // UI text field get focus and the device keyboard pop up
+control.focus(); // UI text field get focus and the device keyboard pop up
 
-formControl.unfocus(); // UI text field lose focus
+control.unfocus(); // UI text field lose focus
 ```
 
 ## Focus flow between Text Fields
