@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     'progress': FormControl<double>(defaultValue: 50.0),
     'dateTime': FormControl<DateTime>(defaultValue: DateTime.now()),
     'time': FormControl<TimeOfDay>(defaultValue: TimeOfDay.now()),
+    'durationSeconds': FormControl<double>(defaultValue: 0),
   }, validators: [
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
@@ -136,6 +137,10 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
+                RaisedButton(
+                  child: Text('Reset all'),
+                  onPressed: () => form.reset(),
+                ),
                 ReactiveSwitch(formControlName: 'rememberMe'),
                 ReactiveCheckbox(formControlName: 'rememberMe'),
                 ReactiveDropdownField<bool>(
@@ -181,6 +186,11 @@ class _HomePageState extends State<HomePage> {
                   divisions: 100,
                   labelBuilder: (double value) =>
                       '${value.toStringAsFixed(2)}%',
+                ),
+                SizedBox(height: 24.0),
+                ReactiveTextField(
+                  formControlName: 'durationSeconds',
+                  keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 24.0),
                 ReactiveTextField(
