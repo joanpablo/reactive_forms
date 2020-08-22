@@ -1,3 +1,14 @@
+# 3.0.0
+
+- Fixes:
+  - **FormGroup.reset()** marks control as untouched and hide UI validation errors.
+  - **FormGroup.reset()** sets empty string to input text fields if control value is *null*.
+
+- Features:
+  - *InputParser* added to **ReactiveTextField**. Now you can declare a FormControl with **int**
+   or **double** data type and bind it to an input text field.
+  
+
 # 2.0.8
 
 - Fixed card number length in *Validators.creditCard*

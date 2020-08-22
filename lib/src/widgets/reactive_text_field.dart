@@ -15,7 +15,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField extends ReactiveFormField<String> {
+class ReactiveTextField<T> extends ReactiveFormField<T> {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -69,16 +69,20 @@ class ReactiveTextField extends ReactiveFormField<String> {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
+    InputParser inputParser,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           validationMessages: validationMessages ?? const {},
-          builder: (ReactiveFormFieldState<String> field) {
+          builder: (ReactiveFormFieldState<T> field) {
             final state = field as _ReactiveTextFieldState;
             final InputDecoration effectiveDecoration = (decoration ??
                     const InputDecoration())
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
+
+            state.inputParser = inputParser ??
+                _ReactiveTextFieldState.getInputParser(field.control);
 
             return TextField(
               controller: state._textController,
@@ -113,7 +117,7 @@ class ReactiveTextField extends ReactiveFormField<String> {
               minLines: minLines,
               expands: expands,
               maxLength: maxLength,
-              onChanged: state.didChange,
+              onChanged: state._onChanged,
               onTap: onTap,
               onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
               inputFormatters: inputFormatters,
@@ -131,23 +135,21 @@ class ReactiveTextField extends ReactiveFormField<String> {
         );
 
   @override
-  ReactiveFormFieldState<String> createState() => _ReactiveTextFieldState();
+  ReactiveFormFieldState<T> createState() => _ReactiveTextFieldState<T>();
 }
 
-class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
+class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   TextEditingController _textController;
   FocusNode _focusNode = FocusNode();
   StreamSubscription _focusChangesSubscription;
-
-  @override
-  String get value =>
-      this.control.value != null ? this.control.value.toString() : null;
+  InputParser inputParser;
+  bool _isUpdatingControl = false;
 
   @override
   void initState() {
     super.initState();
 
-    _textController = TextEditingController(text: this.value);
+    _textController = TextEditingController(text: this.value?.toString());
     _focusNode.addListener(_onFocusChanged);
   }
 
@@ -175,12 +177,28 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<String> {
 
   @override
   void updateValueFromControl() {
-    if (_textController.text == this.value.toString()) {
+    if (_isUpdatingControl) {
+      _isUpdatingControl = false;
       return;
     }
 
-    _textController.text = this.value.toString();
+    _textController.text = this.value == null ? '' : this.value.toString();
     super.updateValueFromControl();
+  }
+
+  void _onChanged(String value) {
+    _isUpdatingControl = true;
+    this.didChange(this.inputParser.parse(value));
+  }
+
+  static InputParser getInputParser(FormControl control) {
+    if (control is FormControl<int>) {
+      return IntInputParser();
+    } else if (control is FormControl<double>) {
+      return DoubleInputParser();
+    }
+
+    return DefaultInputParser();
   }
 
   void _onFormControlFocusChanged(bool focused) {
