@@ -1,7 +1,8 @@
 # 3.0.0
 
 - Fixes:
-  - **FormGroup.reset()** now resets value of text inputs and hide validation errors
+  - **FormGroup.reset()** marks control as untouched and hide UI validation errors.
+  - **FormGroup.reset()** sets empty string to input text fields if control value is *null*.
 
 - Features:
   - *InputParser* added to **ReactiveTextField**. Now you can declare a FormControl with **int**
