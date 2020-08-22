@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^2.0.8
+  reactive_forms: ^3.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -642,12 +642,14 @@ final form = FormGroup({
 });
 ```
 
-Also when we set a *value* to a **FormControl** the validations messages begin to show up, even if the UI widget haven't been touched by the user. For example:
+When you set a *value* to a **FormControl** from code and want to show up validations messages 
+you must call *FormControl.touch()* method:
 
 ```dart
 set name(String newName) {
   final formControl = this.form.control('name');
-  formControl.value = newName; // if newName is invalid then messages will show up in UI
+  formControl.value = newName;
+  formControl.touch();// if newName is invalid then validation messages will show up in UI
 }
 ```
 
@@ -1040,4 +1042,17 @@ control.valueChanges.listen((String value){
 });
 
 control.value = 'Hello Reactive Forms!';
+```
+
+## Breaking changes in 3.x
+
+Set a value directly to a **FormControl** from code do not marks the control as **touched**,
+you must explicitly call **FormControl.touch()** to show up validation messages in UI. Example:
+
+```dart
+set name(String newName) {
+  final formControl = this.form.control('name');
+  formControl.value = newName;
+  formControl.touch();// if newName is invalid then validation messages will show up in UI
+}
 ```

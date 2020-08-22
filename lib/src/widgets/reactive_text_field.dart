@@ -182,7 +182,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
       return;
     }
 
-    _textController.text = this.value?.toString();
+    _textController.text = this.value == null ? '' : this.value.toString();
     super.updateValueFromControl();
   }
 

@@ -47,19 +47,28 @@ abstract class AbstractControl<T> {
   bool get touched => _touched;
 
   /// Marks the control as touched.
-  void touch() {
-    _updateTouched(true);
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is raised.
+  void touch({bool emitEvent = true}) {
+    _updateTouched(true, emitEvent: emitEvent);
   }
 
   /// Marks the control as untouched.
-  void untouch() {
-    _updateTouched(false);
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is raised.
+  void untouch({bool emitEvent = true}) {
+    _updateTouched(false, emitEvent: emitEvent);
   }
 
-  void _updateTouched(bool value) {
+  void _updateTouched(bool value, {bool emitEvent = true}) {
     if (_touched != value) {
       _touched = value;
-      _touchChanges.add(_touched);
+
+      if (emitEvent) {
+        _touchChanges.add(_touched);
+      }
     }
   }
 

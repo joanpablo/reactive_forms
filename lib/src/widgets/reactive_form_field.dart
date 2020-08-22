@@ -161,6 +161,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   void _onControlValueChanged(_) {
     this.updateValueFromControl();
+    this.touched = this.control.touched;
   }
 
   void _onControlStatusChanged(ControlStatus status) {
@@ -172,9 +173,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   }
 
   @protected
-  void updateValueFromControl() {
-    touch();
-  }
+  void updateValueFromControl() {}
 
   @protected
   void touch() {

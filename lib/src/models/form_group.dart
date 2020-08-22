@@ -178,14 +178,18 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   /// Marks all controls as touched
   @override
-  void touch() {
-    this._controls.values.forEach((control) => control.touch());
+  void touch({bool emitEvent = true}) {
+    this._controls.values.forEach((control) => control.touch(
+          emitEvent: emitEvent,
+        ));
   }
 
   /// Marks all controls as untouched
   @override
-  void untouch() {
-    this._controls.values.forEach((control) => control.untouch());
+  void untouch({bool emitEvent = true}) {
+    this._controls.values.forEach((control) => control.untouch(
+          emitEvent: emitEvent,
+        ));
   }
 
   /// Disposes the group.

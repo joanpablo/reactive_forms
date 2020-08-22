@@ -137,6 +137,10 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
+                RaisedButton(
+                  child: Text('Reset all'),
+                  onPressed: () => form.reset(),
+                ),
                 ReactiveSwitch(formControlName: 'rememberMe'),
                 ReactiveCheckbox(formControlName: 'rememberMe'),
                 ReactiveDropdownField<bool>(
