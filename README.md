@@ -101,6 +101,7 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.maxLength
 - Validators.pattern
 - Validators.creditCard
+- Validators.mustMatch
 
 ### Custom Validators
 Lets implement a custom validator that validates empty white spaces value:
@@ -213,7 +214,7 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
       // force messages to show up as soon as possible
       matchingFormControl.touch(); 
     } else {
-      matchingFormControl.removeError('mustMatch');
+      matchingFormControl.setErrors({});
     }
 
     return null;
