@@ -251,5 +251,27 @@ void main() {
       // Expect: number is not valid
       expect(control.valid, false);
     });
+
+    test('Test some valid credit cards', () {
+      // Given: an invalid credit card number
+      final cardNumbers = [
+        '4111 1111 1111 1111',
+        '5500 0000 0000 0004',
+        '3400 0000 0000 009',
+        '3000 0000 0000 04',
+        '6011 0000 0000 0004',
+        '2014 0000 0000 009',
+        '3088 0000 0000 0009',
+      ];
+
+      final control = FormControl<String>(
+        validators: [Validators.creditCard],
+      );
+
+      cardNumbers.forEach((cardNumber) {
+        control.value = cardNumber;
+        expect(control.valid, true, reason: '[$cardNumber] is not valid');
+      });
+    });
   });
 }
