@@ -31,10 +31,11 @@ class CreditCardValidator extends Validator {
   static bool checkLuhn(String cardNumber) {
     int sum = 0;
 
+    bool isEven = false;
     for (int i = cardNumber.length - 1; i >= 0; i--) {
       int digit = int.parse(cardNumber[i]);
 
-      if (i % 2 == 0) {
+      if (isEven) {
         digit *= 2;
         if (digit > 9) {
           digit -= 9;
@@ -42,6 +43,7 @@ class CreditCardValidator extends Validator {
       }
 
       sum += digit;
+      isEven = !isEven;
     }
 
     return sum % 10 == 0;
