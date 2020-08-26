@@ -1,3 +1,7 @@
+# 3.0.1
+
+- Fix Luhn algorithm in credit card validator.
+
 # 3.0.0
 
 - Fixes:
