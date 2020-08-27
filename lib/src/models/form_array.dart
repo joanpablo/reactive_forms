@@ -80,7 +80,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   ///
   /// See also [FormControl.reset()]
   @override
-  void reset() {
+  void reset([Iterable<T> value]) {
     this._controls.forEach((control) => control.reset());
   }
 

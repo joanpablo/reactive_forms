@@ -124,9 +124,9 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// See also [FormControl.reset()]
   @override
-  void reset() {
+  void reset([Map<String, dynamic> value = const {}]) {
     this._controls.forEach((key, control) {
-      control.reset();
+      control.reset(value[key]);
     });
   }
 

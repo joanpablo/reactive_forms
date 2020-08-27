@@ -207,7 +207,7 @@ abstract class AbstractControl<T> {
   }
 
   /// Resets the control.
-  void reset();
+  void reset([T state]);
 
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
