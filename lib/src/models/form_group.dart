@@ -124,7 +124,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// See also [FormControl.reset()]
   @override
-  void reset([Map<String, dynamic> value = const {}]) {
+  void reset([dynamic value]) {
     this._controls.forEach((key, control) {
       control.reset(value[key]);
     });
@@ -141,11 +141,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void disable({bool onlySelf: false}) {
+  void disable({bool onlySelf = false, bool emitEvent = true}) {
     this._controls.forEach((_, control) {
-      control.disable(onlySelf: true);
+      control.disable(onlySelf: true, emitEvent: emitEvent);
     });
-    super.disable(onlySelf: onlySelf);
+    super.disable(onlySelf: onlySelf, emitEvent: emitEvent);
   }
 
   /// Enables the control. This means the control is included in validation
@@ -156,11 +156,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void enable({bool onlySelf: false}) {
+  void enable({bool onlySelf = false, bool emitEvent = true}) {
     this.controls.forEach((_, control) {
-      control.enable(onlySelf: true);
+      control.enable(onlySelf: true, emitEvent: emitEvent);
     });
-    super.enable(onlySelf: onlySelf);
+    super.enable(onlySelf: onlySelf, emitEvent: emitEvent);
   }
 
   /// Appends all [controls] to the group.

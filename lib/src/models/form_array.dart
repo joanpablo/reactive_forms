@@ -80,7 +80,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   ///
   /// See also [FormControl.reset()]
   @override
-  void reset([Iterable<T> value]) {
+  void reset([dynamic value]) {
     this._controls.forEach((control) => control.reset());
   }
 
@@ -95,22 +95,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void disable({bool onlySelf: false}) {
+  void disable({bool onlySelf = false, bool emitEvent = true}) {
     this._controls.forEach((control) {
-      control.disable(onlySelf: true);
+      control.disable(onlySelf: true, emitEvent: emitEvent);
     });
-    super.disable(onlySelf: onlySelf);
+    super.disable(onlySelf: onlySelf, emitEvent: emitEvent);
   }
 
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
   @override
-  void enable({bool onlySelf: false}) {
+  void enable({bool onlySelf: false, bool emitEvent = true}) {
     this.controls.forEach((control) {
-      control.enable(onlySelf: true);
+      control.enable(onlySelf: true, emitEvent: emitEvent);
     });
-    super.enable(onlySelf: onlySelf);
+    super.enable(onlySelf: onlySelf, emitEvent: emitEvent);
   }
 
   /// Insert a new [control] at the [index] position.

@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                 RaisedButton(
                   child: Text('Reset all'),
                   onPressed: () => form.reset({
-                    'email': 'johnDoe@gmail.com',
+                    'email': FormControlState(value: '', disabled: true),
                   }),
                 ),
                 ReactiveSwitch(formControlName: 'rememberMe'),

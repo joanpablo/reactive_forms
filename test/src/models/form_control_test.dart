@@ -133,5 +133,41 @@ void main() {
       expect(control.disabled, true);
       expect(control.status, ControlStatus.disabled);
     });
+
+    test('Resets a control and sets initial value', () {
+      // Given: a touched control with some default value
+      final control = FormControl<String>(
+        defaultValue: 'someValue',
+        touched: true,
+      );
+
+      // When: reset control with other initial value
+      final initialValue = 'otherValue';
+      control.reset(initialValue);
+
+      // Expect: the control has initial value
+      expect(control.value, initialValue);
+      // And: control is untouched
+      expect(control.touched, false);
+    });
+
+    test('Resets a control and sets initial value and disabled state', () {
+      // Given: a touched control with some default value
+      final control = FormControl<String>(
+        defaultValue: 'someValue',
+        touched: true,
+      );
+
+      // When: reset control with other initial value and sets to disabled
+      final initialValue = 'otherValue';
+      control.reset(FormControlState(value: initialValue, disabled: true));
+
+      // Then: the control has initial value
+      expect(control.value, initialValue);
+      // And: control is untouched
+      expect(control.touched, false);
+      // And: is disabled
+      expect(control.disabled, true);
+    });
   });
 }

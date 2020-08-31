@@ -78,9 +78,19 @@ class FormControl<T> extends AbstractControl<T> {
   /// Resets the form control, marking it as untouched,
   /// and setting the [value] to [defaultValue].
   @override
-  void reset([T value]) {
+  void reset([dynamic formState]) {
     this.untouch();
-    this.value = value ?? this.defaultValue;
+
+    if (formState is FormControlState) {
+      if (formState.disabled != null && formState.disabled) {
+        this.disable(onlySelf: true, emitEvent: false);
+      } else if (formState.disabled != null && !formState.disabled) {
+        this.enable(onlySelf: true, emitEvent: false);
+      }
+      this.value = formState.value ?? this.defaultValue;
+    } else {
+      this.value = formState ?? this.defaultValue;
+    }
   }
 
   /// Remove focus on a ReactiveFormField widget without the interaction

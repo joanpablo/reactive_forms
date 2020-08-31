@@ -173,12 +173,12 @@ abstract class AbstractControl<T> {
   /// When [onlySelf] is true, mark only this control.
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
-  void enable({bool onlySelf: false}) {
+  void enable({bool onlySelf: false, bool emitEvent = true}) {
     if (this.enabled) {
       return;
     }
     _status = ControlStatus.valid;
-    this.updateValueAndValidity(onlySelf: true);
+    this.updateValueAndValidity(onlySelf: true, emitEvent: emitEvent);
     _updateAncestors(onlySelf);
   }
 
@@ -192,10 +192,12 @@ abstract class AbstractControl<T> {
   /// When [onlySelf] is true, mark only this control.
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
-  void disable({bool onlySelf: false}) {
+  void disable({bool onlySelf: false, bool emitEvent = true}) {
     _errors.clear();
     _status = ControlStatus.disabled;
-    _statusChanges.add(_status);
+    if (emitEvent) {
+      _statusChanges.add(_status);
+    }
     _updateAncestors(onlySelf);
   }
 
@@ -207,7 +209,7 @@ abstract class AbstractControl<T> {
   }
 
   /// Resets the control.
-  void reset([T state]);
+  void reset([dynamic value]);
 
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
@@ -290,7 +292,7 @@ abstract class AbstractControl<T> {
     _value = this.reduceValue();
   }
 
-  void updateValueAndValidity({bool onlySelf: false}) {
+  void updateValueAndValidity({bool onlySelf: false, bool emitEvent = true}) {
     _setInitialStatus();
     _updateValue();
     if (this.enabled) {
@@ -302,8 +304,10 @@ abstract class AbstractControl<T> {
       }
     }
 
-    _valueChanges.add(this.value);
-    _statusChanges.add(_status);
+    if (emitEvent) {
+      _valueChanges.add(this.value);
+      _statusChanges.add(_status);
+    }
 
     _updateAncestors(onlySelf);
   }
