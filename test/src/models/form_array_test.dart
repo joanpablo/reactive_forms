@@ -27,7 +27,7 @@ void main() {
       // populates the array of controls.
       // for each contact add a boolean form control to the array.
       formArray.addAll(
-        contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
+        contacts.map((email) => FormControl<bool>(value: true)).toList(),
       );
 
       formArray.control('0').value = false;
@@ -61,7 +61,7 @@ void main() {
       // populates the array of controls.
       // for each contact add a boolean form control to the array.
       formArray.addAll(
-        contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
+        contacts.map((email) => FormControl<bool>(value: true)).toList(),
       );
 
       formArray.control('0').value = false;
@@ -106,26 +106,21 @@ void main() {
           throwsA(isInstanceOf<FormControlNotFoundException>()));
     });
 
-    test('Reset array restores default value of all items', () {
+    test('Reset array restores default value of all items to null', () {
       // Given: an array with items with default values
       final array = FormArray<int>([
-        FormControl<int>(defaultValue: 1),
-        FormControl<int>(defaultValue: 2),
-        FormControl<int>(defaultValue: 3),
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
       ]);
-
-      // When: change values of items
-      array.control('0').value = 10;
-      array.control('1').value = 20;
-      array.control('2').value = 30;
 
       // And: reset array
       array.reset();
 
       //Then: items has initial default values
-      expect(array.control('0').value, 1);
-      expect(array.control('1').value, 2);
-      expect(array.control('2').value, 3);
+      expect(array.control('0').value, null);
+      expect(array.control('1').value, null);
+      expect(array.control('2').value, null);
     });
 
     test('Adding a control to array adds a new value', () {
@@ -136,7 +131,7 @@ void main() {
       expect([], array.value);
 
       // When: add one control
-      array.add(FormControl<int>(defaultValue: 1));
+      array.add(FormControl<int>(value: 1));
 
       // Then: array has one value
       expect(array.value, [1]);
@@ -185,8 +180,8 @@ void main() {
     test('Remove control', () {
       // Given: an array with two controls
       final array = FormArray<String>([
-        FormControl<String>(defaultValue: 'Reactive'),
-        FormControl<String>(defaultValue: 'Forms'),
+        FormControl<String>(value: 'Reactive'),
+        FormControl<String>(value: 'Forms'),
       ]);
 
       // When: removed last control
@@ -245,8 +240,8 @@ void main() {
     test('A control disabled is not part of array value', () {
       // Given: an array with a disable control
       final array = FormArray<String>([
-        FormControl(defaultValue: 'Reactive'),
-        FormControl(defaultValue: 'Forms', disabled: true),
+        FormControl(value: 'Reactive'),
+        FormControl(value: 'Forms', disabled: true),
       ]);
 
       // When: get form value
@@ -260,8 +255,8 @@ void main() {
     test('Enable a array enable children', () {
       // Given: a form with a disable control
       final array = FormArray([
-        FormControl(defaultValue: 'Reactive'),
-        FormControl(defaultValue: 'Forms', disabled: true),
+        FormControl(value: 'Reactive'),
+        FormControl(value: 'Forms', disabled: true),
       ]);
 
       // When: enable form
@@ -274,7 +269,7 @@ void main() {
     test('Array valid when invalid control is disable', () {
       // Given: an array with an invalid disable control
       final array = FormArray([
-        FormControl(defaultValue: 'Reactive'),
+        FormControl(value: 'Reactive'),
         FormControl(disabled: true, validators: [Validators.required]),
       ]);
 
@@ -286,7 +281,7 @@ void main() {
     test('Array valid when invalid control is disable', () {
       // Given: an array with an invalid control
       final array = FormArray([
-        FormControl(defaultValue: 'Reactive'),
+        FormControl(value: 'Reactive'),
         FormControl(validators: [Validators.required]),
       ]);
 
@@ -301,7 +296,7 @@ void main() {
     test('Array invalid when enable invalid control', () {
       // Given: an array with a invalid disable control
       final array = FormArray([
-        FormControl(defaultValue: 'Reactive'),
+        FormControl(value: 'Reactive'),
         FormControl(disabled: true, validators: [Validators.required]),
       ]);
 
@@ -328,6 +323,22 @@ void main() {
       // Then: state error
       expect(() => addValue(), throwsStateError);
     });
+  });
+  test('Set empty array value to array does not update values', () {
+    // Given: an array with items with default values
+    final array = FormArray<int>([
+      FormControl<int>(value: 1),
+      FormControl<int>(value: 2),
+      FormControl<int>(value: 3),
+    ]);
+
+    // And: reset array
+    array.value = [];
+
+    //Then: items has initial default values
+    expect(array.control('0').value, 1);
+    expect(array.control('1').value, 2);
+    expect(array.control('2').value, 3);
   });
 }
 

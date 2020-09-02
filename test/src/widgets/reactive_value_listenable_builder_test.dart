@@ -12,7 +12,7 @@ void main() {
         // Given: a form and a String field with a default value
         final defaultValue = 'Reactive Forms';
         final form = FormGroup({
-          'name': FormControl<String>(defaultValue: defaultValue),
+          'name': FormControl<String>(value: defaultValue),
         });
 
         // And: a widget is bind to the form

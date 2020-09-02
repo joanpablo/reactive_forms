@@ -41,11 +41,11 @@ class _HomePageState extends State<HomePage> {
       Validators.minLength(8),
     ]),
     'passwordConfirmation': FormControl(),
-    'rememberMe': FormControl(defaultValue: false),
-    'progress': FormControl<double>(defaultValue: 50.0),
-    'dateTime': FormControl<DateTime>(defaultValue: DateTime.now()),
-    'time': FormControl<TimeOfDay>(defaultValue: TimeOfDay.now()),
-    'durationSeconds': FormControl<double>(defaultValue: 0),
+    'rememberMe': FormControl(value: false),
+    'progress': FormControl<double>(value: 50.0),
+    'dateTime': FormControl<DateTime>(value: DateTime.now()),
+    'time': FormControl<TimeOfDay>(value: TimeOfDay.now()),
+    'durationSeconds': FormControl<double>(value: 0),
   }, validators: [
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
@@ -139,9 +139,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 RaisedButton(
                   child: Text('Reset all'),
-                  onPressed: () => form.reset({
+                  onPressed:
+                      () {} /*=> form.reset({
                     'email': FormControlState(value: '', disabled: true),
-                  }),
+                  })*/
+                  ,
                 ),
                 ReactiveSwitch(formControlName: 'rememberMe'),
                 ReactiveCheckbox(formControlName: 'rememberMe'),

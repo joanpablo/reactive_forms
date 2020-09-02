@@ -5,7 +5,7 @@ void main() {
   group('Form Control', () {
     test('FormControl has no errors by default', () {
       final formControl = FormControl(
-        defaultValue: 'hello',
+        value: 'hello',
         validators: [Validators.required],
       );
 
@@ -24,7 +24,7 @@ void main() {
 
     test('FormControl errors contains error', () {
       final formControl = FormControl(
-        defaultValue: 'hello',
+        value: 'hello',
         validators: [Validators.required],
       );
 
@@ -35,7 +35,7 @@ void main() {
 
     test('FormControl.errors contains all errors', () {
       final formControl = FormControl(
-        defaultValue: 'hi',
+        value: 'hi',
         validators: [
           Validators.email,
           Validators.minLength(5),
@@ -64,7 +64,7 @@ void main() {
 
     test('FormControl with default value contains all matching errors', () {
       final formControl = FormControl(
-        defaultValue: 'hi',
+        value: 'hi',
         validators: [
           Validators.required,
           Validators.minLength(5),
@@ -75,17 +75,16 @@ void main() {
       expect(formControl.errors[ValidationMessage.minLength] != null, true);
     });
 
-    test('Reset a control restore default value', () {
-      final defaultValue = 'john doe';
+    test('Reset a control set value to null', () {
       final formControl = FormControl(
-        defaultValue: defaultValue,
+        value: 'john doe',
       );
 
       formControl.value = 'hello john';
 
       formControl.reset();
 
-      expect(formControl.value, defaultValue);
+      expect(formControl.value, null);
     });
 
     test('Assert error if debounce time < 0', () {
@@ -137,13 +136,13 @@ void main() {
     test('Resets a control and sets initial value', () {
       // Given: a touched control with some default value
       final control = FormControl<String>(
-        defaultValue: 'someValue',
+        value: 'someValue',
         touched: true,
       );
 
       // When: reset control with other initial value
       final initialValue = 'otherValue';
-      control.reset(initialValue);
+      control.reset(value: initialValue);
 
       // Expect: the control has initial value
       expect(control.value, initialValue);
@@ -154,13 +153,13 @@ void main() {
     test('Resets a control and sets initial value and disabled state', () {
       // Given: a touched control with some default value
       final control = FormControl<String>(
-        defaultValue: 'someValue',
+        value: 'someValue',
         touched: true,
       );
 
       // When: reset control with other initial value and sets to disabled
       final initialValue = 'otherValue';
-      control.reset(FormControlState(value: initialValue, disabled: true));
+      control.reset(value: initialValue, disabled: true);
 
       // Then: the control has initial value
       expect(control.value, initialValue);

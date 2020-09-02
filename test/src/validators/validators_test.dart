@@ -37,7 +37,7 @@ void main() {
   group('MinLength Validator Tests', () {
     test('FormControl invalid if minLength invalid', () {
       final control = FormControl(
-        defaultValue: 'Hello',
+        value: 'Hello',
         validators: [Validators.minLength(6)],
       );
 
@@ -49,7 +49,7 @@ void main() {
   group('MaxLength Validator Tests', () {
     test('FormControl invalid if maxLength invalid', () {
       final control = FormControl(
-        defaultValue: 'Hello Reactive Forms',
+        value: 'Hello Reactive Forms',
         validators: [Validators.maxLength(10)],
       );
 
@@ -61,8 +61,8 @@ void main() {
   group('MustMatch Validator Tests', () {
     test('FormGroup invalid if passwords mismatch', () {
       final form = FormGroup({
-        'password': FormControl(defaultValue: '1234'),
-        'passwordConfirmation': FormControl(defaultValue: '123'),
+        'password': FormControl(value: '1234'),
+        'passwordConfirmation': FormControl(value: '123'),
       }, validators: [
         Validators.mustMatch('password', 'passwordConfirmation'),
       ]);
@@ -76,8 +76,8 @@ void main() {
 
     test('FormGroup valid if passwords match', () {
       final form = FormGroup({
-        'password': FormControl(defaultValue: '1234'),
-        'passwordConfirmation': FormControl(defaultValue: '123'),
+        'password': FormControl(value: '1234'),
+        'passwordConfirmation': FormControl(value: '123'),
       }, validators: [
         Validators.mustMatch('password', 'passwordConfirmation'),
       ]);
@@ -143,7 +143,7 @@ void main() {
       () {
         // Given: a control that is email and min length in 20
         final control = FormControl<String>(
-          defaultValue: 'john@',
+          value: 'john@',
           validators: Validators.compose([
             Validators.email,
             Validators.minLength(20),
@@ -161,7 +161,7 @@ void main() {
         // Given: a control that is email and min length in 20
         // but with valid email default value
         final control = FormControl<String>(
-          defaultValue: 'john@email.com',
+          value: 'john@email.com',
           validators: Validators.compose([
             Validators.email,
             Validators.minLength(20),
@@ -178,7 +178,7 @@ void main() {
     test('Test card number with empty white spaces is valid', () {
       // Given: a credit card number
       final control = FormControl<String>(
-        defaultValue: '5500 0000 0000 0004',
+        value: '5500 0000 0000 0004',
         validators: [Validators.creditCard],
       );
 
@@ -189,7 +189,7 @@ void main() {
     test('Validates a valid credit card number', () {
       // Given: a credit card number
       final control = FormControl<String>(
-        defaultValue: '5555555555554444',
+        value: '5555555555554444',
         validators: [Validators.creditCard],
       );
 
@@ -200,7 +200,7 @@ void main() {
     test('Validates an invalid credit card number', () {
       // Given: a credit card number
       final control = FormControl<String>(
-        defaultValue: '7992739871',
+        value: '7992739871',
         validators: [Validators.creditCard],
       );
 
@@ -211,7 +211,7 @@ void main() {
     test('Validates invalid number string', () {
       // Given: an invalid credit card number
       final control = FormControl<String>(
-        defaultValue: '5500abc000000004',
+        value: '5500abc000000004',
         validators: [Validators.creditCard],
       );
 
@@ -222,7 +222,7 @@ void main() {
     test('Validates that card number must not bee empty', () {
       // Given: an invalid credit card number
       final control = FormControl<String>(
-        defaultValue: '',
+        value: '',
         validators: [Validators.creditCard],
       );
 
@@ -233,7 +233,7 @@ void main() {
     test('Validates a card number with length lower than 13 is invalid', () {
       // Given: an invalid credit card number
       final control = FormControl<String>(
-        defaultValue: '123456789123',
+        value: '123456789123',
         validators: [Validators.creditCard],
       );
 
@@ -244,7 +244,7 @@ void main() {
     test('Validates a card number exceed 19 numbers is invalid', () {
       // Given: an invalid credit card number
       final control = FormControl<String>(
-        defaultValue: '12345678912345678909',
+        value: '12345678912345678909',
         validators: [Validators.creditCard],
       );
 
