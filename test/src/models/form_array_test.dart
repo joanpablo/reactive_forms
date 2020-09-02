@@ -123,6 +123,59 @@ void main() {
       expect(array.control('2').value, null);
     });
 
+    test('Reset array with initial values', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]);
+
+      // And: reset array
+      array.reset(value: [4, 5, 6]);
+
+      //Then: items has initial default values
+      expect(array.control('0').value, 4);
+      expect(array.control('1').value, 5);
+      expect(array.control('2').value, 6);
+    });
+
+    test('Reset array with less initial values', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]);
+
+      // And: reset array
+      array.reset(value: [4, 5]);
+
+      //Then: items has initial default values
+      expect(array.control('0').value, 4);
+      expect(array.control('1').value, 5);
+      expect(array.control('2').value, 3);
+    });
+
+    test('Reset array with more initial values', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]);
+
+      // And: reset array
+      array.reset(value: [4, 5, 6, 7]);
+
+      //Then: items has initial default values
+      expect(array.controls.length, 4);
+      expect(array.control('0').value, 4);
+      expect(array.control('1').value, 5);
+      expect(array.control('2').value, 6);
+      expect(array.control('3').value, 7);
+    });
+
     test('Adding a control to array adds a new value', () {
       // Given: an empty array
       final array = FormArray([]);
