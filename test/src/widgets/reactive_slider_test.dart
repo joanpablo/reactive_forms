@@ -11,7 +11,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'sliderValue': FormControl(defaultValue: 50.0),
+          'sliderValue': FormControl(value: 50.0),
         });
 
         // And: a widget that is bind to the form
@@ -31,7 +31,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'sliderValue': FormControl(defaultValue: 0.0),
+          'sliderValue': FormControl(value: 0.0),
         });
 
         // And: a widget that is bind to the form

@@ -11,7 +11,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and a control with default true
         final form = FormGroup({
-          'radio': FormControl<bool>(defaultValue: true),
+          'radio': FormControl<bool>(value: true),
         });
 
         // And: a widget that is bind to the form
@@ -38,7 +38,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and a control with default false
         final form = FormGroup({
-          'radio': FormControl<bool>(defaultValue: false),
+          'radio': FormControl<bool>(value: false),
         });
 
         // And: a widget that is bind to the form
@@ -63,7 +63,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and a control with default false
         final form = FormGroup({
-          'radio': FormControl<bool>(defaultValue: false),
+          'radio': FormControl<bool>(value: false),
         });
 
         // And: a widget that is bind to the form
@@ -92,7 +92,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and a control with default true
         final form = FormGroup({
-          'radio': FormControl<bool>(defaultValue: true),
+          'radio': FormControl<bool>(value: true),
         });
 
         // And: a widget that is bind to the form

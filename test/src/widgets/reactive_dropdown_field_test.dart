@@ -37,7 +37,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<String>(defaultValue: 'true'),
+          'dropdown': FormControl<String>(value: 'true'),
         });
 
         // And: a widget that is bind to the form
@@ -61,7 +61,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<String>(defaultValue: 'false'),
+          'dropdown': FormControl<String>(value: 'false'),
         });
 
         // And: a widget that is bind to the form
@@ -85,7 +85,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<String>(defaultValue: 'false'),
+          'dropdown': FormControl<String>(value: 'false'),
         });
 
         // And: a widget that is bind to the form
@@ -112,7 +112,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<String>(defaultValue: 'true'),
+          'dropdown': FormControl<String>(value: 'true'),
         });
 
         // And: a widget that is bind to the form

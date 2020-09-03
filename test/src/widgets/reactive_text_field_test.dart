@@ -34,7 +34,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: A group with a field
         final form = FormGroup({
-          'name': FormControl(defaultValue: 'John'),
+          'name': FormControl(value: 'John'),
         });
 
         // And: a widget that is bind to the form
@@ -59,7 +59,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: A group with a field
         final form = FormGroup({
-          'name': FormControl(defaultValue: 'John'),
+          'name': FormControl(value: 'John'),
         });
 
         // And: a widget that is bind to the form

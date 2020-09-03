@@ -49,13 +49,13 @@ class FormBuilder {
       [List<ValidatorFunction> validators = const []]) {
     final map = controls.map((key, value) {
       if (value is String) {
-        return MapEntry(key, FormControl<String>(defaultValue: value));
+        return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
-        return MapEntry(key, FormControl<int>(defaultValue: value));
+        return MapEntry(key, FormControl<int>(value: value));
       } else if (value is bool) {
-        return MapEntry(key, FormControl<bool>(defaultValue: value));
+        return MapEntry(key, FormControl<bool>(value: value));
       } else if (value is double) {
-        return MapEntry(key, FormControl<double>(defaultValue: value));
+        return MapEntry(key, FormControl<double>(value: value));
       } else if (value is AbstractControl) {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
@@ -89,7 +89,7 @@ class FormBuilder {
         }
       }
 
-      return MapEntry(key, FormControl(defaultValue: value));
+      return MapEntry(key, FormControl(value: value));
     });
 
     return FormGroup(map, validators: validators);
@@ -102,16 +102,16 @@ class FormBuilder {
     }
 
     if (value is String) {
-      return FormControl<String>(defaultValue: value, validators: validators);
+      return FormControl<String>(value: value, validators: validators);
     } else if (value is int) {
-      return FormControl<int>(defaultValue: value, validators: validators);
+      return FormControl<int>(value: value, validators: validators);
     } else if (value is bool) {
-      return FormControl<bool>(defaultValue: value, validators: validators);
+      return FormControl<bool>(value: value, validators: validators);
     } else if (value is double) {
-      return FormControl<double>(defaultValue: value, validators: validators);
+      return FormControl<double>(value: value, validators: validators);
     }
 
-    return FormControl(defaultValue: value, validators: validators);
+    return FormControl(value: value, validators: validators);
   }
 }
 

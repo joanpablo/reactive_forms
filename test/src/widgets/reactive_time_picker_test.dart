@@ -13,7 +13,7 @@ void main() {
         final defaultValue = TimeOfDay.now();
         final form = FormGroup({
           'time': FormControl<TimeOfDay>(
-            defaultValue: defaultValue,
+            value: defaultValue,
           ),
         });
 

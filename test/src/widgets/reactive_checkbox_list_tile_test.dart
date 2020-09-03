@@ -30,7 +30,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with a boolean field in True
         final form = FormGroup({
-          'isChecked': FormControl<bool>(defaultValue: true),
+          'isChecked': FormControl<bool>(value: true),
         });
 
         // And: a checkbox is bind to boolean control
@@ -49,7 +49,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with a boolean field in False
         final form = FormGroup({
-          'isChecked': FormControl<bool>(defaultValue: false),
+          'isChecked': FormControl<bool>(value: false),
         });
 
         // And: a checkbox is bind to boolean control
@@ -95,7 +95,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with a boolean field in true
         final form = FormGroup({
-          'isChecked': FormControl<bool>(defaultValue: true),
+          'isChecked': FormControl<bool>(value: true),
         });
 
         // And: a checkbox is bind to boolean control

@@ -12,7 +12,7 @@ void main() {
         // Given: a valid form
         final form = FormGroup({
           'name': FormControl<String>(
-            defaultValue: 'Reactive Forms',
+            value: 'Reactive Forms',
             validators: [Validators.required],
           ),
         });
@@ -51,7 +51,7 @@ void main() {
         // Given: a valid form
         final form = FormGroup({
           'name': FormControl<String>(
-            defaultValue: 'Reactive Forms',
+            value: 'Reactive Forms',
             validators: [Validators.required],
           ),
         });

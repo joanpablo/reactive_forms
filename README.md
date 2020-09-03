@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^3.0.1
+  reactive_forms: ^4.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -38,7 +38,7 @@ To declare a form with the fields *name* and *email* is as simple as:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(defaultValue: 'John Doe'),
+  'name': FormControl(value: 'John Doe'),
   'email': FormControl(),
 });
 ```
@@ -58,8 +58,8 @@ But you can also get the complete *Form* data as follows:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(defaultValue: 'John Doe'),
-  'email': FormControl(defaultValue: 'johndoe@email.com'),
+  'name': FormControl(value: 'John Doe'),
+  'email': FormControl(value: 'johndoe@email.com'),
 });
 
 print(form.value);
@@ -431,8 +431,8 @@ We have defined just an empty array. Let's define another array with two control
 ```dart
 final form = FormGroup({
   'emails': FormArray<String>([
-    FormControl<String>(defaultValue: 'john@email.com'),
-    FormControl<String>(defaultValue: 'susan@email.com'),
+    FormControl<String>(value: 'john@email.com'),
+    FormControl<String>(value: 'susan@email.com'),
   ]),
 });
 ```
@@ -460,7 +460,7 @@ final array = form.control('emails') as FormArray<String>;
 
 // adding another email
 array.add(
-  FormControl<String>(defaultValue: 'caroline@email.com'),
+  FormControl<String>(value: 'caroline@email.com'),
 );
 
 printFormValue(form);
@@ -510,7 +510,7 @@ final formArray = form.control('selectedEmails') as FormArray<bool>;
 // populates the array of controls.
 // for each contact add a boolean form control to the array.
 formArray.addAll(
-  contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
+  contacts.map((email) => FormControl<bool>(value: true)).toList(),
 );
 ````
 
@@ -540,8 +540,8 @@ The previous code is equivalent to the following one:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl<String>(defaultValue: 'John Doe'),
-  'email': FormControl<String>(defaultValue: '', validators: [Validators.required, Validators.email]),
+  'name': FormControl<String>(value: 'John Doe'),
+  'email': FormControl<String>(value: '', validators: [Validators.required, Validators.email]),
   'password': FormControl(validators: [Validators.required]),
 });
 ```
@@ -636,7 +636,7 @@ You can initialize a **FormControl** as **touched** to force the validation mess
 ```dart
 final form = FormGroup({
   'name': FormControl(
-    defaultValue: 'John Doe',
+    value: 'John Doe',
     validators: [Validators.required],
     touched: true,
   ),
@@ -767,7 +767,7 @@ There are some cases where we want to add or remove focus on a UI TextField with
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(defaultValue: 'John Doe'),
+  'name': FormControl(value: 'John Doe'),
 });
 
 FormControl control = form.control('name');
@@ -952,7 +952,7 @@ In the following example we are listening for changes in *lightIntensity*. We ch
 
 ```dart
 final form = FormGroup({
-  'lightIntensity': FormControl<double>(defaultValue: 50.0),
+  'lightIntensity': FormControl<double>(value: 50.0),
 });
 
 @override
