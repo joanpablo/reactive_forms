@@ -18,7 +18,7 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
   @override
   void initState() {
     selectedContacts.addAll(
-      contacts.map((email) => FormControl<bool>(defaultValue: true)).toList(),
+      contacts.map((email) => FormControl<bool>(value: true)).toList(),
     );
 
     super.initState();
@@ -75,9 +75,7 @@ class _ArraySampleScreenState extends State<ArraySampleScreen> {
                     this
                         .contacts
                         .add('other${this.contacts.length + 1}@email.com');
-                    this
-                        .selectedContacts
-                        .add(FormControl<bool>(defaultValue: true));
+                    this.selectedContacts.add(FormControl<bool>(value: true));
                   },
                 ),
               ],

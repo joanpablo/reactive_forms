@@ -35,7 +35,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'switch': FormControl<bool>(defaultValue: true),
+          'switch': FormControl<bool>(value: true),
         });
 
         // And: a widget that is bind to the form
@@ -59,7 +59,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'switch': FormControl<bool>(defaultValue: false),
+          'switch': FormControl<bool>(value: false),
         });
 
         // And: a widget that is bind to the form
@@ -83,7 +83,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control in false
         final form = FormGroup({
-          'switch': FormControl<bool>(defaultValue: false),
+          'switch': FormControl<bool>(value: false),
         });
 
         // And: a widget that is bind to the form
@@ -109,7 +109,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control in false
         final form = FormGroup({
-          'switch': FormControl<bool>(defaultValue: true),
+          'switch': FormControl<bool>(value: true),
         });
 
         // And: a widget that is bind to the form

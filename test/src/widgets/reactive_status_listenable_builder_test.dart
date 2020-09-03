@@ -85,7 +85,7 @@ void main() {
         // Given: a form with a valid field
         final form = FormGroup({
           'control': FormControl<String>(
-            defaultValue: 'some valid value',
+            value: 'some valid value',
             validators: [Validators.required],
           ),
         });

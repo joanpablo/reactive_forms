@@ -1,3 +1,14 @@
+# 4.0.0
+
+## Features
+- **FormControl.reset()** can now set the disabled status of the control as an optional argument.
+- Implements **FormGroup.resetState()** and **FormArray.resetState()** to reset children controls 
+with initial value and disabled status. 
+
+## Breaking Changes
+- **FormControl** constructor receives *value* instead of *defaultValue*. To reset a control
+to a initial value you must call **FormControl.reset()** and supply initial value.
+
 # 3.0.1
 
 - Fix Luhn algorithm in credit card validator.

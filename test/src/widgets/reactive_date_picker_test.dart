@@ -12,7 +12,7 @@ void main() {
         // Given: a form and a date time field with default value
         final form = FormGroup({
           'birthday': FormControl<DateTime>(
-            defaultValue: DateTime(2020),
+            value: DateTime(2020),
           ),
         });
 
@@ -40,7 +40,7 @@ void main() {
         final defaultValue = DateTime(2020);
         final form = FormGroup({
           'birthday': FormControl<DateTime>(
-            defaultValue: defaultValue,
+            value: defaultValue,
           ),
         });
 
