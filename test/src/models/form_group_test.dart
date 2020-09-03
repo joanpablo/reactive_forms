@@ -376,7 +376,7 @@ void main() {
       expect(form.control('name').touched, false);
     });
 
-    /*test('Resets a group and set initial values and disabled', () {
+    test('Resets a group and set initial values and disabled', () {
       // Given: a group
       final form = FormGroup({
         'name': FormControl(
@@ -387,14 +387,14 @@ void main() {
 
       // When: resets the group
       final initialValue = 'otherInitialValue';
-      form.reset(value: {
-        'name': FormControlState(value: initialValue, disabled: true),
+      form.resetState({
+        'name': ControlState(value: initialValue, disabled: true),
       });
 
       // Then: value of the control has the new initial value
       expect(form.control('name').value, initialValue);
       expect(form.control('name').touched, false);
       expect(form.control('name').disabled, true);
-    });*/
+    });
   });
 }

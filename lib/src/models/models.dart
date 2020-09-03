@@ -213,10 +213,72 @@ abstract class AbstractControl<T> {
     _asyncValidationSubscription?.cancel();
   }
 
+  /// Sets the value of the control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
   void updateValue(T value, {bool updateParent, bool emitEvent});
 
   /// Resets the form control, marking it as untouched,
-  /// and setting the [value] to [defaultValue].
+  /// and setting the value to null.
+  ///
+  /// The argument [value] is optional and resets the control with an initial
+  /// value.
+  ///
+  /// ## FormControl example
+  /// ```dart
+  /// final control = FormControl<String>();
+  ///
+  /// control.reset(value: 'John Doe');
+  ///
+  /// print(control.value); // output: 'John Doe'
+  ///
+  /// ```
+  ///
+  /// ## FormGroup example
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'first': FormControl(value: 'first name'),
+  ///   'last': FormControl(value: 'last name'),
+  /// });
+  ///
+  /// print(form.value);   // output: {first: 'first name', last: 'last name'}
+  ///
+  /// form.reset(value: { 'first': 'John', 'last': 'last name' });
+  ///
+  /// print(form.value); // output: {first: 'John', last: 'last name'}
+  ///
+  /// ```
+  ///
+  /// ## FormArray example
+  /// ````dart
+  /// final array = FormArray<String>([
+  ///   FormControl<String>(),
+  ///   FormControl<String>(),
+  /// ]);
+  ///
+  /// array.reset(value: ['name', 'last name']);
+  ///
+  /// print(array.value); // output: ['name', 'last name']
+  ///
+  /// ```
+  ///
+  /// The argument [disabled] is optional and resets the disabled status of the
+  /// control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* events notify listeners with the
+  /// latest status and value when the control is reset. When false, no events
+  /// are emitted.
   void reset({
     T value,
     bool disabled,
@@ -743,6 +805,21 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
       emitEvent: emitEvent,
     );
   }
+
+  void resetState(Map<String, ControlState> state) {
+    if (state == null || state.isEmpty) {
+      this.reset();
+    } else {
+      this.controls.forEach((name, control) {
+        control.reset(
+          value: state[name]?.value,
+          disabled: state[name]?.disabled,
+          updateParent: false,
+        );
+      });
+      this.updateValueAndValidity();
+    }
+  }
 }
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -1006,6 +1083,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
         updateParent: updateParent,
         emitEvent: emitEvent,
       );
+    }
+  }
+
+  void resetState(Iterable<ControlState<T>> state) {
+    if (state == null || state.isEmpty) {
+      this.reset();
+    } else {
+      for (var i = 0; i < this.controls.length; i++) {
+        this.controls[i].reset(
+              value: i < state.length ? state.elementAt(i)?.value : null,
+              disabled: i < state.length ? state.elementAt(i)?.disabled : null,
+              updateParent: false,
+            );
+      }
+
+      this.updateValueAndValidity();
     }
   }
 }

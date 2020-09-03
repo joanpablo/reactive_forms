@@ -176,6 +176,38 @@ void main() {
       expect(array.control('3').value, 7);
     });
 
+    test('Reset array with disabled states', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+      ]);
+
+      // And: reset array value and disable the control
+      array.resetState([
+        ControlState(disabled: true),
+      ]);
+
+      //Then: items has initial reset values and are disabled
+      expect(array.control('0').value, null);
+      expect(array.control('0').disabled, true);
+    });
+
+    test('Reset array with state', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+      ]);
+
+      // And: reset array value with state
+      array.resetState([
+        ControlState(value: 2),
+      ]);
+
+      //Then: items has initial reset values and are enabled
+      expect(array.control('0').value, 2);
+      expect(array.control('0').enabled, true);
+    });
+
     test('Adding a control to array adds a new value', () {
       // Given: an empty array
       final array = FormArray([]);
