@@ -396,5 +396,39 @@ void main() {
       expect(form.control('name').touched, false);
       expect(form.control('name').disabled, true);
     });
+
+    test('Resets a group with null state', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl(
+          value: 'someInitialValue',
+          touched: true,
+        ),
+      });
+
+      // When: resets the group
+      form.resetState(null);
+
+      // Then: all controls has null value
+      expect(form.control('name').value, null);
+      expect(form.control('name').touched, false);
+    });
+
+    test('Resets a group with empty {} state', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl(
+          value: 'someInitialValue',
+          touched: true,
+        ),
+      });
+
+      // When: resets the group
+      form.resetState({});
+
+      // Then: all controls has null value
+      expect(form.control('name').value, null);
+      expect(form.control('name').touched, false);
+    });
   });
 }

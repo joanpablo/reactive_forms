@@ -230,7 +230,7 @@ abstract class AbstractControl<T> {
   /// The argument [value] is optional and resets the control with an initial
   /// value.
   ///
-  /// ## FormControl example
+  /// ### FormControl example
   /// ```dart
   /// final control = FormControl<String>();
   ///
@@ -240,7 +240,7 @@ abstract class AbstractControl<T> {
   ///
   /// ```
   ///
-  /// ## FormGroup example
+  /// ### FormGroup example
   /// ```dart
   /// final form = FormGroup({
   ///   'first': FormControl(value: 'first name'),
@@ -255,7 +255,7 @@ abstract class AbstractControl<T> {
   ///
   /// ```
   ///
-  /// ## FormArray example
+  /// ### FormArray example
   /// ````dart
   /// final array = FormArray<String>([
   ///   FormControl<String>(),
@@ -806,6 +806,29 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     );
   }
 
+  /// Resets the `FormGroup`, marks all descendants as *untouched*, and sets
+  /// the value of all descendants to null.
+  ///
+  /// You reset to a specific form [state] by passing in a map of states
+  /// that matches the structure of your form, with control names as keys.
+  /// The control state is an object with both a value and a disabled status.
+  ///
+  /// ### Reset the form group values and disabled status
+  ///
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'first': FormControl('first name'),
+  ///   'last': FormControl('last name'),
+  /// });
+  ///
+  /// form.resetState({
+  ///   'first': ControlState(value: 'name', disabled: true),
+  ///   'last': ControlState(value: 'last'),
+  /// });
+  ///
+  /// print(form.value);  // output: {first: 'name', last: 'last name'}
+  /// print(form.control('first').disabled);  // output: true
+  /// ```
   void resetState(Map<String, ControlState> state) {
     if (state == null || state.isEmpty) {
       this.reset();
@@ -974,7 +997,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Throws [FormControlNotFoundException] if no [FormControl] founded with
   /// the specified [name].
   ///
-  /// ## Example:
+  /// ### Example:
   ///
   /// ```dart
   /// final array = FormArray([
@@ -1086,6 +1109,29 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     }
   }
 
+  /// Resets the array, marking all controls as untouched, and setting
+  /// a state for children with an initial value and disabled state.
+  ///
+  /// The [state] is a collection of states for children that resets each
+  /// control with an initial value and disabled state.
+  ///
+  /// ### Reset the values in a form array and the disabled status for the
+  /// first control
+  /// ````dart
+  /// final array = FormArray<String>([
+  ///   FormControl<String>(),
+  ///   FormControl<String>(),
+  /// ]);
+  ///
+  /// array.resetState([
+  ///   ControlState(value: 'name', disabled: true),
+  ///   ControlState(value: 'last'),
+  /// ]);
+  ///
+  /// console.log(array.value);  // output: ['name', 'last name']
+  /// console.log(array.control('0').disabled);  // output: true
+  ///
+  /// ```
   void resetState(Iterable<ControlState<T>> state) {
     if (state == null || state.isEmpty) {
       this.reset();
