@@ -1,3 +1,8 @@
+# 4.0.1
+
+- Fix async update in InheritedStreamer widget that raised exception when declare
+a form group in a stateless widget.
+
 # 4.0.0
 
 ## Features
