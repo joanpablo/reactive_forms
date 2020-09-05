@@ -117,6 +117,27 @@ void main() {
           reason: 'not set email validator');
     });
 
+    test('Build a group with multiple validators', () {
+      // Given: a form group builder creation
+      final requiredValidator = Validators.required;
+      final emailValidator = Validators.required;
+      final form = fb.group({
+        'control': ['', requiredValidator, emailValidator],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<String>, true,
+          reason: 'control is not instance of FormControl<String>');
+      expect(form.control('control').value, '',
+          reason: 'control value is not set');
+      expect(form.control('control').validators.length, 2,
+          reason: 'not set validators');
+      expect(form.control('control').validators[0], requiredValidator,
+          reason: 'not set required validator');
+      expect(form.control('control').validators[1], emailValidator,
+          reason: 'not set email validator');
+    });
+
     test('Build a group with default value and validator', () {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
@@ -129,6 +150,22 @@ void main() {
           reason: 'control is not instance of FormControl<String>');
       expect(form.control('control').value, '',
           reason: 'control default value not set');
+      expect(form.control('control').validators[0], requiredValidator,
+          reason: 'not set required validator');
+    });
+
+    test('Build a group with default value in null and validator', () {
+      // Given: a form group builder creation
+      final requiredValidator = Validators.required;
+      final form = fb.group({
+        'control': [null, requiredValidator],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<dynamic>, true,
+          reason: 'control is not instance of FormControl<dynamic>');
+      expect(form.control('control').value, null,
+          reason: 'control default value not set to null');
       expect(form.control('control').validators[0], requiredValidator,
           reason: 'not set required validator');
     });
@@ -217,6 +254,17 @@ void main() {
           reason: 'control is not instance of FormControl<double>');
       expect(form.control('control').value, 50.0,
           reason: 'control default value not set');
+    });
+
+    test('Build a state with ', () {
+      // Given: a state creation
+      final state = fb.state(value: 'name', disabled: true);
+
+      // Expect the state is created
+      expect(state is ControlState<String>, true,
+          reason: 'state is not instance of ControlState<String>');
+      expect(state.value, 'name', reason: 'state value not set');
+      expect(state.disabled, true, reason: 'state disabled not set');
     });
   });
 }
