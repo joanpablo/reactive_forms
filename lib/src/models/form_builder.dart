@@ -60,7 +60,9 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is Iterable<ValidatorFunction>) {
+      } else if (value is Iterable<ValidatorFunction> &&
+          value.isNotEmpty &&
+          value.first != null) {
         return MapEntry(key, FormControl(validators: value));
       } else if (value is Iterable<dynamic>) {
         if (value.isEmpty) {
@@ -93,6 +95,28 @@ class FormBuilder {
     });
 
     return FormGroup(map, validators: validators);
+  }
+
+  /// Creates a ControlState.
+  ///
+  /// You can pass the optional arguments [value] and [disabled] to the
+  /// control state.
+  ///
+  /// ### Example:
+  ///
+  /// ```dart
+  /// final form = fb.group({
+  ///   'name': 'first name'
+  /// });
+  ///
+  /// form.resetState({
+  ///   'name': fb.state(value: 'name'),
+  /// });
+  ///
+  /// print(form.value); // output: {'name': 'name'}
+  /// ```
+  ControlState<T> state<T>({T value, bool disabled}) {
+    return ControlState<T>(value: value, disabled: disabled);
   }
 
   FormControl _control(dynamic value, List<ValidatorFunction> validators) {

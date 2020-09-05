@@ -1,3 +1,11 @@
+# 4.0.2
+
+- Fix **FormBuilder.group()** with initial value in null
+
+## Features
+
+- Add **FormBuilder.state** to create a *ControlState*.
+
 # 4.0.1
 
 - Fix async update in InheritedStreamer widget that raised exception when declare
