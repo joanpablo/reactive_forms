@@ -1,6 +1,6 @@
 # 4.0.2
 
-- Fix **FormBuilder.group()** with initial value in null
+- Fix **FormBuilder.group()** with initial value in null.
 
 ## Features
 
