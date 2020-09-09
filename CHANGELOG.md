@@ -1,9 +1,11 @@
 # 5.0.0
 
 ## Breaking changes
-- Renaming:
- - *touch()* and *untouch()* by *markAsTouched()* and *markAsUntouched()*
- - *enable()* and *disable()* by *markAsEnabled()* and *markAsDisabled()*
+- Rename *touch()* and *untouch()* by *markAsTouched()* and *markAsUntouched()*
+- Rename *enable()* and *disable()* by *markAsEnabled()* and *markAsDisabled()*
+- Add **AbstractControl.markAllAsTouched** to mark all controls of a 
+**FromGroup** or a **FormArray** as touched. **AbstractControl.markAsTouched** doesn't 
+marks children as touched anymore.
  
 ## Features
 

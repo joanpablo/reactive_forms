@@ -47,14 +47,14 @@ abstract class AbstractControl<T> {
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
     int asyncValidatorsDebounceTime = 250,
-    bool touched = false,
     bool disabled = false,
+    bool touched = false,
   })  : assert(asyncValidatorsDebounceTime >= 0),
         _validators = validators ?? const [],
         _asyncValidators = asyncValidators ?? const [],
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
     _status = disabled ? ControlStatus.disabled : ControlStatus.valid;
-    _updateTouched(touched);
+    _touched = touched ?? false;
   }
 
   /// A control is `dirty` if the user has changed the value in the UI.
@@ -204,16 +204,48 @@ abstract class AbstractControl<T> {
   ///
   /// When [emitEvent] is true or not supplied (the default), an
   /// event is emitted.
-  void markAsTouched({bool emitEvent}) {
-    _updateTouched(true, emitEvent: emitEvent);
+  void markAsTouched({bool updateParent, bool emitEvent}) {
+    updateParent ??= true;
+    emitEvent ??= true;
+
+    if (!_touched) {
+      _touched = true;
+
+      if (emitEvent) {
+        _touchChanges.add(_touched);
+      }
+
+      if (_parent != null && updateParent) {
+        _parent.markAsTouched(updateParent: updateParent, emitEvent: false);
+      }
+    }
+  }
+
+  void markAllAsTouched({bool updateParent, bool emitEvent}) {
+    this.markAsTouched(updateParent: updateParent);
+    _forEachChild((control) => control.markAllAsTouched(updateParent: false));
   }
 
   /// Marks the control as untouched.
   ///
   /// When [emitEvent] is true or not supplied (the default), a notification
   /// event is emitted.
-  void markAsUntouched({bool emitEvent}) {
-    _updateTouched(false, emitEvent: emitEvent);
+  void markAsUntouched({bool updateParent, bool emitEvent}) {
+    updateParent ??= true;
+    emitEvent ??= true;
+
+    if (_touched) {
+      _touched = false;
+      _forEachChild((control) => control.markAsUntouched(updateParent: false));
+
+      if (emitEvent) {
+        _touchChanges.add(_touched);
+      }
+
+      if (_parent != null && updateParent) {
+        _parent._updateTouched(updateParent: updateParent);
+      }
+    }
   }
 
   /// Enables the control. This means the control is included in validation
@@ -381,18 +413,6 @@ abstract class AbstractControl<T> {
     return ControlStatus.valid;
   }
 
-  void _updateTouched(bool value, {bool emitEvent}) {
-    emitEvent ??= true;
-
-    if (_touched != value) {
-      _touched = value;
-
-      if (emitEvent) {
-        _touchChanges.add(_touched);
-      }
-    }
-  }
-
   _updateControlsErrors() {
     _status = _calculateStatus();
     _statusChanges.add(_status);
@@ -493,6 +513,14 @@ abstract class AbstractControl<T> {
     );
   }
 
+  void _updateTouched({bool updateParent}) {
+    _touched = _anyControlsTouched();
+
+    if (_parent != null && updateParent) {
+      _parent._updateTouched(updateParent: updateParent);
+    }
+  }
+
   void _updatePristine({bool updateParent}) {
     _pristine = !_anyControlsDirty();
 
@@ -501,17 +529,11 @@ abstract class AbstractControl<T> {
     }
   }
 
+  bool _anyControlsTouched() => _anyControls((control) => control.touched);
+
   bool _anyControlsDirty() => _anyControls((control) => control.dirty);
 
-  bool _anyControls(bool Function(AbstractControl) condition) {
-    _forEachChild((control) {
-      if (control.enabled && condition(control)) {
-        return true;
-      }
-    });
-
-    return false;
-  }
+  bool _anyControls(bool Function(AbstractControl) condition);
 
   T _reduceValue();
 
@@ -550,15 +572,15 @@ class FormControl<T> extends AbstractControl<T> {
     T value,
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
-    bool touched = false,
     int asyncValidatorsDebounceTime = 250,
+    bool touched = false,
     bool disabled = false,
   }) : super(
           validators: validators,
           asyncValidators: asyncValidators,
-          touched: touched,
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
+          touched: touched,
         ) {
     if (value != null) {
       this.value = value;
@@ -639,6 +661,9 @@ class FormControl<T> extends AbstractControl<T> {
 
   @override
   void _forEachChild(void Function(AbstractControl) callback) => [];
+
+  @override
+  bool _anyControls(bool Function(AbstractControl) condition) => false;
 }
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -790,26 +815,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
       control.parent = this;
     });
     this.updateValueAndValidity();
-  }
-
-  /// A group is touched if at least one of its children is mark as touched.
-  @override
-  bool get touched => _controls.values.any((control) => control.touched);
-
-  /// Marks all controls as touched
-  @override
-  void markAsTouched({bool emitEvent = true}) {
-    _controls.values.forEach((control) => control.markAsTouched(
-          emitEvent: emitEvent,
-        ));
-  }
-
-  /// Marks all controls as untouched
-  @override
-  void markAsUntouched({bool emitEvent = true}) {
-    _controls.values.forEach((control) => control.markAsUntouched(
-          emitEvent: emitEvent,
-        ));
+    _updateTouched();
   }
 
   /// Disposes the group.
@@ -925,6 +931,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
     _controls.forEach((name, control) => callback(control));
+  }
+
+  @override
+  bool _anyControls(bool Function(AbstractControl) condition) {
+    return _controls.values
+        .any((control) => control.enabled && condition(control));
   }
 }
 
@@ -1234,5 +1246,10 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
     _controls.forEach((control) => callback(control));
+  }
+
+  @override
+  bool _anyControls(bool Function(AbstractControl) condition) {
+    return _controls.any((control) => control.enabled && condition(control));
   }
 }

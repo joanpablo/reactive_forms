@@ -167,8 +167,8 @@ void main() {
       expect(form.control('name').touched, false);
       expect(form.control('email').touched, false);
 
-      // When: touch the form
-      form.markAsTouched();
+      // When: marks all descendants to touched
+      form.markAllAsTouched();
 
       // Then: all controls are touched
       expect(form.control('name').touched, true);
@@ -427,8 +427,8 @@ void main() {
       form.resetState({});
 
       // Then: all controls has null value
-      expect(form.control('name').value, null);
-      expect(form.control('name').touched, false);
+      expect(form.control('name').value, null, reason: 'value is not null');
+      expect(form.control('name').touched, false, reason: 'control is touched');
     });
   });
 }
