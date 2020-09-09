@@ -22,7 +22,10 @@ abstract class AbstractControl<T> {
   final _touchChanges = StreamController<bool>.broadcast();
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
+
+  StreamSubscription _asyncValidationSubscription;
   Map<String, dynamic> _errors = {};
+  bool _pristine = true;
 
   T _value;
 
@@ -39,41 +42,6 @@ abstract class AbstractControl<T> {
 
   bool _touched = false;
 
-  /// Gets if the control is touched or not.
-  ///
-  /// A control is touched when the user taps on the ReactiveFormField widget
-  /// and then remove focus or completes the text edition. Validation messages
-  /// will begin to show up when the FormControl is touched.
-  bool get touched => _touched;
-
-  /// Marks the control as touched.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), a notification
-  /// event is raised.
-  void touch({bool emitEvent}) {
-    _updateTouched(true, emitEvent: emitEvent);
-  }
-
-  /// Marks the control as untouched.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), a notification
-  /// event is raised.
-  void untouch({bool emitEvent}) {
-    _updateTouched(false, emitEvent: emitEvent);
-  }
-
-  void _updateTouched(bool value, {bool emitEvent}) {
-    emitEvent ??= true;
-
-    if (_touched != value) {
-      _touched = value;
-
-      if (emitEvent) {
-        _touchChanges.add(_touched);
-      }
-    }
-  }
-
   /// Constructor of the [AbstractControl].
   AbstractControl({
     List<ValidatorFunction> validators,
@@ -88,6 +56,31 @@ abstract class AbstractControl<T> {
     _status = disabled ? ControlStatus.disabled : ControlStatus.valid;
     _updateTouched(touched);
   }
+
+  /// A control is `dirty` if the user has changed the value in the UI.
+  ///
+  /// Gets true if the user has changed the value of this control in the UI.
+  ///
+  /// Programmatic changes to a control's value do not mark it dirty.
+  ///
+  /// See also [pristine].
+  bool get dirty => !this.pristine;
+
+  /// A control is `pristine` if the user has not yet changed the value
+  /// in the UI.
+  ///
+  /// Gets true if the user has not yet changed the value in the UI.
+  /// Programmatic changes to a control's value do not mark it dirty.
+  ///
+  /// See also [dirty].
+  bool get pristine => this._pristine;
+
+  /// Gets if the control is touched or not.
+  ///
+  /// A control is touched when the user taps on the ReactiveFormField widget
+  /// and then remove focus or completes the text edition. Validation messages
+  /// will begin to show up when the FormControl is touched.
+  bool get touched => _touched;
 
   /// The list of functions that determines the validity of this control.
   ///
@@ -164,6 +157,22 @@ abstract class AbstractControl<T> {
   /// These status values are mutually exclusive, so a control cannot be both
   /// valid AND invalid or invalid AND pending.
   ControlStatus get status => _status;
+
+  /// Marks the control as touched.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is raised.
+  void touch({bool emitEvent}) {
+    _updateTouched(true, emitEvent: emitEvent);
+  }
+
+  /// Marks the control as untouched.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is raised.
+  void untouch({bool emitEvent}) {
+    _updateTouched(false, emitEvent: emitEvent);
+  }
 
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
@@ -305,27 +314,6 @@ abstract class AbstractControl<T> {
     _updateControlsErrors();
   }
 
-  _updateControlsErrors() {
-    _status = _calculateStatus();
-    _statusChanges.add(_status);
-
-    if (_parent != null) {
-      _parent._updateControlsErrors();
-    }
-  }
-
-  Map<String, dynamic> _runValidators() {
-    final errors = Map<String, dynamic>();
-    this.validators.forEach((validator) {
-      final error = validator(this);
-      if (error != null) {
-        errors.addAll(error);
-      }
-    });
-
-    return errors;
-  }
-
   /// Returns true if all children disabled, otherwise returns false.
   ///
   /// This is for internal use only.
@@ -361,7 +349,40 @@ abstract class AbstractControl<T> {
     return ControlStatus.valid;
   }
 
-  _setInitialStatus() {
+  void _updateTouched(bool value, {bool emitEvent}) {
+    emitEvent ??= true;
+
+    if (_touched != value) {
+      _touched = value;
+
+      if (emitEvent) {
+        _touchChanges.add(_touched);
+      }
+    }
+  }
+
+  _updateControlsErrors() {
+    _status = _calculateStatus();
+    _statusChanges.add(_status);
+
+    if (_parent != null) {
+      _parent._updateControlsErrors();
+    }
+  }
+
+  Map<String, dynamic> _runValidators() {
+    final errors = Map<String, dynamic>();
+    this.validators.forEach((validator) {
+      final error = validator(this);
+      if (error != null) {
+        errors.addAll(error);
+      }
+    });
+
+    return errors;
+  }
+
+  void _setInitialStatus() {
     _status = this.allControlsDisabled()
         ? ControlStatus.disabled
         : ControlStatus.valid;
@@ -399,8 +420,6 @@ abstract class AbstractControl<T> {
 
     _updateAncestors(updateParent);
   }
-
-  StreamSubscription _asyncValidationSubscription;
 
   Future<void> _cancelExistingSubscription() async {
     if (_asyncValidationSubscription != null) {
