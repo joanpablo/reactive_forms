@@ -168,5 +168,19 @@ void main() {
       // And: is disabled
       expect(control.disabled, true);
     });
+
+    test('Resets a control marks it as pristine', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: control is dirty
+      control.markAsDirty();
+
+      // And: reset the control
+      control.reset();
+
+      // Then: the control is pristine
+      expect(control.pristine, true);
+    });
   });
 }

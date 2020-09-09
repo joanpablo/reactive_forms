@@ -234,7 +234,7 @@ void main() {
     );
 
     testWidgets(
-      'Enable a control enable Checkbox',
+      'Enable a control enable text field',
       (WidgetTester tester) async {
         // Given: An form with disabled control
         final form = FormGroup({
@@ -252,6 +252,29 @@ void main() {
         TextField textField =
             tester.firstWidget(find.byType(TextField)) as TextField;
         expect(textField.enabled, true);
+      },
+    );
+
+    testWidgets(
+      'Change value of a text field marks control as dirty',
+      (WidgetTester tester) async {
+        // Given: a form with
+        final form = FormGroup({
+          'name': FormControl(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // Expect: control isn't dirty
+        expect(form.control('name').dirty, false);
+
+        // When: change text field value
+        await tester.enterText(find.byType(TextField), 'some value');
+
+        // Then: the control is dirty
+        expect(form.control('name').dirty, true,
+            reason: 'control is not marked as dirty');
       },
     );
   });

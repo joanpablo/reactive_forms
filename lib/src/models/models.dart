@@ -368,6 +368,7 @@ abstract class AbstractControl<T> {
     bool updateParent,
     bool emitEvent,
   }) {
+    this.markAsPristine();
     this.markAsUntouched();
 
     this.updateValue(value, updateParent: updateParent, emitEvent: emitEvent);

@@ -185,7 +185,12 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   ///
   /// Updates the value of the [FormControl] bound to this widget.
   void didChange(T value) {
+    final prevValue = this.control.value;
     this.control.value = value;
+    if (value != prevValue) {
+      this.control.markAsDirty();
+    }
+
     if (this.touched) {
       setState(() {});
     }
