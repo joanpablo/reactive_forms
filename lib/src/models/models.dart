@@ -158,6 +158,25 @@ abstract class AbstractControl<T> {
   /// valid AND invalid or invalid AND pending.
   ControlStatus get status => _status;
 
+  /// Marks the control as `dirty`.
+  ///
+  /// A control becomes dirty when the control's value is changed through
+  /// the UI.
+  void markAsDirty({bool updateParent, bool emitEvent}) {
+    updateParent ??= true;
+    emitEvent ??= true;
+
+    _pristine = false;
+
+    if (emitEvent) {
+      _statusChanges.add(_status);
+    }
+
+    if (_parent != null && updateParent) {
+      _parent.markAsDirty(updateParent: updateParent, emitEvent: emitEvent);
+    }
+  }
+
   /// Marks the control as touched.
   ///
   /// When [emitEvent] is true or not supplied (the default), a notification
