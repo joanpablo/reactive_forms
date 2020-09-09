@@ -719,7 +719,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   @override
   Map<String, dynamic> _reduceValue() {
     final map = Map<String, dynamic>();
-    this._controls.forEach((key, control) {
+    _controls.forEach((key, control) {
       if (control.enabled || this.disabled) {
         map[key] = control.value;
       }
@@ -762,7 +762,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Default is false.
   @override
   void markAsDisabled({bool updateParent, bool emitEvent}) {
-    this._controls.forEach((_, control) {
+    _controls.forEach((_, control) {
       control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
@@ -777,7 +777,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Default is false.
   @override
   void markAsEnabled({bool updateParent, bool emitEvent}) {
-    this.controls.forEach((_, control) {
+    _controls.forEach((_, control) {
       control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
@@ -794,12 +794,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   /// A group is touched if at least one of its children is mark as touched.
   @override
-  bool get touched => this._controls.values.any((control) => control.touched);
+  bool get touched => _controls.values.any((control) => control.touched);
 
   /// Marks all controls as touched
   @override
   void markAsTouched({bool emitEvent = true}) {
-    this._controls.values.forEach((control) => control.markAsTouched(
+    _controls.values.forEach((control) => control.markAsTouched(
           emitEvent: emitEvent,
         ));
   }
@@ -807,7 +807,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Marks all controls as untouched
   @override
   void markAsUntouched({bool emitEvent = true}) {
-    this._controls.values.forEach((control) => control.markAsUntouched(
+    _controls.values.forEach((control) => control.markAsUntouched(
           emitEvent: emitEvent,
         ));
   }
@@ -815,7 +815,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Disposes the group.
   @override
   void dispose() {
-    this._controls.forEach((_, control) {
+    _controls.forEach((_, control) {
       control.parent = null;
       control.dispose();
     });
@@ -870,12 +870,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }) {
     value ??= {};
 
-    this.controls.keys.forEach((name) {
-      this.controls[name].updateValue(
-            value[name],
-            updateParent: false,
-            emitEvent: emitEvent,
-          );
+    _controls.keys.forEach((name) {
+      _controls[name].updateValue(
+        value[name],
+        updateParent: false,
+        emitEvent: emitEvent,
+      );
     });
 
     this.updateValueAndValidity(
@@ -911,7 +911,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     if (state == null || state.isEmpty) {
       this.reset();
     } else {
-      this.controls.forEach((name, control) {
+      _controls.forEach((name, control) {
         control.reset(
           value: state[name]?.value,
           disabled: state[name]?.disabled,
@@ -924,7 +924,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
-    this.controls.forEach((name, control) => callback(control));
+    _controls.forEach((name, control) => callback(control));
   }
 }
 
@@ -968,7 +968,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   /// Gets the list of child controls.
-  List<AbstractControl<T>> get controls => List.unmodifiable(this._controls);
+  List<AbstractControl<T>> get controls => List.unmodifiable(_controls);
 
   /// Sets the value of the [FormArray].
   ///
@@ -1003,7 +1003,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Default is false.
   @override
   void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
-    this._controls.forEach((control) {
+    _controls.forEach((control) {
       control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
@@ -1014,7 +1014,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// based on its value and its validators.
   @override
   void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
-    this.controls.forEach((control) {
+    _forEachChild((control) {
       control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
@@ -1039,7 +1039,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     bool updateParent,
     bool emitEvent,
   }) {
-    this._controls.addAll(controls);
+    _controls.addAll(controls);
     controls.forEach((control) {
       control.parent = this;
     });
@@ -1110,7 +1110,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// Disposes the array.
   @override
   void dispose() {
-    _controls.forEach((control) {
+    _forEachChild((control) {
       control.parent = null;
       control.dispose();
     });
@@ -1161,22 +1161,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   @override
   void updateValue(Iterable<T> value, {bool updateParent, bool emitEvent}) {
-    for (var i = 0; i < this.controls.length; i++) {
+    for (var i = 0; i < _controls.length; i++) {
       if (value == null || i < value.length) {
-        this.controls[i].updateValue(
-              value == null ? null : value.elementAt(i),
-              updateParent: false,
-              emitEvent: emitEvent,
-            );
+        _controls[i].updateValue(
+          value == null ? null : value.elementAt(i),
+          updateParent: false,
+          emitEvent: emitEvent,
+        );
       }
     }
 
-    if (value != null && value.length > this.controls.length) {
+    if (value != null && value.length > _controls.length) {
       final newControls = value
           .toList()
           .asMap()
           .entries
-          .where((entry) => entry.key >= this.controls.length)
+          .where((entry) => entry.key >= _controls.length)
           .map((entry) => FormControl<T>(value: entry.value));
 
       this.addAll(
@@ -1219,12 +1219,12 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     if (state == null || state.isEmpty) {
       this.reset();
     } else {
-      for (var i = 0; i < this.controls.length; i++) {
-        this.controls[i].reset(
-              value: i < state.length ? state.elementAt(i)?.value : null,
-              disabled: i < state.length ? state.elementAt(i)?.disabled : null,
-              updateParent: false,
-            );
+      for (var i = 0; i < _controls.length; i++) {
+        _controls[i].reset(
+          value: i < state.length ? state.elementAt(i)?.value : null,
+          disabled: i < state.length ? state.elementAt(i)?.disabled : null,
+          updateParent: false,
+        );
       }
 
       this.updateValueAndValidity();
@@ -1233,6 +1233,6 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
-    this.controls.forEach((control) => callback(control));
+    _controls.forEach((control) => callback(control));
   }
 }
