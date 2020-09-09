@@ -177,7 +177,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void touch() {
-    this.control.touch();
+    this.control.markAsTouched();
   }
 
   /// Updates this field's state to the new value. Useful for responding to

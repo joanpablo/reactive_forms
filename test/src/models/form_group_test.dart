@@ -168,7 +168,7 @@ void main() {
       expect(form.control('email').touched, false);
 
       // When: touch the form
-      form.touch();
+      form.markAsTouched();
 
       // Then: all controls are touched
       expect(form.control('name').touched, true);
@@ -187,7 +187,7 @@ void main() {
       expect(form.control('email').touched, true);
 
       // When: untouch the form
-      form.untouch();
+      form.markAsUntouched();
 
       // Then: all controls are untouched
       expect(form.control('name').touched, false);
@@ -261,7 +261,7 @@ void main() {
       });
 
       // When: disable group
-      form.disable();
+      form.markAsDisabled();
 
       // Then: children are disabled
       expect(form.control('name').disabled, true);
@@ -292,7 +292,7 @@ void main() {
       });
 
       // When: enable form
-      form.enable();
+      form.markAsEnabled();
 
       // Then: all controls are enabled
       expect(form.controls.values.every((control) => control.enabled), true);
@@ -318,7 +318,7 @@ void main() {
       });
 
       // When: disable invalid control
-      form.control('email').disable();
+      form.control('email').markAsDisabled();
 
       // Then: form is valid
       expect(form.valid, true);
@@ -333,7 +333,7 @@ void main() {
       });
 
       // When: enable invalid control
-      form.control('email').enable();
+      form.control('email').markAsEnabled();
 
       // Then: form is invalid
       expect(form.invalid, true, reason: 'form is valid');

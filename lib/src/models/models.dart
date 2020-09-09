@@ -204,7 +204,7 @@ abstract class AbstractControl<T> {
   ///
   /// When [emitEvent] is true or not supplied (the default), an
   /// event is emitted.
-  void touch({bool emitEvent}) {
+  void markAsTouched({bool emitEvent}) {
     _updateTouched(true, emitEvent: emitEvent);
   }
 
@@ -212,7 +212,7 @@ abstract class AbstractControl<T> {
   ///
   /// When [emitEvent] is true or not supplied (the default), a notification
   /// event is emitted.
-  void untouch({bool emitEvent}) {
+  void markAsUntouched({bool emitEvent}) {
     _updateTouched(false, emitEvent: emitEvent);
   }
 
@@ -223,7 +223,7 @@ abstract class AbstractControl<T> {
   /// When [updateParent] is false, mark only this control.
   /// When true or not supplied, marks all direct ancestors.
   /// Default is true.
-  void enable({bool updateParent, bool emitEvent}) {
+  void markAsEnabled({bool updateParent, bool emitEvent}) {
     emitEvent ??= true;
     updateParent ??= true;
 
@@ -245,7 +245,7 @@ abstract class AbstractControl<T> {
   /// When [updateParent] is false, mark only this control.
   /// When true or not supplied, marks all direct ancestors.
   /// Default is true.
-  void disable({bool updateParent, bool emitEvent}) {
+  void markAsDisabled({bool updateParent, bool emitEvent}) {
     updateParent ??= true;
     emitEvent ??= true;
 
@@ -336,14 +336,14 @@ abstract class AbstractControl<T> {
     bool updateParent,
     bool emitEvent,
   }) {
-    this.untouch();
+    this.markAsUntouched();
 
     this.updateValue(value, updateParent: updateParent, emitEvent: emitEvent);
 
     if (disabled != null) {
       disabled
-          ? disable(updateParent: true, emitEvent: false)
-          : enable(updateParent: true, emitEvent: false);
+          ? markAsDisabled(updateParent: true, emitEvent: false)
+          : markAsEnabled(updateParent: true, emitEvent: false);
     }
   }
 
@@ -761,11 +761,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void disable({bool updateParent, bool emitEvent}) {
+  void markAsDisabled({bool updateParent, bool emitEvent}) {
     this._controls.forEach((_, control) {
-      control.disable(updateParent: true, emitEvent: emitEvent);
+      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.disable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Enables the control. This means the control is included in validation
@@ -776,11 +776,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void enable({bool updateParent, bool emitEvent}) {
+  void markAsEnabled({bool updateParent, bool emitEvent}) {
     this.controls.forEach((_, control) {
-      control.enable(updateParent: true, emitEvent: emitEvent);
+      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.enable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Appends all [controls] to the group.
@@ -798,16 +798,16 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   /// Marks all controls as touched
   @override
-  void touch({bool emitEvent = true}) {
-    this._controls.values.forEach((control) => control.touch(
+  void markAsTouched({bool emitEvent = true}) {
+    this._controls.values.forEach((control) => control.markAsTouched(
           emitEvent: emitEvent,
         ));
   }
 
   /// Marks all controls as untouched
   @override
-  void untouch({bool emitEvent = true}) {
-    this._controls.values.forEach((control) => control.untouch(
+  void markAsUntouched({bool emitEvent = true}) {
+    this._controls.values.forEach((control) => control.markAsUntouched(
           emitEvent: emitEvent,
         ));
   }
@@ -1002,22 +1002,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void disable({bool updateParent = true, bool emitEvent = true}) {
+  void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
     this._controls.forEach((control) {
-      control.disable(updateParent: true, emitEvent: emitEvent);
+      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.disable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
   @override
-  void enable({bool updateParent = true, bool emitEvent = true}) {
+  void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
     this.controls.forEach((control) {
-      control.enable(updateParent: true, emitEvent: emitEvent);
+      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.enable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Insert a new [control] at the [index] position.

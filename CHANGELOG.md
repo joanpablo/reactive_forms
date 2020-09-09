@@ -1,3 +1,15 @@
+# 5.0.0
+
+## Breaking changes
+- Renaming:
+ - *touch()* and *untouch()* by *markAsTouched()* and *markAsUntouched()*
+ - *enable()* and *disable()* by *markAsEnabled()* and *markAsDisabled()*
+ 
+## Features
+
+- Add new control status *pristine* and *dirty*.
+- Add *ReactiveRadioListTile* widget.
+
 # 4.0.2
 
 - Fix **FormBuilder.group()** with initial value in null.

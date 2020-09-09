@@ -315,7 +315,7 @@ void main() {
       ]);
 
       // When: disable group
-      array.disable();
+      array.markAsDisabled();
 
       // Then: children are disabled
       expect(array.control('0').disabled, true);
@@ -345,7 +345,7 @@ void main() {
       ]);
 
       // When: enable form
-      array.enable();
+      array.markAsEnabled();
 
       // Then: all controls are enabled
       expect(array.controls.every((control) => control.enabled), true);
@@ -371,7 +371,7 @@ void main() {
       ]);
 
       // When: disable invalid control
-      array.control('1').disable();
+      array.control('1').markAsDisabled();
 
       // Then: form is valid
       expect(array.valid, true);
@@ -386,7 +386,7 @@ void main() {
       ]);
 
       // When: enable invalid control
-      array.control('1').enable();
+      array.control('1').markAsEnabled();
 
       // Then: form is invalid
       expect(array.invalid, true, reason: 'array is valid');

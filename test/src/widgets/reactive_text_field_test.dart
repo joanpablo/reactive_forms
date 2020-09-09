@@ -174,7 +174,7 @@ void main() {
       expect(textField.decoration.errorText, null);
 
       // When: touch the control
-      form.control('name').touch();
+      form.control('name').markAsTouched();
       await tester.pump();
 
       // Then: text field is showing errors
@@ -223,7 +223,7 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the text field is disabled
@@ -245,7 +245,7 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the text field is enable
