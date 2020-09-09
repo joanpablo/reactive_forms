@@ -654,6 +654,21 @@ set name(String newName) {
 }
 ```
 
+>To mark all children controls of a **FormGroup** and **FormArray** you must call **markAllAsTouched()**.
+>```dart
+> final form = FormGroup({
+>   'name': FormControl(
+>     value: 'John Doe',
+>     validators: [Validators.required],
+>     touched: true,
+>   ),
+> });
+> 
+> // marks all children as touched
+> form.markAllAsTouched();
+>```
+>
+
 ## Enable/Disable Submit button
 
 For a better User Experience some times we want to enable/disable the *Submit* button based on the validity of the *Form*. Getting this behavior, even in such a great framework as Flutter, some times can be hard and can lead to have individual implementations for each *Form* of the same application plus boilerplate code.  
