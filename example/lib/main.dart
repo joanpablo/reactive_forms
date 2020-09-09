@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms_example/reactive_form_builder_widget_sample.dart';
 
 void main() {
   runApp(ReactiveFormsApp());
@@ -11,23 +12,15 @@ class ReactiveFormsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: customTheme,
-      home: HomePage(),
+      home: ReactiveFormBuilderWidgetSample(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  // We don't recommend to declare a FormGroup within a Stateful Widget.
-  // We highly recommend using the Provider plugin
-  // or any other state management library.
-  //
-  // We have declared the FormGroup within a Stateful Widget only for
-  // demonstration purposes and to simplify this example.
+class HomePage extends StatelessWidget {
+  // We recommend to use Reactive Form with Provider plugin or any other
+  // state management library and not declare FormGroup directly in a
+  // stateless widget.
   final form = FormGroup({
     'email': FormControl(
       validators: [
@@ -64,178 +57,180 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-          child: ReactiveForm(
-            formGroup: this.form,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ReactiveTextField(
-                  formControlName: 'email',
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    suffixIcon: ReactiveStatusListenableBuilder(
-                      formControlName: 'email',
-                      builder: (context, control, child) {
-                        return control.pending
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Container(width: 0);
-                      },
+          child: ReactiveFormBuilder(
+            form: this.form,
+            builder: (context, form, child) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ReactiveTextField(
+                    formControlName: 'email',
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      suffixIcon: ReactiveStatusListenableBuilder(
+                        formControlName: 'email',
+                        builder: (context, control, child) {
+                          return control.pending
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Container(width: 0);
+                        },
+                      ),
                     ),
+                    validationMessages: {
+                      ValidationMessage.required: 'The email must not be empty',
+                      ValidationMessage.email:
+                          'The email value must be a valid email',
+                      'unique': 'This email is already in use',
+                    },
+                    textInputAction: TextInputAction.next,
+                    onSubmitted: () => this.password.focus(),
                   ),
-                  validationMessages: {
-                    ValidationMessage.required: 'The email must not be empty',
-                    ValidationMessage.email:
-                        'The email value must be a valid email',
-                    'unique': 'This email is already in use',
-                  },
-                  textInputAction: TextInputAction.next,
-                  onSubmitted: () => this.password.focus(),
-                ),
-                SizedBox(height: 24.0),
-                ReactiveTextField(
-                  formControlName: 'password',
-                  decoration: InputDecoration(
-                    labelText: 'Password',
+                  SizedBox(height: 24.0),
+                  ReactiveTextField(
+                    formControlName: 'password',
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    obscureText: true,
+                    validationMessages: {
+                      ValidationMessage.required:
+                          'The password must not be empty',
+                      ValidationMessage.minLength:
+                          'The password must be at least 8 characters',
+                    },
+                    textInputAction: TextInputAction.next,
+                    onSubmitted: () => this.passwordConfirmation.focus(),
                   ),
-                  obscureText: true,
-                  validationMessages: {
-                    ValidationMessage.required:
-                        'The password must not be empty',
-                    ValidationMessage.minLength:
-                        'The password must be at least 8 characters',
-                  },
-                  textInputAction: TextInputAction.next,
-                  onSubmitted: () => this.passwordConfirmation.focus(),
-                ),
-                SizedBox(height: 24.0),
-                ReactiveTextField(
-                  formControlName: 'passwordConfirmation',
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                  SizedBox(height: 24.0),
+                  ReactiveTextField(
+                    formControlName: 'passwordConfirmation',
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                    ),
+                    obscureText: true,
+                    validationMessages: {
+                      ValidationMessage.mustMatch:
+                          'Password confirmation must match',
+                    },
                   ),
-                  obscureText: true,
-                  validationMessages: {
-                    ValidationMessage.mustMatch:
-                        'Password confirmation must match',
-                  },
-                ),
-                SizedBox(height: 24.0),
-                ReactiveFormConsumer(
-                  builder: (context, form, child) {
-                    return RaisedButton(
-                      child: Text('Sign Up'),
-                      onPressed: form.valid
-                          ? () {
-                              print(form.value);
-                            }
-                          : null,
-                    );
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Reset all'),
-                  onPressed: () => form.resetState({
-                    'email': ControlState(value: 'johnDoe', disabled: true),
-                    'progress': ControlState(value: 50.0),
-                    'rememberMe': ControlState(value: false),
-                    'durationSeconds': ControlState(value: 0.0),
-                  }),
-                ),
-                ReactiveSwitch(formControlName: 'rememberMe'),
-                ReactiveCheckbox(formControlName: 'rememberMe'),
-                ReactiveDropdownField<bool>(
-                  formControlName: 'rememberMe',
-                  hint: Text('Want to stay logged in?'),
-                  decoration: InputDecoration(labelText: 'Remember me'),
-                  items: [
-                    DropdownMenuItem(
+                  SizedBox(height: 24.0),
+                  ReactiveFormConsumer(
+                    builder: (context, form, child) {
+                      return RaisedButton(
+                        child: Text('Sign Up'),
+                        onPressed: form.valid
+                            ? () {
+                                print(form.value);
+                              }
+                            : null,
+                      );
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text('Reset all'),
+                    onPressed: () => form.resetState({
+                      'email': ControlState(value: 'johnDoe', disabled: true),
+                      'progress': ControlState(value: 50.0),
+                      'rememberMe': ControlState(value: false),
+                      'durationSeconds': ControlState(value: 0.0),
+                    }),
+                  ),
+                  ReactiveSwitch(formControlName: 'rememberMe'),
+                  ReactiveCheckbox(formControlName: 'rememberMe'),
+                  ReactiveDropdownField<bool>(
+                    formControlName: 'rememberMe',
+                    hint: Text('Want to stay logged in?'),
+                    decoration: InputDecoration(labelText: 'Remember me'),
+                    items: [
+                      DropdownMenuItem(
+                        value: true,
+                        child: Text('Yes'),
+                      ),
+                      DropdownMenuItem(
+                        value: false,
+                        child: Text('No'),
+                      ),
+                    ],
+                  ),
+                  ListTile(
+                    title: Text('Remember me'),
+                    trailing: ReactiveRadio(
+                      formControlName: 'rememberMe',
                       value: true,
-                      child: Text('Yes'),
                     ),
-                    DropdownMenuItem(
+                  ),
+                  ListTile(
+                    title: Text('Don\'t Remember me'),
+                    trailing: ReactiveRadio(
+                      formControlName: 'rememberMe',
                       value: false,
-                      child: Text('No'),
-                    ),
-                  ],
-                ),
-                ListTile(
-                  title: Text('Remember me'),
-                  trailing: ReactiveRadio(
-                    formControlName: 'rememberMe',
-                    value: true,
-                  ),
-                ),
-                ListTile(
-                  title: Text('Don\'t Remember me'),
-                  trailing: ReactiveRadio(
-                    formControlName: 'rememberMe',
-                    value: false,
-                  ),
-                ),
-                SizedBox(height: 24.0),
-                ReactiveValueListenableBuilder<double>(
-                  formControlName: 'progress',
-                  builder: (context, control, child) {
-                    return Text(
-                        'Progress set to ${control.value?.toStringAsFixed(2)}%');
-                  },
-                ),
-                ReactiveSlider(
-                  formControlName: 'progress',
-                  max: 100,
-                  divisions: 100,
-                  labelBuilder: (double value) =>
-                      '${value.toStringAsFixed(2)}%',
-                ),
-                SizedBox(height: 24.0),
-                ReactiveTextField(
-                  formControlName: 'durationSeconds',
-                  keyboardType: TextInputType.number,
-                ),
-                SizedBox(height: 24.0),
-                ReactiveTextField(
-                  formControlName: 'dateTime',
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Birthday',
-                    suffixIcon: ReactiveDatePicker(
-                      formControlName: 'dateTime',
-                      firstDate: DateTime(1985),
-                      lastDate: DateTime(2030),
-                      builder: (context, picker, child) {
-                        return IconButton(
-                          onPressed: picker.showPicker,
-                          icon: Icon(Icons.date_range),
-                        );
-                      },
                     ),
                   ),
-                ),
-                SizedBox(height: 24.0),
-                ReactiveTextField(
-                  formControlName: 'time',
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Birthday',
-                    suffixIcon: ReactiveTimePicker(
-                      formControlName: 'time',
-                      builder: (context, picker, child) {
-                        return IconButton(
-                          onPressed: picker.showPicker,
-                          icon: Icon(Icons.access_time),
-                        );
-                      },
+                  SizedBox(height: 24.0),
+                  ReactiveValueListenableBuilder<double>(
+                    formControlName: 'progress',
+                    builder: (context, control, child) {
+                      return Text(
+                          'Progress set to ${control.value?.toStringAsFixed(2)}%');
+                    },
+                  ),
+                  ReactiveSlider(
+                    formControlName: 'progress',
+                    max: 100,
+                    divisions: 100,
+                    labelBuilder: (double value) =>
+                        '${value.toStringAsFixed(2)}%',
+                  ),
+                  SizedBox(height: 24.0),
+                  ReactiveTextField(
+                    formControlName: 'durationSeconds',
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 24.0),
+                  ReactiveTextField(
+                    formControlName: 'dateTime',
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Birthday',
+                      suffixIcon: ReactiveDatePicker(
+                        formControlName: 'dateTime',
+                        firstDate: DateTime(1985),
+                        lastDate: DateTime(2030),
+                        builder: (context, picker, child) {
+                          return IconButton(
+                            onPressed: picker.showPicker,
+                            icon: Icon(Icons.date_range),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 24.0),
-              ],
-            ),
+                  SizedBox(height: 24.0),
+                  ReactiveTextField(
+                    formControlName: 'time',
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Birthday',
+                      suffixIcon: ReactiveTimePicker(
+                        formControlName: 'time',
+                        builder: (context, picker, child) {
+                          return IconButton(
+                            onPressed: picker.showPicker,
+                            icon: Icon(Icons.access_time),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24.0),
+                ],
+              );
+            },
           ),
         ),
       ),
