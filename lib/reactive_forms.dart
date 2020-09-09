@@ -29,6 +29,7 @@ export 'src/widgets/reactive_form_array.dart';
 export 'src/widgets/reactive_form_consumer.dart';
 export 'src/widgets/reactive_form_field.dart';
 export 'src/widgets/reactive_radio.dart';
+export 'src/widgets/reactive_radio_list_tile.dart';
 export 'src/widgets/reactive_slider.dart';
 export 'src/widgets/reactive_status_listenable_builder.dart';
 export 'src/widgets/reactive_switch.dart';
