@@ -182,5 +182,16 @@ void main() {
       // Then: the control is pristine
       expect(control.pristine, true);
     });
+
+    test('Set value to a control programmatically does not marks it dirty', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: set a value
+      control.value = 'some value';
+
+      // Then: the control is pristine
+      expect(control.pristine, true);
+    });
   });
 }
