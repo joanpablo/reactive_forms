@@ -208,6 +208,43 @@ void main() {
       expect(array.control('0').enabled, true);
     });
 
+    test('Reset array marks it as pristine', () {
+      // Given: an array
+      final array = FormArray<int>([
+        FormControl<int>(),
+      ]);
+
+      // When: mark it as dirty
+      array.markAsDirty();
+
+      // Expect: is dirty
+      expect(array.dirty, true);
+
+      // When: reset array
+      array.reset();
+
+      //Then: array is pristine
+      expect(array.pristine, true);
+    });
+
+    test('Reset array state marks it as pristine', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+      ]);
+
+      // When: mark it as dirty
+      array.markAsDirty();
+
+      // And: reset array value with state
+      array.resetState([
+        ControlState(value: 2),
+      ]);
+
+      //Then: array is pristine
+      expect(array.pristine, true, reason: 'array is not pristine');
+    });
+
     test('Adding a control to array adds a new value', () {
       // Given: an empty array
       final array = FormArray([]);

@@ -169,7 +169,7 @@ void main() {
       expect(control.disabled, true);
     });
 
-    test('Resets a control marks it as pristine', () {
+    test('Reset a control marks it as pristine', () {
       // Given: a control
       final control = FormControl<String>();
 

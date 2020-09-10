@@ -430,5 +430,64 @@ void main() {
       expect(form.control('name').value, null, reason: 'value is not null');
       expect(form.control('name').touched, false, reason: 'control is touched');
     });
+
+    test('Reset a group marks it as pristine', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      // When: marks it as dirty
+      form.markAsDirty();
+
+      // Expect: is dity
+      expect(form.dirty, true);
+
+      // When: resets the group
+      form.reset();
+
+      // Then: value of the control has the new initial value
+      expect(form.pristine, true);
+    });
+
+    test('Resets a group state marks it as pristine', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl(),
+      });
+
+      // When: marks it as dirty
+      form.markAsDirty();
+
+      // Expect: form is dirty
+      expect(form.dirty, true);
+
+      // When: resets the group
+      form.resetState({});
+
+      // Then: all controls has null value
+      expect(form.dirty, false, reason: 'form is dirty');
+      expect(form.pristine, true, reason: 'form is dirty');
+    });
+
+    test('Resets a group state marks it as pristine', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl(value: 'initial value'),
+      });
+
+      // When: marks it as dirty
+      form.markAsDirty();
+
+      // Expect: form is dirty
+      expect(form.dirty, true);
+
+      // When: resets the group
+      form.resetState({'name': null});
+
+      // Then: all controls has null value
+      expect(form.dirty, false, reason: 'form is pristine');
+      expect(form.pristine, true, reason: 'form is dirty');
+    });
   });
 }

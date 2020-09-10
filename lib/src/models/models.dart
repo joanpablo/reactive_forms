@@ -368,8 +368,8 @@ abstract class AbstractControl<T> {
     bool updateParent,
     bool emitEvent,
   }) {
-    this.markAsPristine();
-    this.markAsUntouched();
+    this.markAsPristine(updateParent: updateParent);
+    this.markAsUntouched(updateParent: updateParent);
 
     this.updateValue(value, updateParent: updateParent, emitEvent: emitEvent);
 
@@ -387,6 +387,7 @@ abstract class AbstractControl<T> {
     _errors.addAll(errors);
 
     _updateControlsErrors();
+    this.markAsDirty(emitEvent: false);
   }
 
   /// Returns true if all children disabled, otherwise returns false.
@@ -822,7 +823,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Disposes the group.
   @override
   void dispose() {
-    _controls.forEach((_, control) {
+    _forEachChild((control) {
       control.parent = null;
       control.dispose();
     });
@@ -925,6 +926,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
           updateParent: false,
         );
       });
+      _updatePristine();
       this.updateValueAndValidity();
     }
   }
@@ -1240,6 +1242,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
         );
       }
 
+      _updatePristine();
       this.updateValueAndValidity();
     }
   }

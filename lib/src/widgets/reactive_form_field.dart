@@ -187,8 +187,8 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   void didChange(T value) {
     final prevValue = this.control.value;
     if (value != prevValue) {
-      this.control.markAsDirty();
-      this.control.value = value;
+      this.control.markAsDirty(emitEvent: false);
+      this.control.updateValue(value);
     }
 
     if (this.touched) {
