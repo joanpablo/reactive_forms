@@ -202,6 +202,9 @@ abstract class AbstractControl<T> {
 
   /// Marks the control as touched.
   ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
   /// When [emitEvent] is true or not supplied (the default), an
   /// event is emitted.
   void markAsTouched({bool updateParent, bool emitEvent}) {
@@ -221,12 +224,23 @@ abstract class AbstractControl<T> {
     }
   }
 
+  /// Marks the control and all its descendant controls as touched.
+  ///
+  /// When [updateParent] is false, mark only this control and descendants.
+  /// When true or not supplied, marks also all direct ancestors.
+  /// Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
   void markAllAsTouched({bool updateParent, bool emitEvent}) {
     this.markAsTouched(updateParent: updateParent);
     _forEachChild((control) => control.markAllAsTouched(updateParent: false));
   }
 
   /// Marks the control as untouched.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
   ///
   /// When [emitEvent] is true or not supplied (the default), a notification
   /// event is emitted.
@@ -252,9 +266,11 @@ abstract class AbstractControl<T> {
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
   ///
-  /// When [updateParent] is false, mark only this control.
-  /// When true or not supplied, marks all direct ancestors.
-  /// Default is true.
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
   void markAsEnabled({bool updateParent, bool emitEvent}) {
     emitEvent ??= true;
     updateParent ??= true;
@@ -274,9 +290,8 @@ abstract class AbstractControl<T> {
   ///
   /// If the control has children, all children are also disabled.
   ///
-  /// When [updateParent] is false, mark only this control.
-  /// When true or not supplied, marks all direct ancestors.
-  /// Default is true.
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
   void markAsDisabled({bool updateParent, bool emitEvent}) {
     updateParent ??= true;
     emitEvent ??= true;
@@ -795,9 +810,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
-  /// Enables the control. This means the control is included in validation
-  /// checks and the aggregate value of its parent. Its status recalculates
-  /// based on its value and its validators.
+  /// Enables the control.
+  ///
+  /// This means the control is included in validation checks and the aggregate
+  /// value of its parent. Its status recalculates based on its value and its
+  /// validators.
   ///
   /// When [updateParent] is true, mark only this control.
   /// When false or not supplied, marks all direct ancestors.
