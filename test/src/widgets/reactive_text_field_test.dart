@@ -174,7 +174,7 @@ void main() {
       expect(textField.decoration.errorText, null);
 
       // When: touch the control
-      form.control('name').touch();
+      form.control('name').markAsTouched();
       await tester.pump();
 
       // Then: text field is showing errors
@@ -223,7 +223,7 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the text field is disabled
@@ -234,7 +234,7 @@ void main() {
     );
 
     testWidgets(
-      'Enable a control enable Checkbox',
+      'Enable a control enable text field',
       (WidgetTester tester) async {
         // Given: An form with disabled control
         final form = FormGroup({
@@ -245,13 +245,65 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the text field is enable
         TextField textField =
             tester.firstWidget(find.byType(TextField)) as TextField;
         expect(textField.enabled, true);
+      },
+    );
+
+    testWidgets(
+      'Change value of a text field marks control as dirty',
+      (WidgetTester tester) async {
+        // Given: a form with
+        final form = FormGroup({
+          'name': FormControl(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // Expect: control isn't dirty
+        expect(form.control('name').dirty, false);
+
+        // When: change text field value
+        await tester.enterText(find.byType(TextField), 'some value');
+
+        // Then: the control is dirty
+        expect(form.control('name').dirty, true,
+            reason: 'control is not marked as dirty');
+      },
+    );
+
+    testWidgets(
+      'Checks dirty state inside a custom validator',
+      (WidgetTester tester) async {
+        // Given: a form with custom validator
+        bool isControlDirty = false;
+
+        final customValidator = (AbstractControl control) {
+          isControlDirty = control.dirty;
+          return null;
+        };
+
+        final form = FormGroup({
+          'name': FormControl(validators: [customValidator]),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // Expect: control isn't dirty
+        expect(isControlDirty, false);
+
+        // When: change text field value
+        await tester.enterText(find.byType(TextField), 'some value');
+
+        // Then: the control is dirty
+        expect(isControlDirty, true, reason: 'control is not marked as dirty');
       },
     );
   });

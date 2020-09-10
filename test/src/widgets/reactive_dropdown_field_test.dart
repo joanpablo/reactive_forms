@@ -255,7 +255,7 @@ void main() {
         ));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the dropdown is disabled
@@ -281,7 +281,7 @@ void main() {
         ));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the dropdown is enable

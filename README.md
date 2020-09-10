@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^4.0.2
+  reactive_forms: ^5.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -209,10 +209,10 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
     final matchingFormControl = form.control(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
-      matchingFormControl.addError({'mustMatch': true});
+      matchingFormControl.setErrors({'mustMatch': true});
 
       // force messages to show up as soon as possible
-      matchingFormControl.touch(); 
+      matchingFormControl.markAsTouched(); 
     } else {
       matchingFormControl.setErrors({});
     }
@@ -287,14 +287,14 @@ Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
   );
 
   if (emailAlreadyUsed) {
-    control.touch();
+    control.markAsTouched();
     return error;
   }
 
   return null;
 }
 ```
-> Note the use of **control.touch()** to force the validation message to show up as soon as possible.
+> Note the use of **control.markAsTouched()** to force the validation message to show up as soon as possible.
 
 The previous implementation was a simple function that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the *value* of the *control* is contained in the *server* array of emails.
 
@@ -644,15 +644,30 @@ final form = FormGroup({
 ```
 
 When you set a *value* to a **FormControl** from code and want to show up validations messages 
-you must call *FormControl.touch()* method:
+you must call *FormControl.markAsTouched()* method:
 
 ```dart
 set name(String newName) {
   final formControl = this.form.control('name');
   formControl.value = newName;
-  formControl.touch();// if newName is invalid then validation messages will show up in UI
+  formControl.markAsTouched();// if newName is invalid then validation messages will show up in UI
 }
 ```
+
+>To mark all children controls of a **FormGroup** and **FormArray** you must call **markAllAsTouched()**.
+>```dart
+> final form = FormGroup({
+>   'name': FormControl(
+>     value: 'John Doe',
+>     validators: [Validators.required],
+>     touched: true,
+>   ),
+> });
+> 
+> // marks all children as touched
+> form.markAllAsTouched();
+>```
+>
 
 ## Enable/Disable Submit button
 
@@ -1048,12 +1063,12 @@ control.value = 'Hello Reactive Forms!';
 ## Breaking changes in 3.x
 
 Set a value directly to a **FormControl** from code do not marks the control as **touched**,
-you must explicitly call **FormControl.touch()** to show up validation messages in UI. Example:
+you must explicitly call **FormControl.markAsTouched()** to show up validation messages in UI. Example:
 
 ```dart
 set name(String newName) {
   final formControl = this.form.control('name');
   formControl.value = newName;
-  formControl.touch();// if newName is invalid then validation messages will show up in UI
+  formControl.markAsTouched();// if newName is invalid then validation messages will show up in UI
 }
 ```

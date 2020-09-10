@@ -148,7 +148,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the checkbox is disabled
@@ -170,7 +170,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the checkbox is enable

@@ -141,7 +141,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the checkbox is disabled
@@ -162,7 +162,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the checkbox is enable

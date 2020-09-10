@@ -177,7 +177,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   void touch() {
-    this.control.touch();
+    this.control.markAsTouched();
   }
 
   /// Updates this field's state to the new value. Useful for responding to
@@ -185,7 +185,12 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   ///
   /// Updates the value of the [FormControl] bound to this widget.
   void didChange(T value) {
-    this.control.value = value;
+    final prevValue = this.control.value;
+    if (value != prevValue) {
+      this.control.markAsDirty(emitEvent: false);
+      this.control.updateValue(value);
+    }
+
     if (this.touched) {
       setState(() {});
     }

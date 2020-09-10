@@ -164,7 +164,7 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the switch is disabled
@@ -190,7 +190,7 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the switch is disabled

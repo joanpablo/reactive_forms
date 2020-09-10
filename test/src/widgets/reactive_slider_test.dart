@@ -79,7 +79,7 @@ void main() {
         await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
 
         // When: disable form
-        form.disable();
+        form.markAsDisabled();
         await tester.pump();
 
         // Then: the slider is disabled
@@ -100,7 +100,7 @@ void main() {
         await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
 
         // When: enable form
-        form.enable();
+        form.markAsEnabled();
         await tester.pump();
 
         // Then: the slider is enabled
