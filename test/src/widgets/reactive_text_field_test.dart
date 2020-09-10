@@ -277,5 +277,34 @@ void main() {
             reason: 'control is not marked as dirty');
       },
     );
+
+    testWidgets(
+      'Checks dirty state within a custom validator',
+      (WidgetTester tester) async {
+        // Given: a form with custom validator
+        bool isControlDirty = false;
+
+        final customValidator = (AbstractControl control) {
+          isControlDirty = control.dirty;
+          return null;
+        };
+
+        final form = FormGroup({
+          'name': FormControl(validators: [customValidator]),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // Expect: control isn't dirty
+        expect(isControlDirty, false);
+
+        // When: change text field value
+        await tester.enterText(find.byType(TextField), 'some value');
+
+        // Then: the control is dirty
+        expect(isControlDirty, true, reason: 'control is not marked as dirty');
+      },
+    );
   });
 }
