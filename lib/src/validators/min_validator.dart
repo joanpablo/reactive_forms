@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's value to be greater than or equal
@@ -16,8 +20,8 @@ class MinValidator<Comparable> extends Validator {
         ? null
         : {
             'min': {
-              'min': min.toString(),
-              'actual': control.value.toString(),
+              'min': min,
+              'actual': control.value,
             },
           };
   }

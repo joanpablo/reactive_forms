@@ -276,23 +276,168 @@ void main() {
   });
 
   group('Required True validator tests', () {
-    test('', () {
-      expect(true, false);
+    test('FormControl is invalid if value is false', () {
+      // Given: an invalid control
+      final control = FormControl<bool>(
+        value: false,
+        validators: [Validators.requiredTrue],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.equals: {
+          'required': true,
+          'actual': false,
+        }
+      });
+    });
+
+    test('FormControl is valid if value is true', () {
+      // Given: a valid control
+      final control = FormControl<bool>(
+        value: true,
+        validators: [Validators.requiredTrue],
+      );
+
+      // Expect: control is valid
+      expect(control.valid, true);
+    });
+
+    test('FormControl is invalid if value is null', () {
+      // Given: a control with null value
+      final control = FormControl<bool>(
+        validators: [Validators.requiredTrue],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.equals: {
+          'required': true,
+          'actual': null,
+        }
+      });
+    });
+
+    test('FormControl is invalid if value change to false', () {
+      // Given: a valid control
+      final control = FormControl<bool>(
+        value: true,
+        validators: [Validators.requiredTrue],
+      );
+
+      // When: change the value to false
+      control.value = false;
+
+      // Then: control is invalid
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.equals: {
+          'required': true,
+          'actual': false,
+        }
+      });
+    });
+
+    test('FormControl is valid if value change to true', () {
+      // Given: an invalid control
+      final control = FormControl<bool>(
+        value: false,
+        validators: [Validators.requiredTrue],
+      );
+
+      // When: change the value to true
+      control.value = true;
+
+      // Then: control is valid
+      expect(control.valid, true);
     });
   });
   group('Equals validator tests', () {
-    test('', () {
-      expect(true, false);
+    test('FormControl is valid if value equals to validator value', () {
+      // Given: an invalid control
+      final control = FormControl<double>(
+        value: 0.0,
+        validators: [Validators.equals(20.0)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false, reason: 'init state of control is valid');
+
+      // When: change the value to true
+      control.value = 20.0;
+
+      // Then: control is valid
+      expect(control.valid, true, reason: 'last state of control is invalid');
     });
   });
   group('Max validator tests', () {
-    test('', () {
-      expect(true, false);
+    test('FormControl with lower value is valid', () {
+      // Given: a valid control
+      final control = FormControl<int>(
+        value: 10,
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is valid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with equals value is valid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 20,
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with a grater than value is invalid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 30,
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
     });
   });
   group('Min validator tests', () {
-    test('', () {
-      expect(true, false);
+    test('FormControl with greater than value is valid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 20,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with equals value is valid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 10,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with lower value is invalid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 5,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
     });
   });
 }

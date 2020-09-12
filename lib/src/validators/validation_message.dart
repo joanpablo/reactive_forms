@@ -36,4 +36,16 @@ class ValidationMessage {
 
   /// Key text for credit card numbers validation message.
   static const String creditCard = 'creditCard';
+
+  /// Key text for max validation message.
+  static const String max = 'max';
+
+  /// Key text for min validation message.
+  static const String min = 'min';
+
+  /// Key text for equals validation message.
+  static const String equals = 'requiredEquals';
+
+  /// Key text for requiredTrue validation message.
+  static const String requiredTrue = 'requiredEquals';
 }

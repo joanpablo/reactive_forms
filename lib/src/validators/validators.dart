@@ -46,35 +46,50 @@ class Validators {
   /// credit card number.
   static ValidatorFunction get creditCard => CreditCardValidator().validate;
 
-  /// Gets a validators that requires the control's value to be equals to
+  /// Gets a validator that requires the control's value to be equals to
   /// argument [value].
-  static ValidatorFunction equals<T>(T value) => EqualsValidator(T).validate;
+  ///
+  /// The argument [value] must not be null.
+  static ValidatorFunction equals<T>(T value) =>
+      EqualsValidator(value).validate;
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
+  ///
+  /// The argument [min] must not be null.
   static ValidatorFunction min(Comparable min) => MinValidator(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
+  ///
+  /// The argument [max] must not be null.
   static ValidatorFunction max(Comparable max) => MaxValidator(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
+  ///
+  /// The argument [minLength] argument must not be null.
   static ValidatorFunction minLength(int minLength) =>
       MinLengthValidator(minLength).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// less than or equal to the provided [maxLength].
+  ///
+  /// The argument [maxLength] must not be null.
   static ValidatorFunction maxLength(int maxLength) =>
       MaxLengthValidator(maxLength).validate;
 
   /// Gets a validator that requires the control's value to match a
   /// regex [pattern].
+  ///
+  /// The argument [pattern] must not be null.
   static ValidatorFunction pattern(Pattern pattern) =>
       PatternValidator(pattern).validate;
 
   /// Gets a validator that is for use with a [FormGroup] and checks that
   /// the controls [controlName] and [matchingControlName] have the same values.
+  ///
+  /// The arguments [controlName] and [matchingControlName] must not be null.
   static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;

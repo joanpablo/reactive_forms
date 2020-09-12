@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// validator that requires the control's value to be less than or equal to a
@@ -16,8 +20,8 @@ class MaxValidator<Comparable> extends Validator {
         ? null
         : {
             'max': {
-              'max': max.toString(),
-              'actual': control.value.toString(),
+              'max': max,
+              'actual': control.value,
             },
           };
   }
