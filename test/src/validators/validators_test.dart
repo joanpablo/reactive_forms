@@ -274,4 +274,25 @@ void main() {
       });
     });
   });
+
+  group('Required True validator tests', () {
+    test('', () {
+      expect(true, false);
+    });
+  });
+  group('Equals validator tests', () {
+    test('', () {
+      expect(true, false);
+    });
+  });
+  group('Max validator tests', () {
+    test('', () {
+      expect(true, false);
+    });
+  });
+  group('Min validator tests', () {
+    test('', () {
+      expect(true, false);
+    });
+  });
 }

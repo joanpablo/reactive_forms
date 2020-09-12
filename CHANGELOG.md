@@ -9,8 +9,17 @@ marks children as touched anymore.
  
 ## Features
 
-- Add new control status *pristine* and *dirty*.
-- Add *ReactiveRadioListTile* widget.
+- Add new control status **pristine** and **dirty**.
+
+## Validators
+- Add validators:
+    - **Validators.requiredTrue**
+    - **Validators.equals**
+    - **Validators.min**
+    - **Validators.max**
+
+## Fixes
+- **ReactiveRadioListTile** widget is now available.
 
 # 4.0.2
 
