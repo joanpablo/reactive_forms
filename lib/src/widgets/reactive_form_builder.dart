@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
 
+typedef ReactiveFormBuilderCreator = FormGroup Function(BuildContext context);
+
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
 ///
 /// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
 class ReactiveFormBuilder extends StatefulWidget {
-  final FormGroup form;
   final ReactiveFormConsumerBuilder builder;
+  final ReactiveFormBuilderCreator form;
   final Widget child;
   final bool enabled;
 
@@ -50,8 +52,8 @@ class ReactiveFormBuilder extends StatefulWidget {
     this.child,
     this.onWillPop,
     this.enabled = true,
-    @required this.form,
     @required this.builder,
+    @required this.form,
   })  : assert(form != null),
         assert(builder != null),
         super(key: key);
@@ -64,20 +66,14 @@ class _ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
   FormGroup _form;
 
   @override
-  void initState() {
-    _form = widget.form;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FormControlInheritedStreamer(
-      control: _form,
-      stream: _form.statusChanged,
-      child: WillPopScope(
-        onWillPop: widget.onWillPop,
-        child: widget.builder(context, _form, widget.child),
-      ),
+    if (_form == null) {
+      _form = widget.form(context);
+    }
+
+    return ReactiveForm(
+      formGroup: _form,
+      child: widget.builder(context, _form, widget.child),
     );
   }
 }

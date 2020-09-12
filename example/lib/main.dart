@@ -58,7 +58,7 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: ReactiveFormBuilder(
-            form: this.form,
+            form: (context) => this.form,
             builder: (context, form, child) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,

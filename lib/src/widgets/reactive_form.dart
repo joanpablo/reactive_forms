@@ -34,8 +34,6 @@ class ReactiveForm extends StatefulWidget {
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
-  @Deprecated('Use ReactiveFormBuilder instead. '
-      'This widget is deprecated after v4.1.0')
   const ReactiveForm({
     Key key,
     @required this.formGroup,

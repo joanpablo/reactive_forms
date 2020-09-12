@@ -9,7 +9,7 @@ void main() {
       (WidgetTester tester) async {
         expect(
           () => ReactiveFormBuilder(
-            form: null,
+            form: (context) => null,
             builder: (context, form, child) => Container(),
           ),
           throwsAssertionError,
@@ -22,7 +22,7 @@ void main() {
       (WidgetTester tester) async {
         expect(
           () => ReactiveFormBuilder(
-            form: fb.group({}),
+            form: (context) => fb.group({}),
             builder: null,
           ),
           throwsAssertionError,
