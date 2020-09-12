@@ -5,14 +5,16 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
 import 'package:reactive_forms/src/validators/credit_card_validator.dart';
-
-import './email_validator.dart';
-import './max_length_validator.dart';
-import './min_length_validator.dart';
-import './must_match_validator.dart';
-import './number_validator.dart';
-import './pattern_validator.dart';
-import './required_validator.dart';
+import 'package:reactive_forms/src/validators/email_validator.dart';
+import 'package:reactive_forms/src/validators/equals_validator.dart';
+import 'package:reactive_forms/src/validators/max_length_validator.dart';
+import 'package:reactive_forms/src/validators/max_validator.dart';
+import 'package:reactive_forms/src/validators/min_length_validator.dart';
+import 'package:reactive_forms/src/validators/min_validator.dart';
+import 'package:reactive_forms/src/validators/must_match_validator.dart';
+import 'package:reactive_forms/src/validators/number_validator.dart';
+import 'package:reactive_forms/src/validators/pattern_validator.dart';
+import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
@@ -29,6 +31,10 @@ class Validators {
   /// Gets a validator that requires the control have a non-empty value.
   static ValidatorFunction get required => RequiredValidator().validate;
 
+  /// Gets a validator that requires the control's value be true.
+  /// This validator is commonly used for required checkboxes.
+  static ValidatorFunction get requiredTrue => EqualsValidator(true).validate;
+
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
   static ValidatorFunction get email => EmailValidator().validate;
@@ -40,23 +46,50 @@ class Validators {
   /// credit card number.
   static ValidatorFunction get creditCard => CreditCardValidator().validate;
 
+  /// Gets a validator that requires the control's value to be equals to
+  /// argument [value].
+  ///
+  /// The argument [value] must not be null.
+  static ValidatorFunction equals<T>(T value) =>
+      EqualsValidator(value).validate;
+
+  /// Gets a validator that requires the control's value to be greater than
+  /// or equal to [min] value.
+  ///
+  /// The argument [min] must not be null.
+  static ValidatorFunction min(Comparable min) => MinValidator(min).validate;
+
+  /// Gets a validator that requires the control's value to be less than
+  /// or equal to [max] value.
+  ///
+  /// The argument [max] must not be null.
+  static ValidatorFunction max(Comparable max) => MaxValidator(max).validate;
+
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
+  ///
+  /// The argument [minLength] argument must not be null.
   static ValidatorFunction minLength(int minLength) =>
       MinLengthValidator(minLength).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// less than or equal to the provided [maxLength].
+  ///
+  /// The argument [maxLength] must not be null.
   static ValidatorFunction maxLength(int maxLength) =>
       MaxLengthValidator(maxLength).validate;
 
   /// Gets a validator that requires the control's value to match a
   /// regex [pattern].
+  ///
+  /// The argument [pattern] must not be null.
   static ValidatorFunction pattern(Pattern pattern) =>
       PatternValidator(pattern).validate;
 
   /// Gets a validator that is for use with a [FormGroup] and checks that
   /// the controls [controlName] and [matchingControlName] have the same values.
+  ///
+  /// The arguments [controlName] and [matchingControlName] must not be null.
   static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;

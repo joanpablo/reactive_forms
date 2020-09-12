@@ -8,7 +8,9 @@ class MustMatchValidator extends Validator {
   final String controlName;
   final String matchingControlName;
 
-  MustMatchValidator(this.controlName, this.matchingControlName);
+  MustMatchValidator(this.controlName, this.matchingControlName)
+      : assert(controlName != null),
+        assert(matchingControlName != null);
 
   Map<String, dynamic> validate(AbstractControl control) {
     final error = {ValidationMessage.mustMatch: true};

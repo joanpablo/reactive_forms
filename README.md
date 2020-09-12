@@ -95,13 +95,17 @@ final form = FormGroup({
 There are common predefined validators, but you can implement custom validators too.  
 ### Predefined validators
 - Validators.required
+- Validators.requiredTrue
 - Validators.email
 - Validators.number
+- Validators.min
+- Validators.max
 - Validators.minLength
 - Validators.maxLength
 - Validators.pattern
 - Validators.creditCard
 - Validators.mustMatch
+- Validators.equals
 
 ### Custom Validators
 Lets implement a custom validator that validates empty white spaces value:

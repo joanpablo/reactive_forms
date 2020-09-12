@@ -11,7 +11,7 @@ class MaxLengthValidator extends Validator {
 
   /// Constructs a [MaxLengthValidator].
   ///
-  /// The [maxLength] must not be null.
+  /// The argument [maxLength] must not be null.
   MaxLengthValidator(this.maxLength) : assert(maxLength != null);
 
   @override
