@@ -11,7 +11,8 @@ marks children as touched anymore.
 
 - Add new control status **pristine** and **dirty**.
 -**FormGroup.control(String name)** and **FormArray.control(String name)** now let specify the 
-*name* argument as a path like *control.child.child.etc* for nested groups and nested arrays.
+*name* argument as a dot-delimited string that represents the path to the nested control as 
+*nested1.nested2.nested.3.etc*.
 
 ## Validators
 - Add validators:
