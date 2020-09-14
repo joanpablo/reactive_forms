@@ -108,35 +108,29 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.equals
 
 ### Custom Validators
-Lets implement a custom validator that validates empty white spaces value:
+A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
+
+Lets implement a custom validator that validates a control's value must be *true*:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(validators: [
-    Validators.required, 
-    _emptyWhiteSpaces, // custom validator
-  ]),
+  'acceptLicense': FormControl<bool>(
+    value: false, 
+    validators: [_requiredTrue], // custom validator
+  ),
 });
 ```
 
 ```dart
-/// Validates if control has empty-white-spaces value
-Map<String, dynamic> _emptyWhiteSpaces(AbstractControl control) {
-  final error = {'required': true};
-
-  if (control.value == null) {
-    return error;
-  } else if (control.value is String) {
-    return control.value.trim().isEmpty ? error : null;
-  }
-
-  return null;
+/// Validates that control's value must be `true`
+Map<String, dynamic> _requiredTrue(AbstractControl control) {
+  return control.value is bool && control.value == true 
+  ? null 
+  : {'required': true};
 }
-```
+``` 
 
-A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
-
-> You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demonstration purpose.
+> You can see the current implementation of predefined validators in the source code to see more examples.
 
 ### Pattern Validator
 
@@ -548,6 +542,24 @@ final form = FormGroup({
   'email': FormControl<String>(value: '', validators: [Validators.required, Validators.email]),
   'password': FormControl(validators: [Validators.required]),
 });
+```
+
+## Nested Controls
+
+To retrieves nested controls you can specify the name of the control as a dot-delimited string that define the path to the control:
+
+```dart
+final form = FormGroup({
+  'address': FormGroup({
+    'zipCode': FormControl<int>(value: 1000),
+    'city': FormControl<String>(value: 'Sofia'),
+  }),
+});
+
+// get nested control value
+final city = form.control('address.city');
+
+print(city.value); // outputs: Sofia
 ```
 
 ## Reactive Form Widgets

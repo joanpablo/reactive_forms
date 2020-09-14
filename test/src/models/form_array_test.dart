@@ -462,6 +462,24 @@ void main() {
     expect(array.control('1').value, 2);
     expect(array.control('2').value, 3);
   });
+
+  test('Get control with nested name', () {
+    // Given: a nested array
+    final form = FormGroup({
+      'numbers': FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]),
+    });
+
+    // When: get a nested control
+    final control = form.control('numbers.2');
+
+    // Then: control is not null
+    expect(control is FormControl<int>, true);
+    expect(control.value, 3);
+  });
 }
 
 Map<String, dynamic> _emptyAddressee(AbstractControl control) {

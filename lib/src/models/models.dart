@@ -721,17 +721,52 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this.addAll(controls);
   }
 
-  /// Returns a [AbstractControl] by [name].
+  @override
+  bool contains(String name) {
+    return this._controls.containsKey(name);
+  }
+
+  /// Retrieves a child control given the control's [name] or path.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
-  /// the specified [name].
+  /// the specified [name]/path.
+  ///
+  /// ### Example:
+  ///
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'total': FormControl<int>(value: 20),
+  ///   'person': FormGroup({
+  ///     'name': FormControl<String>(value: 'John'),
+  ///   }),
+  /// });
+  /// ```
+  ///
+  /// Retrieves a control
+  /// ```dart
+  /// form.control('total');
+  /// ```
+  ///
+  /// Retrieves a nested control
+  /// ```dart
+  /// form.control('person.name');
+  /// ```
   @override
   AbstractControl control(String name) {
-    if (!this._controls.containsKey(name)) {
-      throw FormControlNotFoundException(controlName: name);
+    final namePath = name.split('.');
+    if (namePath.length > 1) {
+      final control = this.findControl(namePath);
+      if (control != null) {
+        return control;
+      }
+    } else if (this.contains(name)) {
+      return _controls[name];
     }
 
-    return this._controls[name];
+    throw FormControlNotFoundException(controlName: name);
   }
 
   /// Gets the collection of child controls.
@@ -1101,10 +1136,20 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.removeAt(index);
   }
 
-  /// Returns a control by name where [name].
+  @override
+  bool contains(String name) {
+    int index = int.tryParse(name);
+    if (index != null && index < _controls.length) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Retrieves a child control given the control's [name] or path.
   ///
-  /// The [name] is the String representation of the index position
-  /// of the control in array.
+  /// The [name] is a dot-delimited string that represents the index position
+  /// of the control in array or the path to the nested control.
   ///
   /// Throws [FormArrayInvalidIndexException] if [name] is not e valid [int]
   /// number.
@@ -1127,16 +1172,38 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// ```shell
   /// >hello
   /// ```
+  ///
+  /// Retrieves a nested control
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'address': FormArray([
+  ///     FormGroup({
+  ///       'zipCode': FormControl<int>(value: 1000),
+  ///       'city': FormControl<String>(value: 'Sofia'),
+  ///     })
+  ///   ]),
+  /// });
+  ///
+  /// form.control('address.0.city');
+  /// ```
   @override
   AbstractControl<T> control(String name) {
-    int index = int.tryParse(name);
-    if (index == null) {
-      throw FormArrayInvalidIndexException(name);
-    } else if (index >= _controls.length) {
-      throw FormControlNotFoundException(controlName: name);
+    final namePath = name.split('.');
+    if (namePath.length > 1) {
+      final control = this.findControl(namePath);
+      if (control != null) {
+        return control;
+      }
+    } else {
+      int index = int.tryParse(name);
+      if (index == null) {
+        throw FormArrayInvalidIndexException(name);
+      } else if (index < _controls.length) {
+        return _controls[index];
+      }
     }
 
-    return _controls[index];
+    throw FormControlNotFoundException(controlName: name);
   }
 
   /// Disposes the array.
