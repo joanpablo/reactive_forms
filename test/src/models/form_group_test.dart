@@ -489,5 +489,22 @@ void main() {
       expect(form.dirty, false, reason: 'form is pristine');
       expect(form.pristine, true, reason: 'form is dirty');
     });
+
+    test('Get control with deep name', () {
+      // Given: a nested group
+      final form = FormGroup({
+        'address': FormGroup({
+          'zipCode': FormControl<int>(value: 10400),
+          'city': FormControl<String>(value: 'Sofia'),
+        }),
+      });
+
+      // When: gets nested control value
+      final city = form.control('address.city');
+
+      // Then: control is not null
+      expect(city is FormControl<String>, true, reason: 'is not a control');
+      expect(city.value, 'Sofia', reason: 'control without correct value');
+    });
   });
 }
