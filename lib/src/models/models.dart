@@ -726,32 +726,47 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return this._controls.containsKey(name);
   }
 
-  /// Returns a [AbstractControl] by [name].
+  /// Retrieves a child control given the control's [name] or path.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
-  /// the specified [name].
+  /// the specified [name]/path.
+  ///
+  /// ### Example:
+  ///
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'total': FormControl<int>(value: 20),
+  ///   'person': FormGroup({
+  ///     'name': FormControl<String>(value: 'John'),
+  ///   }),
+  /// });
+  /// ```
+  ///
+  /// Retrieves a control
+  /// ```dart
+  /// form.control('total');
+  /// ```
+  ///
+  /// Retrieves a nested control
+  /// ```dart
+  /// form.control('person.name');
+  /// ```
   @override
   AbstractControl control(String name) {
-    final names = name.split('.');
-
-    final firstName = names.first;
-    if (!this.contains(firstName)) {
-      throw FormControlNotFoundException(controlName: name);
+    final namePath = name.split('.');
+    if (namePath.length > 1) {
+      final control = this.findControl(namePath);
+      if (control != null) {
+        return control;
+      }
+    } else if (this.contains(name)) {
+      return _controls[name];
     }
 
-    AbstractControl control = this._controls[firstName];
-
-    names.skip(1).forEach((nestedName) {
-      if (control is FormControlCollection) {
-        final collection = control as FormControlCollection;
-        if (!collection.contains(nestedName)) {
-          throw FormControlNotFoundException(controlName: name);
-        }
-        control = collection.control(nestedName);
-      }
-    });
-
-    return control;
+    throw FormControlNotFoundException(controlName: name);
   }
 
   /// Gets the collection of child controls.
@@ -1131,10 +1146,10 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     return false;
   }
 
-  /// Returns a control by name where [name].
+  /// Retrieves a child control given the control's [name] or path.
   ///
-  /// The [name] is the String representation of the index position
-  /// of the control in array.
+  /// The [name] is a dot-delimited string that represents the index position
+  /// of the control in array or the path to the nested control.
   ///
   /// Throws [FormArrayInvalidIndexException] if [name] is not e valid [int]
   /// number.
@@ -1157,16 +1172,38 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// ```shell
   /// >hello
   /// ```
+  ///
+  /// Retrieves a nested control
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'address': FormArray([
+  ///     FormGroup({
+  ///       'zipCode': FormControl<int>(value: 1000),
+  ///       'city': FormControl<String>(value: 'Sofia'),
+  ///     })
+  ///   ]),
+  /// });
+  ///
+  /// form.control('address.0.city');
+  /// ```
   @override
   AbstractControl<T> control(String name) {
-    int index = int.tryParse(name);
-    if (index == null) {
-      throw FormArrayInvalidIndexException(name);
-    } else if (index >= _controls.length) {
-      throw FormControlNotFoundException(controlName: name);
+    final namePath = name.split('.');
+    if (namePath.length > 1) {
+      final control = this.findControl(namePath);
+      if (control != null) {
+        return control;
+      }
+    } else {
+      int index = int.tryParse(name);
+      if (index == null) {
+        throw FormArrayInvalidIndexException(name);
+      } else if (index < _controls.length) {
+        return _controls[index];
+      }
     }
 
-    return _controls[index];
+    throw FormControlNotFoundException(controlName: name);
   }
 
   /// Disposes the array.

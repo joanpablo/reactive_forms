@@ -10,10 +10,13 @@ abstract class FormControlCollection {
   final _collectionChanges =
       StreamController<Iterable<AbstractControl>>.broadcast();
 
-  /// Returns a [AbstractControl] by its name.
+  /// Retrieves a child control given the control's [name] or path.
+  ///
+  /// The [name] is a dot-delimited string that define the path to the
+  /// control.
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
-  /// the specified [name].
+  /// the specified [name]/path.
   AbstractControl control(String name);
 
   /// Checks if collection contains a control by a given [name].
@@ -36,5 +39,23 @@ abstract class FormControlCollection {
   @protected
   void emitsCollectionChanged(Iterable<AbstractControl> controls) {
     _collectionChanges.add(List.unmodifiable(controls));
+  }
+
+  /// Walks the [path] to find the matching control.
+  ///
+  /// Returns null if no match is found.
+  AbstractControl findControl(List<String> path) {
+    if (path == null || path.isEmpty) {
+      return null;
+    }
+
+    return path.fold(this as AbstractControl, (control, name) {
+      if (control is FormControlCollection) {
+        final collection = control as FormControlCollection;
+        return collection.contains(name) ? collection.control(name) : null;
+      } else {
+        return null;
+      }
+    });
   }
 }
