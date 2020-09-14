@@ -16,6 +16,11 @@ abstract class FormControlCollection {
   /// the specified [name].
   AbstractControl control(String name);
 
+  /// Checks if collection contains a control by a given [name].
+  ///
+  /// Returns true if collection contains the control, otherwise returns false.
+  bool contains(String name);
+
   /// Emits when a control is added or removed from collection.
   Stream<Iterable<AbstractControl>> get collectionChanges =>
       _collectionChanges.stream;

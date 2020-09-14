@@ -721,17 +721,37 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this.addAll(controls);
   }
 
+  @override
+  bool contains(String name) {
+    return this._controls.containsKey(name);
+  }
+
   /// Returns a [AbstractControl] by [name].
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name].
   @override
   AbstractControl control(String name) {
-    if (!this._controls.containsKey(name)) {
+    final names = name.split('.');
+
+    final firstName = names.first;
+    if (!this.contains(firstName)) {
       throw FormControlNotFoundException(controlName: name);
     }
 
-    return this._controls[name];
+    AbstractControl control = this._controls[firstName];
+
+    names.skip(1).forEach((nestedName) {
+      if (control is FormControlCollection) {
+        final collection = control as FormControlCollection;
+        if (!collection.contains(nestedName)) {
+          throw FormControlNotFoundException(controlName: name);
+        }
+        control = collection.control(nestedName);
+      }
+    });
+
+    return control;
   }
 
   /// Gets the collection of child controls.
@@ -1099,6 +1119,16 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
       throw FormControlNotFoundException();
     }
     this.removeAt(index);
+  }
+
+  @override
+  bool contains(String name) {
+    int index = int.tryParse(name);
+    if (index != null && index < _controls.length) {
+      return true;
+    }
+
+    return false;
   }
 
   /// Returns a control by name where [name].
