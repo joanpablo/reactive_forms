@@ -440,9 +440,7 @@ final form = FormGroup({
 If we output the *value* of the previous form group we will get something like this:
 
 ```dart
-void printFormValue(FormGroup form) {
-  print(form.value);
-}
+print(form.value);
 ```
 
 ```json
@@ -461,7 +459,7 @@ array.add(
   FormControl<String>(value: 'caroline@email.com'),
 );
 
-printFormValue(form);
+print(form.value);
 ``` 
 
 ```json
@@ -470,13 +468,13 @@ printFormValue(form);
 }
 ```
 
-Another way of add controls to an array:
+Another way of add controls is to assign values directly to the array:
 
 ```dart
 // Given: an empty array of strings
 final array = FormArray<String>([]);
 
-// When: set a value to array
+// When: set value to array
 array.value = ["john@email.com", "susan@email.com", "caroline@email.com"];
 
 // Then: the array is no longer empty
@@ -522,11 +520,42 @@ Map<String, dynamic> emptyAddressee(AbstractControl control) {
 }
 ```
 
-## FormBuilder
+## Arrays of Groups
 
-The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup (for now). It reduces the amount of boilerplate needed to build complex forms.
+You can also create arrays of groups:
 
 ```dart
+// an array of groups
+final addressArray = FormArray([
+  FormGroup({
+    'city': FormControl(value: 'Sofia'),
+    'zipCode': FormControl(value: 1000),
+  }),
+  FormGroup({
+    'city': FormControl(value: 'Havana'),
+    'zipCode': FormControl(value: 10400),
+  }),
+]);
+```
+
+Another example using **FormBuilder**:
+
+```dart
+// an array of groups using FormBuilder
+final addressArray = fb.array([
+  {'city': 'Sofia', 'zipCode': 1000},
+  {'city': 'Havana', 'zipCode': 10400},
+]);
+```
+
+## FormBuilder
+
+The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup, FormArray and FormControl. It reduces the amount of boilerplate needed to build complex forms.
+
+### Groups
+
+```dart
+// creates a group
 final form = fb.group({
   'name': 'John Doe',
   'email': ['', Validators.required, Validators.email],
@@ -542,6 +571,23 @@ final form = FormGroup({
   'email': FormControl<String>(value: '', validators: [Validators.required, Validators.email]),
   'password': FormControl(validators: [Validators.required]),
 });
+```  
+
+### Arrays
+
+```dart
+// creates an array
+final aliases = fb.array(['john', 'little john']);
+```
+
+### Control state
+
+```dart
+// create a group
+final group = fb.group(
+  // creates a control with default value and disabled state
+  'name': fb.state(value: 'john', disabled: true),
+);
 ```
 
 ## Nested Controls
