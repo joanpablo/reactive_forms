@@ -480,6 +480,18 @@ void main() {
     expect(control is FormControl<int>, true);
     expect(control.value, 3);
   });
+
+  test('Array of groups', () {
+    // Given: an array of groups
+    final addressArray = FormArray([
+      fb.group({'city': 'Sofia'}),
+      fb.group({'city': 'Havana'}),
+    ]);
+
+    // Expect: array is created
+    expect(addressArray.controls.length, 2);
+    expect(addressArray.control('0').value, {'city': 'Sofia'});
+  });
 }
 
 Map<String, dynamic> _emptyAddressee(AbstractControl control) {

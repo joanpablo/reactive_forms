@@ -119,6 +119,71 @@ class FormBuilder {
     return ControlState<T>(value: value, disabled: disabled);
   }
 
+  /// Construct a new [FormControl] instance.
+  ///
+  /// Can optionally provide a [validators] collection for the control.
+  ///
+  /// ### Example:
+  ///
+  /// Creates a control with default value.
+  /// ````dart
+  /// final name = fb.control('John Doe');
+  /// ```
+  ///
+  /// Creates a control with required validator.
+  /// ````dart
+  /// final control = fb.control('', [Validators.required]);
+  /// ```
+  FormControl<T> control<T>(T value,
+      [List<ValidatorFunction> validators = const []]) {
+    return FormControl<T>(value: value, validators: validators);
+  }
+
+  /// Construct a new [FormArray] instance.
+  ///
+  /// The [value] must not be null.
+  ///
+  /// Can optionally provide a [validators] collection for the control.
+  ///
+  /// ### Example:
+  ///
+  /// Constructs an array of strings
+  /// ```dart
+  /// final aliases = fb.array(['john', 'little john']);
+  /// ```
+  /// Constructs an array of groups defined as Maps
+  /// ```dart
+  /// final addressArray = fb.array([
+  ///   {'city': 'Sofia'},
+  ///   {'city': 'Havana'},
+  /// ]);
+  /// ```
+  ///
+  /// Constructs an array of groups
+  /// ```dart
+  /// final addressArray = fb.array([
+  ///   fb.group({'city': 'Sofia'}),
+  ///   fb.group({'city': 'Havana'}),
+  /// ]);
+  /// ```
+  ///
+  FormArray array(Iterable<dynamic> value,
+      [List<ValidatorFunction> validators = const []]) {
+    return FormArray(
+      value?.map((v) {
+        if (v is Map<String, dynamic>) {
+          return this.group(v);
+        }
+        if (v is AbstractControl) {
+          return v;
+        }
+
+        return this.control(v);
+      }),
+      validators: validators,
+    );
+  }
+
   FormControl _control(dynamic value, List<ValidatorFunction> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
