@@ -4,16 +4,17 @@
 - Rename *touch()* and *untouch()* by *markAsTouched()* and *markAsUntouched()*
 - Rename *enable()* and *disable()* by *markAsEnabled()* and *markAsDisabled()*
 - Add **AbstractControl.markAllAsTouched** to mark all controls of a 
-**FromGroup** or a **FormArray** as touched. **AbstractControl.markAsTouched** doesn't 
-marks children as touched anymore.
+**FromGroup** or a **FormArray** as touched. **AbstractControl.markAsTouched** doesn't marks 
+children as touched anymore.
  
 ## Features
-
 - Add new control status **pristine** and **dirty**.
--**FormGroup.control(String name)** and **FormArray.control(String name)** now let specify the 
+- **FormGroup.control(String name)** and **FormArray.control(String name)** now let specify the 
 *name* argument as a dot-delimited string that represents the path to the nested control as 
 *nested1.nested2.nested.3.etc*.
--Add **FormBuilder.array()** and **FormBuilder.control()** for creating *arrays* and *controls*.
+- Add **FormBuilder.array()** and **FormBuilder.control()** for creating *arrays* and *controls*.
+- **ReactiveValueListenableBuilder** brings now the possibility to provide directly the *control* 
+instead of just the *control name*.
 
 ## Validators
 - Add validators:
