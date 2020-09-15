@@ -45,6 +45,16 @@ class FormBuilder {
   ///   'email': [Validators.required, Validators.email],
   /// });
   /// ```
+  ///
+  /// Creates a group with a group's validator.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'email': ['', Validators.required, Validators.email],
+  ///   'emailConfirmation': '',
+  ///  },
+  ///  [Validators.mustMatch('email', 'emailConfirmation')],
+  /// );
+  /// ```
   FormGroup group(Map<String, dynamic> controls,
       [List<ValidatorFunction> validators = const []]) {
     final map = controls.map((key, value) {

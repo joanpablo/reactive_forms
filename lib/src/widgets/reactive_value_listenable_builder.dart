@@ -18,6 +18,9 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   /// The name of the control bound to this widgets.
   final String formControlName;
 
+  /// The control bound to this widgets.
+  final AbstractControl<T> formControl;
+
   /// Optionally child widget.
   final Widget child;
 
@@ -26,28 +29,39 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
 
   /// Create an instance of a [ReactiveValueListenableBuilder].
   ///
-  /// The [formControlName] and [builder] arguments must not be null.
+  /// Must provide a [forControlName] or a [formControl] but not both
+  /// at the same time.
+  ///
+  /// The [builder] arguments must not be null.
+  ///
   /// The [child] is optional but is good practice to use if part of the widget
   /// subtree does not depend on the value of the [FormControl] that is bind
   /// with this widget.
   const ReactiveValueListenableBuilder({
     Key key,
-    @required this.formControlName,
     @required this.builder,
+    this.formControlName,
+    this.formControl,
     this.child,
-  })  : assert(formControlName != null),
+  })  : assert(
+            (formControlName != null && formControl == null) ||
+                (formControlName == null && formControl != null),
+            'Must provide a formControlName or a formControl, but not both at the same time.'),
         assert(builder != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final form =
-        ReactiveForm.of(context, listen: false) as FormControlCollection;
-    final formControl = form.control(this.formControlName);
+    AbstractControl<T> control = this.formControl;
+    if (control == null) {
+      final form =
+          ReactiveForm.of(context, listen: false) as FormControlCollection;
+      control = form.control(this.formControlName);
+    }
+
     return StreamBuilder<T>(
-      stream: formControl.valueChanges,
-      builder: (context, snapshot) =>
-          this.builder(context, formControl as AbstractControl<T>, child),
+      stream: control.valueChanges,
+      builder: (context, snapshot) => this.builder(context, control, child),
     );
   }
 }
