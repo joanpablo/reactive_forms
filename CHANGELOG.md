@@ -13,6 +13,7 @@ marks children as touched anymore.
 -**FormGroup.control(String name)** and **FormArray.control(String name)** now let specify the 
 *name* argument as a dot-delimited string that represents the path to the nested control as 
 *nested1.nested2.nested.3.etc*.
+-Add **FormBuilder.array()** and **FormBuilder.control()** for creating *arrays* and *controls*.
 
 ## Validators
 - Add validators:

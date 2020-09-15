@@ -15,7 +15,8 @@ void main() {
           reason: 'form is not instance of FormGroup');
       expect(form.control('name') != null, true, reason: 'control is null');
       expect(form.control('name') is FormControl<String>, true,
-          reason: 'control is not instance of FormControl<String>');
+          reason:
+              '${form.control('name').runtimeType} is not instance of FormControl<String>');
     });
 
     test('Build a group with int control', () {
@@ -26,7 +27,8 @@ void main() {
 
       // Expect a form group created
       expect(form.control('age') is FormControl<int>, true,
-          reason: 'control is not instance of FormControl<int>');
+          reason:
+              '${form.control('age').runtimeType} is not instance of FormControl<int>');
     });
 
     test('Build a group with bool control', () {
@@ -37,7 +39,8 @@ void main() {
 
       // Expect a form group created
       expect(form.control('checked') is FormControl<bool>, true,
-          reason: 'control is not instance of FormControl<bool>');
+          reason:
+              '${form.control('checked').runtimeType} is not instance of FormControl<bool>');
     });
 
     test('Build a group with double control', () {
@@ -48,7 +51,8 @@ void main() {
 
       // Expect a form group created
       expect(form.control('value') is FormControl<double>, true,
-          reason: 'control is not instance of FormControl<double>');
+          reason:
+              '${form.control('value').runtimeType} is not instance of FormControl<double>');
     });
 
     test('Build a group with dynamic control', () {
@@ -59,7 +63,8 @@ void main() {
 
       // Expect a form group created
       expect(form.control('instance') is FormControl<dynamic>, true,
-          reason: 'control is not instance of FormControl<dynamic>');
+          reason:
+              '${form.control('instance').runtimeType} is not instance of FormControl<dynamic>');
     });
 
     test('Build a group with form control', () {
@@ -251,7 +256,8 @@ void main() {
 
       // Expect a form group created
       expect(form.control('control') is FormControl<double>, true,
-          reason: 'control is not instance of FormControl<double>');
+          reason:
+              '${form.control('control').runtimeType} is not instance of FormControl<double>');
       expect(form.control('control').value, 50.0,
           reason: 'control default value not set');
     });
@@ -265,6 +271,107 @@ void main() {
           reason: 'state is not instance of ControlState<String>');
       expect(state.value, 'name', reason: 'state value not set');
       expect(state.disabled, true, reason: 'state disabled not set');
+    });
+
+    test('Build an array', () {
+      // Given: an array creation
+      final array = fb.array(['john', 'little john']);
+
+      // Expect: the array is created
+      expect(array is FormArray, true,
+          reason: '${array.runtimeType} is not instance of FormArray<String>');
+      expect(array.control('0').value, 'john');
+      expect(array.value, ['john', 'little john']);
+    });
+
+    test('Build a control', () {
+      // Given: an array creation
+      final control = fb.control('john');
+
+      // Expect: the array is created
+      expect(control is FormControl<String>, true,
+          reason:
+              '${control.runtimeType} is not instance of FormControl<String>');
+      expect(control.value, 'john');
+    });
+
+    test('Build a group with control', () {
+      // Given: a group creation
+      final form = fb.group({
+        'name': fb.control('john', [Validators.required]),
+      });
+
+      // Expect: the group is created
+      expect(form.control('name') is FormControl<String>, true);
+      expect(form.value, {'name': 'john'});
+    });
+
+    test('Build a group with array', () {
+      // Given: a group creation
+      final form = fb.group({
+        'aliases': fb.array(['john', 'little john']),
+      });
+
+      // Expect: the group is created
+      expect(form.control('aliases') is FormArray, true);
+      expect(form.value, {
+        'aliases': ['john', 'little john'],
+      });
+    });
+
+    test('Build group of groups', () {
+      // Given: a group creation
+      final form = fb.group({
+        'address': fb.group({
+          'city': 'Sofia',
+        }),
+      });
+
+      // Expect: the group is created
+      expect(form.control('address') is FormGroup, true);
+      expect(form.value, {
+        'address': {'city': 'Sofia'}
+      });
+    });
+
+    test('Array of groups defined as Map', () {
+      // Given: an array of groups
+      final addressArray = fb.array([
+        {'city': 'Sofia'},
+        {'city': 'Havana'},
+      ]);
+
+      // Expect: array is created
+      expect(addressArray.controls.length, 2);
+      expect(addressArray.control('0').value, {'city': 'Sofia'});
+    });
+
+    test('Array of groups defined as Map', () {
+      // Given: an array of groups
+      final addressArray = fb.array([
+        {
+          'city': ['Sofia', Validators.required]
+        },
+        {
+          'city': ['Sofia', Validators.required]
+        },
+      ]);
+
+      // Expect: array is created
+      expect(addressArray.controls.length, 2);
+      expect(addressArray.control('0').value, {'city': 'Sofia'});
+    });
+
+    test('Array of groups', () {
+      // Given: an array of groups
+      final addressArray = fb.array([
+        fb.group({'city': 'Sofia'}),
+        fb.group({'city': 'Havana'}),
+      ]);
+
+      // Expect: array is created
+      expect(addressArray.controls.length, 2);
+      expect(addressArray.control('0').value, {'city': 'Sofia'});
     });
   });
 }
