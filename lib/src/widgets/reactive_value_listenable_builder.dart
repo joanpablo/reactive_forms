@@ -60,7 +60,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
     }
 
     return StreamBuilder<T>(
-      stream: formControl.valueChanges,
+      stream: control.valueChanges,
       builder: (context, snapshot) => this.builder(context, control, child),
     );
   }
