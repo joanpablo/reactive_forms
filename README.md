@@ -543,10 +543,31 @@ Another example using **FormBuilder**:
 ```dart
 // an array of groups using FormBuilder
 final addressArray = fb.array([
+  fb.group({'city': 'Sofia', 'zipCode': 1000}),
+  fb.group({'city': 'Havana', 'zipCode': 10400}),
+]);
+```
+
+or just:
+
+```dart
+// an array of groups using a very simple syntax
+final addressArray = fb.array([
   {'city': 'Sofia', 'zipCode': 1000},
   {'city': 'Havana', 'zipCode': 10400},
 ]);
 ```
+
+You can iterate over groups as follow:
+
+```dart
+final cities = addressArray.controls
+        .map((control) => control as FormGroup)
+        .forEach((form) => form.control('city').value);
+```
+
+> A common mistake is to declare an *array* of groups as *FormArray&lt;FormGroup&gt;*.   
+>An array of *FormGroup* must be declared as ***FormArray()*** or as ***FormArray&lt;Map&lt;String, dynamic&gt;&gt;()***.
 
 ## FormBuilder
 
