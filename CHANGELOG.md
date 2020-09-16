@@ -6,6 +6,9 @@
 - Add **AbstractControl.markAllAsTouched** to mark all controls of a 
 **FromGroup** or a **FormArray** as touched. **AbstractControl.markAsTouched** doesn't marks 
 children as touched anymore.
+- **Validators.compose** now act as and **AND** and returns a *ValidatorFunction* instead of a List of
+*ValidatorFunction*
+
  
 ## Features
 - Add new control status **pristine** and **dirty**.
@@ -15,6 +18,8 @@ children as touched anymore.
 - Add **FormBuilder.array()** and **FormBuilder.control()** for creating *arrays* and *controls*.
 - **ReactiveValueListenableBuilder** brings now the possibility to provide directly the *control* 
 instead of just the *control name*.
+- Add **Validators.composeOR** to combines multiples validators in one and evaluates as an **OR**, 
+if at least one validator evaluates to VALID then the control is valid.
 
 ## Validators
 - Add validators:
@@ -22,6 +27,7 @@ instead of just the *control name*.
     - **Validators.equals**
     - **Validators.min**
     - **Validators.max**
+    - **Validators.composeOR**
 
 ## Fixes
 - **ReactiveRadioListTile** widget is now available.

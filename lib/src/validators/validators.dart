@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
 import 'package:reactive_forms/src/validators/credit_card_validator.dart';
 import 'package:reactive_forms/src/validators/email_validator.dart';
@@ -95,13 +96,21 @@ class Validators {
     return MustMatchValidator(controlName, matchingControlName).validate;
   }
 
-  /// Gets a collection with only one validator that is the composition
-  /// of multiple validators.
+  /// Compose multiple validators into a single validator that returns the union
+  /// of the individual error maps for the provided control of multiple
+  /// validators.
+  static ValidatorFunction compose(List<ValidatorFunction> validators) {
+    return ComposeValidator(validators).validate;
+  }
+
+  /// Compose multiple validators into a single validator that returns the union
+  /// of the individual error maps for the provided control of multiple
+  /// validators.
   ///
   /// If at least one of the [validators] evaluates as 'VALID' then the compose
   /// validator evaluates as 'VALID' and returns null, otherwise returns
   /// the union of all the individual errors returned by each validator.
-  static List<ValidatorFunction> compose(List<ValidatorFunction> validators) {
-    return [ComposeValidator(validators).validate];
+  static ValidatorFunction composeOR(List<ValidatorFunction> validators) {
+    return ComposeOrValidator(validators).validate;
   }
 }

@@ -106,6 +106,8 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.creditCard
 - Validators.mustMatch
 - Validators.equals
+- Validators.compose
+- Validators.composeOR
 
 ### Custom Validators
 A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
@@ -315,7 +317,8 @@ final control = FormControl(
 
 To explain what Composing Validators is, let's see an example:
 
-We want to validate a text field of an authentication form. In this text field the user can write an **email** or a **phone number** and we want to make sure that the information is correctly formatted: that is, if it is an email, it is a valid email and if it is a phone it must have a valid format.
+We want to validate a text field of an authentication form. 
+In this text field the user can write an **email** or a **phone number** and we want to make sure that the information is correctly formatted. We must validate that input is a valid email or a valid phone number.
 
 ```dart
 
@@ -323,27 +326,31 @@ final phonePattern = '<some phone regex pattern>';
 
 final form = FormGroup({
   'user': FormControl<String>(
-    validators: Validators.compose([
-      Validators.email,
-      Validators.pattern(phonePattern),
-    ]),
+    validators: [
+      Validators.composeOR([
+        Validators.email,
+        Validators.pattern(phonePattern),
+      ])
+    ],
   ),
 });
 ```
-> Note that **Validators.compose** receives a collection of validators as argument and returns a collection of validators, this is intentional just to simplify code readability.
+> Note that **Validators.composeOR** receives a collection of validators as argument and returns a validator.
 
-With **Validators.compose** we are saying to **FormControl** that **if at least one validator evaluate as VALID then the control is VALID** it's not necesary that both validators evaluate to valid.
+With **Validators.composeOR** we are saying to **FormControl** that **if at least one validator evaluate as VALID then the control is VALID** it's not necessary that both validators evaluate to valid.
 
-Another example could be to validate multiples Credit Card numbers. In that case you have several regular expression patterns for each of the different kinds of credit cards. So the user can introduce a card number and if the information match with at least one of the cards the System recognice then the information is considered as valid.
+Another example could be to validate multiples Credit Card numbers. In that case you have several regular expression patterns for each type of credit card. So the user can introduce a card number and if the information match with at least one pattern then the information is considered as valid.
 
 ```dart
 final form = FormGroup({
   'cardNumber': FormControl<String>(
-    validators: Validators.compose([
-      Validators.pattern(americanExpressCardPattern),
-      Validators.pattern(masterCardPattern),
-      Validators.pattern(visaCardPattern),
-    ]),
+    validators: [
+      Validators.composeOR([
+        Validators.pattern(americanExpressCardPattern),
+        Validators.pattern(masterCardPattern),
+        Validators.pattern(visaCardPattern),
+      ])
+    ],
   ),
 });
 ```

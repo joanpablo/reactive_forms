@@ -144,10 +144,12 @@ void main() {
         // Given: a control that is email and min length in 20
         final control = FormControl<String>(
           value: 'john@',
-          validators: Validators.compose([
-            Validators.email,
-            Validators.minLength(20),
-          ]),
+          validators: [
+            Validators.compose([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
         );
 
         // Expect: control invalid
@@ -162,10 +164,31 @@ void main() {
         // but with valid email default value
         final control = FormControl<String>(
           value: 'john@email.com',
-          validators: Validators.compose([
-            Validators.email,
-            Validators.minLength(20),
-          ]),
+          validators: [
+            Validators.compose([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
+        );
+
+        // Expect: control invalid
+        expect(control.valid, false);
+      },
+    );
+
+    test(
+      'If at least on validator is valid then control is VALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          value: 'johndoe@email.com',
+          validators: [
+            Validators.composeOR([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
         );
 
         // Expect: control invalid

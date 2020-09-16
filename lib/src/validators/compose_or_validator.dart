@@ -5,10 +5,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// If at least one validator returns 'null' then the compose validator
 /// returns 'null', otherwise returns the union of the individual error
 /// maps returned by each validator.
-class ComposeValidator extends Validator {
+class ComposeOrValidator extends Validator {
   final List<ValidatorFunction> validators;
 
-  ComposeValidator(this.validators);
+  ComposeOrValidator(this.validators);
 
   @override
   Map<String, dynamic> validate(AbstractControl<dynamic> control) {
@@ -18,6 +18,8 @@ class ComposeValidator extends Validator {
       final error = validator(control);
       if (error != null) {
         composedError.addAll(error);
+      } else {
+        return null;
       }
     }
 
