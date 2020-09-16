@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms_example/datetime_value_accessor.dart';
 
 void main() {
   runApp(ReactiveFormsApp());
@@ -46,7 +45,6 @@ class _HomePageState extends State<HomePage> {
     'progress': FormControl<double>(value: 50.0),
     'dateTime': FormControl<DateTime>(value: DateTime.now()),
     'time': FormControl<TimeOfDay>(value: TimeOfDay.now()),
-    'durationSeconds': FormControl<double>(value: 0),
   }, validators: [
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
@@ -144,7 +142,6 @@ class _HomePageState extends State<HomePage> {
                     'email': ControlState(value: 'johnDoe', disabled: true),
                     'progress': ControlState(value: 50.0),
                     'rememberMe': ControlState(value: false),
-                    'durationSeconds': ControlState(value: 0.0),
                   }),
                 ),
                 ReactiveSwitch(formControlName: 'rememberMe'),
@@ -182,8 +179,10 @@ class _HomePageState extends State<HomePage> {
                 ReactiveValueListenableBuilder<double>(
                   formControlName: 'progress',
                   builder: (context, control, child) {
-                    return Text(
-                        'Progress set to ${control.value?.toStringAsFixed(2)}%');
+                    return control.value == null
+                        ? Text('Progress set to NULL')
+                        : Text(
+                            'Progress set to ${control.value.toStringAsFixed(2)}%');
                   },
                 ),
                 ReactiveSlider(
@@ -195,14 +194,13 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 24.0),
                 ReactiveTextField(
-                  formControlName: 'durationSeconds',
+                  formControlName: 'progress',
                   keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 24.0),
                 ReactiveTextField(
                   formControlName: 'dateTime',
                   readOnly: true,
-                  valueAccessor: DateTimeValueAccessor(),
                   decoration: InputDecoration(
                     labelText: 'Birthday',
                     suffixIcon: ReactiveDatePicker(

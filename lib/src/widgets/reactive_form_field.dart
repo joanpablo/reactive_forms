@@ -73,11 +73,13 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   StreamSubscription _touchChangesSubscription;
   ControlValueAccessor _valueAccessor;
 
-  /// The current value of the [FormControl].
-  T get value => this.control.value;
+  /// Gets the value of the [FormControl] given by the [valueAccessor].
+  dynamic get value => this.valueAccessor.modelToViewValue(this.control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => _touched;
+
+  ControlValueAccessor get valueAccessor => _valueAccessor;
 
   /// Sets the value of [touched] and rebuilds the widget.
   set touched(bool value) {
@@ -108,8 +110,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     this.control = _getFormControl();
     this.subscribeControl();
     _valueAccessor = selectValueAccessor();
-    _valueAccessor.registerControl(this.control);
-    _valueAccessor.registerOnChange(this.onControlValueChanged);
+    _valueAccessor.registerControl(
+      this.control,
+      onChange: this.onControlValueChanged,
+    );
 
     super.initState();
   }

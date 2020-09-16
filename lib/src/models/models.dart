@@ -560,7 +560,6 @@ abstract class AbstractControl<T> {
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
   final _focusChanges = StreamController<bool>.broadcast();
-  final _modelToViewChanges = ValueNotifier<T>(null);
   bool _focused = false;
 
   /// Creates a new FormControl instance.
@@ -614,15 +613,12 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   void dispose() {
     _focusChanges.close();
-    _modelToViewChanges.dispose();
     super.dispose();
   }
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
   Stream<bool> get focusChanges => _focusChanges.stream;
-
-  ValueNotifier<T> get modelToViewChanges => _modelToViewChanges;
 
   /// Remove focus on a ReactiveFormField widget without the interaction
   /// of the user.
@@ -670,16 +666,9 @@ class FormControl<T> extends AbstractControl<T> {
   T _reduceValue() => this.value;
 
   @override
-  void updateValue(T value,
-      {bool updateParent, bool emitEvent, bool emitModelToViewChange}) {
-    emitModelToViewChange ??= true;
-
+  void updateValue(T value, {bool updateParent, bool emitEvent}) {
     if (_value != value) {
       _value = value;
-
-      if (emitModelToViewChange) {
-        _modelToViewChanges.value = value;
-      }
 
       this.updateValueAndValidity(
         updateParent: updateParent,

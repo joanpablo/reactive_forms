@@ -4,7 +4,7 @@ import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 class IntValueAccessor extends ControlValueAccessor<int, String> {
   @override
   String modelToViewValue(int modelValue) {
-    return modelValue.toString();
+    return modelValue == null ? '' : modelValue.toString();
   }
 
   @override

@@ -148,8 +148,8 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
   void initState() {
     super.initState();
 
-    _textController = TextEditingController(text: this.value?.toString());
     _focusNode.addListener(_onFocusChanged);
+    _textController = TextEditingController(text: this.value);
   }
 
   @override
@@ -186,6 +186,10 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
       return IntValueAccessor();
     } else if (this.control is FormControl<double>) {
       return DoubleValueAccessor();
+    } else if (this.control is FormControl<DateTime>) {
+      return DateTimeValueAccessor();
+    } else if (this.control is FormControl<TimeOfDay>) {
+      return TimeOfDayValueAccessor();
     }
 
     return super.selectValueAccessor();
