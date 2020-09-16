@@ -18,14 +18,14 @@ abstract class ControlValueAccessor<T, K> {
   /// Gets the control bind to this value accessor.
   FormControl<T> get control => _control;
 
-  /// Returns the value that must be supplied to the control.
+  /// Returns the value that must be supplied to the [control].
   ///
-  /// Converts the value from the UI data type to the model data type.
+  /// Converts value from UI data type to [control] data type.
   T viewToModelValue(K viewValue);
 
-  /// Returns the value that must be supplied to the view.
+  /// Returns the value that must be supplied to the UI widget.
   ///
-  /// Converts the value from the model data type to the UI data type.
+  /// Converts value from [control] data type to UI data type.
   K modelToViewValue(T modelValue);
 
   /// Updates the [control] with the provided value.
@@ -57,7 +57,7 @@ abstract class ControlValueAccessor<T, K> {
   /// The [control] argument must not be null.
   ///
   /// The argument [onChange] is optionally and will be called every time the
-  /// [control] emits the value changes event.
+  /// [control] emits the value change event.
   void registerControl(FormControl<T> control, {ChangeFunction<K> onChange}) {
     assert(control != null);
     _control = control;
