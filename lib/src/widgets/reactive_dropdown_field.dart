@@ -77,8 +77,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
                   onChanged: field.control.enabled
-                      ? (T value) =>
-                          state._onViewToModelValueChanged(value, onChanged)
+                      ? (T value) => state._onChanged(value, onChanged)
                       : null,
                   onTap: onTap,
                   disabledHint: disabledHint,
@@ -102,12 +101,10 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
 }
 
 class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
-  void _onViewToModelValueChanged(T value, ValueChanged<T> callBack) {
-    if (value != this.value) {
-      this.didChange(value);
-      if (callBack != null) {
-        callBack(value);
-      }
+  void _onChanged(T value, ValueChanged<T> callBack) {
+    this.didChange(value);
+    if (callBack != null) {
+      callBack(value);
     }
   }
 }

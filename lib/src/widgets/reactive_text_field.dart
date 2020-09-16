@@ -7,6 +7,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
+import 'package:reactive_forms/src/value_accessors/double_value_accessor.dart';
+import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 
 /// A [ReactiveTextField] that contains a [TextField].
 ///
@@ -15,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField<T> extends ReactiveFormField<T> {
+class ReactiveTextField extends ReactiveFormField {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -69,20 +72,18 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
-    InputParser inputParser,
+    ControlValueAccessor valueAccessor,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          valueAccessor: valueAccessor,
           validationMessages: validationMessages ?? const {},
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (ReactiveFormFieldState field) {
             final state = field as _ReactiveTextFieldState;
             final InputDecoration effectiveDecoration = (decoration ??
                     const InputDecoration())
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
-
-            state.inputParser = inputParser ??
-                _ReactiveTextFieldState.getInputParser(field.control);
 
             return TextField(
               controller: state._textController,
@@ -117,7 +118,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
               minLines: minLines,
               expands: expands,
               maxLength: maxLength,
-              onChanged: state._onChanged,
+              onChanged: field.didChange,
               onTap: onTap,
               onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
               inputFormatters: inputFormatters,
@@ -135,22 +136,20 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => _ReactiveTextFieldState<T>();
+  ReactiveFormFieldState createState() => _ReactiveTextFieldState();
 }
 
-class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
+class _ReactiveTextFieldState extends ReactiveFormFieldState {
   TextEditingController _textController;
   FocusNode _focusNode = FocusNode();
   StreamSubscription _focusChangesSubscription;
-  InputParser inputParser;
-  bool _isUpdatingControl = false;
 
   @override
   void initState() {
     super.initState();
 
-    _textController = TextEditingController(text: this.value?.toString());
     _focusNode.addListener(_onFocusChanged);
+    _textController = TextEditingController(text: this.value);
   }
 
   @override
@@ -176,29 +175,24 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   }
 
   @override
-  void updateValueFromControl() {
-    if (_isUpdatingControl) {
-      _isUpdatingControl = false;
-      return;
-    }
-
-    _textController.text = this.value == null ? '' : this.value.toString();
-    super.updateValueFromControl();
+  void onControlValueChanged(value) {
+    _textController.text = value == null ? '' : value.toString();
+    super.onControlValueChanged(value);
   }
 
-  void _onChanged(String value) {
-    _isUpdatingControl = true;
-    this.didChange(this.inputParser.parse(value));
-  }
-
-  static InputParser getInputParser(FormControl control) {
-    if (control is FormControl<int>) {
-      return IntInputParser();
-    } else if (control is FormControl<double>) {
-      return DoubleInputParser();
+  @override
+  ControlValueAccessor selectValueAccessor() {
+    if (this.control is FormControl<int>) {
+      return IntValueAccessor();
+    } else if (this.control is FormControl<double>) {
+      return DoubleValueAccessor();
+    } else if (this.control is FormControl<DateTime>) {
+      return DateTimeValueAccessor();
+    } else if (this.control is FormControl<TimeOfDay>) {
+      return TimeOfDayValueAccessor();
     }
 
-    return DefaultInputParser();
+    return super.selectValueAccessor();
   }
 
   void _onFormControlFocusChanged(bool focused) {

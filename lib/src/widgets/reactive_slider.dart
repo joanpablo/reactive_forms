@@ -49,13 +49,22 @@ class ReactiveSlider extends ReactiveFormField<double> {
           formControlName: formControlName,
           validationMessages: const {},
           builder: (ReactiveFormFieldState<double> field) {
+            double value = field.value;
+            if (value == null || value < min) {
+              value = min;
+            } else if (field.value > max) {
+              value = max;
+            }
+
             return Slider(
-              value: field.value ?? min,
+              value: value,
               onChanged: field.control.enabled ? field.didChange : null,
               min: min,
               max: max,
               divisions: divisions,
-              label: labelBuilder != null ? labelBuilder(field.value) : null,
+              label: labelBuilder != null
+                  ? labelBuilder(field.value ?? min)
+                  : null,
               activeColor: activeColor,
               inactiveColor: inactiveColor,
               semanticFormatterCallback: semanticFormatterCallback,

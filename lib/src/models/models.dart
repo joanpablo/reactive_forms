@@ -669,6 +669,7 @@ class FormControl<T> extends AbstractControl<T> {
   void updateValue(T value, {bool updateParent, bool emitEvent}) {
     if (_value != value) {
       _value = value;
+
       this.updateValueAndValidity(
         updateParent: updateParent,
         emitEvent: emitEvent,
