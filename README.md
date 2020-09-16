@@ -201,7 +201,7 @@ In the previous code we have added two more fields to the form: *password* and *
 However the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator and the implementation follows as:
 
 ```dart
-Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) {
+ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
   return (AbstractControl control) {
     final form = control as FormGroup;
 
