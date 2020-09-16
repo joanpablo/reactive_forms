@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/compare_validator.dart';
 import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
 import 'package:reactive_forms/src/validators/credit_card_validator.dart';
@@ -112,5 +113,14 @@ class Validators {
   /// the union of all the individual errors returned by each validator.
   static ValidatorFunction composeOR(List<ValidatorFunction> validators) {
     return ComposeOrValidator(validators).validate;
+  }
+
+  static ValidatorFunction compare(
+    String controlName,
+    String compareControlName, {
+    CompareOption compareOption = CompareOption.equal,
+  }) {
+    return CompareValidator(controlName, compareControlName, compareOption)
+        .validate;
   }
 }

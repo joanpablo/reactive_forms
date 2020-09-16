@@ -4,15 +4,15 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// Exception that is raised by [ControlValueAccessor]
-class ValueAccessorException implements Exception {
+/// Exception that is raised by [Validator]
+class ValidatorException implements Exception {
   final String message;
 
   /// Constructs an instance of the exception with the provided [message].
-  ValueAccessorException(this.message);
+  ValidatorException(this.message);
 
   @override
   String toString() {
-    return 'ValueAccessorException: $message';
+    return 'ValidatorException: $message';
   }
 }
