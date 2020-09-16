@@ -37,7 +37,7 @@ class ReactiveFormBuilder extends StatefulWidget {
   ///   @override
   ///   Widget build(BuildContext context) {
   ///     return ReactiveFormBuilder(
-  ///       form: FormGroup({'name': FormControl<String>()}),
+  ///       form: (context) => FormGroup({'name': FormControl<String>()}),
   ///       builder: (context, form, child) {
   ///         return ReactiveTextField(
   ///           formControlName: 'name',
@@ -67,13 +67,13 @@ class _ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    if (_form == null) {
-      _form = widget.form(context);
-    }
+    final form = _form ?? widget.form(context);
 
     return ReactiveForm(
-      formGroup: _form,
-      child: widget.builder(context, _form, widget.child),
+      formGroup: form,
+      child: widget.builder(context, form, widget.child),
+      onWillPop: widget.onWillPop,
+      enabled: widget.enabled,
     );
   }
 }
