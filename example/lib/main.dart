@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   formControlName: 'progress',
                   builder: (context, control, child) {
                     return control.value == null
-                        ? Text('Progress set to NULL')
+                        ? Text('Progress not set')
                         : Text(
                             'Progress set to ${control.value.toStringAsFixed(2)}%');
                   },
