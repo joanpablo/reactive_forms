@@ -17,17 +17,14 @@ class ReactiveFormsApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
+  // We recommend to use Reactive Form with Provider plugin or any other
+  // state management library and not declare FormGroup directly in a
+  // stateless widget.
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // We don't recommend to declare a FormGroup within a Stateful Widget.
-  // We highly recommend using the Provider plugin
-  // or any other state management library.
-  //
-  // We have declared the FormGroup within a Stateful Widget only for
-  // demonstration purposes and to simplify this example.
   final form = FormGroup({
     'email': FormControl(
       validators: [
