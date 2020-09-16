@@ -1,30 +1,46 @@
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+typedef ChangeFunction<K> = dynamic Function(K value);
+
 abstract class ControlValueAccessor<T, K> {
-  final FormControl<T> control;
-  final ReactiveFormFieldState<K> formField;
+  FormControl<T> _control;
+  ChangeFunction<K> _onChange;
 
-  ControlValueAccessor({
-    @required this.control,
-    @required this.formField,
-  })  : assert(control != null),
-        assert(formField != null);
-
-  void updateView(T modelValue) {
-    final viewValue = this.modelToViewValue(modelValue);
-    this.formField.updateValueFromControl(viewValue);
-  }
-
-  void updateModel(K viewValue) {
-    final modelValue = this.viewToModelValue(viewValue);
-    if (this.control.value != modelValue) {
-      this.control.markAsDirty(emitEvent: false);
-      this.control.updateValue(modelValue, emitModelToViewChange: false);
-    }
-  }
+  FormControl<T> get control => _control;
 
   T viewToModelValue(K viewValue);
 
   K modelToViewValue(T modelValue);
+
+  void updateModel(K viewValue) {
+    final modelValue = this.viewToModelValue(viewValue);
+
+    if (_control.value != modelValue) {
+      _control.markAsDirty(emitEvent: false);
+      _control.updateValue(modelValue /*, emitModelToViewChange: false*/);
+    }
+  }
+
+  void registerControl(FormControl<T> control) {
+    assert(control != null);
+    _control = control;
+    _control.modelToViewChanges.addListener(_onModelChange);
+  }
+
+  void registerOnChange(ChangeFunction<K> onChange) {
+    _onChange = onChange;
+  }
+
+  @mustCallSuper
+  void dispose() {
+    _control.modelToViewChanges.removeListener(_onModelChange);
+  }
+
+  void _onModelChange() {
+    final viewValue = this.modelToViewValue(_control.value);
+    if (_onChange != null) {
+      _onChange(viewValue);
+    }
+  }
 }

@@ -177,15 +177,15 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
   @override
   void onControlValueChanged(value) {
     _textController.text = value == null ? '' : value.toString();
-    super.updateValueFromControl(value);
+    super.onControlValueChanged(value);
   }
 
   @override
   ControlValueAccessor selectValueAccessor() {
     if (this.control is FormControl<int>) {
-      return IntValueAccessor(control: this.control, formField: this);
+      return IntValueAccessor();
     } else if (this.control is FormControl<double>) {
-      return DoubleValueAccessor(control: this.control, formField: this);
+      return DoubleValueAccessor();
     }
 
     return super.selectValueAccessor();

@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  intl: ^0.16.1
+
   reactive_forms:
     path: ../
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms_example/datetime_value_accessor.dart';
 
 void main() {
   runApp(ReactiveFormsApp());
@@ -201,6 +202,7 @@ class _HomePageState extends State<HomePage> {
                 ReactiveTextField(
                   formControlName: 'dateTime',
                   readOnly: true,
+                  valueAccessor: DateTimeValueAccessor(),
                   decoration: InputDecoration(
                     labelText: 'Birthday',
                     suffixIcon: ReactiveDatePicker(
@@ -221,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                   formControlName: 'time',
                   readOnly: true,
                   decoration: InputDecoration(
-                    labelText: 'Birthday',
+                    labelText: 'Birthday time',
                     suffixIcon: ReactiveTimePicker(
                       formControlName: 'time',
                       builder: (context, picker, child) {

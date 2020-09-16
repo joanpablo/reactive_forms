@@ -672,6 +672,8 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   void updateValue(T value,
       {bool updateParent, bool emitEvent, bool emitModelToViewChange}) {
+    emitModelToViewChange ??= true;
+
     if (_value != value) {
       _value = value;
 
