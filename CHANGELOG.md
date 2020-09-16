@@ -21,6 +21,11 @@ instead of just the *control name*.
 - Add **Validators.composeOR** to combines multiples validators in one and evaluates as an **OR**, 
 if at least one validator evaluates to VALID then the control is valid.
 
+## Widgets
+
+- Add **ReactiveFormBuilder** useful for defining a **FormGroup** and a **ReactiveForm** at the same
+time in a stateless widget. 
+
 ## Validators
 - Add validators:
     - **Validators.requiredTrue**

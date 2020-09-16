@@ -996,6 +996,7 @@ Widget build(BuildContext context) {
 
 - ReactiveForm
 - ReactiveFormConsumer
+- ReactiveFormBuilder
 - ReactiveFormArray
 - ReactiveValueListenableBuilder
 - ReactiveStatusListenableBuilder
@@ -1081,6 +1082,112 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+## **ReactiveForm** vs **ReactiveFormBuilder** which one?
+
+Both widgets are responsible for exposing the **FormGroup** to descendants widgets in the tree. Let see an example:
+
+```dart
+// using ReactiveForm
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: ReactiveTextField(
+      formControlName: 'email',
+    ),
+  );
+}
+```
+
+```dart
+// using ReactiveFormBuilder
+@override
+Widget build(BuildContext context) {
+  return ReactiveFormBuilder(
+    form: (context) => this.form,
+    builder: (context, form, child) {
+      return ReactiveTextField(
+        formControlName: 'email',
+      );
+    },
+  );
+}
+```
+
+The main differences are that **ReactiveForm** is a *StatelessWidget* so it doesn't save the instance of the **FormGroup**. So you must declare the instance of the **FormGroup** in a StatefulWidget or resolve it from some Provider (state management library).
+
+```dart
+// Using ReactiveForm in a StatelessWidget and resolve the FormGroup from a provider
+class SignInForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = Provider.of<SignInViewModel>(context, listen: false);
+
+    return ReactiveForm(
+      formGroup: viewModel.form,
+      child: ReactiveTextField(
+        formControlName: 'email',
+      ),
+    );
+  }
+}
+```
+
+```dart
+// Using ReactiveForm in a StatefulWidget and declaring FormGroup in the state.
+class SignInForm extends StatefulWidget {
+  @override
+  _SignInFormState createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> {
+  final form = fb.group({
+    'email': Validators.email,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveForm(
+      formGroup: this.form,
+      child: ReactiveTextField(
+        formControlName: 'email',
+      ),
+    );
+  }
+}
+```
+
+> If you declare a **FormGroup** in a *StatelessWidget* the *group* will be destroyed a created each time the instance of the *StatelessWidget* is destroyed and created, so you must preserve the **FormGroup** in a state or in a Bloc/Provider/etc.
+
+By the other hand **ReactiveFormBuilder** is implemented as a *StatefulWidget* so it holds the created **FormGroup** in its state. That way is safe to declares the **FormGroup** in a StatelessWidget or get it from a Bloc/Provider/etc.
+
+```dart
+class SignInForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveFormBuilder(
+      form: (context) => fb.group({'email': Validators.email}),
+      builder: (context, form, child) {
+        return ReactiveTextField(
+          formControlName: 'email',
+        );
+      },
+    );
+  }
+}
+```
+
+You should use **ReactiveForm** if:
+- The form is complex enough.
+- You need to listen for changes to execute some business logic.
+- You are using some State Management library like Provider or Bloc.
+- You are OK of using StatefulWidget in a very simple Form.
+
+You should use **ReactiveFormBuilder** if:
+- The form is quite simple enough and doesn't need a separate Provider/Bloc state.
+
+But the final decision is really up to you, you can use any of them in any situations ;)
 
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 
