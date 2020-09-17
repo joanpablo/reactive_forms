@@ -35,5 +35,15 @@ void main() {
       // Expect: the right message
       expect(e.toString(), 'FormControlNotFoundException: control not found.');
     });
+
+    test('FormBuilderInvalidInitializationException message', () {
+      expect(FormBuilderInvalidInitializationException('message').toString(),
+          'FormBuilderInvalidInitializationException: message');
+    });
+
+    test('ValueAccessorException message', () {
+      expect(ValueAccessorException('message').toString(),
+          'ValueAccessorException: message');
+    });
   });
 }
