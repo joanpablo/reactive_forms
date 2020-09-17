@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 /// This class is an utility for getting access to common names of
 /// validation messages.
 ///
@@ -48,4 +52,7 @@ class ValidationMessage {
 
   /// Key text for requiredTrue validation message.
   static const String requiredTrue = 'requiredEquals';
+
+  /// Key text for group compare validation message.
+  static const String compare = 'compare';
 }

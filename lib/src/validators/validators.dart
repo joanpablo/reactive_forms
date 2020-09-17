@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/compare_validator.dart';
 import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
 import 'package:reactive_forms/src/validators/credit_card_validator.dart';
@@ -87,13 +88,35 @@ class Validators {
   static ValidatorFunction pattern(Pattern pattern) =>
       PatternValidator(pattern).validate;
 
-  /// Gets a validator that is for use with a [FormGroup] and checks that
-  /// the controls [controlName] and [matchingControlName] have the same values.
+  /// Gets a [FormGroup] validator that checks the controls [controlName] and
+  /// [matchingControlName] have the same values.
   ///
   /// The arguments [controlName] and [matchingControlName] must not be null.
   static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;
+  }
+
+  /// Gets a [FormGroup] validator that compares two controls in the group.
+  ///
+  /// The arguments [controlName], [compareControlName] and [compareOption]
+  /// must not be null.
+  ///
+  /// ### Example:
+  /// Validates that 'amount' is lower or equals than 'balance'
+  /// ```dart
+  /// final form = fb.group({
+  ///   'amount': 20.00,
+  ///   'balance': 50.00,
+  /// }, [Validators.compare('amount', 'balance', CompareOption.lower_or_equals)]);
+  /// ```
+  static ValidatorFunction compare(
+    String controlName,
+    String compareControlName,
+    CompareOption compareOption,
+  ) {
+    return CompareValidator(controlName, compareControlName, compareOption)
+        .validate;
   }
 
   /// Compose multiple validators into a single validator that returns the union
