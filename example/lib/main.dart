@@ -39,7 +39,10 @@ class _HomePageState extends State<HomePage> {
     ]),
     'passwordConfirmation': FormControl(),
     'rememberMe': FormControl(value: false),
-    'progress': FormControl<double>(value: 50.0),
+    'progress': FormControl<double>(
+      value: 50.0,
+      validators: [Validators.min(50.0)],
+    ),
     'dateTime': FormControl<DateTime>(value: DateTime.now()),
     'time': FormControl<TimeOfDay>(value: TimeOfDay.now()),
   }, validators: [
@@ -193,6 +196,10 @@ class _HomePageState extends State<HomePage> {
                 ReactiveTextField(
                   formControlName: 'progress',
                   keyboardType: TextInputType.number,
+                  validationMessages: {
+                    ValidationMessage.min:
+                        'A value lower than 50.00 is not accepted',
+                  },
                 ),
                 SizedBox(height: 24.0),
                 ReactiveTextField(
