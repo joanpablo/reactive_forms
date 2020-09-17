@@ -397,10 +397,25 @@ abstract class AbstractControl<T> {
 
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
+  ///
+  /// The control is marked as dirty.
+  ///
+  /// See [dirty].
   void setErrors(Map<String, dynamic> errors) {
     _errors.clear();
     _errors.addAll(errors);
 
+    _updateControlsErrors();
+    this.markAsDirty(emitEvent: false);
+  }
+
+  /// Removes an error given the error [key].
+  ///
+  /// The control is marked as dirty.
+  ///
+  /// See [dirty].
+  void removeError(String key) {
+    _errors.removeWhere((errorKey, value) => errorKey == key);
     _updateControlsErrors();
     this.markAsDirty(emitEvent: false);
   }

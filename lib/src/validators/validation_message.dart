@@ -52,4 +52,7 @@ class ValidationMessage {
 
   /// Key text for requiredTrue validation message.
   static const String requiredTrue = 'requiredEquals';
+
+  /// Key text for group compare validation message.
+  static const String compare = 'compare';
 }

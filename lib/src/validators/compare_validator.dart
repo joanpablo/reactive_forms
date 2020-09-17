@@ -4,11 +4,16 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// Represents a [FormGroup] validator that compares two controls in the group.
 class CompareValidator extends Validator {
   final String controlName;
   final String compareControlName;
   final CompareOption compareOption;
 
+  /// Constructs an instance of the validator.
+  ///
+  /// The arguments [controlName], [compareControlName] and [compareOption]
+  /// must not be null.
   CompareValidator(
       this.controlName, this.compareControlName, this.compareOption)
       : assert(controlName != null),
@@ -25,7 +30,7 @@ class CompareValidator extends Validator {
     final mainControl = form.control(this.controlName);
     final compareControl = form.control(this.compareControlName);
     final error = {
-      'compare': {
+      ValidationMessage.compare: {
         'control': mainControl.value,
         'compareControl': compareControl.value,
         'option': this.compareOption,
@@ -37,17 +42,27 @@ class CompareValidator extends Validator {
       return error;
     }
 
+    if (_meetsComparison(mainControl, compareControl)) {
+      mainControl.removeError(ValidationMessage.compare);
+    } else {
+      mainControl.setErrors(error);
+      mainControl.markAsTouched();
+    }
+  }
+
+  bool _meetsComparison(AbstractControl<dynamic> control,
+      AbstractControl<dynamic> compareControl) {
     switch (this.compareOption) {
       case CompareOption.lower:
-        return mainControl.value < compareControl.value ? null : error;
+        return control.value < compareControl.value;
       case CompareOption.lower_or_equal:
-        return mainControl.value <= compareControl.value ? null : error;
+        return control.value <= compareControl.value;
       case CompareOption.greater:
-        return mainControl.value > compareControl.value ? null : error;
+        return control.value > compareControl.value;
       case CompareOption.greater_or_equal:
-        return mainControl.value >= compareControl.value ? null : error;
+        return control.value >= compareControl.value;
       default: //CompareOption.equal:
-        return mainControl.value == compareControl.value ? null : error;
+        return control.value == compareControl.value;
     }
   }
 }

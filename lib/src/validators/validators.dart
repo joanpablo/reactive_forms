@@ -88,13 +88,35 @@ class Validators {
   static ValidatorFunction pattern(Pattern pattern) =>
       PatternValidator(pattern).validate;
 
-  /// Gets a validator that is for use with a [FormGroup] and checks that
-  /// the controls [controlName] and [matchingControlName] have the same values.
+  /// Gets a [FormGroup] validator that checks the controls [controlName] and
+  /// [matchingControlName] have the same values.
   ///
   /// The arguments [controlName] and [matchingControlName] must not be null.
   static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;
+  }
+
+  /// Gets a [FormGroup] validator that compares two controls in the group.
+  ///
+  /// The arguments [controlName], [compareControlName] and [compareOption]
+  /// must not be null.
+  ///
+  /// ### Example:
+  /// Validates that 'amount' is lower or equals than 'balance'
+  /// ```dart
+  /// final form = fb.group({
+  ///   'amount': 20.00,
+  ///   'balance': 50.00,
+  /// }, [Validators.compare('amount', 'balance', CompareOption.lower_or_equals)]);
+  /// ```
+  static ValidatorFunction compare(
+    String controlName,
+    String compareControlName,
+    CompareOption compareOption,
+  ) {
+    return CompareValidator(controlName, compareControlName, compareOption)
+        .validate;
   }
 
   /// Compose multiple validators into a single validator that returns the union
@@ -113,14 +135,5 @@ class Validators {
   /// the union of all the individual errors returned by each validator.
   static ValidatorFunction composeOR(List<ValidatorFunction> validators) {
     return ComposeOrValidator(validators).validate;
-  }
-
-  static ValidatorFunction compare(
-    String controlName,
-    String compareControlName, {
-    CompareOption compareOption = CompareOption.equal,
-  }) {
-    return CompareValidator(controlName, compareControlName, compareOption)
-        .validate;
   }
 }
