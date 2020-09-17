@@ -22,21 +22,26 @@ typedef ReactiveFormArrayBuilder<T> = Widget Function(
 ///
 class ReactiveFormArray<T> extends StatefulWidget {
   final String formArrayName;
+  final FormArray<T> formArray;
   final Widget child;
   final ReactiveFormArrayBuilder<T> builder;
 
   /// Creates an instance of [ReactiveFormArray].
   ///
-  /// The [formArrayName] and [builder] arguments are required.
+  /// The [builder] argument is required.
   /// The [child] is optional but is good practice to use if part of the widget
   /// subtree does not depend on the value of the [FormArray] that is bind
   /// with this widget.
   const ReactiveFormArray({
     Key key,
-    @required this.formArrayName,
     @required this.builder,
+    this.formArrayName,
+    this.formArray,
     this.child,
-  })  : assert(formArrayName != null),
+  })  : assert(
+            (formArrayName != null && formArray == null) ||
+                (formArrayName == null && formArray != null),
+            'Must provide a formArrayName or a formArray, but not both at the same time.'),
         assert(builder != null),
         super(key: key);
 
@@ -45,15 +50,17 @@ class ReactiveFormArray<T> extends StatefulWidget {
 }
 
 class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
-  FormArray _formArray;
+  FormArray<T> _formArray;
 
   @override
-  void initState() {
-    final form =
-        ReactiveForm.of(context, listen: false) as FormControlCollection;
-    _formArray = form.control(widget.formArrayName) as FormArray<T>;
-
-    super.initState();
+  void didChangeDependencies() {
+    _formArray = widget.formArray;
+    if (_formArray == null) {
+      final form =
+          ReactiveForm.of(context, listen: false) as FormControlCollection;
+      _formArray = form.control(widget.formArrayName) as FormArray<T>;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -61,13 +68,15 @@ class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
     return FormControlInheritedStreamer(
       control: _formArray,
       stream: _formArray.collectionChanges,
-      child: Builder(builder: (context) {
-        return widget.builder(
-          context,
-          ReactiveForm.of(context) as FormArray<T>,
-          widget.child,
-        );
-      }),
+      child: Builder(
+        builder: (context) {
+          return widget.builder(
+            context,
+            ReactiveForm.of(context) as FormArray<T>,
+            widget.child,
+          );
+        },
+      ),
     );
   }
 }
