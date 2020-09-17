@@ -111,7 +111,7 @@ void main() {
       },
     );
 
-    testWidgets('Errors visible when FormControl touched',
+    testWidgets('Errors visible when FormControl touched and dirty',
         (WidgetTester tester) async {
       // Given: A group with a required and touched field
       final form = FormGroup({
@@ -124,9 +124,31 @@ void main() {
       // And: a widget that is bind to the form
       await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
-      // Expect: text field is showing errors
+      //When: mark control as dirty
+      form.control('name').markAsDirty();
+      await tester.pump();
+
+      // Then: text field is showing errors
       final textField = tester.firstWidget(find.byType(TextField)) as TextField;
       expect(textField.decoration.errorText, ValidationMessage.required);
+    });
+
+    testWidgets('Errors is not visible when FormControl not dirty',
+        (WidgetTester tester) async {
+      // Given: A group with a required and touched field
+      final form = FormGroup({
+        'name': FormControl(
+          validators: [Validators.required],
+          touched: true,
+        ),
+      });
+
+      // And: a widget that is bind to the form
+      await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+      // Expect: text field is not showing errors
+      final textField = tester.firstWidget(find.byType(TextField)) as TextField;
+      expect(textField.decoration.errorText, null);
     });
 
     testWidgets(
@@ -149,6 +171,10 @@ void main() {
           validationMessages: {ValidationMessage.required: customMessage},
         ));
 
+        // When: marks control as dirty
+        form.control('name').markAsDirty();
+        await tester.pump();
+
         // Expect: text field is showing the custom message as error
         final textField =
             tester.firstWidget(find.byType(TextField)) as TextField;
@@ -156,7 +182,7 @@ void main() {
       },
     );
 
-    testWidgets('Errors visible when control change to touched',
+    testWidgets('Errors visible when control change to touched and dirty',
         (WidgetTester tester) async {
       // Given: An invalid form
       final form = FormGroup({
@@ -173,7 +199,8 @@ void main() {
           tester.firstWidget(find.byType(TextField)) as TextField;
       expect(textField.decoration.errorText, null);
 
-      // When: touch the control
+      // When: touch the control and mark as dirty
+      form.control('name').markAsDirty(emitEvent: false);
       form.control('name').markAsTouched();
       await tester.pump();
 
