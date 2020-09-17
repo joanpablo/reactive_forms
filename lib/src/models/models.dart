@@ -1009,6 +1009,13 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return _controls.values
         .any((control) => control.enabled && condition(control));
   }
+
+  void focus(String name) {
+    final control = findControl(name.split('.'));
+    if (control is FormControl) {
+      control.focus();
+    }
+  }
 }
 
 /// A FormArray aggregates the values of each child FormControl into an array.

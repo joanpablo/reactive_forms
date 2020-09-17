@@ -527,5 +527,35 @@ void main() {
           reason: '$city is not a control');
       expect(city.value, 'Sofia', reason: 'control without correct value');
     });
+
+    test('Focused a control', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+      });
+
+      // When: set a control focus
+      form.focus('name');
+
+      // Then: control is focused
+      expect((form.control('name') as FormControl).focused, true,
+          reason: 'control is not focused');
+    });
+
+    test('Focused a nested control', () {
+      // Given: a group
+      final form = FormGroup({
+        'person': FormGroup({
+          'name': FormControl<String>(),
+        }),
+      });
+
+      // When: set a control focus
+      form.focus('person.name');
+
+      // Then: control is focused
+      expect((form.control('person.name') as FormControl).focused, true,
+          reason: 'control is not focused');
+    });
   });
 }
