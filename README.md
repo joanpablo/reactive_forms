@@ -380,6 +380,26 @@ final form = FormGroup({
 });
 ```
 
+Using **FormBuilder** *(read FormBuilder section below)*:
+
+```dart
+final form = fb.group({
+  'personal': fb.group({
+    'name': ['', Validators.required],
+    'email': ['', Validators.required],
+  }),
+  'phone': fb.group({
+    'phoneNumber': ['', Validators.required],
+    'countryIso': ['', Validators.required],
+  }),
+  'address': FormGroup({
+    'street': ['', Validators.required],
+    'city': ['', Validators.required],
+    'zip': ['', Validators.required],
+  }),
+});
+```
+
 > Note how we set the *data type* to a **FormControl**, this is not mandatory when define *Forms* but we recommend this syntax.
 
 You can collect all data using **FormGroup.value**:
@@ -872,9 +892,7 @@ void _onSubmit() {
 There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()** methods.
 
 ```dart
-final form = FormGroup({
-  'name': FormControl(value: 'John Doe'),
-});
+final form = fb.group({'name': 'John Doe'});
 
 FormControl control = form.control('name');
 
@@ -883,15 +901,34 @@ control.focus(); // UI text field get focus and the device keyboard pop up
 control.unfocus(); // UI text field lose focus
 ```
 
+You can also set focus directly from the Form like:
+
+```dart
+final form = fb.group({'name': ''});
+
+form.focus('name'); // UI text field get focus and the device keyboard pop up
+```
+
+```dart
+final form = fb.group({
+  'person': fb.group({
+    'name': '',
+  }),
+});
+
+// set focus to a nested control
+form.focus('person.name');
+```
+
 ## Focus flow between Text Fields
 
 Another example is when you have a form with several text fields and each time the user completes edition in one field you wnat to request next focus field using the keyboard actions:
 
 ```dart
-final form = FormGroup({
-  'name': FormControl<String>(validators: [Validators.required]),
-  'email': FormControl<String>(validators: [Validators.required, Validators.email]),
-  'password': FormControl<String>(validators: [Validators.required]),
+final form = fb.group({
+  'name': ['', Validators.required],
+  'email': ['', Validators.required, Validators.email],
+  'password': ['', Validators.required],
 });
 ```
 
@@ -913,12 +950,12 @@ Widget build(BuildContext context) {
         ReactiveTextField(
           formControlName: 'name',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.email.focus(), // email text field request focus
+          onSubmitted: () => this.email.focus(), // this.form.focus('email') do the same
         ),
         ReactiveTextField(
           formControlName: 'email',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.password.focus(), // password text field request focus
+          onSubmitted: () => this.password.focus(), // this.form.focus('password') do the same
         ),
         ReactiveTextField(
           formControlName: 'password',

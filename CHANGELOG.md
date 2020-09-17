@@ -22,6 +22,7 @@ instead of just the *control name*.
 - Add **Validators.composeOR** to combines multiples validators in one and evaluates as an **OR**, 
 if at least one validator evaluates to VALID then the control is valid.
 - Add **ControlValueAccessor** to convert value data types from UI to model and vice versa. 
+- Add **FormGroup.focus(String name)** to set focus to a child control.
 
 ## Widgets
 

@@ -999,6 +999,38 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     }
   }
 
+  /// Sets focus to a child control.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
+  ///
+  /// ### Example:
+  /// Focus a child control by name.
+  /// ```dart
+  /// final form = fb.group({'name': ''});
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// form.focus('name');
+  ///```
+  ///
+  /// Focus a nested child control by path.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'person': fb.group({
+  ///     'name': '',
+  ///   })
+  /// });
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// form.focus('person.name');
+  ///```
+  void focus(String name) {
+    final control = findControl(name.split('.'));
+    if (control is FormControl) {
+      control.focus();
+    }
+  }
+
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
     _controls.forEach((name, control) => callback(control));
@@ -1008,13 +1040,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   bool _anyControls(bool Function(AbstractControl) condition) {
     return _controls.values
         .any((control) => control.enabled && condition(control));
-  }
-
-  void focus(String name) {
-    final control = findControl(name.split('.'));
-    if (control is FormControl) {
-      control.focus();
-    }
   }
 }
 
