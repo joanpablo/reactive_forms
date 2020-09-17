@@ -19,7 +19,7 @@ class MinValidator<Comparable> extends Validator {
     return control.value is Comparable && control.value >= min
         ? null
         : {
-            'min': {
+            ValidationMessage.min: {
               'min': min,
               'actual': control.value,
             },

@@ -19,7 +19,7 @@ class MaxValidator<Comparable> extends Validator {
     return control.value is Comparable && control.value <= max
         ? null
         : {
-            'max': {
+            ValidationMessage.max: {
               'max': max,
               'actual': control.value,
             },
