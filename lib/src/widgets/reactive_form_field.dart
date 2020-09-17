@@ -92,10 +92,13 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   /// Gets the error text calculated from validators of the control.
   ///
+  /// Returns an error if control is INVALID, TOUCHED and DIRTY, otherwise
+  /// returns null.
+  ///
   /// If the control has several errors, then the first error is selected
   /// for visualizing in UI.
   String get errorText {
-    if (this.control.invalid && this.touched) {
+    if (this.control.invalid && this.touched && this.control.dirty) {
       return widget.validationMessages
               .containsKey(this.control.errors.keys.first)
           ? widget.validationMessages[this.control.errors.keys.first]
@@ -109,7 +112,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   void initState() {
     this.control = _getFormControl();
     this.subscribeControl();
-    _valueAccessor = selectValueAccessor();
+    _valueAccessor = _resolveValueAccessor();
     _valueAccessor.registerControl(
       this.control,
       onChange: this.onControlValueChanged,
@@ -120,7 +123,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   ControlValueAccessor selectValueAccessor() {
-    return widget.valueAccessor ?? DefaultValueAccessor();
+    return DefaultValueAccessor();
   }
 
   @override
@@ -158,6 +161,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
       _statusChangesSubscription.cancel(),
       _touchChangesSubscription.cancel(),
     ]);
+  }
+
+  ControlValueAccessor _resolveValueAccessor() {
+    return widget.valueAccessor ?? this.selectValueAccessor();
   }
 
   FormControl _getFormControl() {

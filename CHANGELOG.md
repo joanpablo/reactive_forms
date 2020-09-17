@@ -1,3 +1,8 @@
+# 5.0.2
+
+-Update errors visibility (invalid, touched, dirty).
+-Fix add custom valueAccessor to text field.
+
 # 5.0.1
 
 - Fix **Validators.min** and **Validators.max** with non comparable controls.
