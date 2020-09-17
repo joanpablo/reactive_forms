@@ -13,6 +13,8 @@ class IntValueAccessor extends ControlValueAccessor<int, String> {
 
   @override
   int viewToModelValue(String viewValue) {
-    return viewValue == '' ? null : int.tryParse(viewValue);
+    return (viewValue == '' || viewValue == null)
+        ? null
+        : int.tryParse(viewValue);
   }
 }

@@ -19,6 +19,8 @@ class DoubleValueAccessor extends ControlValueAccessor<double, String> {
 
   @override
   double viewToModelValue(String viewValue) {
-    return viewValue == '' ? null : double.tryParse(viewValue);
+    return (viewValue == '' || viewValue == null)
+        ? null
+        : double.tryParse(viewValue);
   }
 }

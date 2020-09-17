@@ -71,5 +71,22 @@ void main() {
       // Then: value is converted correctly
       expect(control.value, null);
     });
+
+    test('TimeOfDayValueAccessor converts to null a null value', () {
+      // Given: a control
+      final control = fb.control(TimeOfDay.now());
+
+      // And: an int value accessor
+      final valueAccessor = TimeOfDayValueAccessor();
+
+      // When: register control
+      valueAccessor.registerControl(control);
+
+      // And: update accessor model value:
+      valueAccessor.updateModel(null);
+
+      // Then: value is converted correctly
+      expect(control.value, null);
+    });
   });
 }
