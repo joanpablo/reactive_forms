@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Compose multiple validators into a single function.
@@ -8,21 +12,22 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ComposeValidator extends Validator {
   final List<ValidatorFunction> validators;
 
-  ComposeValidator(this.validators);
+  /// Constructs an instance of the validator.
+  ///
+  /// The argument [validators] must not be null.
+  ComposeValidator(this.validators) : assert(validators != null);
 
   @override
   Map<String, dynamic> validate(AbstractControl<dynamic> control) {
-    final composeError = Map<String, dynamic>();
+    final composedError = Map<String, dynamic>();
 
     for (final validator in this.validators) {
       final error = validator(control);
       if (error != null) {
-        composeError.addAll(error);
-      } else {
-        return null;
+        composedError.addAll(error);
       }
     }
 
-    return composeError.isEmpty ? null : composeError;
+    return composedError.isEmpty ? null : composedError;
   }
 }

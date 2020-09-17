@@ -17,17 +17,14 @@ class ReactiveFormsApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
+  // We recommend to use Reactive Form with Provider plugin or any other
+  // state management library and not declare FormGroup directly in a
+  // stateless widget.
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // We don't recommend to declare a FormGroup within a Stateful Widget.
-  // We highly recommend using the Provider plugin
-  // or any other state management library.
-  //
-  // We have declared the FormGroup within a Stateful Widget only for
-  // demonstration purposes and to simplify this example.
   final form = FormGroup({
     'email': FormControl(
       validators: [
@@ -45,7 +42,6 @@ class _HomePageState extends State<HomePage> {
     'progress': FormControl<double>(value: 50.0),
     'dateTime': FormControl<DateTime>(value: DateTime.now()),
     'time': FormControl<TimeOfDay>(value: TimeOfDay.now()),
-    'durationSeconds': FormControl<double>(value: 0),
   }, validators: [
     Validators.mustMatch('password', 'passwordConfirmation')
   ]);
@@ -143,7 +139,6 @@ class _HomePageState extends State<HomePage> {
                     'email': ControlState(value: 'johnDoe', disabled: true),
                     'progress': ControlState(value: 50.0),
                     'rememberMe': ControlState(value: false),
-                    'durationSeconds': ControlState(value: 0.0),
                   }),
                 ),
                 ReactiveSwitch(formControlName: 'rememberMe'),
@@ -181,8 +176,10 @@ class _HomePageState extends State<HomePage> {
                 ReactiveValueListenableBuilder<double>(
                   formControlName: 'progress',
                   builder: (context, control, child) {
-                    return Text(
-                        'Progress set to ${control.value?.toStringAsFixed(2)}%');
+                    return control.value == null
+                        ? Text('Progress not set')
+                        : Text(
+                            'Progress set to ${control.value.toStringAsFixed(2)}%');
                   },
                 ),
                 ReactiveSlider(
@@ -194,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 24.0),
                 ReactiveTextField(
-                  formControlName: 'durationSeconds',
+                  formControlName: 'progress',
                   keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 24.0),
@@ -221,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                   formControlName: 'time',
                   readOnly: true,
                   decoration: InputDecoration(
-                    labelText: 'Birthday',
+                    labelText: 'Birthday time',
                     suffixIcon: ReactiveTimePicker(
                       formControlName: 'time',
                       builder: (context, picker, child) {
@@ -251,13 +248,13 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
   final error = {'unique': false};
 
-  final emailAlreadyUsed = await Future.delayed(
+  final emailAlreadyInUse = await Future.delayed(
     Duration(seconds: 5), // a delay to simulate a time consuming operation
     () => inUseEmails.contains(control.value),
   );
 
-  if (emailAlreadyUsed) {
-    control.touch();
+  if (emailAlreadyInUse) {
+    control.markAsTouched();
     return error;
   }
 

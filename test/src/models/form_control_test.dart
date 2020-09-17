@@ -96,20 +96,20 @@ void main() {
       // Given: a control
       final control = FormControl();
 
-      // Expect: is enabled
+      // Expect: control is enabled
       expect(control.enabled, true);
 
-      // When: call disabled()
-      control.disable();
+      // When: disable the control
+      control.markAsDisabled();
 
-      // Then: the control change status to disabled
+      // Then: control status changes to disabled
       expect(control.disabled, true);
       expect(control.enabled, false);
       expect(control.status, ControlStatus.disabled);
     });
 
     test('Create control with disabled status', () {
-      // Given: a control disabled
+      // Given: a disabled control
       final control = FormControl(disabled: true);
 
       // Expect: is disabled
@@ -122,13 +122,13 @@ void main() {
       // Given: a required control
       final control = FormControl<String>(validators: [Validators.required]);
 
-      // When: call disabled()
-      control.disable();
+      // When: disable the control
+      control.markAsDisabled();
 
       // When: set value to control
       control.value = 'disabled control';
 
-      // Expect: disable control
+      // Expect: control is disabled
       expect(control.disabled, true);
       expect(control.status, ControlStatus.disabled);
     });
@@ -167,6 +167,31 @@ void main() {
       expect(control.touched, false);
       // And: is disabled
       expect(control.disabled, true);
+    });
+
+    test('Reset a control marks it as pristine', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: control is dirty
+      control.markAsDirty();
+
+      // And: reset the control
+      control.reset();
+
+      // Then: the control is pristine
+      expect(control.pristine, true);
+    });
+
+    test('Set value to a control programmatically does not marks it dirty', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: set a value
+      control.value = 'some value';
+
+      // Then: the control is pristine
+      expect(control.pristine, true);
     });
   });
 }

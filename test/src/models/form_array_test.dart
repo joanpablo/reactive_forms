@@ -208,6 +208,43 @@ void main() {
       expect(array.control('0').enabled, true);
     });
 
+    test('Reset array marks it as pristine', () {
+      // Given: an array
+      final array = FormArray<int>([
+        FormControl<int>(),
+      ]);
+
+      // When: mark it as dirty
+      array.markAsDirty();
+
+      // Expect: is dirty
+      expect(array.dirty, true);
+
+      // When: reset array
+      array.reset();
+
+      //Then: array is pristine
+      expect(array.pristine, true);
+    });
+
+    test('Reset array state marks it as pristine', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+      ]);
+
+      // When: mark it as dirty
+      array.markAsDirty();
+
+      // And: reset array value with state
+      array.resetState([
+        ControlState(value: 2),
+      ]);
+
+      //Then: array is pristine
+      expect(array.pristine, true, reason: 'array is not pristine');
+    });
+
     test('Adding a control to array adds a new value', () {
       // Given: an empty array
       final array = FormArray([]);
@@ -315,7 +352,7 @@ void main() {
       ]);
 
       // When: disable group
-      array.disable();
+      array.markAsDisabled();
 
       // Then: children are disabled
       expect(array.control('0').disabled, true);
@@ -345,7 +382,7 @@ void main() {
       ]);
 
       // When: enable form
-      array.enable();
+      array.markAsEnabled();
 
       // Then: all controls are enabled
       expect(array.controls.every((control) => control.enabled), true);
@@ -371,7 +408,7 @@ void main() {
       ]);
 
       // When: disable invalid control
-      array.control('1').disable();
+      array.control('1').markAsDisabled();
 
       // Then: form is valid
       expect(array.valid, true);
@@ -386,7 +423,7 @@ void main() {
       ]);
 
       // When: enable invalid control
-      array.control('1').enable();
+      array.control('1').markAsEnabled();
 
       // Then: form is invalid
       expect(array.invalid, true, reason: 'array is valid');
@@ -424,6 +461,36 @@ void main() {
     expect(array.control('0').value, 1);
     expect(array.control('1').value, 2);
     expect(array.control('2').value, 3);
+  });
+
+  test('Get control with nested name', () {
+    // Given: a nested array
+    final form = FormGroup({
+      'numbers': FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]),
+    });
+
+    // When: get a nested control
+    final control = form.control('numbers.2');
+
+    // Then: control is not null
+    expect(control is FormControl<int>, true);
+    expect(control.value, 3);
+  });
+
+  test('Array of groups', () {
+    // Given: an array of groups
+    final addressArray = FormArray([
+      fb.group({'city': 'Sofia'}),
+      fb.group({'city': 'Havana'}),
+    ]);
+
+    // Expect: array is created
+    expect(addressArray.controls.length, 2);
+    expect(addressArray.control('0').value, {'city': 'Sofia'});
   });
 }
 

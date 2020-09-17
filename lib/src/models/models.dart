@@ -22,7 +22,10 @@ abstract class AbstractControl<T> {
   final _touchChanges = StreamController<bool>.broadcast();
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
+
+  StreamSubscription _asyncValidationSubscription;
   Map<String, dynamic> _errors = {};
+  bool _pristine = true;
 
   T _value;
 
@@ -39,55 +42,45 @@ abstract class AbstractControl<T> {
 
   bool _touched = false;
 
+  /// Constructor of the [AbstractControl].
+  AbstractControl({
+    List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
+    int asyncValidatorsDebounceTime = 250,
+    bool disabled = false,
+    bool touched = false,
+  })  : assert(asyncValidatorsDebounceTime >= 0),
+        _validators = validators ?? const [],
+        _asyncValidators = asyncValidators ?? const [],
+        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
+    _status = disabled ? ControlStatus.disabled : ControlStatus.valid;
+    _touched = touched ?? false;
+  }
+
+  /// A control is `dirty` if the user has changed the value in the UI.
+  ///
+  /// Gets true if the user has changed the value of this control in the UI.
+  ///
+  /// Programmatic changes to a control's value do not mark it dirty.
+  ///
+  /// See also [pristine].
+  bool get dirty => !this.pristine;
+
+  /// A control is `pristine` if the user has not yet changed the value
+  /// in the UI.
+  ///
+  /// Gets true if the user has not yet changed the value in the UI.
+  /// Programmatic changes to a control's value do not mark it dirty.
+  ///
+  /// See also [dirty].
+  bool get pristine => this._pristine;
+
   /// Gets if the control is touched or not.
   ///
   /// A control is touched when the user taps on the ReactiveFormField widget
   /// and then remove focus or completes the text edition. Validation messages
   /// will begin to show up when the FormControl is touched.
   bool get touched => _touched;
-
-  /// Marks the control as touched.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), a notification
-  /// event is raised.
-  void touch({bool emitEvent}) {
-    _updateTouched(true, emitEvent: emitEvent);
-  }
-
-  /// Marks the control as untouched.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), a notification
-  /// event is raised.
-  void untouch({bool emitEvent}) {
-    _updateTouched(false, emitEvent: emitEvent);
-  }
-
-  void _updateTouched(bool value, {bool emitEvent}) {
-    emitEvent ??= true;
-
-    if (_touched != value) {
-      _touched = value;
-
-      if (emitEvent) {
-        _touchChanges.add(_touched);
-      }
-    }
-  }
-
-  /// Constructor of the [AbstractControl].
-  AbstractControl({
-    List<ValidatorFunction> validators,
-    List<AsyncValidatorFunction> asyncValidators,
-    int asyncValidatorsDebounceTime = 250,
-    bool touched = false,
-    bool disabled = false,
-  })  : assert(asyncValidatorsDebounceTime >= 0),
-        _validators = validators ?? const [],
-        _asyncValidators = asyncValidators ?? const [],
-        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime {
-    _status = disabled ? ControlStatus.disabled : ControlStatus.valid;
-    _updateTouched(touched);
-  }
 
   /// The list of functions that determines the validity of this control.
   ///
@@ -114,9 +107,6 @@ abstract class AbstractControl<T> {
   AbstractControl get parent => this._parent;
 
   /// Sets the parent of the control.
-  ///
-  /// This is for internal use only.
-  @protected
   set parent(AbstractControl parent) {
     this._parent = parent;
   }
@@ -165,14 +155,123 @@ abstract class AbstractControl<T> {
   /// valid AND invalid or invalid AND pending.
   ControlStatus get status => _status;
 
+  /// Marks the control as `dirty`.
+  ///
+  /// A control becomes dirty when the control's value is changed through
+  /// the UI.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), the
+  /// *statusChanges* emit event with the latest status when the control is
+  /// mark dirty. When false, no events are emitted.
+  void markAsDirty({bool updateParent, bool emitEvent}) {
+    updateParent ??= true;
+    emitEvent ??= true;
+
+    _pristine = false;
+
+    if (emitEvent) {
+      _statusChanges.add(_status);
+    }
+
+    if (_parent != null && updateParent) {
+      _parent.markAsDirty(updateParent: updateParent, emitEvent: emitEvent);
+    }
+  }
+
+  /// Marks the control as `pristine`.
+  ///
+  /// If the control has any children, marks all children as `pristine`, and
+  /// recalculates the `pristine` status of all parent controls.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  void markAsPristine({bool updateParent}) {
+    updateParent ??= true;
+
+    _pristine = true;
+
+    _forEachChild((control) => control.markAsPristine(updateParent: false));
+
+    if (_parent != null && updateParent) {
+      _parent._updatePristine(updateParent: updateParent);
+    }
+  }
+
+  /// Marks the control as touched.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), an
+  /// event is emitted.
+  void markAsTouched({bool updateParent, bool emitEvent}) {
+    updateParent ??= true;
+    emitEvent ??= true;
+
+    if (!_touched) {
+      _touched = true;
+
+      if (emitEvent) {
+        _touchChanges.add(_touched);
+      }
+
+      if (_parent != null && updateParent) {
+        _parent.markAsTouched(updateParent: updateParent, emitEvent: false);
+      }
+    }
+  }
+
+  /// Marks the control and all its descendant controls as touched.
+  ///
+  /// When [updateParent] is false, mark only this control and descendants.
+  /// When true or not supplied, marks also all direct ancestors.
+  /// Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
+  void markAllAsTouched({bool updateParent, bool emitEvent}) {
+    this.markAsTouched(updateParent: updateParent);
+    _forEachChild((control) => control.markAllAsTouched(updateParent: false));
+  }
+
+  /// Marks the control as untouched.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
+  void markAsUntouched({bool updateParent, bool emitEvent}) {
+    updateParent ??= true;
+    emitEvent ??= true;
+
+    if (_touched) {
+      _touched = false;
+      _forEachChild((control) => control.markAsUntouched(updateParent: false));
+
+      if (emitEvent) {
+        _touchChanges.add(_touched);
+      }
+
+      if (_parent != null && updateParent) {
+        _parent._updateTouched(updateParent: updateParent);
+      }
+    }
+  }
+
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
   ///
-  /// When [updateParent] is false, mark only this control.
-  /// When true or not supplied, marks all direct ancestors.
-  /// Default is true.
-  void enable({bool updateParent, bool emitEvent}) {
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
+  void markAsEnabled({bool updateParent, bool emitEvent}) {
     emitEvent ??= true;
     updateParent ??= true;
 
@@ -191,10 +290,9 @@ abstract class AbstractControl<T> {
   ///
   /// If the control has children, all children are also disabled.
   ///
-  /// When [updateParent] is false, mark only this control.
-  /// When true or not supplied, marks all direct ancestors.
-  /// Default is true.
-  void disable({bool updateParent, bool emitEvent}) {
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  void markAsDisabled({bool updateParent, bool emitEvent}) {
     updateParent ??= true;
     emitEvent ??= true;
 
@@ -285,24 +383,66 @@ abstract class AbstractControl<T> {
     bool updateParent,
     bool emitEvent,
   }) {
-    this.untouch();
+    this.markAsPristine(updateParent: updateParent);
+    this.markAsUntouched(updateParent: updateParent);
 
     this.updateValue(value, updateParent: updateParent, emitEvent: emitEvent);
 
     if (disabled != null) {
       disabled
-          ? disable(updateParent: true, emitEvent: false)
-          : enable(updateParent: true, emitEvent: false);
+          ? markAsDisabled(updateParent: true, emitEvent: false)
+          : markAsEnabled(updateParent: true, emitEvent: false);
     }
   }
 
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
+  ///
+  /// The control is marked as dirty.
+  ///
+  /// See [dirty].
   void setErrors(Map<String, dynamic> errors) {
     _errors.clear();
     _errors.addAll(errors);
 
     _updateControlsErrors();
+    this.markAsDirty(emitEvent: false);
+  }
+
+  /// Removes an error given the error [key].
+  ///
+  /// The control is marked as dirty.
+  ///
+  /// See [dirty].
+  void removeError(String key) {
+    _errors.removeWhere((errorKey, value) => errorKey == key);
+    _updateControlsErrors();
+    this.markAsDirty(emitEvent: false);
+  }
+
+  /// Returns true if all children disabled, otherwise returns false.
+  bool _allControlsDisabled() {
+    return this.disabled;
+  }
+
+  /// Returns true if all children has the specified [status], otherwise
+  /// returns false.
+  bool _anyControlsHaveStatus(ControlStatus status) {
+    return false;
+  }
+
+  ControlStatus _calculateStatus() {
+    if (_allControlsDisabled()) {
+      return ControlStatus.disabled;
+    } else if (this.hasErrors) {
+      return ControlStatus.invalid;
+    } else if (_anyControlsHaveStatus(ControlStatus.pending)) {
+      return ControlStatus.pending;
+    } else if (_anyControlsHaveStatus(ControlStatus.invalid)) {
+      return ControlStatus.invalid;
+    }
+
+    return ControlStatus.valid;
   }
 
   _updateControlsErrors() {
@@ -326,43 +466,8 @@ abstract class AbstractControl<T> {
     return errors;
   }
 
-  /// Returns true if all children disabled, otherwise returns false.
-  ///
-  /// This is for internal use only.
-  @protected
-  bool allControlsDisabled() {
-    return this.disabled;
-  }
-
-  /// Returns true if all children has the specified [status], otherwise
-  /// returns false.
-  ///
-  /// This is for internal use only.
-  @protected
-  bool anyControlsHaveStatus(ControlStatus status) {
-    return false;
-  }
-
-  /// This method for internal use only.
-  @protected
-  T reduceValue();
-
-  ControlStatus _calculateStatus() {
-    if (this.allControlsDisabled()) {
-      return ControlStatus.disabled;
-    } else if (this.hasErrors) {
-      return ControlStatus.invalid;
-    } else if (this.anyControlsHaveStatus(ControlStatus.pending)) {
-      return ControlStatus.pending;
-    } else if (this.anyControlsHaveStatus(ControlStatus.invalid)) {
-      return ControlStatus.invalid;
-    }
-
-    return ControlStatus.valid;
-  }
-
-  _setInitialStatus() {
-    _status = this.allControlsDisabled()
+  void _setInitialStatus() {
+    _status = this._allControlsDisabled()
         ? ControlStatus.disabled
         : ControlStatus.valid;
   }
@@ -374,7 +479,7 @@ abstract class AbstractControl<T> {
   }
 
   void _updateValue() {
-    _value = this.reduceValue();
+    _value = this._reduceValue();
   }
 
   void updateValueAndValidity({bool updateParent, bool emitEvent}) {
@@ -399,8 +504,6 @@ abstract class AbstractControl<T> {
 
     _updateAncestors(updateParent);
   }
-
-  StreamSubscription _asyncValidationSubscription;
 
   Future<void> _cancelExistingSubscription() async {
     if (_asyncValidationSubscription != null) {
@@ -441,6 +544,32 @@ abstract class AbstractControl<T> {
       },
     );
   }
+
+  void _updateTouched({bool updateParent}) {
+    _touched = _anyControlsTouched();
+
+    if (_parent != null && updateParent) {
+      _parent._updateTouched(updateParent: updateParent);
+    }
+  }
+
+  void _updatePristine({bool updateParent}) {
+    _pristine = !_anyControlsDirty();
+
+    if (_parent != null && updateParent) {
+      _parent._updatePristine(updateParent: updateParent);
+    }
+  }
+
+  bool _anyControlsTouched() => _anyControls((control) => control.touched);
+
+  bool _anyControlsDirty() => _anyControls((control) => control.dirty);
+
+  bool _anyControls(bool Function(AbstractControl) condition);
+
+  T _reduceValue();
+
+  void _forEachChild(void Function(AbstractControl) callback);
 }
 
 /// Tracks the value and validation status of an individual form control.
@@ -475,15 +604,15 @@ class FormControl<T> extends AbstractControl<T> {
     T value,
     List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
-    bool touched = false,
     int asyncValidatorsDebounceTime = 250,
+    bool touched = false,
     bool disabled = false,
   }) : super(
           validators: validators,
           asyncValidators: asyncValidators,
-          touched: touched,
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
+          touched: touched,
         ) {
     if (value != null) {
       this.value = value;
@@ -549,18 +678,25 @@ class FormControl<T> extends AbstractControl<T> {
 
   /// This method is for internal use only.
   @override
-  T reduceValue() => this.value;
+  T _reduceValue() => this.value;
 
   @override
   void updateValue(T value, {bool updateParent, bool emitEvent}) {
     if (_value != value) {
       _value = value;
+
       this.updateValueAndValidity(
         updateParent: updateParent,
         emitEvent: emitEvent,
       );
     }
   }
+
+  @override
+  void _forEachChild(void Function(AbstractControl) callback) => [];
+
+  @override
+  bool _anyControls(bool Function(AbstractControl) condition) => false;
 }
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -601,17 +737,52 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this.addAll(controls);
   }
 
-  /// Returns a [AbstractControl] by [name].
+  @override
+  bool contains(String name) {
+    return this._controls.containsKey(name);
+  }
+
+  /// Retrieves a child control given the control's [name] or path.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
-  /// the specified [name].
+  /// the specified [name]/path.
+  ///
+  /// ### Example:
+  ///
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'total': FormControl<int>(value: 20),
+  ///   'person': FormGroup({
+  ///     'name': FormControl<String>(value: 'John'),
+  ///   }),
+  /// });
+  /// ```
+  ///
+  /// Retrieves a control
+  /// ```dart
+  /// form.control('total');
+  /// ```
+  ///
+  /// Retrieves a nested control
+  /// ```dart
+  /// form.control('person.name');
+  /// ```
   @override
   AbstractControl control(String name) {
-    if (!this._controls.containsKey(name)) {
-      throw FormControlNotFoundException(controlName: name);
+    final namePath = name.split('.');
+    if (namePath.length > 1) {
+      final control = this.findControl(namePath);
+      if (control != null) {
+        return control;
+      }
+    } else if (this.contains(name)) {
+      return _controls[name];
     }
 
-    return this._controls[name];
+    throw FormControlNotFoundException(controlName: name);
   }
 
   /// Gets the collection of child controls.
@@ -639,9 +810,9 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// This method is for internal use only.
   @override
-  Map<String, dynamic> reduceValue() {
+  Map<String, dynamic> _reduceValue() {
     final map = Map<String, dynamic>();
-    this._controls.forEach((key, control) {
+    _controls.forEach((key, control) {
       if (control.enabled || this.disabled) {
         map[key] = control.value;
       }
@@ -683,26 +854,28 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void disable({bool updateParent, bool emitEvent}) {
-    this._controls.forEach((_, control) {
-      control.disable(updateParent: true, emitEvent: emitEvent);
+  void markAsDisabled({bool updateParent, bool emitEvent}) {
+    _controls.forEach((_, control) {
+      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.disable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
-  /// Enables the control. This means the control is included in validation
-  /// checks and the aggregate value of its parent. Its status recalculates
-  /// based on its value and its validators.
+  /// Enables the control.
+  ///
+  /// This means the control is included in validation checks and the aggregate
+  /// value of its parent. Its status recalculates based on its value and its
+  /// validators.
   ///
   /// When [updateParent] is true, mark only this control.
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void enable({bool updateParent, bool emitEvent}) {
-    this.controls.forEach((_, control) {
-      control.enable(updateParent: true, emitEvent: emitEvent);
+  void markAsEnabled({bool updateParent, bool emitEvent}) {
+    _controls.forEach((_, control) {
+      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.enable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Appends all [controls] to the group.
@@ -712,32 +885,13 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
       control.parent = this;
     });
     this.updateValueAndValidity();
-  }
-
-  /// A group is touched if at least one of its children is mark as touched.
-  @override
-  bool get touched => this._controls.values.any((control) => control.touched);
-
-  /// Marks all controls as touched
-  @override
-  void touch({bool emitEvent = true}) {
-    this._controls.values.forEach((control) => control.touch(
-          emitEvent: emitEvent,
-        ));
-  }
-
-  /// Marks all controls as untouched
-  @override
-  void untouch({bool emitEvent = true}) {
-    this._controls.values.forEach((control) => control.untouch(
-          emitEvent: emitEvent,
-        ));
+    _updateTouched();
   }
 
   /// Disposes the group.
   @override
   void dispose() {
-    this._controls.forEach((_, control) {
+    _forEachChild((control) {
       control.parent = null;
       control.dispose();
     });
@@ -749,7 +903,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// This is for internal use only.
   @override
-  bool allControlsDisabled() {
+  bool _allControlsDisabled() {
     if (_controls.isEmpty) {
       return false;
     }
@@ -761,7 +915,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// This is for internal use only.
   @override
-  bool anyControlsHaveStatus(ControlStatus status) {
+  bool _anyControlsHaveStatus(ControlStatus status) {
     return _controls.values.any((control) => control.status == status);
   }
 
@@ -792,12 +946,12 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }) {
     value ??= {};
 
-    this.controls.keys.forEach((name) {
-      this.controls[name].updateValue(
-            value[name],
-            updateParent: false,
-            emitEvent: emitEvent,
-          );
+    _controls.keys.forEach((name) {
+      _controls[name].updateValue(
+        value[name],
+        updateParent: false,
+        emitEvent: emitEvent,
+      );
     });
 
     this.updateValueAndValidity(
@@ -833,15 +987,59 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     if (state == null || state.isEmpty) {
       this.reset();
     } else {
-      this.controls.forEach((name, control) {
+      _controls.forEach((name, control) {
         control.reset(
           value: state[name]?.value,
           disabled: state[name]?.disabled,
           updateParent: false,
         );
       });
+      _updatePristine();
       this.updateValueAndValidity();
     }
+  }
+
+  /// Sets focus to a child control.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
+  ///
+  /// ### Example:
+  /// Focus a child control by name.
+  /// ```dart
+  /// final form = fb.group({'name': ''});
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// form.focus('name');
+  ///```
+  ///
+  /// Focus a nested child control by path.
+  /// ```dart
+  /// final form = fb.group({
+  ///   'person': fb.group({
+  ///     'name': '',
+  ///   })
+  /// });
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// form.focus('person.name');
+  ///```
+  void focus(String name) {
+    final control = findControl(name.split('.'));
+    if (control is FormControl) {
+      control.focus();
+    }
+  }
+
+  @override
+  void _forEachChild(void Function(AbstractControl) callback) {
+    _controls.forEach((name, control) => callback(control));
+  }
+
+  @override
+  bool _anyControls(bool Function(AbstractControl) condition) {
+    return _controls.values
+        .any((control) => control.enabled && condition(control));
   }
 }
 
@@ -885,7 +1083,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   }
 
   /// Gets the list of child controls.
-  List<AbstractControl<T>> get controls => List.unmodifiable(this._controls);
+  List<AbstractControl<T>> get controls => List.unmodifiable(_controls);
 
   /// Sets the value of the [FormArray].
   ///
@@ -900,7 +1098,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   ///
   /// This method is for internal use only.
   @override
-  List<T> reduceValue() {
+  List<T> _reduceValue() {
     return this
         ._controls
         .where((control) => control.enabled || this.disabled)
@@ -919,22 +1117,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// When false or not supplied, marks all direct ancestors.
   /// Default is false.
   @override
-  void disable({bool updateParent = true, bool emitEvent = true}) {
-    this._controls.forEach((control) {
-      control.disable(updateParent: true, emitEvent: emitEvent);
+  void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
+    _controls.forEach((control) {
+      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.disable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
   @override
-  void enable({bool updateParent = true, bool emitEvent = true}) {
-    this.controls.forEach((control) {
-      control.enable(updateParent: true, emitEvent: emitEvent);
+  void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
+    _forEachChild((control) {
+      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
-    super.enable(updateParent: updateParent, emitEvent: emitEvent);
+    super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Insert a new [control] at the [index] position.
@@ -956,7 +1154,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     bool updateParent,
     bool emitEvent,
   }) {
-    this._controls.addAll(controls);
+    _controls.addAll(controls);
     controls.forEach((control) {
       control.parent = this;
     });
@@ -986,10 +1184,20 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.removeAt(index);
   }
 
-  /// Returns a control by name where [name].
+  @override
+  bool contains(String name) {
+    int index = int.tryParse(name);
+    if (index != null && index < _controls.length) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Retrieves a child control given the control's [name] or path.
   ///
-  /// The [name] is the String representation of the index position
-  /// of the control in array.
+  /// The [name] is a dot-delimited string that represents the index position
+  /// of the control in array or the path to the nested control.
   ///
   /// Throws [FormArrayInvalidIndexException] if [name] is not e valid [int]
   /// number.
@@ -1012,22 +1220,44 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// ```shell
   /// >hello
   /// ```
+  ///
+  /// Retrieves a nested control
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'address': FormArray([
+  ///     FormGroup({
+  ///       'zipCode': FormControl<int>(value: 1000),
+  ///       'city': FormControl<String>(value: 'Sofia'),
+  ///     })
+  ///   ]),
+  /// });
+  ///
+  /// form.control('address.0.city');
+  /// ```
   @override
   AbstractControl<T> control(String name) {
-    int index = int.tryParse(name);
-    if (index == null) {
-      throw FormArrayInvalidIndexException(name);
-    } else if (index >= _controls.length) {
-      throw FormControlNotFoundException(controlName: name);
+    final namePath = name.split('.');
+    if (namePath.length > 1) {
+      final control = this.findControl(namePath);
+      if (control != null) {
+        return control;
+      }
+    } else {
+      int index = int.tryParse(name);
+      if (index == null) {
+        throw FormArrayInvalidIndexException(name);
+      } else if (index < _controls.length) {
+        return _controls[index];
+      }
     }
 
-    return _controls[index];
+    throw FormControlNotFoundException(controlName: name);
   }
 
   /// Disposes the array.
   @override
   void dispose() {
-    _controls.forEach((control) {
+    _forEachChild((control) {
       control.parent = null;
       control.dispose();
     });
@@ -1039,7 +1269,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   ///
   /// This is for internal use only.
   @override
-  bool allControlsDisabled() {
+  bool _allControlsDisabled() {
     if (_controls.isEmpty) {
       return false;
     }
@@ -1051,7 +1281,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   ///
   /// This is for internal use only.
   @override
-  bool anyControlsHaveStatus(ControlStatus status) {
+  bool _anyControlsHaveStatus(ControlStatus status) {
     return _controls.any((control) => control.status == status);
   }
 
@@ -1078,22 +1308,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   @override
   void updateValue(Iterable<T> value, {bool updateParent, bool emitEvent}) {
-    for (var i = 0; i < this.controls.length; i++) {
+    for (var i = 0; i < _controls.length; i++) {
       if (value == null || i < value.length) {
-        this.controls[i].updateValue(
-              value == null ? null : value.elementAt(i),
-              updateParent: false,
-              emitEvent: emitEvent,
-            );
+        _controls[i].updateValue(
+          value == null ? null : value.elementAt(i),
+          updateParent: false,
+          emitEvent: emitEvent,
+        );
       }
     }
 
-    if (value != null && value.length > this.controls.length) {
+    if (value != null && value.length > _controls.length) {
       final newControls = value
           .toList()
           .asMap()
           .entries
-          .where((entry) => entry.key >= this.controls.length)
+          .where((entry) => entry.key >= _controls.length)
           .map((entry) => FormControl<T>(value: entry.value));
 
       this.addAll(
@@ -1136,15 +1366,26 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     if (state == null || state.isEmpty) {
       this.reset();
     } else {
-      for (var i = 0; i < this.controls.length; i++) {
-        this.controls[i].reset(
-              value: i < state.length ? state.elementAt(i)?.value : null,
-              disabled: i < state.length ? state.elementAt(i)?.disabled : null,
-              updateParent: false,
-            );
+      for (var i = 0; i < _controls.length; i++) {
+        _controls[i].reset(
+          value: i < state.length ? state.elementAt(i)?.value : null,
+          disabled: i < state.length ? state.elementAt(i)?.disabled : null,
+          updateParent: false,
+        );
       }
 
+      _updatePristine();
       this.updateValueAndValidity();
     }
+  }
+
+  @override
+  void _forEachChild(void Function(AbstractControl) callback) {
+    _controls.forEach((control) => callback(control));
+  }
+
+  @override
+  bool _anyControls(bool Function(AbstractControl) condition) {
+    return _controls.any((control) => control.enabled && condition(control));
   }
 }

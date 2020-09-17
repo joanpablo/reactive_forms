@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/compare_validator.dart';
+import 'package:reactive_forms/src/validators/compose_validator.dart';
 
 void main() {
   group('Email Validator Tests', () {
@@ -88,6 +90,11 @@ void main() {
       expect(form.valid, true);
       expect(form.hasErrors, false);
     });
+
+    test('Assert error on null arguments', () {
+      expect(() => Validators.mustMatch(null, ''), throwsAssertionError);
+      expect(() => Validators.mustMatch('', null), throwsAssertionError);
+    });
   });
 
   group('Pattern Validator Tests', () {
@@ -144,10 +151,12 @@ void main() {
         // Given: a control that is email and min length in 20
         final control = FormControl<String>(
           value: 'john@',
-          validators: Validators.compose([
-            Validators.email,
-            Validators.minLength(20),
-          ]),
+          validators: [
+            Validators.compose([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
         );
 
         // Expect: control invalid
@@ -162,14 +171,80 @@ void main() {
         // but with valid email default value
         final control = FormControl<String>(
           value: 'john@email.com',
-          validators: Validators.compose([
-            Validators.email,
-            Validators.minLength(20),
-          ]),
+          validators: [
+            Validators.compose([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
+        );
+
+        // Expect: control invalid
+        expect(control.valid, false);
+      },
+    );
+
+    test(
+      'If at least on validator is valid then control is VALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          value: 'johndoe@email.com',
+          validators: [
+            Validators.composeOR([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
         );
 
         // Expect: control invalid
         expect(control.valid, true);
+      },
+    );
+
+    test(
+      'If at least on validator is valid then control is VALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          value: 'johndoeemailemail.com',
+          validators: [
+            Validators.composeOR([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
+        );
+
+        // Expect: control invalid
+        expect(control.valid, true);
+      },
+    );
+
+    test(
+      'If at least on validator is valid then control is VALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          value: 'johndoe.com',
+          validators: [
+            Validators.composeOR([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
+        );
+
+        // Expect: control invalid
+        expect(control.valid, false);
+      },
+    );
+
+    test(
+      'assert error if null validators',
+      () {
+        expect(() => ComposeValidator(null), throwsAssertionError);
       },
     );
   });
@@ -272,6 +347,355 @@ void main() {
         control.value = cardNumber;
         expect(control.valid, true, reason: '[$cardNumber] is not valid');
       });
+    });
+  });
+
+  group('Required True validator tests', () {
+    test('FormControl is invalid if value is false', () {
+      // Given: an invalid control
+      final control = FormControl<bool>(
+        value: false,
+        validators: [Validators.requiredTrue],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.equals: {
+          'required': true,
+          'actual': false,
+        }
+      });
+    });
+
+    test('FormControl is valid if value is true', () {
+      // Given: a valid control
+      final control = FormControl<bool>(
+        value: true,
+        validators: [Validators.requiredTrue],
+      );
+
+      // Expect: control is valid
+      expect(control.valid, true);
+    });
+
+    test('FormControl is invalid if value is null', () {
+      // Given: a control with null value
+      final control = FormControl<bool>(
+        validators: [Validators.requiredTrue],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.equals: {
+          'required': true,
+          'actual': null,
+        }
+      });
+    });
+
+    test('FormControl is invalid if value change to false', () {
+      // Given: a valid control
+      final control = FormControl<bool>(
+        value: true,
+        validators: [Validators.requiredTrue],
+      );
+
+      // When: change the value to false
+      control.value = false;
+
+      // Then: control is invalid
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.equals: {
+          'required': true,
+          'actual': false,
+        }
+      });
+    });
+
+    test('FormControl is valid if value change to true', () {
+      // Given: an invalid control
+      final control = FormControl<bool>(
+        value: false,
+        validators: [Validators.requiredTrue],
+      );
+
+      // When: change the value to true
+      control.value = true;
+
+      // Then: control is valid
+      expect(control.valid, true);
+    });
+  });
+  group('Equals validator tests', () {
+    test('FormControl is valid if value equals to validator value', () {
+      // Given: an invalid control
+      final control = FormControl<double>(
+        value: 0.0,
+        validators: [Validators.equals(20.0)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false, reason: 'init state of control is valid');
+
+      // When: change the value to true
+      control.value = 20.0;
+
+      // Then: control is valid
+      expect(control.valid, true, reason: 'last state of control is invalid');
+    });
+  });
+  group('Max validator tests', () {
+    test('FormControl with lower value is valid', () {
+      // Given: a valid control
+      final control = FormControl<int>(
+        value: 10,
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is valid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with equals value is valid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 20,
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with a grater than value is invalid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 30,
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+    });
+  });
+  group('Min validator tests', () {
+    test('FormControl with greater than value is valid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 20,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with equals value is valid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 10,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, true);
+    });
+
+    test('FormControl with lower value is invalid', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
+        value: 5,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+    });
+  });
+  group('Compare Validator Tests', () {
+    test('Lower compare', () {
+      // Given: a valid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 20,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.lower),
+      ]);
+
+      // Expect: form is valid
+      expect(form.valid, true);
+    });
+    test('Lower compare invalid', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.lower),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+    test('Lower or equal compare', () {
+      // Given: a valid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 20,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.lower_or_equal),
+      ]);
+
+      // Expect: form is valid
+      expect(form.valid, true);
+    });
+    test('Lower or equal compare valid', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.lower_or_equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, true);
+    });
+    test('Lower or equal compare invalid', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 11,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.lower_or_equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+    test('Equal compare valid', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, true);
+    });
+    test('Equal compare lower (invalid)', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 5,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+    test('Equal compare greater (invalid)', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 15,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+    test('Greater compare', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 20,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.greater),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, true);
+    });
+
+    test('Greater compare invalid (equal values)', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 20,
+        'balance': 20,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.greater),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+
+    test('Greater compare invalid (lower values)', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 10,
+        'balance': 20,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.greater),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+
+    test('Greater or equal compare', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 20,
+        'balance': 10,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.greater_or_equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, true);
+    });
+
+    test('Greater or equal compare (equal values)', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 20,
+        'balance': 20,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.greater_or_equal)
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, true);
+    });
+
+    test('Greater or equal compare (invalid)', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'amount': 20,
+        'balance': 30,
+      }, [
+        Validators.compare('amount', 'balance', CompareOption.greater_or_equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
+
+    test('Assert error on Null arguments', () {
+      expect(() => CompareValidator(null, '', CompareOption.equal),
+          throwsAssertionError);
+      expect(() => CompareValidator('', null, CompareOption.equal),
+          throwsAssertionError);
+      expect(() => CompareValidator('', '', null), throwsAssertionError);
     });
   });
 }

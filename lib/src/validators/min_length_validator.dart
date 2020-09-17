@@ -11,7 +11,7 @@ class MinLengthValidator extends Validator {
 
   /// Constructs a [MinLengthValidator].
   ///
-  /// The [minLength] argument must not be null.
+  /// The argument [minLength] argument must not be null.
   MinLengthValidator(this.minLength) : assert(minLength != null);
 
   @override

@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 /// This class is an utility for getting access to common names of
 /// validation messages.
 ///
@@ -36,4 +40,19 @@ class ValidationMessage {
 
   /// Key text for credit card numbers validation message.
   static const String creditCard = 'creditCard';
+
+  /// Key text for max validation message.
+  static const String max = 'max';
+
+  /// Key text for min validation message.
+  static const String min = 'min';
+
+  /// Key text for equals validation message.
+  static const String equals = 'requiredEquals';
+
+  /// Key text for requiredTrue validation message.
+  static const String requiredTrue = 'requiredEquals';
+
+  /// Key text for group compare validation message.
+  static const String compare = 'compare';
 }

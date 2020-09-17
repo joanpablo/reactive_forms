@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^4.0.2
+  reactive_forms: ^5.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -95,44 +95,45 @@ final form = FormGroup({
 There are common predefined validators, but you can implement custom validators too.  
 ### Predefined validators
 - Validators.required
+- Validators.requiredTrue
 - Validators.email
 - Validators.number
+- Validators.min
+- Validators.max
 - Validators.minLength
 - Validators.maxLength
 - Validators.pattern
 - Validators.creditCard
 - Validators.mustMatch
+- Validators.equals
+- Validators.compose
+- Validators.composeOR
+- Validators.compare
 
 ### Custom Validators
-Lets implement a custom validator that validates empty white spaces value:
+A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
+
+Lets implement a custom validator that validates a control's value must be *true*:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(validators: [
-    Validators.required, 
-    _emptyWhiteSpaces, // custom validator
-  ]),
+  'acceptLicense': FormControl<bool>(
+    value: false, 
+    validators: [_requiredTrue], // custom validator
+  ),
 });
 ```
 
 ```dart
-/// Validates if control has empty-white-spaces value
-Map<String, dynamic> _emptyWhiteSpaces(AbstractControl control) {
-  final error = {'required': true};
-
-  if (control.value == null) {
-    return error;
-  } else if (control.value is String) {
-    return control.value.trim().isEmpty ? error : null;
-  }
-
-  return null;
+/// Validates that control's value must be `true`
+Map<String, dynamic> _requiredTrue(AbstractControl control) {
+  return control.value is bool && control.value == true 
+  ? null 
+  : {'required': true};
 }
-```
+``` 
 
-A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is correct the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information. 
-
-> You can see the implementation of predefined validators to see more examples. In fact the previous example is the current implementation of the **required** validator, but we have just change the names for demonstration purpose.
+> You can see the current implementation of predefined validators in the source code to see more examples.
 
 ### Pattern Validator
 
@@ -201,7 +202,7 @@ In the previous code we have added two more fields to the form: *password* and *
 However the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator and the implementation follows as:
 
 ```dart
-Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) {
+ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
   return (AbstractControl control) {
     final form = control as FormGroup;
 
@@ -209,10 +210,10 @@ Map<String, dynamic> _mustMatch(String controlName, String matchingControlName) 
     final matchingFormControl = form.control(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
-      matchingFormControl.addError({'mustMatch': true});
+      matchingFormControl.setErrors({'mustMatch': true});
 
       // force messages to show up as soon as possible
-      matchingFormControl.touch(); 
+      matchingFormControl.markAsTouched(); 
     } else {
       matchingFormControl.setErrors({});
     }
@@ -287,14 +288,14 @@ Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
   );
 
   if (emailAlreadyUsed) {
-    control.touch();
+    control.markAsTouched();
     return error;
   }
 
   return null;
 }
 ```
-> Note the use of **control.touch()** to force the validation message to show up as soon as possible.
+> Note the use of **control.markAsTouched()** to force the validation message to show up as soon as possible.
 
 The previous implementation was a simple function that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the *value* of the *control* is contained in the *server* array of emails.
 
@@ -317,7 +318,8 @@ final control = FormControl(
 
 To explain what Composing Validators is, let's see an example:
 
-We want to validate a text field of an authentication form. In this text field the user can write an **email** or a **phone number** and we want to make sure that the information is correctly formatted: that is, if it is an email, it is a valid email and if it is a phone it must have a valid format.
+We want to validate a text field of an authentication form. 
+In this text field the user can write an **email** or a **phone number** and we want to make sure that the information is correctly formatted. We must validate that input is a valid email or a valid phone number.
 
 ```dart
 
@@ -325,27 +327,31 @@ final phonePattern = '<some phone regex pattern>';
 
 final form = FormGroup({
   'user': FormControl<String>(
-    validators: Validators.compose([
-      Validators.email,
-      Validators.pattern(phonePattern),
-    ]),
+    validators: [
+      Validators.composeOR([
+        Validators.email,
+        Validators.pattern(phonePattern),
+      ])
+    ],
   ),
 });
 ```
-> Note that **Validators.compose** receives a collection of validators as argument and returns a collection of validators, this is intentional just to simplify code readability.
+> Note that **Validators.composeOR** receives a collection of validators as argument and returns a validator.
 
-With **Validators.compose** we are saying to **FormControl** that **if at least one validator evaluate as VALID then the control is VALID** it's not necesary that both validators evaluate to valid.
+With **Validators.composeOR** we are saying to **FormControl** that **if at least one validator evaluate as VALID then the control is VALID** it's not necessary that both validators evaluate to valid.
 
-Another example could be to validate multiples Credit Card numbers. In that case you have several regular expression patterns for each of the different kinds of credit cards. So the user can introduce a card number and if the information match with at least one of the cards the System recognice then the information is considered as valid.
+Another example could be to validate multiples Credit Card numbers. In that case you have several regular expression patterns for each type of credit card. So the user can introduce a card number and if the information match with at least one pattern then the information is considered as valid.
 
 ```dart
 final form = FormGroup({
   'cardNumber': FormControl<String>(
-    validators: Validators.compose([
-      Validators.pattern(americanExpressCardPattern),
-      Validators.pattern(masterCardPattern),
-      Validators.pattern(visaCardPattern),
-    ]),
+    validators: [
+      Validators.composeOR([
+        Validators.pattern(americanExpressCardPattern),
+        Validators.pattern(masterCardPattern),
+        Validators.pattern(visaCardPattern),
+      ])
+    ],
   ),
 });
 ```
@@ -370,6 +376,26 @@ final form = FormGroup({
     'street': FormControl<String>(validators: [Validators.required]),
     'city': FormControl<String>(validators: [Validators.required]),
     'zip': FormControl<String>(validators: [Validators.required]),
+  }),
+});
+```
+
+Using **FormBuilder** *(read FormBuilder section below)*:
+
+```dart
+final form = fb.group({
+  'personal': fb.group({
+    'name': ['', Validators.required],
+    'email': ['', Validators.required],
+  }),
+  'phone': fb.group({
+    'phoneNumber': ['', Validators.required],
+    'countryIso': ['', Validators.required],
+  }),
+  'address': FormGroup({
+    'street': ['', Validators.required],
+    'city': ['', Validators.required],
+    'zip': ['', Validators.required],
   }),
 });
 ```
@@ -442,9 +468,7 @@ final form = FormGroup({
 If we output the *value* of the previous form group we will get something like this:
 
 ```dart
-void printFormValue(FormGroup form) {
-  print(form.value);
-}
+print(form.value);
 ```
 
 ```json
@@ -463,7 +487,7 @@ array.add(
   FormControl<String>(value: 'caroline@email.com'),
 );
 
-printFormValue(form);
+print(form.value);
 ``` 
 
 ```json
@@ -472,13 +496,13 @@ printFormValue(form);
 }
 ```
 
-Another way of add controls to an array:
+Another way of add controls is to assign values directly to the array:
 
 ```dart
 // Given: an empty array of strings
 final array = FormArray<String>([]);
 
-// When: set a value to array
+// When: set value to array
 array.value = ["john@email.com", "susan@email.com", "caroline@email.com"];
 
 // Then: the array is no longer empty
@@ -524,11 +548,63 @@ Map<String, dynamic> emptyAddressee(AbstractControl control) {
 }
 ```
 
-## FormBuilder
+## Arrays of Groups
 
-The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup (for now). It reduces the amount of boilerplate needed to build complex forms.
+You can also create arrays of groups:
 
 ```dart
+// an array of groups
+final addressArray = FormArray([
+  FormGroup({
+    'city': FormControl(value: 'Sofia'),
+    'zipCode': FormControl(value: 1000),
+  }),
+  FormGroup({
+    'city': FormControl(value: 'Havana'),
+    'zipCode': FormControl(value: 10400),
+  }),
+]);
+```
+
+Another example using **FormBuilder**:
+
+```dart
+// an array of groups using FormBuilder
+final addressArray = fb.array([
+  fb.group({'city': 'Sofia', 'zipCode': 1000}),
+  fb.group({'city': 'Havana', 'zipCode': 10400}),
+]);
+```
+
+or just:
+
+```dart
+// an array of groups using a very simple syntax
+final addressArray = fb.array([
+  {'city': 'Sofia', 'zipCode': 1000},
+  {'city': 'Havana', 'zipCode': 10400},
+]);
+```
+
+You can iterate over groups as follow:
+
+```dart
+final cities = addressArray.controls
+        .map((control) => control as FormGroup)
+        .forEach((form) => form.control('city').value);
+```
+
+> A common mistake is to declare an *array* of groups as *FormArray&lt;FormGroup&gt;*.   
+>An array of *FormGroup* must be declared as ***FormArray()*** or as ***FormArray&lt;Map&lt;String, dynamic&gt;&gt;()***.
+
+## FormBuilder
+
+The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup, FormArray and FormControl. It reduces the amount of boilerplate needed to build complex forms.
+
+### Groups
+
+```dart
+// creates a group
 final form = fb.group({
   'name': 'John Doe',
   'email': ['', Validators.required, Validators.email],
@@ -544,6 +620,41 @@ final form = FormGroup({
   'email': FormControl<String>(value: '', validators: [Validators.required, Validators.email]),
   'password': FormControl(validators: [Validators.required]),
 });
+```  
+
+### Arrays
+
+```dart
+// creates an array
+final aliases = fb.array(['john', 'little john']);
+```
+
+### Control state
+
+```dart
+// create a group
+final group = fb.group(
+  // creates a control with default value and disabled state
+  'name': fb.state(value: 'john', disabled: true),
+);
+```
+
+## Nested Controls
+
+To retrieves nested controls you can specify the name of the control as a dot-delimited string that define the path to the control:
+
+```dart
+final form = FormGroup({
+  'address': FormGroup({
+    'zipCode': FormControl<int>(value: 1000),
+    'city': FormControl<String>(value: 'Sofia'),
+  }),
+});
+
+// get nested control value
+final city = form.control('address.city');
+
+print(city.value); // outputs: Sofia
 ```
 
 ## Reactive Form Widgets
@@ -644,15 +755,30 @@ final form = FormGroup({
 ```
 
 When you set a *value* to a **FormControl** from code and want to show up validations messages 
-you must call *FormControl.touch()* method:
+you must call *FormControl.markAsTouched()* method:
 
 ```dart
 set name(String newName) {
   final formControl = this.form.control('name');
   formControl.value = newName;
-  formControl.touch();// if newName is invalid then validation messages will show up in UI
+  formControl.markAsTouched();// if newName is invalid then validation messages will show up in UI
 }
 ```
+
+>To mark all children controls of a **FormGroup** and **FormArray** you must call **markAllAsTouched()**.
+>```dart
+> final form = FormGroup({
+>   'name': FormControl(
+>     value: 'John Doe',
+>     validators: [Validators.required],
+>     touched: true,
+>   ),
+> });
+> 
+> // marks all children as touched
+> form.markAllAsTouched();
+>```
+>
 
 ## Enable/Disable Submit button
 
@@ -766,9 +892,7 @@ void _onSubmit() {
 There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()** methods.
 
 ```dart
-final form = FormGroup({
-  'name': FormControl(value: 'John Doe'),
-});
+final form = fb.group({'name': 'John Doe'});
 
 FormControl control = form.control('name');
 
@@ -777,15 +901,34 @@ control.focus(); // UI text field get focus and the device keyboard pop up
 control.unfocus(); // UI text field lose focus
 ```
 
+You can also set focus directly from the Form like:
+
+```dart
+final form = fb.group({'name': ''});
+
+form.focus('name'); // UI text field get focus and the device keyboard pop up
+```
+
+```dart
+final form = fb.group({
+  'person': fb.group({
+    'name': '',
+  }),
+});
+
+// set focus to a nested control
+form.focus('person.name');
+```
+
 ## Focus flow between Text Fields
 
 Another example is when you have a form with several text fields and each time the user completes edition in one field you wnat to request next focus field using the keyboard actions:
 
 ```dart
-final form = FormGroup({
-  'name': FormControl<String>(validators: [Validators.required]),
-  'email': FormControl<String>(validators: [Validators.required, Validators.email]),
-  'password': FormControl<String>(validators: [Validators.required]),
+final form = fb.group({
+  'name': ['', Validators.required],
+  'email': ['', Validators.required, Validators.email],
+  'password': ['', Validators.required],
 });
 ```
 
@@ -807,12 +950,12 @@ Widget build(BuildContext context) {
         ReactiveTextField(
           formControlName: 'name',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.email.focus(), // email text field request focus
+          onSubmitted: () => this.email.focus(), // this.form.focus('email') do the same
         ),
         ReactiveTextField(
           formControlName: 'email',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.password.focus(), // password text field request focus
+          onSubmitted: () => this.password.focus(), // this.form.focus('password') do the same
         ),
         ReactiveTextField(
           formControlName: 'password',
@@ -891,6 +1034,7 @@ Widget build(BuildContext context) {
 
 - ReactiveForm
 - ReactiveFormConsumer
+- ReactiveFormBuilder
 - ReactiveFormArray
 - ReactiveValueListenableBuilder
 - ReactiveStatusListenableBuilder
@@ -977,6 +1121,112 @@ Widget build(BuildContext context) {
 }
 ```
 
+## **ReactiveForm** vs **ReactiveFormBuilder** which one?
+
+Both widgets are responsible for exposing the **FormGroup** to descendants widgets in the tree. Let see an example:
+
+```dart
+// using ReactiveForm
+@override
+Widget build(BuildContext context) {
+  return ReactiveForm(
+    formGroup: this.form,
+    child: ReactiveTextField(
+      formControlName: 'email',
+    ),
+  );
+}
+```
+
+```dart
+// using ReactiveFormBuilder
+@override
+Widget build(BuildContext context) {
+  return ReactiveFormBuilder(
+    form: (context) => this.form,
+    builder: (context, form, child) {
+      return ReactiveTextField(
+        formControlName: 'email',
+      );
+    },
+  );
+}
+```
+
+The main differences are that **ReactiveForm** is a *StatelessWidget* so it doesn't save the instance of the **FormGroup**. So you must declare the instance of the **FormGroup** in a StatefulWidget or resolve it from some Provider (state management library).
+
+```dart
+// Using ReactiveForm in a StatelessWidget and resolve the FormGroup from a provider
+class SignInForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = Provider.of<SignInViewModel>(context, listen: false);
+
+    return ReactiveForm(
+      formGroup: viewModel.form,
+      child: ReactiveTextField(
+        formControlName: 'email',
+      ),
+    );
+  }
+}
+```
+
+```dart
+// Using ReactiveForm in a StatefulWidget and declaring FormGroup in the state.
+class SignInForm extends StatefulWidget {
+  @override
+  _SignInFormState createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> {
+  final form = fb.group({
+    'email': Validators.email,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveForm(
+      formGroup: this.form,
+      child: ReactiveTextField(
+        formControlName: 'email',
+      ),
+    );
+  }
+}
+```
+
+> If you declare a **FormGroup** in a *StatelessWidget* the *group* will be destroyed a created each time the instance of the *StatelessWidget* is destroyed and created, so you must preserve the **FormGroup** in a state or in a Bloc/Provider/etc.
+
+By the other hand **ReactiveFormBuilder** is implemented as a *StatefulWidget* so it holds the created **FormGroup** in its state. That way is safe to declares the **FormGroup** in a StatelessWidget or get it from a Bloc/Provider/etc.
+
+```dart
+class SignInForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveFormBuilder(
+      form: (context) => fb.group({'email': Validators.email}),
+      builder: (context, form, child) {
+        return ReactiveTextField(
+          formControlName: 'email',
+        );
+      },
+    );
+  }
+}
+```
+
+You should use **ReactiveForm** if:
+- The form is complex enough.
+- You need to listen for changes to execute some business logic.
+- You are using some State Management library like Provider or Bloc.
+- You are OK of using StatefulWidget in a very simple Form.
+
+You should use **ReactiveFormBuilder** if:
+- The form is quite simple enough and doesn't need a separate Provider/Bloc state.
+
+But the final decision is really up to you, you can use any of them in any situations ;)
+
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 
 Although **Reactive Forms** can be used with any state management library or even without any one at all, **Reactive Forms** gets its maximum potential when is used in combination with a state management library like the [Provider](https://pub.dev/packages/provider) plugin.
@@ -1048,12 +1298,12 @@ control.value = 'Hello Reactive Forms!';
 ## Breaking changes in 3.x
 
 Set a value directly to a **FormControl** from code do not marks the control as **touched**,
-you must explicitly call **FormControl.touch()** to show up validation messages in UI. Example:
+you must explicitly call **FormControl.markAsTouched()** to show up validation messages in UI. Example:
 
 ```dart
 set name(String newName) {
   final formControl = this.form.control('name');
   formControl.value = newName;
-  formControl.touch();// if newName is invalid then validation messages will show up in UI
+  formControl.markAsTouched();// if newName is invalid then validation messages will show up in UI
 }
 ```
