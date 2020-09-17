@@ -92,13 +92,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   /// Gets the error text calculated from validators of the control.
   ///
-  /// Returns an error if control is INVALID, TOUCHED and DIRTY, otherwise
-  /// returns null.
-  ///
   /// If the control has several errors, then the first error is selected
   /// for visualizing in UI.
   String get errorText {
-    if (this.control.invalid && this.touched && this.control.dirty) {
+    if (this.control.invalid && this.touched) {
       return widget.validationMessages
               .containsKey(this.control.errors.keys.first)
           ? widget.validationMessages[this.control.errors.keys.first]
