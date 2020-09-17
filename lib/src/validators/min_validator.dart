@@ -16,7 +16,7 @@ class MinValidator<Comparable> extends Validator {
 
   @override
   Map<String, dynamic> validate(AbstractControl control) {
-    return control.value >= min
+    return control.value is Comparable && control.value >= min
         ? null
         : {
             'min': {

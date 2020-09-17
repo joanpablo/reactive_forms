@@ -480,6 +480,16 @@ void main() {
       // Expect: control is invalid
       expect(control.valid, false);
     });
+
+    test('FormControl with lower value is valid', () {
+      // Given: a valid control
+      final control = FormControl<int>(
+        validators: [Validators.max(20)],
+      );
+
+      // Expect: control is valid
+      expect(control.valid, false);
+    });
   });
   group('Min validator tests', () {
     test('FormControl with greater than value is valid', () {
@@ -508,6 +518,16 @@ void main() {
       // Given: an invalid control
       final control = FormControl<int>(
         value: 5,
+        validators: [Validators.min(10)],
+      );
+
+      // Expect: control is invalid
+      expect(control.valid, false);
+    });
+
+    test('FormControl with null value has error', () {
+      // Given: an invalid control
+      final control = FormControl<int>(
         validators: [Validators.min(10)],
       );
 
