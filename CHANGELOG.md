@@ -1,6 +1,5 @@
 # 5.0.2
 
--Update errors visibility (invalid, touched, dirty).
 -Fix add custom valueAccessor to text field.
 
 # 5.0.1
