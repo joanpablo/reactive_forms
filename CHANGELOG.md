@@ -8,6 +8,7 @@
 children as touched anymore.
 - **Validators.compose** now act as and **AND** and returns a *ValidatorFunction* instead of a List of
 *ValidatorFunction*
+- *InputParsers* have been replaced by **ControlValueAccessor**.
 
  
 ## Features
@@ -20,6 +21,7 @@ children as touched anymore.
 instead of just the *control name*.
 - Add **Validators.composeOR** to combines multiples validators in one and evaluates as an **OR**, 
 if at least one validator evaluates to VALID then the control is valid.
+- Add **ControlValueAccessor** to convert value data types from UI to model and vice versa. 
 
 ## Widgets
 
@@ -33,6 +35,7 @@ time in a stateless widget.
     - **Validators.min**
     - **Validators.max**
     - **Validators.composeOR**
+    - **Validators.compare**
 
 ## Fixes
 - **ReactiveRadioListTile** widget is now available.
