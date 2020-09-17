@@ -104,5 +104,44 @@ void main() {
         expect(texts.length, 2);
       },
     );
+
+    testWidgets(
+      'Assert error if builder is null',
+      (WidgetTester tester) async {
+        expect(
+          () => ReactiveFormArray(
+            formArrayName: '',
+            builder: null,
+          ),
+          throwsAssertionError,
+        );
+      },
+    );
+
+    testWidgets(
+      'Assert error if formArrayName and formArray is null',
+      (WidgetTester tester) async {
+        expect(
+          () => ReactiveFormArray(
+            builder: (context, array, child) => null,
+          ),
+          throwsAssertionError,
+        );
+      },
+    );
+
+    testWidgets(
+      'Assert error if formArrayName and formArray not null',
+      (WidgetTester tester) async {
+        expect(
+          () => ReactiveFormArray(
+            formArrayName: 'some',
+            formArray: fb.array([1]),
+            builder: (context, array, child) => null,
+          ),
+          throwsAssertionError,
+        );
+      },
+    );
   });
 }
