@@ -48,6 +48,8 @@ class CompareValidator extends Validator {
       mainControl.setErrors(error);
       mainControl.markAsTouched();
     }
+
+    return null;
   }
 
   bool _meetsComparison(AbstractControl<dynamic> control,
