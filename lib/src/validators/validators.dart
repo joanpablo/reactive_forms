@@ -122,6 +122,8 @@ class Validators {
   /// Compose multiple validators into a single validator that returns the union
   /// of the individual error maps for the provided control of multiple
   /// validators.
+  ///
+  /// The argument [validators] must not be null.
   static ValidatorFunction compose(List<ValidatorFunction> validators) {
     return ComposeValidator(validators).validate;
   }
@@ -129,6 +131,8 @@ class Validators {
   /// Compose multiple validators into a single validator that returns the union
   /// of the individual error maps for the provided control of multiple
   /// validators.
+  ///
+  /// The argument [validators] must not be null.
   ///
   /// If at least one of the [validators] evaluates as 'VALID' then the compose
   /// validator evaluates as 'VALID' and returns null, otherwise returns

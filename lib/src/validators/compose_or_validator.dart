@@ -12,7 +12,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ComposeOrValidator extends Validator {
   final List<ValidatorFunction> validators;
 
-  ComposeOrValidator(this.validators);
+  /// Constructs an instance of the validator.
+  ///
+  /// The argument [validators] must not be null.
+  ComposeOrValidator(this.validators) : assert(validators != null);
 
   @override
   Map<String, dynamic> validate(AbstractControl<dynamic> control) {

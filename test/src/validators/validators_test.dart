@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/compare_validator.dart';
+import 'package:reactive_forms/src/validators/compose_validator.dart';
 
 void main() {
   group('Email Validator Tests', () {
@@ -87,6 +89,11 @@ void main() {
 
       expect(form.valid, true);
       expect(form.hasErrors, false);
+    });
+
+    test('Assert error on null arguments', () {
+      expect(() => Validators.mustMatch(null, ''), throwsAssertionError);
+      expect(() => Validators.mustMatch('', null), throwsAssertionError);
     });
   });
 
@@ -193,6 +200,51 @@ void main() {
 
         // Expect: control invalid
         expect(control.valid, true);
+      },
+    );
+
+    test(
+      'If at least on validator is valid then control is VALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          value: 'johndoeemailemail.com',
+          validators: [
+            Validators.composeOR([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
+        );
+
+        // Expect: control invalid
+        expect(control.valid, true);
+      },
+    );
+
+    test(
+      'If at least on validator is valid then control is VALID',
+      () {
+        // Given: a control that is email and min length in 20
+        final control = FormControl<String>(
+          value: 'johndoe.com',
+          validators: [
+            Validators.composeOR([
+              Validators.email,
+              Validators.minLength(20),
+            ])
+          ],
+        );
+
+        // Expect: control invalid
+        expect(control.valid, false);
+      },
+    );
+
+    test(
+      'assert error if null validators',
+      () {
+        expect(() => ComposeValidator(null), throwsAssertionError);
       },
     );
   });
@@ -636,6 +688,14 @@ void main() {
 
       // Expect: form is invalid
       expect(form.valid, false);
+    });
+
+    test('Assert error on Null arguments', () {
+      expect(() => CompareValidator(null, '', CompareOption.equal),
+          throwsAssertionError);
+      expect(() => CompareValidator('', null, CompareOption.equal),
+          throwsAssertionError);
+      expect(() => CompareValidator('', '', null), throwsAssertionError);
     });
   });
 }
