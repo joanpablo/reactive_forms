@@ -1,3 +1,7 @@
+# 5.0.1
+
+- Fix **Validators.min** and **Validators.max** with non comparable controls.
+
 # 5.0.0
 
 ## Breaking changes
