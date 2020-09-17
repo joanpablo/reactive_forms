@@ -24,8 +24,7 @@ class CompareValidator extends Validator {
   Map<String, dynamic> validate(AbstractControl control) {
     final form = control as FormGroup;
     if (form == null) {
-      throw ValidatorException(
-          '[CompareValidator] must validate a [FormGroup] or [FormArray]');
+      return {ValidationMessage.compare: true};
     }
 
     final mainControl = form.control(this.controlName);
