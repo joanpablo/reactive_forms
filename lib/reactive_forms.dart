@@ -12,6 +12,7 @@ export 'src/exceptions/value_accessor_exception.dart';
 export 'src/models/control_state.dart';
 export 'src/models/control_status.dart';
 export 'src/models/focus_event.dart';
+export 'src/models/focus_event.dart';
 export 'src/models/form_builder.dart';
 export 'src/models/form_control_collection.dart';
 export 'src/models/models.dart';
