@@ -545,6 +545,35 @@ abstract class AbstractControl<T> {
     );
   }
 
+  /// Remove focus on a ReactiveFormField widget without the interaction
+  /// of the user.
+  ///
+  /// ### Example:
+  /// Removes focus from a control
+  /// ```dart
+  /// final formControl = form.formControl('name');
+  ///
+  /// // UI text field lose focus
+  /// formControl.unfocus();
+  ///```
+  ///
+  /// Removes focus to all children controls in a form
+  /// ```dart
+  /// form.unfocus();
+  ///```
+  ///
+  /// Removes focus to all children controls in an array
+  /// ```dart
+  /// array.unfocus();
+  ///```
+  void unfocus() {
+    _forEachChild((control) {
+      control.unfocus();
+    });
+  }
+
+  void focus();
+
   void _updateTouched({bool updateParent}) {
     _touched = _anyControlsTouched();
 
@@ -646,7 +675,7 @@ class FormControl<T> extends AbstractControl<T> {
   /// // UI text field lose focus
   /// formControl.unfocus();
   ///```
-  ///
+  @override
   void unfocus() {
     if (this.focused) {
       _updateFocused(false);
@@ -1024,10 +1053,14 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// // UI text field get focus and the device keyboard pop up
   /// form.focus('person.name');
   ///```
-  void focus(String name) {
-    final control = findControl(name.split('.'));
-    if (control is FormControl) {
-      control.focus();
+  void focus([String name]) {
+    if (name == null) {
+      _controls.values.first?.focus();
+    } else {
+      final control = this.findControl(name.split('.'));
+      if (control != null) {
+        control.focus();
+      }
     }
   }
 
@@ -1376,6 +1409,40 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
       _updatePristine();
       this.updateValueAndValidity();
+    }
+  }
+
+  /// Sets focus to a child control.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
+  ///
+  /// ### Example:
+  /// Focus a child control by name.
+  /// ```dart
+  /// final array = fb.array(['john', 'susan']);
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// array.focus('0');
+  ///```
+  ///
+  /// Focus a nested child control by path.
+  /// ```dart
+  /// final array = fb.array({
+  ///   [fb.group({'name': ''})]
+  /// });
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// array.focus('0.name');
+  ///```
+  void focus([String name]) {
+    if (name == null) {
+      _controls.first?.focus();
+    } else {
+      final control = this.findControl(name.split('.'));
+      if (control != null) {
+        control.focus();
+      }
     }
   }
 

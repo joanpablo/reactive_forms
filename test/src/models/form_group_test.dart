@@ -557,5 +557,26 @@ void main() {
       expect((form.control('person.name') as FormControl).focused, true,
           reason: 'control is not focused');
     });
+
+    test('Remove Focus to all control', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      });
+
+      // And: all control with focus
+      form.focus('name');
+      form.focus('email');
+
+      // When: remove focus to a control
+      form.unfocus();
+
+      // Then: any control has focus
+      expect((form.control('name') as FormControl).focused, false,
+          reason: 'control is focused');
+      expect((form.control('email') as FormControl).focused, false,
+          reason: 'control is focused');
+    });
   });
 }

@@ -492,6 +492,60 @@ void main() {
     expect(addressArray.controls.length, 2);
     expect(addressArray.control('0').value, {'city': 'Sofia'});
   });
+
+  test('Focused a control', () {
+    // Given: an array
+    final array = FormArray<int>([
+      FormControl<int>(value: 1),
+      FormControl<int>(value: 2),
+      FormControl<int>(value: 3),
+    ]);
+
+    // When: set a control focus
+    array.focus('0');
+
+    // Then: control is focused
+    expect((array.control('0') as FormControl).focused, true,
+        reason: 'control is not focused');
+  });
+
+  test('Focused a nested control', () {
+    // Given: array
+    final addressArray = FormArray([
+      fb.group({'city': 'Sofia'}),
+      fb.group({'city': 'Havana'}),
+    ]);
+
+    // When: set a control focus
+    addressArray.focus('0.city');
+
+    final form = (addressArray.control('0') as FormGroup);
+
+    // Then: control is focused
+    expect((form.control('city') as FormControl).focused, true,
+        reason: 'control is not focused');
+  });
+
+  test('Remove Focus to all control', () {
+    // Given: array
+    final array = FormArray<int>([
+      FormControl<int>(value: 1),
+      FormControl<int>(value: 2),
+    ]);
+
+    // And: all control with focus
+    array.focus('0');
+    array.focus('1');
+
+    // When: remove focus to a control
+    array.unfocus();
+
+    // Then: any control has focus
+    expect((array.control('0') as FormControl).focused, false,
+        reason: 'control is focused');
+    expect((array.control('1') as FormControl).focused, false,
+        reason: 'control is focused');
+  });
 }
 
 Map<String, dynamic> _emptyAddressee(AbstractControl control) {
