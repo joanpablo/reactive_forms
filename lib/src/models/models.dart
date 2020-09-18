@@ -322,11 +322,30 @@ abstract class AbstractControl<T> {
   /// and value when the control is reset. When false, no events are emitted.
   void updateValue(T value, {bool updateParent, bool emitEvent});
 
-  /// Resets the form control, marking it as untouched,
-  /// and setting the value to null.
+  /// Resets the control, marking it as untouched, pristine and setting the
+  /// value to null.
+  ///
+  /// In case of [FormGroup] or [FormArray] all descendants are marked pristine
+  /// and untouched, and the value of all descendants are set to null.
   ///
   /// The argument [value] is optional and resets the control with an initial
   /// value.
+  ///
+  /// The argument [disabled] is optional and resets the disabled status of the
+  /// control.
+  ///
+  /// The argument [removeFocus] is optional and remove the UI focus from the
+  /// control. In case of [FormGroup] or [FormArray] remove the focus from all
+  /// descendants.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* events notify listeners with the
+  /// latest status and value when the control is reset. When false, no events
+  /// are emitted.
   ///
   /// ### FormControl example
   /// ```dart
@@ -365,23 +384,12 @@ abstract class AbstractControl<T> {
   /// print(array.value); // output: ['name', 'last name']
   ///
   /// ```
-  ///
-  /// The argument [disabled] is optional and resets the disabled status of the
-  /// control.
-  ///
-  /// When [updateParent] is true or not supplied (the default) each change
-  /// affects this control and its parent, otherwise only affects to this
-  /// control.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), both the
-  /// *statusChanges* and *valueChanges* events notify listeners with the
-  /// latest status and value when the control is reset. When false, no events
-  /// are emitted.
   void reset({
     T value,
     bool disabled,
     bool updateParent,
     bool emitEvent,
+    bool removeFocus,
   }) {
     this.markAsPristine(updateParent: updateParent);
     this.markAsUntouched(updateParent: updateParent);
@@ -392,6 +400,10 @@ abstract class AbstractControl<T> {
       disabled
           ? markAsDisabled(updateParent: true, emitEvent: false)
           : markAsEnabled(updateParent: true, emitEvent: false);
+    }
+
+    if (removeFocus != null && removeFocus) {
+      this.unfocus(touched: false);
     }
   }
 
@@ -545,6 +557,43 @@ abstract class AbstractControl<T> {
     );
   }
 
+  /// Remove the focus from the UI widget without the interaction of the user.
+  ///
+  /// The [touched] argument can be optionally provided. If [touched] is false
+  /// then the control is marked as untouched and validations messages don't
+  /// show up. If [touched] is true (default) the control is marked as touched
+  /// and validation error messages comes visible in the UI.
+  ///
+  /// ### Example:
+  /// Removes focus from a control
+  /// ```dart
+  /// final formControl = form.formControl('name');
+  ///
+  /// // UI text field lose focus
+  /// formControl.unfocus();
+  ///```
+  ///
+  /// Removes focus to all children controls in a form
+  /// ```dart
+  /// form.unfocus();
+  ///```
+  ///
+  /// Removes focus to all children controls in an array
+  /// ```dart
+  /// array.unfocus();
+  ///```
+  void unfocus({bool touched = true}) {
+    if (touched == false) {
+      this.markAsUntouched(emitEvent: false);
+    }
+
+    _forEachChild((control) {
+      control.unfocus(touched: touched);
+    });
+  }
+
+  void focus();
+
   void _updateTouched({bool updateParent}) {
     _touched = _anyControlsTouched();
 
@@ -574,8 +623,8 @@ abstract class AbstractControl<T> {
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final _focusChanges = StreamController<bool>.broadcast();
-  bool _focused = false;
+  final _focusChanges = StreamController<FocusEvent>.broadcast();
+  bool _hasFocus = false;
 
   /// Creates a new FormControl instance.
   ///
@@ -622,7 +671,7 @@ class FormControl<T> extends AbstractControl<T> {
   }
 
   /// True if the control is marked as focused.
-  bool get focused => _focused;
+  bool get hasFocus => _hasFocus;
 
   /// Disposes the control
   @override
@@ -633,7 +682,7 @@ class FormControl<T> extends AbstractControl<T> {
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
-  Stream<bool> get focusChanges => _focusChanges.stream;
+  Stream<FocusEvent> get focusChanges => _focusChanges.stream;
 
   /// Remove focus on a ReactiveFormField widget without the interaction
   /// of the user.
@@ -646,10 +695,18 @@ class FormControl<T> extends AbstractControl<T> {
   /// // UI text field lose focus
   /// formControl.unfocus();
   ///```
-  ///
-  void unfocus() {
-    if (this.focused) {
-      _updateFocused(false);
+  @override
+  void unfocus({bool touched = true}) {
+    if (touched == false) {
+      this.markAsUntouched();
+    }
+
+    if (this.hasFocus) {
+      _updateFocusState(false, touched: touched);
+    }
+
+    if (touched == false) {
+      this.markAsUntouched();
     }
   }
 
@@ -666,14 +723,21 @@ class FormControl<T> extends AbstractControl<T> {
   ///```
   ///
   void focus() {
-    if (!this.focused) {
-      _updateFocused(true);
+    if (!this.hasFocus) {
+      _updateFocusState(true);
     }
   }
 
-  void _updateFocused(bool value) {
-    _focused = value;
-    _focusChanges.add(value);
+  void _updateFocusState(bool value, {bool touched}) {
+    touched ??= true;
+
+    _hasFocus = value;
+    _focusChanges.add(
+      FocusEvent(
+        hasFocus: _hasFocus,
+        markAsTouched: touched,
+      ),
+    );
   }
 
   /// This method is for internal use only.
@@ -960,12 +1024,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     );
   }
 
-  /// Resets the `FormGroup`, marks all descendants as *untouched*, and sets
+  /// Resets the [FormGroup], marks all descendants as *untouched*, and sets
   /// the value of all descendants to null.
   ///
   /// You reset to a specific form [state] by passing in a map of states
   /// that matches the structure of your form, with control names as keys.
   /// The control state is an object with both a value and a disabled status.
+  ///
+  /// The argument [removeFocus] is optional and remove the UI focus from all
+  /// descendants.
   ///
   /// ### Reset the form group values and disabled status
   ///
@@ -983,14 +1050,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// print(form.value);  // output: {first: 'name', last: 'last name'}
   /// print(form.control('first').disabled);  // output: true
   /// ```
-  void resetState(Map<String, ControlState> state) {
+  void resetState(Map<String, ControlState> state, {bool removeFocus = false}) {
     if (state == null || state.isEmpty) {
-      this.reset();
+      this.reset(removeFocus: removeFocus);
     } else {
       _controls.forEach((name, control) {
         control.reset(
           value: state[name]?.value,
           disabled: state[name]?.disabled,
+          removeFocus: removeFocus,
           updateParent: false,
         );
       });
@@ -1024,10 +1092,14 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// // UI text field get focus and the device keyboard pop up
   /// form.focus('person.name');
   ///```
-  void focus(String name) {
-    final control = findControl(name.split('.'));
-    if (control is FormControl) {
-      control.focus();
+  void focus([String name]) {
+    if (name == null) {
+      _controls.values.first?.focus();
+    } else {
+      final control = this.findControl(name.split('.'));
+      if (control != null) {
+        control.focus();
+      }
     }
   }
 
@@ -1376,6 +1448,40 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
       _updatePristine();
       this.updateValueAndValidity();
+    }
+  }
+
+  /// Sets focus to a child control.
+  ///
+  /// The argument [name] is a dot-delimited string that define the path to the
+  /// control.
+  ///
+  /// ### Example:
+  /// Focus a child control by name.
+  /// ```dart
+  /// final array = fb.array(['john', 'susan']);
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// array.focus('0');
+  ///```
+  ///
+  /// Focus a nested child control by path.
+  /// ```dart
+  /// final array = fb.array({
+  ///   [fb.group({'name': ''})]
+  /// });
+  ///
+  /// // UI text field get focus and the device keyboard pop up
+  /// array.focus('0.name');
+  ///```
+  void focus([String name]) {
+    if (name == null) {
+      _controls.first?.focus();
+    } else {
+      final control = this.findControl(name.split('.'));
+      if (control != null) {
+        control.focus();
+      }
     }
   }
 

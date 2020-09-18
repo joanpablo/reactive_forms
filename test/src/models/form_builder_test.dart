@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -53,6 +54,30 @@ void main() {
       expect(form.control('value') is FormControl<double>, true,
           reason:
               '${form.control('value').runtimeType} is not instance of FormControl<double>');
+    });
+
+    test('Build a group with datetime control', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'value': DateTime.now(),
+      });
+
+      // Expect a form group created
+      expect(form.control('value') is FormControl<DateTime>, true,
+          reason:
+              '${form.control('value').runtimeType} is not instance of FormControl<DateTime>');
+    });
+
+    test('Build a group with TimeOfDay control', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'value': TimeOfDay.now(),
+      });
+
+      // Expect a form group created
+      expect(form.control('value') is FormControl<TimeOfDay>, true,
+          reason:
+              '${form.control('value').runtimeType} is not instance of FormControl<TimeOfDay>');
     });
 
     test('Build a group with dynamic control', () {
@@ -259,6 +284,36 @@ void main() {
           reason:
               '${form.control('control').runtimeType} is not instance of FormControl<double>');
       expect(form.control('control').value, 50.0,
+          reason: 'control default value not set');
+    });
+
+    test('Build a group with default datetime value as array', () {
+      // Given: a form group builder creation
+      final value = DateTime.now();
+      final form = fb.group({
+        'control': [value],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<DateTime>, true,
+          reason:
+              '${form.control('control').runtimeType} is not instance of FormControl<DateTime>');
+      expect(form.control('control').value, value,
+          reason: 'control default value not set');
+    });
+
+    test('Build a group with default TimeOfDay value as array', () {
+      // Given: a form group builder creation
+      final value = TimeOfDay.now();
+      final form = fb.group({
+        'control': [value],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<TimeOfDay>, true,
+          reason:
+              '${form.control('control').runtimeType} is not instance of FormControl<TimeOfDay>');
+      expect(form.control('control').value, value,
           reason: 'control default value not set');
     });
 

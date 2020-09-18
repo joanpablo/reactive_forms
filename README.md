@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^5.0.2
+  reactive_forms: ^5.0.3
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -47,7 +47,17 @@ final form = FormGroup({
 
 Notice in the example above that in the case of the *name* we have also set a default value, in the case of the *email* the default value is **null**.
 
-## How to get Form data
+## How to get/set Form data
+
+Given the **FormGroup**:
+
+```dart
+final form = FormGroup({
+  'name': FormControl(value: 'John Doe'),
+  'email': FormControl(value: 'johndoe@email.com'),
+});
+```
+
 You can get the value of a single **FormControl** as simple as:
 
 ```dart
@@ -57,11 +67,6 @@ String get name() => this.form.control('name').value;
 But you can also get the complete *Form* data as follows:
 
 ```dart
-final form = FormGroup({
-  'name': FormControl(value: 'John Doe'),
-  'email': FormControl(value: 'johndoe@email.com'),
-});
-
 print(form.value);
 ```
 
@@ -73,8 +78,20 @@ The previous code prints the following output:
   "email": "johndoe@email.com"
 }
 ```
-
 > **FormGroup.value** returns an instance of **Map<String, dynamic>** with each field and its value.
+
+To set value to controls you can use two approaches:
+
+```dart
+// set value directly to the control
+this.form.control('name').value = 'John';
+
+// set value to controls by setting value to the form
+this.form.value = {
+  'name': 'John', 
+  'email': 'john@email.com',
+};
+```
 
 ## What about Validators?
 
@@ -94,6 +111,8 @@ final form = FormGroup({
 
 There are common predefined validators, but you can implement custom validators too.  
 ### Predefined validators
+
+#### FormControl
 - Validators.required
 - Validators.requiredTrue
 - Validators.email
@@ -104,8 +123,10 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.maxLength
 - Validators.pattern
 - Validators.creditCard
-- Validators.mustMatch
 - Validators.equals
+
+#### FormGroup
+- Validators.mustMatch
 - Validators.compose
 - Validators.composeOR
 - Validators.compare
@@ -127,7 +148,9 @@ final form = FormGroup({
 ```dart
 /// Validates that control's value must be `true`
 Map<String, dynamic> _requiredTrue(AbstractControl control) {
-  return control.value is bool && control.value == true 
+  return control.isNotNull && 
+         control.value is bool && 
+         control.value == true 
   ? null 
   : {'required': true};
 }
@@ -933,14 +956,6 @@ final form = fb.group({
 ```
 
 ```dart
-/// Gets the email
-FormControl get email => this.form.control('email');
-
-/// Gets the password
-FormControl get password => this.form.control('password');
-```
-
-```dart
 @override
 Widget build(BuildContext context) {
   return ReactiveForm(
@@ -950,12 +965,12 @@ Widget build(BuildContext context) {
         ReactiveTextField(
           formControlName: 'name',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.email.focus(), // this.form.focus('email') do the same
+          onSubmitted: () => this.form.focus('email'),
         ),
         ReactiveTextField(
           formControlName: 'email',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.password.focus(), // this.form.focus('password') do the same
+          onSubmitted: () => this.form.focus('password'),
         ),
         ReactiveTextField(
           formControlName: 'password',
@@ -966,6 +981,13 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+>When you remove focus of a control, the control is marked as touched, that means that the validation error messages will show up in UI. To prevent validation messages to show up you can optionally set argument **touched** to *false*.
+>
+>```dart
+>// remove the focus to the control and marks it as untouched. 
+>this.form.unfocus(touched: false);
+>```
 
 ## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
 

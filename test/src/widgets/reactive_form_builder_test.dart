@@ -24,7 +24,7 @@ void main() {
       (WidgetTester tester) async {
         expect(
           () => ReactiveFormBuilder(
-            form: (context) => fb.group({}),
+            form: () => fb.group({}),
             builder: null,
           ),
           throwsAssertionError,
