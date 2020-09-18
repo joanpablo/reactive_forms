@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -53,6 +54,30 @@ void main() {
       expect(form.control('value') is FormControl<double>, true,
           reason:
               '${form.control('value').runtimeType} is not instance of FormControl<double>');
+    });
+
+    test('Build a group with datetime control', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'value': DateTime.now(),
+      });
+
+      // Expect a form group created
+      expect(form.control('value') is FormControl<DateTime>, true,
+          reason:
+              '${form.control('value').runtimeType} is not instance of FormControl<DateTime>');
+    });
+
+    test('Build a group with TimeOfDay control', () {
+      // Given: a form group builder creation
+      final form = fb.group({
+        'value': TimeOfDay.now(),
+      });
+
+      // Expect a form group created
+      expect(form.control('value') is FormControl<TimeOfDay>, true,
+          reason:
+              '${form.control('value').runtimeType} is not instance of FormControl<TimeOfDay>');
     });
 
     test('Build a group with dynamic control', () {
