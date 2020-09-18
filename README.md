@@ -94,6 +94,8 @@ final form = FormGroup({
 
 There are common predefined validators, but you can implement custom validators too.  
 ### Predefined validators
+
+#### FormControl
 - Validators.required
 - Validators.requiredTrue
 - Validators.email
@@ -104,8 +106,10 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.maxLength
 - Validators.pattern
 - Validators.creditCard
-- Validators.mustMatch
 - Validators.equals
+
+#### FormGroup
+- Validators.mustMatch
 - Validators.compose
 - Validators.composeOR
 - Validators.compare
