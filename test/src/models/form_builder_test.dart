@@ -287,6 +287,36 @@ void main() {
           reason: 'control default value not set');
     });
 
+    test('Build a group with default datetime value as array', () {
+      // Given: a form group builder creation
+      final value = DateTime.now();
+      final form = fb.group({
+        'control': [value],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<DateTime>, true,
+          reason:
+              '${form.control('control').runtimeType} is not instance of FormControl<DateTime>');
+      expect(form.control('control').value, value,
+          reason: 'control default value not set');
+    });
+
+    test('Build a group with default TimeOfDay value as array', () {
+      // Given: a form group builder creation
+      final value = TimeOfDay.now();
+      final form = fb.group({
+        'control': [value],
+      });
+
+      // Expect a form group created
+      expect(form.control('control') is FormControl<TimeOfDay>, true,
+          reason:
+              '${form.control('control').runtimeType} is not instance of FormControl<TimeOfDay>');
+      expect(form.control('control').value, value,
+          reason: 'control default value not set');
+    });
+
     test('Build a state with ', () {
       // Given: a state creation
       final state = fb.state(value: 'name', disabled: true);
