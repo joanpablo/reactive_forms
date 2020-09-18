@@ -2,8 +2,9 @@
 # 5.0.3
 
 ## Breaking changes
-- Rename **FormControl.focused** by **FormControl.hasFocus**
-- Change **ReactiveFormBuilder.builder(context)** by **ReactiveFormBuilder.builder()**
+- Rename **FormControl.focused** by **FormControl.hasFocus**.
+- Change **ReactiveFormBuilder.builder(context)** by **ReactiveFormBuilder.builder()**.
+- Change argument in FormControl.focusChanges event from *bool* to **FocusEvent**.
 
 ## Features
 - Add **FormGroup.unfocus()** and **FormArray.unfocus()** to remove focus of children controls.
