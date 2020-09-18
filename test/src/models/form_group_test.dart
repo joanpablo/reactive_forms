@@ -577,6 +577,9 @@ void main() {
           reason: 'control is focused');
       expect((form.control('email') as FormControl).hasFocus, false,
           reason: 'control is focused');
+
+      int a = 4;
+      print(a == true);
     });
   });
 }
