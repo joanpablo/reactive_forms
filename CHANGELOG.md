@@ -1,6 +1,12 @@
+
+# 5.0.3
+
+- Add **FormGroup.unfocus()** and **FormArray.unfocus()** to remove focus of children controls.
+- Add **FormArray.focus(String name)** to set focus on a control.
+
 # 5.0.2
 
--Fix add custom valueAccessor to text field.
+- Fix add custom valueAccessor to text field.
 
 # 5.0.1
 
