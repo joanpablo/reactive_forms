@@ -68,7 +68,6 @@ class ReactiveFormField<T> extends StatefulWidget {
 class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// The [FormControl] that is bound to this state.
   FormControl control;
-  bool _touched;
   StreamSubscription _statusChangesSubscription;
   StreamSubscription _touchChangesSubscription;
   ControlValueAccessor _valueAccessor;
@@ -77,18 +76,10 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   dynamic get value => this.valueAccessor.modelToViewValue(this.control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
-  bool get touched => _touched;
+  bool get touched => this.control.touched;
 
+  /// Gets the widget control value accessor
   ControlValueAccessor get valueAccessor => _valueAccessor;
-
-  /// Sets the value of [touched] and rebuilds the widget.
-  set touched(bool value) {
-    if (this._touched != value) {
-      setState(() {
-        this._touched = value;
-      });
-    }
-  }
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -107,7 +98,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @override
   void initState() {
-    this.control = _getFormControl();
+    this.control = _resolveFormControl();
     this.subscribeControl();
     _valueAccessor = _resolveValueAccessor();
     _valueAccessor.registerControl(
@@ -118,16 +109,22 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     super.initState();
   }
 
+  /// Returns the value accessor for the reactive widget.
+  ///
+  /// Must be override by children widgets to provide custom [valueAccessor]
+  /// implementations to the widget.
+  ///
+  /// See [ControlValueAccessor].
   @protected
   ControlValueAccessor selectValueAccessor() {
     return DefaultValueAccessor();
   }
 
   @override
-  void didChangeDependencies() async {
-    final newControl = _getFormControl();
+  void didChangeDependencies() {
+    final newControl = _resolveFormControl();
     if (this.control != newControl) {
-      await this.unsubscribeControl();
+      this.unsubscribeControl();
       this.control = newControl;
       subscribeControl();
     }
@@ -143,28 +140,55 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   }
 
   @protected
+  @mustCallSuper
   void subscribeControl() {
     _statusChangesSubscription =
         this.control.statusChanged.listen(_onControlStatusChanged);
     _touchChangesSubscription =
-        this.control.touchChanges.listen(_onControlTouched);
-
-    this._touched = this.control.touched;
+        this.control.touchChanges.listen(_onControlTouchChanged);
   }
 
   @protected
-  Future<void> unsubscribeControl() async {
-    await Future.wait([
-      _statusChangesSubscription.cancel(),
-      _touchChangesSubscription.cancel(),
-    ]);
+  @mustCallSuper
+  void unsubscribeControl() {
+    _statusChangesSubscription.cancel();
+    _touchChangesSubscription.cancel();
+  }
+
+  @protected
+  @mustCallSuper
+  void onControlValueChanged(value) {
+    _checkTouchedState();
+  }
+
+  /// Updates this field's state to the new value. Useful for responding to
+  /// child widget changes.
+  ///
+  /// Updates the value of the [FormControl] bound to this widget.
+  void didChange(T value) {
+    _valueAccessor.updateModel(value);
+    _checkTouchedState();
+  }
+
+  void _checkTouchedState() {
+    if (this.touched) {
+      setState(() {});
+    }
+  }
+
+  void _onControlStatusChanged(ControlStatus status) {
+    setState(() {});
+  }
+
+  void _onControlTouchChanged(bool touched) {
+    setState(() {});
   }
 
   ControlValueAccessor _resolveValueAccessor() {
     return widget.valueAccessor ?? this.selectValueAccessor();
   }
 
-  FormControl _getFormControl() {
+  FormControl _resolveFormControl() {
     if (widget.formControl != null) {
       return widget.formControl;
     }
@@ -176,36 +200,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     }
 
     return form.control(widget.formControlName);
-  }
-
-  void _onControlStatusChanged(ControlStatus status) {
-    setState(() {});
-  }
-
-  void _onControlTouched(bool touched) {
-    this.touched = touched;
-  }
-
-  @protected
-  @mustCallSuper
-  void onControlValueChanged(value) {
-    this.touched = this.control.touched;
-  }
-
-  @protected
-  void touch() {
-    this.control.markAsTouched();
-  }
-
-  /// Updates this field's state to the new value. Useful for responding to
-  /// child widget changes.
-  ///
-  /// Updates the value of the [FormControl] bound to this widget.
-  void didChange(T value) {
-    _valueAccessor.updateModel(value);
-    if (this.touched) {
-      setState(() {});
-    }
   }
 
   @override

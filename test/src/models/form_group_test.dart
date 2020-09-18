@@ -538,7 +538,7 @@ void main() {
       form.focus('name');
 
       // Then: control is focused
-      expect((form.control('name') as FormControl).focused, true,
+      expect((form.control('name') as FormControl).hasFocus, true,
           reason: 'control is not focused');
     });
 
@@ -554,7 +554,7 @@ void main() {
       form.focus('person.name');
 
       // Then: control is focused
-      expect((form.control('person.name') as FormControl).focused, true,
+      expect((form.control('person.name') as FormControl).hasFocus, true,
           reason: 'control is not focused');
     });
 
@@ -573,9 +573,9 @@ void main() {
       form.unfocus();
 
       // Then: any control has focus
-      expect((form.control('name') as FormControl).focused, false,
+      expect((form.control('name') as FormControl).hasFocus, false,
           reason: 'control is focused');
-      expect((form.control('email') as FormControl).focused, false,
+      expect((form.control('email') as FormControl).hasFocus, false,
           reason: 'control is focused');
     });
   });
