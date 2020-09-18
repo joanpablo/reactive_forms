@@ -5,9 +5,10 @@ class FocusEvent {
   /// Gets if the control has the focus
   final bool hasFocus;
 
-  /// Gets if control should be marked as touched.
+  /// Gets if control should be marked as touched after remove focus.
   ///
-  /// If *true* the control should be marked as touched by the UI.
+  /// If *true* the control should be marked as touched by the UI when lose
+  /// focus.
   final bool markAsTouched;
 
   /// Constructs an instance of the event
