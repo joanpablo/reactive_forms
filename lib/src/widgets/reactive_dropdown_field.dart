@@ -90,6 +90,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   isDense: isDense,
                   isExpanded: isExpanded,
                   itemHeight: itemHeight,
+                  focusNode: state._focusController.focusNode,
                 ),
               ),
             );
@@ -101,6 +102,20 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
 }
 
 class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
+  FocusController _focusController = FocusController();
+
+  @override
+  void subscribeControl() {
+    _focusController.registerControl(this.control);
+    super.subscribeControl();
+  }
+
+  @override
+  void dispose() {
+    _focusController.dispose();
+    super.dispose();
+  }
+
   void _onChanged(T value, ValueChanged<T> callBack) {
     this.didChange(value);
     if (callBack != null) {

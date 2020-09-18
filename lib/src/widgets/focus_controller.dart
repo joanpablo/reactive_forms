@@ -26,7 +26,7 @@ class FocusController {
   }
 
   void dispose() {
-    _subscription.cancel();
+    _subscription?.cancel();
     this.focusNode.removeListener(_onFocusNodeFocusChanges);
   }
 

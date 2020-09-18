@@ -84,6 +84,8 @@ class HomePage extends StatelessWidget {
                   ValidationMessage.mustMatch:
                       'Password confirmation must match',
                 },
+                onSubmitted: () => form.focus('rememberMe'),
+                textInputAction: TextInputAction.next,
               ),
               SizedBox(height: 24.0),
               ReactiveFormConsumer(
