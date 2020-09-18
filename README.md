@@ -933,14 +933,6 @@ final form = fb.group({
 ```
 
 ```dart
-/// Gets the email
-FormControl get email => this.form.control('email');
-
-/// Gets the password
-FormControl get password => this.form.control('password');
-```
-
-```dart
 @override
 Widget build(BuildContext context) {
   return ReactiveForm(
@@ -950,12 +942,12 @@ Widget build(BuildContext context) {
         ReactiveTextField(
           formControlName: 'name',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.email.focus(), // this.form.focus('email') do the same
+          onSubmitted: () => this.form.focus('email'),
         ),
         ReactiveTextField(
           formControlName: 'email',
           textInputAction: TextInputAction.next,
-          onSubmitted: () => this.password.focus(), // this.form.focus('password') do the same
+          onSubmitted: () => this.form.focus('password'),
         ),
         ReactiveTextField(
           formControlName: 'password',
@@ -966,6 +958,13 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+>When you remove focus of a control, the control is marked as touched, that means that the validation error messages will show up in UI. To prevent validation messages to show up you can optionally set argument **touched** to *false*.
+>
+>```dart
+>// remove the focus to the control and marks it as untouched. 
+>this.form.unfocus(touched: false);
+>```
 
 ## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
 

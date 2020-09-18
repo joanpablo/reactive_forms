@@ -2,8 +2,6 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -141,14 +139,11 @@ class ReactiveTextField extends ReactiveFormField {
 
 class _ReactiveTextFieldState extends ReactiveFormFieldState {
   TextEditingController _textController;
-  StreamSubscription _focusChangesSubscription;
   FocusController _focusController = FocusController();
 
   @override
   void initState() {
     super.initState();
-
-    _focusController.registerControl(this.control);
 
     final initialValue = this.value;
     _textController = TextEditingController(
@@ -164,15 +159,8 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
 
   @override
   void subscribeControl() {
+    _focusController.registerControl(this.control);
     super.subscribeControl();
-    /*_focusChangesSubscription =
-        this.control.focusChanges.listen(_onFormControlFocusChanged);*/
-  }
-
-  @override
-  void unsubscribeControl() {
-    _focusChangesSubscription?.cancel();
-    super.unsubscribeControl();
   }
 
   @override

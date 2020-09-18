@@ -6,6 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class FocusController {
   FormControl control;
   final FocusNode focusNode;
+  FocusEvent _focusEvent;
   StreamSubscription _subscription;
 
   FocusController({
@@ -15,8 +16,13 @@ class FocusController {
   }
 
   void registerControl(FormControl control) {
-    this.control = control;
-    _subscription = this.control.focusChanges.listen(_onControlFocusChanged);
+    if (this.control != control) {
+      _subscription?.cancel();
+
+      this.control = control;
+      _focusEvent = null;
+      _subscription = this.control.focusChanges.listen(_onControlFocusChanged);
+    }
   }
 
   void dispose() {
@@ -24,7 +30,6 @@ class FocusController {
     this.focusNode.removeListener(_onFocusNodeFocusChanges);
   }
 
-  FocusEvent _focusEvent;
   void _onControlFocusChanged(FocusEvent focusEvent) {
     _focusEvent = focusEvent;
 
