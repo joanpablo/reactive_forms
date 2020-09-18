@@ -100,8 +100,13 @@ class HomePage extends StatelessWidget {
                   'rememberMe': ControlState(value: false),
                 }, removeFocus: true),
               ),
-              ReactiveSwitch(formControlName: 'rememberMe'),
-              ReactiveCheckbox(formControlName: 'rememberMe'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ReactiveSwitch(formControlName: 'rememberMe'),
+                  ReactiveCheckbox(formControlName: 'rememberMe'),
+                ],
+              ),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
                 hint: Text('Want to stay logged in?'),
