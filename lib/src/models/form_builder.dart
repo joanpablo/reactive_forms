@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/exceptions/form_builder_invalid_initialization_exception.dart';
 
@@ -66,6 +67,10 @@ class FormBuilder {
         return MapEntry(key, FormControl<bool>(value: value));
       } else if (value is double) {
         return MapEntry(key, FormControl<double>(value: value));
+      } else if (value is DateTime) {
+        return MapEntry(key, FormControl<DateTime>(value: value));
+      } else if (value is TimeOfDay) {
+        return MapEntry(key, FormControl<TimeOfDay>(value: value));
       } else if (value is AbstractControl) {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
@@ -208,6 +213,10 @@ class FormBuilder {
       return FormControl<bool>(value: value, validators: validators);
     } else if (value is double) {
       return FormControl<double>(value: value, validators: validators);
+    } else if (value is DateTime) {
+      return FormControl<DateTime>(value: value);
+    } else if (value is TimeOfDay) {
+      return FormControl<TimeOfDay>(value: value);
     }
 
     return FormControl(value: value, validators: validators);

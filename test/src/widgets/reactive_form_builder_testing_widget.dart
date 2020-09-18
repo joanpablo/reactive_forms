@@ -20,7 +20,7 @@ class ReactiveFormBuilderTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveFormBuilder(
-          form: (context) => this.form,
+          form: () => this.form,
           builder: (context, form, child) {
             return Column(
               children: <Widget>[

@@ -87,7 +87,7 @@ class ReactiveTextField extends ReactiveFormField {
 
             return TextField(
               controller: state._textController,
-              focusNode: state._focusNode,
+              focusNode: state._focusController.focusNode,
               decoration:
                   effectiveDecoration.copyWith(errorText: state.errorText),
               keyboardType: keyboardType,
@@ -141,20 +141,23 @@ class ReactiveTextField extends ReactiveFormField {
 
 class _ReactiveTextFieldState extends ReactiveFormFieldState {
   TextEditingController _textController;
-  FocusNode _focusNode = FocusNode();
   StreamSubscription _focusChangesSubscription;
+  FocusController _focusController = FocusController();
 
   @override
   void initState() {
     super.initState();
 
-    _focusNode.addListener(_onFocusChanged);
-    _textController = TextEditingController(text: this.value);
+    _focusController.registerControl(this.control);
+
+    final initialValue = this.value;
+    _textController = TextEditingController(
+        text: initialValue == null ? '' : initialValue.toString());
   }
 
   @override
   void dispose() {
-    _focusNode.removeListener(_onFocusChanged);
+    _focusController.dispose();
     this.unsubscribeControl();
     super.dispose();
   }
@@ -162,16 +165,14 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
   @override
   void subscribeControl() {
     super.subscribeControl();
-    _focusChangesSubscription =
-        this.control.focusChanges.listen(_onFormControlFocusChanged);
+    /*_focusChangesSubscription =
+        this.control.focusChanges.listen(_onFormControlFocusChanged);*/
   }
 
   @override
-  Future<void> unsubscribeControl() async {
-    await Future.wait([
-      _focusChangesSubscription?.cancel(),
-      super.unsubscribeControl(),
-    ]);
+  void unsubscribeControl() {
+    _focusChangesSubscription?.cancel();
+    super.unsubscribeControl();
   }
 
   @override
@@ -193,25 +194,5 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
     }
 
     return super.selectValueAccessor();
-  }
-
-  void _onFormControlFocusChanged(bool focused) {
-    if (focused && !_focusNode.hasFocus) {
-      _focusNode.requestFocus();
-    } else if (!focused && _focusNode.hasFocus) {
-      _focusNode.unfocus();
-    }
-  }
-
-  void _onFocusChanged() {
-    if (!_focusNode.hasFocus && !this.touched) {
-      this.touch();
-    }
-
-    if (this.control.focused && !_focusNode.hasFocus) {
-      this.control.unfocus();
-    } else if (!this.control.focused && _focusNode.hasFocus) {
-      this.control.focus();
-    }
   }
 }

@@ -12,7 +12,7 @@ class ReactiveFormBuilderWidgetSample extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ReactiveFormBuilder(
-          form: (context) => this.form,
+          form: () => this.form,
           builder: (context, form, child) {
             return Padding(
               padding: const EdgeInsets.all(20.0),

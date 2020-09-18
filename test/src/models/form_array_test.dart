@@ -505,7 +505,7 @@ void main() {
     array.focus('0');
 
     // Then: control is focused
-    expect((array.control('0') as FormControl).focused, true,
+    expect((array.control('0') as FormControl).hasFocus, true,
         reason: 'control is not focused');
   });
 
@@ -522,7 +522,7 @@ void main() {
     final form = (addressArray.control('0') as FormGroup);
 
     // Then: control is focused
-    expect((form.control('city') as FormControl).focused, true,
+    expect((form.control('city') as FormControl).hasFocus, true,
         reason: 'control is not focused');
   });
 
@@ -541,9 +541,9 @@ void main() {
     array.unfocus();
 
     // Then: any control has focus
-    expect((array.control('0') as FormControl).focused, false,
+    expect((array.control('0') as FormControl).hasFocus, false,
         reason: 'control is focused');
-    expect((array.control('1') as FormControl).focused, false,
+    expect((array.control('1') as FormControl).hasFocus, false,
         reason: 'control is focused');
   });
 }
