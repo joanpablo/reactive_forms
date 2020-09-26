@@ -1,4 +1,12 @@
 
+# 5.0.4
+
+## Features
+- Add optionally argument *showErrors* to **ReactiveTextField** and **ReactiveDropdownField** 
+to customize when to show up validations messages. Validation messages by default change to visible 
+when control is *invalid* and *touched*. With *showErrors* function this default behavior can be 
+customized.
+
 # 5.0.3
 
 ## Breaking changes

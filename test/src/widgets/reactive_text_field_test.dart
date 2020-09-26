@@ -124,32 +124,10 @@ void main() {
       // And: a widget that is bind to the form
       await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
-      /*//When: mark control as dirty
-      form.control('name').markAsDirty();
-      await tester.pump();*/
-
       // Then: text field is showing errors
       final textField = tester.firstWidget(find.byType(TextField)) as TextField;
       expect(textField.decoration.errorText, ValidationMessage.required);
     });
-
-    /*testWidgets('Errors is not visible when FormControl not dirty',
-        (WidgetTester tester) async {
-      // Given: A group with a required and touched field
-      final form = FormGroup({
-        'name': FormControl(
-          validators: [Validators.required],
-          touched: true,
-        ),
-      });
-
-      // And: a widget that is bind to the form
-      await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
-
-      // Expect: text field is not showing errors
-      final textField = tester.firstWidget(find.byType(TextField)) as TextField;
-      expect(textField.decoration.errorText, null);
-    });*/
 
     testWidgets(
       'Custom Validation Error is visible if supplied',
@@ -171,10 +149,6 @@ void main() {
           validationMessages: {ValidationMessage.required: customMessage},
         ));
 
-        /*// When: marks control as dirty
-        form.control('name').markAsDirty();
-        await tester.pump();*/
-
         // Expect: text field is showing the custom message as error
         final textField =
             tester.firstWidget(find.byType(TextField)) as TextField;
@@ -193,6 +167,37 @@ void main() {
 
       // And: a widget that is bind to the form
       await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+      // Expect: text field is not showing errors because is not touched
+      TextField textField =
+          tester.firstWidget(find.byType(TextField)) as TextField;
+      expect(textField.decoration.errorText, null);
+
+      // When: touch the control
+      form.control('name').markAsTouched();
+      await tester.pump();
+
+      // Then: text field is showing errors
+      textField = tester.firstWidget(find.byType(TextField)) as TextField;
+      expect(textField.decoration.errorText, ValidationMessage.required);
+    });
+
+    testWidgets('Custom handler to show errors', (WidgetTester tester) async {
+      // Given: An invalid form
+      final form = FormGroup({
+        'name': FormControl(
+          validators: [Validators.required],
+        ),
+      });
+
+      // And: a widget bind to the form with custom showErrors function
+      await tester.pumpWidget(
+        ReactiveTextFieldTestingWidget(
+          form: form,
+          showErrors: (control) =>
+              control.invalid && control.touched && control.dirty,
+        ),
+      );
 
       // Expect: text field is not showing errors because is not touched
       TextField textField =

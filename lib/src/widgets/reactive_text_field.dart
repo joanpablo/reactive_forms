@@ -27,7 +27,56 @@ class ReactiveTextField extends ReactiveFormField {
   /// Must provide one of the arguments [formControl] or a [formControlName],
   /// but not both at the same time.
   ///
-  /// You can optionally set the [validationMessages].
+  /// Can optionally provide a [validationMessages] argument to customize a
+  /// message for different kinds of validation errors.
+  ///
+  /// Can optionally provide a [valueAccessor] to set a custom value accessors.
+  /// See [ControlValueAccessor].
+  ///
+  /// Can optionally provide a [showErrors] function to customize when to show
+  /// validation messages. Reactive Widgets make validation messages visible
+  /// when the control is INVALID and TOUCHED, this behavior can be customized
+  /// in the [showErrors] function.
+  ///
+  /// ### Example:
+  /// Binds a text field.
+  /// ```
+  /// final form = fb.group({'email': Validators.required});
+  ///
+  /// ReactiveTextField(
+  ///   formControlName: 'email',
+  /// ),
+  ///
+  /// ```
+  ///
+  /// Binds a text field directly with a *FormControl*.
+  /// ```
+  /// final form = fb.group({'email': Validators.required});
+  ///
+  /// ReactiveTextField(
+  ///   formControl: form.control('email'),
+  /// ),
+  ///
+  /// ```
+  ///
+  /// Customize validation messages
+  /// ```dart
+  /// ReactiveTextField(
+  ///   formControlName: 'email',
+  ///   validationMessages: {
+  ///     ValidationMessage.required: 'The email must not be empty',
+  ///     ValidationMessage.email: 'The email must be a valid email',
+  ///   }
+  /// ),
+  /// ```
+  ///
+  /// Customize when to show up validation messages.
+  /// ```dart
+  /// ReactiveTextField(
+  ///   formControlName: 'email',
+  ///   showErrors: (control) => control.invalid && control.touched && control.dirty,
+  /// ),
+  /// ```
   ///
   /// For documentation about the various parameters, see the [TextField] class
   /// and [new TextField], the constructor.
@@ -36,6 +85,8 @@ class ReactiveTextField extends ReactiveFormField {
     String formControlName,
     FormControl formControl,
     Map<String, String> validationMessages,
+    ControlValueAccessor valueAccessor,
+    ShowErrorsFunction showErrors,
     InputDecoration decoration = const InputDecoration(),
     TextInputType keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -70,13 +121,13 @@ class ReactiveTextField extends ReactiveFormField {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
-    ControlValueAccessor valueAccessor,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           valueAccessor: valueAccessor,
           validationMessages: validationMessages ?? const {},
+          showErrors: showErrors,
           builder: (ReactiveFormFieldState field) {
             final state = field as _ReactiveTextFieldState;
             final InputDecoration effectiveDecoration = (decoration ??
