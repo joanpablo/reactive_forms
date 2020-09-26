@@ -17,7 +17,6 @@ class ReactiveFormBuilder extends StatefulWidget {
   final ReactiveFormConsumerBuilder builder;
   final ReactiveFormBuilderCreator form;
   final Widget child;
-  final bool enabled;
 
   /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
   /// that contains the form.
@@ -55,7 +54,6 @@ class ReactiveFormBuilder extends StatefulWidget {
     Key key,
     this.child,
     this.onWillPop,
-    this.enabled = true,
     @required this.builder,
     @required this.form,
   })  : assert(form != null),
@@ -81,7 +79,6 @@ class _ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
       formGroup: _form,
       child: widget.builder(context, _form, widget.child),
       onWillPop: widget.onWillPop,
-      enabled: widget.enabled,
     );
   }
 }

@@ -5,11 +5,13 @@ class ReactiveTextFieldTestingWidget extends StatelessWidget {
   final FormGroup form;
   final Map<String, String> validationMessages;
   final Map<String, String> bindings;
+  final ShowErrorsFunction showErrors;
 
   const ReactiveTextFieldTestingWidget({
     Key key,
     @required this.form,
     this.validationMessages,
+    this.showErrors,
     this.bindings = const {
       'textField': 'name',
     },
@@ -26,6 +28,7 @@ class ReactiveTextFieldTestingWidget extends StatelessWidget {
               ReactiveTextField(
                 formControlName: this.bindings['textField'],
                 validationMessages: this.validationMessages,
+                showErrors: showErrors,
               ),
             ],
           ),

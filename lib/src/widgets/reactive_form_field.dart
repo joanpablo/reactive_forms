@@ -15,6 +15,8 @@ import 'package:reactive_forms/src/value_accessors/default_value_accessor.dart';
 typedef ReactiveFormFieldBuilder<T> = Widget Function(
     ReactiveFormFieldState<T> field);
 
+typedef ShowErrorsFunction = bool Function(FormControl control);
+
 /// A single reactive form field.
 ///
 /// This widget maintains the current state of the reactive form field,
@@ -36,7 +38,10 @@ class ReactiveFormField<T> extends StatefulWidget {
   /// A [Map] that store custom validation messages for each error.
   final Map<String, String> validationMessages;
 
+  /// Gets the widget control value accessor
   final ControlValueAccessor valueAccessor;
+
+  final ShowErrorsFunction showErrors;
 
   /// Creates an instance of the [ReactiveFormField].
   ///
@@ -49,6 +54,7 @@ class ReactiveFormField<T> extends StatefulWidget {
     this.formControl,
     this.formControlName,
     this.valueAccessor,
+    this.showErrors,
     @required ReactiveFormFieldBuilder<T> builder,
     Map<String, String> validationMessages,
   })  : assert(
@@ -86,7 +92,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// If the control has several errors, then the first error is selected
   /// for visualizing in UI.
   String get errorText {
-    if (this.control.invalid && this.touched) {
+    if (_showErrors()) {
       return widget.validationMessages
               .containsKey(this.control.errors.keys.first)
           ? widget.validationMessages[this.control.errors.keys.first]
@@ -94,6 +100,14 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     }
 
     return null;
+  }
+
+  bool _showErrors() {
+    if (widget.showErrors != null) {
+      return widget.showErrors(this.control);
+    }
+
+    return this.control.invalid && this.touched;
   }
 
   @override

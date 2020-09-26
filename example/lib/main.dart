@@ -49,6 +49,7 @@ class HomePage extends StatelessWidget {
                       'The email value must be a valid email',
                   'unique': 'This email is already in use',
                 },
+                showErrors: (control) => control.invalid && control.dirty,
                 onSubmitted: () => form.focus('password'),
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
