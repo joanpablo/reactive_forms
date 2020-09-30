@@ -1,60 +1,54 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class FocusController {
-  FormControl control;
+/// Focus controller that acts as a bridge between a
+/// [FocusNode] and a [FormControl].
+class FocusNodeController extends FocusController {
   final FocusNode focusNode;
-  FocusEvent _focusEvent;
-  StreamSubscription _subscription;
+  bool _modelToViewChanges = false;
 
-  FocusController({
+  /// Constructs and instance of [FocusNodeController].
+  ///
+  /// Can optionally provide a [focusNode].
+  FocusNodeController({
     FocusNode focusNode,
   }) : focusNode = (focusNode ?? FocusNode()) {
     this.focusNode.addListener(_onFocusNodeFocusChanges);
   }
 
-  void registerControl(FormControl control) {
-    if (this.control != control) {
-      _subscription?.cancel();
-
-      this.control = control;
-      _focusEvent = null;
-      _subscription = this.control.focusChanges.listen(_onControlFocusChanged);
-    }
-  }
-
+  /// Disposes a focus controller
   void dispose() {
-    _subscription?.cancel();
     this.focusNode.removeListener(_onFocusNodeFocusChanges);
+    super.dispose();
   }
 
-  void _onControlFocusChanged(FocusEvent focusEvent) {
-    _focusEvent = focusEvent;
+  /// Call this method to update the focus state of the [FocusNode].
+  ///
+  /// This method is called by the [FormControl] when it updates focus
+  /// programatically.
+  @override
+  void onControlFocusChanged(bool hasFocus) {
+    _modelToViewChanges = true;
 
-    if (focusEvent.hasFocus && !focusNode.hasFocus) {
+    if (hasFocus && !focusNode.hasFocus) {
       focusNode.requestFocus();
-    } else if (!focusEvent.hasFocus && focusNode.hasFocus) {
+    } else if (!hasFocus && focusNode.hasFocus) {
       focusNode.unfocus();
     }
+
+    this.updateFocus(hasFocus);
   }
 
   void _onFocusNodeFocusChanges() {
-    // marks control as touched if event.touched = true or it's not touched
-    final shouldMarkAsTouched =
-        _focusEvent != null ? _focusEvent.markAsTouched : !this.control.touched;
-
-    if (!focusNode.hasFocus && shouldMarkAsTouched) {
-      this.control.markAsTouched();
+    if (_modelToViewChanges) {
+      _modelToViewChanges = false;
+      return;
     }
 
-    if (this.control.hasFocus && !focusNode.hasFocus) {
-      this.control.unfocus();
-    } else if (!this.control.hasFocus && focusNode.hasFocus) {
-      this.control.focus();
+    if (this.hasFocus && !focusNode.hasFocus) {
+      this.updateFocus(false);
+    } else if (!this.hasFocus && focusNode.hasFocus) {
+      this.updateFocus(true);
     }
-
-    _focusEvent = null;
   }
 }

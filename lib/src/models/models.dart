@@ -623,7 +623,8 @@ abstract class AbstractControl<T> {
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final _focusChanges = StreamController<FocusEvent>.broadcast();
+  final _focusChanges = StreamController<bool>.broadcast();
+  FocusController _focusController;
   bool _hasFocus = false;
 
   /// Creates a new FormControl instance.
@@ -682,7 +683,7 @@ class FormControl<T> extends AbstractControl<T> {
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
-  Stream<FocusEvent> get focusChanges => _focusChanges.stream;
+  Stream<bool> get focusChanges => _focusChanges.stream;
 
   /// Remove focus on a ReactiveFormField widget without the interaction
   /// of the user.
@@ -697,12 +698,8 @@ class FormControl<T> extends AbstractControl<T> {
   ///```
   @override
   void unfocus({bool touched = true}) {
-    if (touched == false) {
-      this.markAsUntouched();
-    }
-
     if (this.hasFocus) {
-      _updateFocusState(false, touched: touched);
+      _updateFocusState(false);
     }
 
     if (touched == false) {
@@ -728,19 +725,38 @@ class FormControl<T> extends AbstractControl<T> {
     }
   }
 
-  void _updateFocusState(bool value, {bool touched}) {
-    touched ??= true;
+  void registerFocusController(FocusController focusController) {
+    if (_focusController == focusController) return;
+    if (_focusController != null) {
+      _focusController.removeListener(_onFocusControllerChanged);
+    }
 
-    _hasFocus = value;
-    _focusChanges.add(
-      FocusEvent(
-        hasFocus: _hasFocus,
-        markAsTouched: touched,
-      ),
-    );
+    _focusController = focusController;
+    _focusController.addListener(_onFocusControllerChanged);
   }
 
-  /// This method is for internal use only.
+  void _onFocusControllerChanged() {
+    _updateFocusState(
+      _focusController.hasFocus,
+      notifyFocusController: false,
+    );
+
+    if (!_focusController.hasFocus) {
+      this.markAsTouched();
+    }
+  }
+
+  void _updateFocusState(bool value, {bool notifyFocusController}) {
+    notifyFocusController ??= true;
+
+    _hasFocus = value;
+    _focusChanges.add(_hasFocus);
+
+    if (notifyFocusController && _focusController != null) {
+      _focusController.onControlFocusChanged(_hasFocus);
+    }
+  }
+
   @override
   T _reduceValue() => this.value;
 
