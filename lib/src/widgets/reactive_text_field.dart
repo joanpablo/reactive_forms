@@ -8,6 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 import 'package:reactive_forms/src/value_accessors/double_value_accessor.dart';
 import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
+import 'package:reactive_forms/src/widgets/focus_node_controller.dart';
 
 /// A [ReactiveTextField] that contains a [TextField].
 ///
@@ -190,7 +191,7 @@ class ReactiveTextField extends ReactiveFormField {
 
 class _ReactiveTextFieldState extends ReactiveFormFieldState {
   TextEditingController _textController;
-  FocusController _focusController = FocusController();
+  FocusNodeController _focusController = FocusNodeController();
 
   @override
   void initState() {
@@ -204,13 +205,12 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
   @override
   void dispose() {
     _focusController.dispose();
-    this.unsubscribeControl();
     super.dispose();
   }
 
   @override
   void subscribeControl() {
-    _focusController.registerControl(this.control);
+    this.control.registerFocusController(_focusController);
     super.subscribeControl();
   }
 

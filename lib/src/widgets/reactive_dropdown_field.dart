@@ -104,11 +104,11 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
 }
 
 class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
-  FocusController _focusController = FocusController();
+  FocusNodeController _focusController = FocusNodeController();
 
   @override
   void subscribeControl() {
-    _focusController.registerControl(this.control);
+    this.control.registerFocusController(_focusController);
     super.subscribeControl();
   }
 

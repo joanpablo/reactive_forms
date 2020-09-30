@@ -1,4 +1,14 @@
 
+# 6.0.0
+
+## Breaking changes
+- Add big refactor in focus handlers of a **FormControl**. Change argument data type in 
+**FormControl.focusChanges** event, from **FocusEvent** to *bool*.
+
+## Fixes
+- Fix infinity loop that freeze apps when two or more **ReactiveTextField** were binded to the same 
+**FormControl** and changing focus between them.
+
 # 5.0.4
 
 ## Features
