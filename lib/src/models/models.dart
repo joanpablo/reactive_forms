@@ -1295,7 +1295,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.emitsCollectionChanged(_controls);
   }
 
-  /// Removes [control].
+  /// Removes [control] from the array.
   ///
   /// Throws [FormControlNotFoundException] if no control found.
   void remove(AbstractControl<T> control) {
