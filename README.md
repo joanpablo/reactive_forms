@@ -618,7 +618,7 @@ final cities = addressArray.controls
 ```
 
 > A common mistake is to declare an *array* of groups as *FormArray&lt;FormGroup&gt;*.   
->An array of *FormGroup* must be declared as ***FormArray()*** or as ***FormArray&lt;Map&lt;String, dynamic&gt;&gt;()***.
+>An array of *FormGroup* must be declared as **FormArray()** or as **FormArray&lt;Map&lt;String, dynamic&gt;&gt;()**.
 
 ## FormBuilder
 
