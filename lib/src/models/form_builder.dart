@@ -138,6 +138,8 @@ class FormBuilder {
   ///
   /// Can optionally provide a [validators] collection for the control.
   ///
+  /// Can optionally provide a [asyncValidators] collection for the control.
+  ///
   /// ### Example:
   ///
   /// Creates a control with default value.
@@ -149,9 +151,16 @@ class FormBuilder {
   /// ````dart
   /// final control = fb.control('', [Validators.required]);
   /// ```
-  FormControl<T> control<T>(T value,
-      [List<ValidatorFunction> validators = const []]) {
-    return FormControl<T>(value: value, validators: validators);
+  FormControl<T> control<T>(
+    T value, [
+    List<ValidatorFunction> validators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
+  ]) {
+    return FormControl<T>(
+      value: value,
+      validators: validators,
+      asyncValidators: asyncValidators,
+    );
   }
 
   /// Construct a new [FormArray] instance.

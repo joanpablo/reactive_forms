@@ -623,7 +623,8 @@ abstract class AbstractControl<T> {
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final _focusChanges = StreamController<FocusEvent>.broadcast();
+  final _focusChanges = StreamController<bool>.broadcast();
+  FocusController _focusController;
   bool _hasFocus = false;
 
   /// Creates a new FormControl instance.
@@ -682,7 +683,7 @@ class FormControl<T> extends AbstractControl<T> {
 
   /// A [ChangeNotifier] that emits an event every time the focus status of
   /// the control changes.
-  Stream<FocusEvent> get focusChanges => _focusChanges.stream;
+  Stream<bool> get focusChanges => _focusChanges.stream;
 
   /// Remove focus on a ReactiveFormField widget without the interaction
   /// of the user.
@@ -697,12 +698,8 @@ class FormControl<T> extends AbstractControl<T> {
   ///```
   @override
   void unfocus({bool touched = true}) {
-    if (touched == false) {
-      this.markAsUntouched();
-    }
-
     if (this.hasFocus) {
-      _updateFocusState(false, touched: touched);
+      _updateFocusState(false);
     }
 
     if (touched == false) {
@@ -728,22 +725,50 @@ class FormControl<T> extends AbstractControl<T> {
     }
   }
 
-  void _updateFocusState(bool value, {bool touched}) {
-    touched ??= true;
+  void registerFocusController(FocusController focusController) {
+    if (_focusController == focusController) return;
+    if (_focusController != null) {
+      _focusController.removeListener(_onFocusControllerChanged);
+    }
 
-    _hasFocus = value;
-    _focusChanges.add(
-      FocusEvent(
-        hasFocus: _hasFocus,
-        markAsTouched: touched,
-      ),
-    );
+    _focusController = focusController;
+    _focusController.addListener(_onFocusControllerChanged);
   }
 
-  /// This method is for internal use only.
+  void _onFocusControllerChanged() {
+    _updateFocusState(
+      _focusController.hasFocus,
+      notifyFocusController: false,
+    );
+
+    if (!_focusController.hasFocus) {
+      this.markAsTouched();
+    }
+  }
+
+  void _updateFocusState(bool value, {bool notifyFocusController}) {
+    notifyFocusController ??= true;
+
+    _hasFocus = value;
+    _focusChanges.add(_hasFocus);
+
+    if (notifyFocusController && _focusController != null) {
+      _focusController.onControlFocusChanged(_hasFocus);
+    }
+  }
+
   @override
   T _reduceValue() => this.value;
 
+  /// Sets the value of the [FormControl].
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
   @override
   void updateValue(T value, {bool updateParent, bool emitEvent}) {
     if (_value != value) {
@@ -950,6 +975,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
     this.updateValueAndValidity();
     _updateTouched();
+    _updatePristine();
+    emitsCollectionChanged(_controls.values);
   }
 
   /// Disposes the group.
@@ -1002,6 +1029,31 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return allErrors;
   }
 
+  /// Sets the value of the [FormGroup].
+  ///
+  /// The [value] argument matches the structure of the group, with control
+  /// names as keys.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'first': FormControl(),
+  ///   'last': FormControl(),
+  /// });
+  ///
+  /// print(form.value); // outputs: { first: null, last: null }
+  ///
+  /// form.updateValue({'first': 'John', 'last': 'Doe'});
+  /// print(form.value); // outputs: { first: 'John', last: 'Doe' }
+  /// ```
   @override
   void updateValue(
     Map<String, dynamic> value, {
@@ -1245,7 +1297,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.emitsCollectionChanged(_controls);
   }
 
-  /// Removes [control].
+  /// Removes [control] from the array.
   ///
   /// Throws [FormControlNotFoundException] if no control found.
   void remove(AbstractControl<T> control) {
@@ -1256,6 +1308,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.removeAt(index);
   }
 
+  /// Removes all children controls from the array.
+  ///
+  /// The [value] and validity state of the array is updated and the event
+  /// [collectionChanges] is triggered.
+  void clear() {
+    _forEachChild((control) => control.parent = null);
+    _controls.clear();
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
+  }
+
+  /// Checks if array contains a control by a given [name].
+  ///
+  /// The name must be the string representation of the children index.
+  ///
+  /// Returns true if collection contains the control, otherwise returns false.
   @override
   bool contains(String name) {
     int index = int.tryParse(name);
@@ -1378,6 +1446,31 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     return allErrors;
   }
 
+  /// Sets the value of the [FormArray].
+  ///
+  /// The [value] argument is a collection that matches the structure of the
+  /// control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// final array = FormArray([
+  ///   FormControl(),
+  ///   FormControl(),
+  /// ]);
+  ///
+  /// print(array.value); // outputs: [null, null]
+  ///
+  /// array.updateValue(['John', 'Doe']);
+  /// print(array.value); // outputs: ['John', 'Doe']
+  /// ```
   @override
   void updateValue(Iterable<T> value, {bool updateParent, bool emitEvent}) {
     for (var i = 0; i < _controls.length; i++) {
