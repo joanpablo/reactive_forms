@@ -760,6 +760,15 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   T _reduceValue() => this.value;
 
+  /// Sets the value of the [FormControl].
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
   @override
   void updateValue(T value, {bool updateParent, bool emitEvent}) {
     if (_value != value) {
@@ -1018,6 +1027,31 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return allErrors;
   }
 
+  /// Sets the value of the [FormGroup].
+  ///
+  /// The [value] argument matches the structure of the group, with control
+  /// names as keys.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'first': FormControl(),
+  ///   'last': FormControl(),
+  /// });
+  ///
+  /// print(form.value); // outputs: { first: null, last: null }
+  ///
+  /// form.updateValue({'first': 'John', 'last': 'Doe'});
+  /// print(form.value); // outputs: { first: 'John', last: 'Doe' }
+  /// ```
   @override
   void updateValue(
     Map<String, dynamic> value, {
@@ -1272,6 +1306,22 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     this.removeAt(index);
   }
 
+  /// Removes all children controls from the array.
+  ///
+  /// The [value] and validity state of the array is updated and the event
+  /// [collectionChanges] is triggered.
+  void clear() {
+    _forEachChild((control) => control.parent = null);
+    _controls.clear();
+    this.updateValueAndValidity();
+    this.emitsCollectionChanged(_controls);
+  }
+
+  /// Checks if array contains a control by a given [name].
+  ///
+  /// The name must be the string representation of the children index.
+  ///
+  /// Returns true if collection contains the control, otherwise returns false.
   @override
   bool contains(String name) {
     int index = int.tryParse(name);
@@ -1394,6 +1444,31 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
     return allErrors;
   }
 
+  /// Sets the value of the [FormArray].
+  ///
+  /// The [value] argument is a collection that matches the structure of the
+  /// control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// final array = FormArray([
+  ///   FormControl(),
+  ///   FormControl(),
+  /// ]);
+  ///
+  /// print(array.value); // outputs: [null, null]
+  ///
+  /// array.updateValue(['John', 'Doe']);
+  /// print(array.value); // outputs: ['John', 'Doe']
+  /// ```
   @override
   void updateValue(Iterable<T> value, {bool updateParent, bool emitEvent}) {
     for (var i = 0; i < _controls.length; i++) {

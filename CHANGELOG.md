@@ -9,6 +9,9 @@
 - Fix infinity loop that freeze apps when two or more **ReactiveTextField** were binded to the same 
 **FormControl** and changing focus between them.
 
+## Features
+- Add **FormArray.clear()** that remove all children controls of the array.
+
 # 5.0.4
 
 ## Features

@@ -546,6 +546,20 @@ void main() {
     expect((array.control('1') as FormControl).hasFocus, false,
         reason: 'control is focused');
   });
+
+  test('Clear Array', () {
+    // Given: array
+    final array = FormArray<int>([
+      FormControl<int>(value: 1),
+      FormControl<int>(value: 2),
+    ]);
+
+    // When: clear array
+    array.clear();
+
+    // Then: any control has focus
+    expect(array.controls.length, 0, reason: 'array is not empty');
+  });
 }
 
 Map<String, dynamic> _emptyAddressee(AbstractControl control) {
