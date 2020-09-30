@@ -578,5 +578,37 @@ void main() {
       expect((form.control('email') as FormControl).hasFocus, false,
           reason: 'control is focused');
     });
+
+    test('Add controls to the FormGroup', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      });
+
+      // When: add controls
+      form.addAll({
+        'password': FormControl(),
+      });
+
+      // Then: controls are added
+      expect(form.controls.length, 3, reason: 'controls were not added');
+    });
+
+    test('Add controls to the FormGroup', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      });
+
+      // When: add controls
+      form.addAll({
+        'password': FormControl(),
+      });
+
+      // Then: controls are added
+      expect(form.controls.length, 3, reason: 'controls were not added');
+    });
   });
 }

@@ -975,6 +975,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     });
     this.updateValueAndValidity();
     _updateTouched();
+    _updatePristine();
+    emitsCollectionChanged(_controls.values);
   }
 
   /// Disposes the group.

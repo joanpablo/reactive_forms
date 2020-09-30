@@ -8,6 +8,8 @@
 ## Fixes
 - Fix infinity loop that freeze apps when two or more **ReactiveTextField** were binded to the same 
 **FormControl** and changing focus between them.
+- Fix **FormGroup.addAll** now updates group *pristine*/*dirty* state of the group and trigger 
+**FormControlCollection.collectionChanges** event.
 
 ## Features
 - Add **FormArray.clear()** that remove all children controls of the array.
