@@ -134,7 +134,7 @@ There are common predefined validators, but you can implement custom validators 
 ### Custom Validators
 A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
 
-Lets implement a custom validator that validates a control's value must be *true*:
+Let's implement a custom validator that validates a control's value must be *true*:
 
 ```dart
 final form = FormGroup({
@@ -160,7 +160,7 @@ Map<String, dynamic> _requiredTrue(AbstractControl control) {
 
 ### Pattern Validator
 
-***Validator.pattern*** is a validator that comes with **Reactive Forms**. Validation using regular expressions have been always a very useful tool to solve validation requirements. Lets see how we can validate American Express card numbers: 
+***Validator.pattern*** is a validator that comes with **Reactive Forms**. Validation using regular expressions have been always a very useful tool to solve validation requirements. Let's see how we can validate American Express card numbers: 
 
 > American Express card numbers start with 34 or 37 and have 15 digits.
 
@@ -203,7 +203,7 @@ There are special validators that can be attached to **FormGroup**. In the next 
 
 There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with *email* and *emailConfirmation* or *password* and *passwordConfirmation*.
 
-For that cases we must implement a custom validator and attach it to the **FormGroup**, lets see an example:
+For that cases we must implement a custom validator and attach it to the **FormGroup**, let's see an example:
 
 ```dart
 final form = FormGroup({
@@ -500,7 +500,7 @@ print(form.value);
 }
 ```
 
-Lets dynamically add another control:
+Let's dynamically add another control:
 
 ```dart
 final array = form.control('emails') as FormArray<String>;
@@ -684,7 +684,7 @@ print(city.value); // outputs: Sofia
 
 So far we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Forms Widgets is the answer ;)
 
-Lets see an example:
+Let's see an example:
 
 ```dart
 @override
@@ -812,7 +812,7 @@ We will show you two different approaches to accomplish this very easily:
 2. Using **ReactiveFormConsumer** widget.
 
 ### Separating Submit Button in a different Widget:
-Lets add a submit button to our *Form*:
+Let's add a submit button to our *Form*:
 
 ```dart
 @override
@@ -837,7 +837,7 @@ Widget build(BuildContext context) {
 
 > The above is a simple sign-in form with *email*, *password*, and a *submit* button.
 
-Now lets see the implementation of the **MySubmitButton** widget:
+Now let's see the implementation of the **MySubmitButton** widget:
 
 ```dart
 class MySubmitButton extends StatelessWidget {
@@ -868,9 +868,7 @@ final form = ReactiveForm.of(context);
 
 The expression above have two important responsibilities:
 - Obtains the nearest **FormGroup** up the widget's tree.
-- Register the current **context** with the changes in the **FormGroup** so that if the validity of the **FormGroup** change then the current **context** is *rebuilt*.
-
-The **ReactiveForm** widget has this behavior because is implemented using the [**InheritedNotifier**](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html).
+- Registers the current **context** with the changes in the **FormGroup** so that if the validity of the **FormGroup** changes then the current **context** is *rebuilt*.  
 
 ### Using **ReactiveFormConsumer** widget:
 
@@ -1130,7 +1128,7 @@ Widget build(BuildContext context) {
         ReactiveValueListenableBuilder<double>(
           formControlName: 'lightIntensity',
           builder: (context, value, child) {
-            return Text('lights at ${value.toStringAsFixed(2)}%');
+            return Text('lights at ${value?.toStringAsFixed(2)}%');
           },
         ),
         ReactiveSlider(
@@ -1175,7 +1173,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-The main differences are that **ReactiveForm** is a *StatelessWidget* so it doesn't save the instance of the **FormGroup**. So you must declare the instance of the **FormGroup** in a StatefulWidget or resolve it from some Provider (state management library).
+The main differences are that **ReactiveForm** is a *StatelessWidget* so it doesn't save the instance of the **FormGroup**. You must declare the instance of the **FormGroup** in a StatefulWidget or resolve it from some Provider (state management library).
 
 ```dart
 // Using ReactiveForm in a StatelessWidget and resolve the FormGroup from a provider
@@ -1227,7 +1225,7 @@ class SignInForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveFormBuilder(
-      form: (context) => fb.group({'email': Validators.email}),
+      form: () => fb.group({'email': Validators.email}),
       builder: (context, form, child) {
         return ReactiveTextField(
           formControlName: 'email',
@@ -1240,12 +1238,13 @@ class SignInForm extends StatelessWidget {
 
 You should use **ReactiveForm** if:
 - The form is complex enough.
-- You need to listen for changes to execute some business logic.
+- You need to listen for changes in some child control to execute some business logic.
 - You are using some State Management library like Provider or Bloc.
-- You are OK of using StatefulWidget in a very simple Form.
+- Using a StatefulWidget to declare a very simple form, it really doesn't bother you.
 
 You should use **ReactiveFormBuilder** if:
 - The form is quite simple enough and doesn't need a separate Provider/Bloc state.
+- You don't want to use a StatefulWidget to declare the FormGroup.
 
 But the final decision is really up to you, you can use any of them in any situations ;)
 
