@@ -671,5 +671,22 @@ void main() {
       expect(form.control('name').touched, false, reason: 'control is touched');
       expect(form.touched, false, reason: 'form is touched');
     });
+
+    test('Focus a form marks first control with focus by default', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      });
+
+      // When: set focus to the form
+      form.focus();
+
+      // Then: first control gets focus
+      expect((form.control('name') as FormControl).hasFocus, true,
+          reason: 'first control does not have focus');
+      expect((form.control('email') as FormControl).hasFocus, false,
+          reason: 'other controls have focus');
+    });
   });
 }
