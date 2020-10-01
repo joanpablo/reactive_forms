@@ -204,7 +204,9 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
 
   @override
   void dispose() {
+    this.control.unregisterFocusController(_focusController);
     _focusController.dispose();
+
     super.dispose();
   }
 

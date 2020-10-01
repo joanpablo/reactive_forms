@@ -114,6 +114,7 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
 
   @override
   void dispose() {
+    this.control.unregisterFocusController(_focusController);
     _focusController.dispose();
     super.dispose();
   }

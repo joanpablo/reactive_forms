@@ -725,11 +725,23 @@ class FormControl<T> extends AbstractControl<T> {
     }
   }
 
-  void registerFocusController(FocusController focusController) {
-    if (_focusController == focusController) return;
-    if (_focusController != null) {
+  /// Removes the provided [focusController] from the control.
+  void unregisterFocusController(FocusNodeController focusController) {
+    if (_focusController != null && _focusController == focusController) {
       _focusController.removeListener(_onFocusControllerChanged);
+      _focusController = null;
     }
+  }
+
+  /// Registers a focus controller.
+  ///
+  /// The [focusController] represents the focus controller of this control.
+  void registerFocusController(FocusController focusController) {
+    if (focusController == null || _focusController == focusController) {
+      return;
+    }
+
+    unregisterFocusController(_focusController);
 
     _focusController = focusController;
     _focusController.addListener(_onFocusControllerChanged);

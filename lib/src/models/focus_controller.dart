@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 /// Represents a focus controller for a [FormControl].
 abstract class FocusController extends ChangeNotifier {
   bool _hasFocus = false;
+  bool disposed = false;
 
   /// Gets the focus state of the focus controller.
   bool get hasFocus => _hasFocus;
@@ -16,7 +17,7 @@ abstract class FocusController extends ChangeNotifier {
   void updateFocus(bool hasFocus, {bool emitEvent = true}) {
     if (_hasFocus != hasFocus) {
       _hasFocus = hasFocus;
-      if (emitEvent) {
+      if (emitEvent && !disposed) {
         notifyListeners();
       }
     }
@@ -27,4 +28,10 @@ abstract class FocusController extends ChangeNotifier {
   ///
   /// The [hasFocus] argument represents the state of the [FormControl].
   void onControlFocusChanged(bool hasFocus);
+
+  @override
+  void dispose() {
+    this.disposed = true;
+    super.dispose();
+  }
 }
