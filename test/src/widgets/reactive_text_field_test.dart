@@ -134,7 +134,7 @@ void main() {
             reason: 'errors are visible');
 
         // When: call FormControl.unfocus(touched: false)
-        (form.control('name') as FormControl).unfocus(touched: false);
+        form.control('name').unfocus(touched: false);
         await tester.pump();
 
         // Then: the errors are not visible

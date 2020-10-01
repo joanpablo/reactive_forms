@@ -583,7 +583,7 @@ abstract class AbstractControl<T> {
   /// array.unfocus();
   ///```
   void unfocus({bool touched = true}) {
-    if (touched == false) {
+    if (!touched) {
       this.markAsUntouched(emitEvent: false);
     }
 
