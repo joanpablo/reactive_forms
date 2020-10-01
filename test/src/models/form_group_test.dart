@@ -610,5 +610,66 @@ void main() {
       // Then: controls are added
       expect(form.controls.length, 3, reason: 'controls were not added');
     });
+
+    test("Add control to the FormGroup update control's parent property", () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+      });
+
+      // And: a control
+      final email = FormControl<String>();
+
+      // Expect: control doesn't have parent
+      expect(email.parent, null);
+
+      // When: add control to the group
+      form.addAll({
+        'email': email,
+      });
+
+      // Then: control parent is updated
+      expect(email.parent, form, reason: 'parent did not update');
+    });
+
+    test("Mark a control as pristine also marks the parent as pristine", () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+      });
+
+      // When: mark control as dirty
+      form.control('name').markAsDirty();
+
+      // Then: control and form are dirty
+      expect(form.control('name').dirty, true, reason: 'control is not dirty');
+      expect(form.dirty, true, reason: 'form is not dirty');
+
+      // When: mark control as pristine
+      form.control('name').markAsPristine();
+
+      // Then: control and form are pristine
+      expect(form.control('name').pristine, true,
+          reason: 'control is not pristine');
+      expect(form.pristine, true, reason: 'form is not pristine');
+    });
+
+    test("Mark a control as untouched also marks the parent as untouched", () {
+      // Given: a group with touched control
+      final form = FormGroup({
+        'name': FormControl<String>(touched: true),
+      });
+
+      // Expect: control and form are touched
+      expect(form.control('name').touched, true, reason: 'control not touched');
+      expect(form.touched, true, reason: 'form not touched');
+
+      // When: mark control as untouched
+      form.control('name').markAsUntouched();
+
+      // Then: control and form are untouched
+      expect(form.control('name').touched, false, reason: 'control is touched');
+      expect(form.touched, false, reason: 'form is touched');
+    });
   });
 }

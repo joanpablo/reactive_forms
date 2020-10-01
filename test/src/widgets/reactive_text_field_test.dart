@@ -82,6 +82,68 @@ void main() {
     );
 
     testWidgets(
+      'Remove focus on an invalid control show error messages',
+      (WidgetTester tester) async {
+        // Given: A group with an invalid control
+        final form = FormGroup({
+          'name': FormControl(validators: [Validators.required]),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // And: the text field has focused
+        TextField textField = tester.firstWidget(find.byType(TextField));
+        textField.focusNode.requestFocus();
+        await tester.pump();
+        expect(textField.focusNode.hasFocus, true);
+
+        // Expect: errors are not visible yet
+        expect(textField.decoration.errorText, null,
+            reason: 'errors are visible');
+
+        // When: call FormControl.unfocus()
+        (form.control('name') as FormControl).unfocus();
+        await tester.pump();
+
+        // Then: the errors are visible
+        textField = tester.firstWidget(find.byType(TextField)) as TextField;
+        expect(textField.decoration.errorText, ValidationMessage.required);
+      },
+    );
+
+    testWidgets(
+      'Remove focus, and mark a control as untouched does not show error messages',
+      (WidgetTester tester) async {
+        // Given: A group with an invalid control
+        final form = FormGroup({
+          'name': FormControl(validators: [Validators.required]),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
+
+        // And: the text field has focused
+        TextField textField = tester.firstWidget(find.byType(TextField));
+        textField.focusNode.requestFocus();
+        await tester.pump();
+        expect(textField.focusNode.hasFocus, true);
+
+        // Expect: errors are not visible yet
+        expect(textField.decoration.errorText, null,
+            reason: 'errors are visible');
+
+        // When: call FormControl.unfocus(touched: false)
+        (form.control('name') as FormControl).unfocus(touched: false);
+        await tester.pump();
+
+        // Then: the errors are not visible
+        textField = tester.firstWidget(find.byType(TextField)) as TextField;
+        expect(textField.decoration.errorText, null);
+      },
+    );
+
+    testWidgets(
       'Assertion Error if passing null as formControlName',
       (WidgetTester tester) async {
         expect(() => ReactiveTextField(formControlName: null),
@@ -111,7 +173,7 @@ void main() {
       },
     );
 
-    testWidgets('Errors visible when FormControl touched and dirty',
+    testWidgets('Errors visible when FormControl touched',
         (WidgetTester tester) async {
       // Given: A group with a required and touched field
       final form = FormGroup({

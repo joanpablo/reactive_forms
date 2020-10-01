@@ -169,6 +169,17 @@ void main() {
       expect(control.disabled, true);
     });
 
+    test('Resets a control to enable state', () {
+      // Given: a disabled control
+      final control = FormControl<String>(value: 'someValue', disabled: true);
+
+      // When: reset control
+      control.reset(disabled: false);
+
+      // Then: the control is enabled
+      expect(control.enabled, true);
+    });
+
     test('Reset a control marks it as pristine', () {
       // Given: a control
       final control = FormControl<String>();
@@ -181,6 +192,23 @@ void main() {
 
       // Then: the control is pristine
       expect(control.pristine, true);
+    });
+
+    test('Reset a control and remove focus at the same time', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: control request focus
+      control.focus();
+
+      // Expect: control has focus
+      expect(control.hasFocus, true, reason: 'control does not get focus');
+
+      // When: reset the control and remove focus
+      control.reset(removeFocus: true);
+
+      // Then: the control does not have the focus
+      expect(control.hasFocus, false, reason: 'control has focus');
     });
 
     test('Set value to a control programmatically does not marks it dirty', () {
