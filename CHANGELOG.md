@@ -1,4 +1,9 @@
 
+# 6.0.1
+
+## Fixes
+- Fix error when dispose a FocusController already registered in a control.
+
 # 6.0.0
 
 ## Breaking changes
