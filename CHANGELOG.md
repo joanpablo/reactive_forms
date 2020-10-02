@@ -1,4 +1,10 @@
 
+# 6.0.2
+
+## Fixes
+- Fix control value accessor that doesn't update the control when LengthLimitingTextInputFormatter
+reached the max length.
+
 # 6.0.1
 
 ## Fixes
