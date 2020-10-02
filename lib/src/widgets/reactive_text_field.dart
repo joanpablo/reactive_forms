@@ -218,7 +218,7 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
 
   @override
   void onControlValueChanged(value) {
-    _textController.text = value == null ? '' : value.toString();
+    _textController.text = (value == null) ? '' : value.toString();
     super.onControlValueChanged(value);
   }
 
