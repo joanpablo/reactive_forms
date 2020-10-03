@@ -75,11 +75,11 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is Iterable<ValidatorFunction> &&
+      } else if (value is List<ValidatorFunction> &&
           value.isNotEmpty &&
           value.first != null) {
         return MapEntry(key, FormControl(validators: value));
-      } else if (value is Iterable<dynamic>) {
+      } else if (value is List<dynamic>) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
         } else {
@@ -191,7 +191,7 @@ class FormBuilder {
   /// ]);
   /// ```
   ///
-  FormArray array(Iterable<dynamic> value,
+  FormArray array(List<dynamic> value,
       [List<ValidatorFunction> validators = const []]) {
     return FormArray(
       value?.map((v) {
@@ -203,7 +203,7 @@ class FormBuilder {
         }
 
         return this.control(v);
-      }),
+      }).toList(),
       validators: validators,
     );
   }

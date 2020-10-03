@@ -1,4 +1,11 @@
 
+# 6.0.3
+
+## Enhanced
+
+- Changes all arguments of data type **Iterable** with **List** data type to force compiler errors
+when not correctly cast *MappedListIterable* with *List*.
+
 # 6.0.2
 
 ## Fixes

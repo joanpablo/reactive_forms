@@ -540,7 +540,7 @@ abstract class AbstractControl<T> {
       Duration(milliseconds: _asyncValidatorsDebounceTime),
       () {
         final validatorsStream = Stream.fromFutures(
-            this.asyncValidators.map((validator) => validator(this)));
+            this.asyncValidators.map((validator) => validator(this)).toList());
 
         final errors = Map<String, dynamic>();
         _asyncValidationSubscription = validatorsStream.listen(
@@ -988,7 +988,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     this.updateValueAndValidity();
     _updateTouched();
     _updatePristine();
-    emitsCollectionChanged(_controls.values);
+    emitsCollectionChanged(_controls.values.toList());
   }
 
   /// Disposes the group.
@@ -1187,8 +1187,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 ///
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
-class FormArray<T> extends AbstractControl<Iterable<T>>
-    with FormControlCollection {
+class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   final List<AbstractControl<T>> _controls = [];
 
   /// Creates a new [FormArray] instance.
@@ -1211,7 +1210,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   ///
   /// See also [AbstractControl.validators]
   FormArray(
-    Iterable<AbstractControl<T>> controls, {
+    List<AbstractControl<T>> controls, {
     List<ValidatorFunction> validators,
   })  : assert(controls != null),
         super(validators: validators) {
@@ -1226,7 +1225,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// It accepts an array that matches the structure of the control.
   /// It accepts both super-sets and sub-sets of the array.
   @override
-  set value(Iterable<T> value) {
+  set value(List<T> value) {
     this.updateValue(value);
   }
 
@@ -1286,7 +1285,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
 
   /// Appends all [controls] to the end of this array.
   void addAll(
-    Iterable<AbstractControl<T>> controls, {
+    List<AbstractControl<T>> controls, {
     bool updateParent,
     bool emitEvent,
   }) {
@@ -1484,7 +1483,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// print(array.value); // outputs: ['John', 'Doe']
   /// ```
   @override
-  void updateValue(Iterable<T> value, {bool updateParent, bool emitEvent}) {
+  void updateValue(List<T> value, {bool updateParent, bool emitEvent}) {
     for (var i = 0; i < _controls.length; i++) {
       if (value == null || i < value.length) {
         _controls[i].updateValue(
@@ -1501,7 +1500,8 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
           .asMap()
           .entries
           .where((entry) => entry.key >= _controls.length)
-          .map((entry) => FormControl<T>(value: entry.value));
+          .map((entry) => FormControl<T>(value: entry.value))
+          .toList();
 
       this.addAll(
         newControls,
@@ -1539,7 +1539,7 @@ class FormArray<T> extends AbstractControl<Iterable<T>>
   /// console.log(array.control('0').disabled);  // output: true
   ///
   /// ```
-  void resetState(Iterable<ControlState<T>> state) {
+  void resetState(List<ControlState<T>> state) {
     if (state == null || state.isEmpty) {
       this.reset();
     } else {
