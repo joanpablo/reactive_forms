@@ -1,8 +1,12 @@
 
+# 6.0.4
+
+## Features
+- Add arguments **emitEvent** and **updateParent** to **FormArray.clear()** method.
+
 # 6.0.3
 
 ## Enhanced
-
 - Changes all arguments of data type **Iterable** with **List** data type to force compiler errors
 when not correctly cast *MappedListIterable* with *List*.
 
