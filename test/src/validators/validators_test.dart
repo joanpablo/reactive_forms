@@ -58,6 +58,30 @@ void main() {
       expect(control.invalid, true);
       expect(control.errors[ValidationMessage.maxLength] != null, true);
     });
+
+    test('FormArray invalid if minLength invalid', () {
+      final array = FormArray([
+        FormControl(),
+        FormControl(),
+      ], validators: [
+        Validators.minLength(3)
+      ]);
+
+      expect(array.invalid, true);
+      expect(array.errors[ValidationMessage.minLength] != null, true);
+    });
+
+    test('FormArray valid if minLength valid', () {
+      final array = FormArray([
+        FormControl(),
+        FormControl(),
+        FormControl(),
+      ], validators: [
+        Validators.minLength(3)
+      ]);
+
+      expect(array.valid, true);
+    });
   });
 
   group('MustMatch Validator Tests', () {
