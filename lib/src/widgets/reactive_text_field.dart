@@ -107,7 +107,7 @@ class ReactiveTextField extends ReactiveFormField {
     SmartQuotesType smartQuotesType,
     bool enableSuggestions = true,
     bool maxLengthEnforced = true,
-    int maxLines = 1,
+    int maxLines,
     int minLines,
     bool expands = false,
     int maxLength,
