@@ -1248,9 +1248,13 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   ///
   /// If the control has children, all children are also disabled.
   ///
-  /// When [updateParent] is true, mark only this control.
-  /// When false or not supplied, marks all direct ancestors.
-  /// Default is false.
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
   @override
   void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
     _controls.forEach((control) {
@@ -1262,6 +1266,14 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
   @override
   void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
     _forEachChild((control) {
@@ -1323,11 +1335,28 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   ///
   /// The [value] and validity state of the array is updated and the event
   /// [collectionChanges] is triggered.
-  void clear() {
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void clear({bool emitEvent = true, bool updateParent = true}) {
+    emitEvent ??= true;
+    updateParent ??= true;
+
     _forEachChild((control) => control.parent = null);
     _controls.clear();
-    this.updateValueAndValidity();
-    this.emitsCollectionChanged(_controls);
+    this.updateValueAndValidity(
+      emitEvent: emitEvent,
+      updateParent: updateParent,
+    );
+
+    if (emitEvent) {
+      this.emitsCollectionChanged(_controls);
+    }
   }
 
   /// Checks if array contains a control by a given [name].
