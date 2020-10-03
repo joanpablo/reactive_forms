@@ -8,7 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// that emits events each time you add or remove a control to the collection.
 abstract class FormControlCollection {
   final _collectionChanges =
-      StreamController<Iterable<AbstractControl>>.broadcast();
+      StreamController<List<AbstractControl>>.broadcast();
 
   /// Retrieves a child control given the control's [name] or path.
   ///
@@ -25,7 +25,7 @@ abstract class FormControlCollection {
   bool contains(String name);
 
   /// Emits when a control is added or removed from collection.
-  Stream<Iterable<AbstractControl>> get collectionChanges =>
+  Stream<List<AbstractControl>> get collectionChanges =>
       _collectionChanges.stream;
 
   /// Close stream that emit collection change events
@@ -37,7 +37,7 @@ abstract class FormControlCollection {
   ///
   /// This is for internal use only.
   @protected
-  void emitsCollectionChanged(Iterable<AbstractControl> controls) {
+  void emitsCollectionChanged(List<AbstractControl> controls) {
     _collectionChanges.add(List.unmodifiable(controls));
   }
 
