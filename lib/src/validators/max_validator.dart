@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// validator that requires the control's value to be less than or equal to a
 /// provided value.
-class MaxValidator<Comparable> extends Validator {
+class MaxValidator extends Validator<Comparable> {
   final Comparable max;
 
   /// Constructs the instance of the validator.
@@ -15,8 +15,8 @@ class MaxValidator<Comparable> extends Validator {
   MaxValidator(this.max) : assert(max != null);
 
   @override
-  Map<String, dynamic> validate(AbstractControl control) {
-    return control.value is Comparable && control.value <= max
+  Map<String, dynamic> validate(AbstractControl<Comparable> control) {
+    return (control.value != null) && (control.value.compareTo(max) <= 0)
         ? null
         : {
             ValidationMessage.max: {
