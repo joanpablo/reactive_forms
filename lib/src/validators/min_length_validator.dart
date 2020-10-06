@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that validates whether the value meets a minimum length
 /// requirement.
-class MinLengthValidator extends Validator {
+class MinLengthValidator extends Validator<dynamic> {
   final int minLength;
 
   /// Constructs a [MinLengthValidator].
@@ -15,7 +15,7 @@ class MinLengthValidator extends Validator {
   MinLengthValidator(this.minLength) : assert(minLength != null);
 
   @override
-  Map<String, dynamic> validate(AbstractControl control) {
+  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
     return (control.value == null || control.value.length >= this.minLength)
         ? null
         : {
