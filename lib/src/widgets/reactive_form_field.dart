@@ -15,6 +15,7 @@ import 'package:reactive_forms/src/value_accessors/default_value_accessor.dart';
 typedef ReactiveFormFieldBuilder<T> = Widget Function(
     ReactiveFormFieldState<T> field);
 
+/// Signature for customize when to show errors in a widget.
 typedef ShowErrorsFunction = bool Function(FormControl control);
 
 /// A single reactive form field.
@@ -41,6 +42,7 @@ class ReactiveFormField<T> extends StatefulWidget {
   /// Gets the widget control value accessor
   final ControlValueAccessor valueAccessor;
 
+  /// Gets the callback that define when to show errors in UI.
   final ShowErrorsFunction showErrors;
 
   /// Creates an instance of the [ReactiveFormField].
