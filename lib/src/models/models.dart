@@ -1282,24 +1282,71 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
-  /// Insert a new [control] at the [index] position.
-  void insert(int index, AbstractControl<T> control) {
+  /// Insert a [control] at the given [index] position.
+  ///
+  /// The argument [index] is the position starting from 0 where to insert the
+  /// control.
+  ///
+  /// The argument [control] is the item to insert.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void insert(
+    int index,
+    AbstractControl<T> control, {
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
+    emitEvent ??= true;
+
     _controls.insert(index, control);
     control.parent = this;
-    this.updateValueAndValidity();
-    this.emitsCollectionChanged(_controls);
+
+    this.updateValueAndValidity(
+      emitEvent: emitEvent,
+      updateParent: updateParent,
+    );
+
+    if (emitEvent) {
+      this.emitsCollectionChanged(_controls);
+    }
   }
 
   /// Insert a new [control] at the end of the array.
-  void add(AbstractControl<T> control) {
-    this.addAll([control]);
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void add(
+    AbstractControl<T> control, {
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
+    this.addAll([control], emitEvent: emitEvent, updateParent: updateParent);
   }
 
   /// Appends all [controls] to the end of this array.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
   void addAll(
     List<AbstractControl<T>> controls, {
-    bool updateParent,
-    bool emitEvent,
+    bool updateParent = true,
+    bool emitEvent = true,
   }) {
     _controls.addAll(controls);
     controls.forEach((control) {
@@ -1312,18 +1359,73 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     this.emitsCollectionChanged(_controls);
   }
 
-  /// Removes control at [index]
-  void removeAt(int index) {
+  /// Removes a child control at the given [index].
+  ///
+  /// The argument [index] is the index position of the child control to remove.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void removeAt(
+    int index, {
+    bool emitEvent = true,
+    bool updateParent = true,
+  }) {
+    emitEvent ??= true;
+
     final removedControl = _controls.removeAt(index);
     removedControl.parent = null;
-    this.updateValueAndValidity();
-    this.emitsCollectionChanged(_controls);
+    this.updateValueAndValidity(
+      emitEvent: emitEvent,
+      updateParent: updateParent,
+    );
+
+    if (emitEvent) {
+      this.emitsCollectionChanged(_controls);
+    }
   }
 
   /// Removes [control] from the array.
   ///
-  /// Throws [FormControlNotFoundException] if no control found.
-  void remove(AbstractControl<T> control) {
+  /// The argument [control] is the child control to remove.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// Throws [FormControlNotFoundException] if [control] is not a child control
+  /// of the array.
+  ///
+  /// ### Example
+  /// ```dart
+  /// final array = FormArray<String>([
+  ///   FormControl<String>(value: 'John'),
+  ///   FormControl<String>(value: 'Doe'),
+  /// ]);
+  ///
+  /// print(array.value) // outputs: ['John', 'Doe']
+  /// print(array.controls.length) // outputs: 2
+  ///
+  /// final firstControl = array.control('0');
+  ///
+  /// array.remove(firstControl);
+  ///
+  /// print(array.value) // outputs: ['John']
+  /// print(array.controls.length) // outputs: 1
+  /// ```
+  void remove(
+    AbstractControl<T> control, {
+    bool emitEvent = true,
+    bool updateParent = true,
+  }) {
     final index = _controls.indexOf(control);
     if (index == -1) {
       throw FormControlNotFoundException();
