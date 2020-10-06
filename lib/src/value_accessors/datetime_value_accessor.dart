@@ -4,6 +4,8 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// Represents a control value accessor that convert between data types
+/// [DateTime] and [String].
 class DateTimeValueAccessor extends ControlValueAccessor<DateTime, String> {
   @override
   String modelToViewValue(DateTime modelValue) {

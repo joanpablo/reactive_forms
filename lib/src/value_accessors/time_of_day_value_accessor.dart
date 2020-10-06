@@ -5,6 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// Represents a control value accessor that convert between data types
+/// [TimeOfDay] and [String].
 class TimeOfDayValueAccessor extends ControlValueAccessor<TimeOfDay, String> {
   @override
   String modelToViewValue(TimeOfDay modelValue) {
