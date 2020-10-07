@@ -1362,7 +1362,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     this.emitsCollectionChanged(_controls);
   }
 
-  /// Removes a child control at the given [index].
+  /// Removes and returns the child control at the given [index].
   ///
   /// The argument [index] is the index position of the child control to remove.
   ///
@@ -1373,7 +1373,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// When [emitEvent] is true or not supplied (the default), both the
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
-  void removeAt(
+  AbstractControl<T> removeAt(
     int index, {
     bool emitEvent = true,
     bool updateParent = true,
@@ -1390,6 +1390,8 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     if (emitEvent) {
       this.emitsCollectionChanged(_controls);
     }
+
+    return removedControl;
   }
 
   /// Removes [control] from the array.
