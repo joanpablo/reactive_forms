@@ -58,7 +58,7 @@ class FormBuilder {
   /// ```
   FormGroup group(Map<String, dynamic> controls,
       [List<ValidatorFunction> validators = const []]) {
-    final map = controls.map((key, value) {
+    final map = controls.map((String key, dynamic value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
@@ -203,7 +203,7 @@ class FormBuilder {
         }
 
         return this.control(v);
-      }).toList(),
+      })?.toList(),
       validators: validators,
     );
   }

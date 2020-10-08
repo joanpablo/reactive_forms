@@ -33,7 +33,7 @@ class ReactiveSlider extends ReactiveFormField<double> {
   ReactiveSlider({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<double> formControl,
     double min = 0.0,
     double max = 1.0,
     int divisions,
