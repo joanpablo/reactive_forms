@@ -519,11 +519,10 @@ void main() {
     // When: set a control focus
     addressArray.focus('0.city');
 
-    final form = (addressArray.control('0') as FormGroup);
+    final FormControl<String> city = addressArray.control('0.city');
 
     // Then: control is focused
-    expect((form.control('city') as FormControl).hasFocus, true,
-        reason: 'control is not focused');
+    expect(city.hasFocus, true, reason: 'control is not focused');
   });
 
   test('Remove Focus to all control', () {

@@ -1,3 +1,11 @@
+# 6.0.5
+
+## Fix
+- Fix error when trying to get a deep control within an array of groups. 
+
+## Futures
+
+
 
 # 6.0.4
 

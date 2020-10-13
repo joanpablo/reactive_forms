@@ -873,7 +873,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// form.control('person.name');
   /// ```
   @override
-  AbstractControl control(String name) {
+  AbstractControl<dynamic> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1522,7 +1522,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// form.control('address.0.city');
   /// ```
   @override
-  AbstractControl<T> control(String name) {
+  AbstractControl<dynamic> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
