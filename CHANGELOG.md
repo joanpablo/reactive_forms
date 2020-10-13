@@ -2,9 +2,14 @@
 
 ## Fix
 - Fix error when trying to get a deep control within an array of groups. 
+- Fix minor issues
+- Fix some typos.
 
-## Futures
-
+## Enhanced
+- **FormArray.removeAt** now returns the removed control
+- Improve code documentation
+- Add more tests
+- Add more strict data types in arguments.
 
 
 # 6.0.4
