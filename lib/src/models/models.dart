@@ -411,26 +411,36 @@ abstract class AbstractControl<T> {
   /// Sets errors on a form control when running validations manually,
   /// rather than automatically.
   ///
-  /// The control is marked as dirty.
+  /// If [markAsDirty] is true or not set (default) then the control is marked
+  /// as dirty.
   ///
   /// See [dirty].
-  void setErrors(Map<String, dynamic> errors) {
+  void setErrors(Map<String, dynamic> errors, {bool markAsDirty: true}) {
     _errors.clear();
     _errors.addAll(errors);
 
     _updateControlsErrors();
-    this.markAsDirty(emitEvent: false);
+
+    markAsDirty ??= true;
+    if (markAsDirty) {
+      this.markAsDirty(emitEvent: false);
+    }
   }
 
   /// Removes an error given the error [key].
   ///
-  /// The control is marked as dirty.
+  /// If [markAsDirty] is true or not set (default) then the control is marked
+  /// as dirty.
   ///
   /// See [dirty].
-  void removeError(String key) {
+  void removeError(String key, {bool markAsDirty: true}) {
     _errors.removeWhere((errorKey, value) => errorKey == key);
     _updateControlsErrors();
-    this.markAsDirty(emitEvent: false);
+
+    markAsDirty ??= true;
+    if (markAsDirty) {
+      this.markAsDirty(emitEvent: false);
+    }
   }
 
   /// Returns true if all children disabled, otherwise returns false.
