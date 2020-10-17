@@ -221,5 +221,27 @@ void main() {
       // Then: the control is pristine
       expect(control.pristine, true);
     });
+
+    test('SetErrors marks control as dirty by default', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: set errors
+      control.setErrors({'someError': true});
+
+      // Then: the control is dirty
+      expect(control.dirty, true);
+    });
+
+    test('Set errors and keep the control as pristine', () {
+      // Given: a control
+      final control = FormControl<String>();
+
+      // When: set errors and specify markAsDirty = false
+      control.setErrors({'someError': true}, markAsDirty: false);
+
+      // Then: the control is pristine
+      expect(control.pristine, true);
+    });
   });
 }
