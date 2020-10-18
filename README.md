@@ -124,12 +124,16 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.pattern
 - Validators.creditCard
 - Validators.equals
+- Validators.compose
+- Validators.composeOR
 
 #### FormGroup
 - Validators.mustMatch
-- Validators.compose
-- Validators.composeOR
 - Validators.compare
+
+#### FormArray
+- Validators.minLength
+- Validators.maxLength
 
 ### Custom Validators
 A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
