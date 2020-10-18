@@ -10,6 +10,13 @@
 - Improve code documentation
 - Add more tests
 - Add more strict data types in arguments.
+- Add extra arguments to **AbstractControl.setErrors** and **AbstractControl.removeError** to marks
+the control as **dirty** or **pristine**.
+- Refactor **Validators.minLength** and **Validators.maxLength** to be use with:
+ - FormArray
+ - FormControl of type *Iterable*
+ - FormControl of type *String*
+ - FormGroup
 
 
 # 6.0.4
