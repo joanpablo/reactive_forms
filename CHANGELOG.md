@@ -6,9 +6,9 @@
 - Fix some typos.
 
 ## Enhanced
-- **FormArray.removeAt** now returns the removed control
-- Improve code documentation
-- Add more tests
+- **FormArray.removeAt** now returns the removed control.
+- Improve code documentation.
+- Add more tests.
 - Add more strict data types in arguments.
 - Add extra arguments to **AbstractControl.setErrors** and **AbstractControl.removeError** to marks
 the control as **dirty** or **pristine**.
@@ -17,7 +17,6 @@ the control as **dirty** or **pristine**.
  - FormControl of type *Iterable*
  - FormControl of type *String*
  - FormGroup
-
 
 # 6.0.4
 
