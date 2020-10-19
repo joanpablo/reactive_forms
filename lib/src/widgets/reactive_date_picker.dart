@@ -87,9 +87,9 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
               field.context,
               ReactiveDatePickerDelegate._(
                 field,
-                () => showDatePicker(
+                (field) => showDatePicker(
                   context: field.context,
-                  initialDate: field.value ?? DateTime.now(),
+                  initialDate: _getInitialDate(field.value, lastDate),
                   firstDate: firstDate,
                   lastDate: lastDate,
                   initialEntryMode: initialEntryMode,
@@ -118,17 +118,30 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
           },
         );
 
+  static DateTime _getInitialDate(DateTime fieldValue, DateTime lastDate) {
+    if (fieldValue != null) {
+      return fieldValue;
+    }
+
+    final now = DateTime.now();
+    return now.compareTo(lastDate) > 0 ? lastDate : now;
+  }
+
   @override
   ReactiveFormFieldState<DateTime> createState() =>
       ReactiveFormFieldState<DateTime>();
 }
+
+/// Definition of the function responsible for show the date picker.
+typedef ShowDatePickerCallback = Function(
+    ReactiveFormFieldState<DateTime> field);
 
 /// This class is responsible of showing the picker dialog.
 ///
 /// See also [ReactiveDatePicker].
 class ReactiveDatePickerDelegate {
   final ReactiveFormFieldState<DateTime> _field;
-  final VoidCallback _showPickerCallback;
+  final ShowDatePickerCallback _showPickerCallback;
 
   ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
 
@@ -141,6 +154,6 @@ class ReactiveDatePickerDelegate {
 
   /// Shows the time picker dialog.
   void showPicker() {
-    this._showPickerCallback();
+    this._showPickerCallback(_field);
   }
 }

@@ -191,18 +191,18 @@ class FormBuilder {
   /// ]);
   /// ```
   ///
-  FormArray array(List<dynamic> value,
+  FormArray<T> array<T>(List<dynamic> value,
       [List<ValidatorFunction> validators = const []]) {
-    return FormArray(
-      value?.map((v) {
+    return FormArray<T>(
+      value?.map<AbstractControl<T>>((v) {
         if (v is Map<String, dynamic>) {
-          return this.group(v);
+          return this.group(v) as AbstractControl<T>;
         }
         if (v is AbstractControl) {
-          return v;
+          return v as AbstractControl<T>;
         }
 
-        return this.control(v);
+        return this.control<T>(v);
       })?.toList(),
       validators: validators,
     );
