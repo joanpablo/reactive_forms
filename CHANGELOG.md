@@ -4,6 +4,8 @@
 - Fix error when trying to get a deep control within an array of groups. 
 - Fix minor issues
 - Fix some typos.
+- Fix **ReactiveDatePicker** error when **lastDate** is previous to **DateTime.now()** and control 
+value is **null**.
 
 ## Enhanced
 - **FormArray.removeAt** now returns the removed control.
@@ -17,6 +19,7 @@ the control as **dirty** or **pristine**.
  - FormControl of type *Iterable*
  - FormControl of type *String*
  - FormGroup
+- Add better data types definition in **FormBuilder.array** declaration.
 
 # 6.0.4
 
