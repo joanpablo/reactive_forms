@@ -75,5 +75,34 @@ void main() {
         expect(datePicker, throwsAssertionError);
       },
     );
+
+    testWidgets(
+      'Date picker initialize date with lastDate if control value is null',
+      (WidgetTester tester) async {
+        // Given: a form and a date time field
+        final form = FormGroup({
+          'birthday': FormControl<DateTime>(),
+        });
+
+        // And: a widget bound to the form
+        final lastDate = DateTime(DateTime.now().year - 18);
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(
+          form: form,
+          lastDate: lastDate,
+        ));
+
+        // When: open picker
+        await tester.tap(find.byType(FlatButton));
+        await tester.pump();
+
+        // And: get initial date of the date picker
+        final datePicker = tester.widget(find.byType(CalendarDatePicker))
+            as CalendarDatePicker;
+        final initialDate = datePicker.initialDate;
+
+        // Then: initial date is equals to last Date
+        expect(initialDate, lastDate);
+      },
+    );
   });
 }
