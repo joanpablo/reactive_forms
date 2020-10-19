@@ -1445,7 +1445,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     if (index == -1) {
       throw FormControlNotFoundException();
     }
-    this.removeAt(index);
+    this.removeAt(index, emitEvent: emitEvent, updateParent: updateParent);
   }
 
   /// Removes all children controls from the array.
