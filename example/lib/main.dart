@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
         'password': ['', Validators.required, Validators.minLength(8)],
         'passwordConfirmation': '',
         'rememberMe': false,
-        'progress': [50.0, Validators.min(50.0)],
+        'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
       }, [

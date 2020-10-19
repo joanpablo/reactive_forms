@@ -1,3 +1,25 @@
+# 6.0.5
+
+## Fix
+- Fix error when trying to get a deep control within an array of groups. 
+- Fix minor issues
+- Fix some typos.
+- Fix **ReactiveDatePicker** error when **lastDate** is previous to **DateTime.now()** and control 
+value is **null**.
+
+## Enhanced
+- **FormArray.removeAt** now returns the removed control.
+- Improve code documentation.
+- Add more tests.
+- Add more strict data types in arguments.
+- Add extra arguments to **AbstractControl.setErrors** and **AbstractControl.removeError** to marks
+the control as **dirty** or **pristine**.
+- Refactor **Validators.minLength** and **Validators.maxLength** to be use with:
+ - FormArray
+ - FormControl of type *Iterable*
+ - FormControl of type *String*
+ - FormGroup
+- Add better data types definition in **FormBuilder.array** declaration.
 
 # 6.0.4
 

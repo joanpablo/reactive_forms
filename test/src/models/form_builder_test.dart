@@ -399,6 +399,7 @@ void main() {
       // Expect: array is created
       expect(addressArray.controls.length, 2);
       expect(addressArray.control('0').value, {'city': 'Sofia'});
+      expect(addressArray.control('0') is FormGroup, true);
     });
 
     test('Array of groups defined as Map', () {
@@ -415,6 +416,7 @@ void main() {
       // Expect: array is created
       expect(addressArray.controls.length, 2);
       expect(addressArray.control('0').value, {'city': 'Sofia'});
+      expect(addressArray.control('0') is FormGroup, true);
     });
 
     test('Array of groups', () {
@@ -427,6 +429,7 @@ void main() {
       // Expect: array is created
       expect(addressArray.controls.length, 2);
       expect(addressArray.control('0').value, {'city': 'Sofia'});
+      expect(addressArray.control('0') is FormGroup, true);
     });
   });
 }

@@ -25,7 +25,7 @@ class FocusNodeController extends FocusController {
   /// Call this method to update the focus state of the [FocusNode].
   ///
   /// This method is called by the [FormControl] when it updates focus
-  /// programatically.
+  /// programmatically.
   @override
   void onControlFocusChanged(bool hasFocus) {
     _modelToViewChanges = true;

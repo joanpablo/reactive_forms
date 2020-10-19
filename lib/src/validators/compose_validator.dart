@@ -9,7 +9,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// If at least one validator returns 'null' then the compose validator
 /// returns 'null', otherwise returns the union of the individual error
 /// maps returned by each validator.
-class ComposeValidator extends Validator {
+class ComposeValidator extends Validator<dynamic> {
   final List<ValidatorFunction> validators;
 
   /// Constructs an instance of the validator.

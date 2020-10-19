@@ -17,7 +17,7 @@ import 'package:reactive_forms/src/widgets/focus_node_controller.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField extends ReactiveFormField {
+class ReactiveTextField extends ReactiveFormField<dynamic> {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.

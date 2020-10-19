@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^6.0.4
+  reactive_forms: ^6.0.5
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -124,12 +124,16 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.pattern
 - Validators.creditCard
 - Validators.equals
+- Validators.compose
+- Validators.composeOR
 
 #### FormGroup
 - Validators.mustMatch
-- Validators.compose
-- Validators.composeOR
 - Validators.compare
+
+#### FormArray
+- Validators.minLength
+- Validators.maxLength
 
 ### Custom Validators
 A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
@@ -1259,6 +1263,8 @@ This way you can separate UI logic from business logic and you can define the **
 **Reactive Forms** is not limited just to common widgets in *Forms* like text, dropdowns, sliders switch fields and etc, you can easily create **custom widgets** that **two-way** binds to **FormControls** and create your own set of *Reactive Widgets* ;)
 
 In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-Widgets) you can find a tutorial of how to create your custom Reactive Widget. 
+
+You can also check [Star Rating with Flutter Reactive Forms](https://dev.to/joanpablo/star-rating-with-flutter-reactive-forms-2d52) post as another example of a custom reactive widget.
 
 ## What is not **Reactive Forms**
 
