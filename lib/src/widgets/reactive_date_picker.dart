@@ -133,7 +133,7 @@ class ReactiveDatePicker extends ReactiveFormField<DateTime> {
 }
 
 /// Definition of the function responsible for show the date picker.
-typedef ShowDatePickerCallback = Function(
+typedef _ShowDatePickerCallback = Function(
     ReactiveFormFieldState<DateTime> field);
 
 /// This class is responsible of showing the picker dialog.
@@ -141,7 +141,7 @@ typedef ShowDatePickerCallback = Function(
 /// See also [ReactiveDatePicker].
 class ReactiveDatePickerDelegate {
   final ReactiveFormFieldState<DateTime> _field;
-  final ShowDatePickerCallback _showPickerCallback;
+  final _ShowDatePickerCallback _showPickerCallback;
 
   ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
 

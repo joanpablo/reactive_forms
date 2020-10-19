@@ -101,7 +101,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
 }
 
 /// Definition of the function responsible for show the time picker.
-typedef ShowTimePickerCallback = Function(
+typedef _ShowTimePickerCallback = Function(
     ReactiveFormFieldState<TimeOfDay> field);
 
 /// This class is responsible of showing the picker dialog.
@@ -109,7 +109,7 @@ typedef ShowTimePickerCallback = Function(
 /// See also [ReactiveTimePicker].
 class ReactiveTimePickerDelegate {
   final ReactiveFormFieldState<TimeOfDay> _field;
-  final ShowTimePickerCallback _showPickerCallback;
+  final _ShowTimePickerCallback _showPickerCallback;
 
   ReactiveTimePickerDelegate._(this._field, this._showPickerCallback);
 
