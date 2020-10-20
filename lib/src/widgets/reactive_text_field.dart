@@ -85,7 +85,7 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
     Key key,
     String formControlName,
     FormControl formControl,
-    Map<String, String> validationMessages,
+    ValidationMessagesFunction validationMessages,
     ControlValueAccessor valueAccessor,
     ShowErrorsFunction showErrors,
     InputDecoration decoration = const InputDecoration(),
@@ -127,7 +127,7 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
           formControl: formControl,
           formControlName: formControlName,
           valueAccessor: valueAccessor,
-          validationMessages: validationMessages ?? const {},
+          validationMessages: validationMessages,
           showErrors: showErrors,
           builder: (ReactiveFormFieldState field) {
             final state = field as _ReactiveTextFieldState;

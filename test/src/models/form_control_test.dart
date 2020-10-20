@@ -43,7 +43,8 @@ void main() {
       );
 
       expect(formControl.errors.keys.length, 2);
-      expect(formControl.errors[ValidationMessage.email], true, reason: 'mail');
+      expect(formControl.errors.containsKey(ValidationMessage.email), true,
+          reason: 'mail');
       expect(formControl.errors[ValidationMessage.minLength] != null, true,
           reason: 'minLength');
     });
@@ -242,6 +243,33 @@ void main() {
 
       // Then: the control is pristine
       expect(control.pristine, true);
+    });
+
+    test('Checks if control has error', () {
+      // Given: a required and invalid control
+      final control = FormControl<String>(validators: [Validators.required]);
+
+      // Expect: control has Validators.required error
+      expect(control.hasError(ValidationMessage.required), true);
+    });
+
+    test('Checks if control has error', () {
+      // Given: a valid control
+      final control = FormControl<String>();
+
+      // Expect: control doesn't have Validators.required error
+      expect(control.hasError(ValidationMessage.required), false);
+    });
+
+    test('Reports control error', () {
+      // Given: a required and invalid control
+      final control = FormControl<String>(validators: [Validators.required]);
+
+      // When: get tha control error by errorCode
+      final error = control.getError(ValidationMessage.required);
+
+      // Then: the error is not null
+      expect(error, true);
     });
   });
 }

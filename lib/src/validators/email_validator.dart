@@ -11,11 +11,12 @@ class EmailValidator extends Validator<dynamic> {
 
   @override
   Map<String, dynamic> validate(AbstractControl<dynamic> control) {
-    final error = {ValidationMessage.email: true};
+    final error = {ValidationMessage.email: control.value};
 
-    return (control.value == null ||
-            control.value.toString() == '' ||
-            emailRegex.hasMatch(control.value.toString()))
+    // don't validate empty values to allow optional controls
+    return (control.isNull ||
+            control.value.toString().isEmpty ||
+            emailRegex.hasMatch(control.value.toString().toString()))
         ? null
         : error;
   }

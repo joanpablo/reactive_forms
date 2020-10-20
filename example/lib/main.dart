@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               ReactiveTextField(
                 formControlName: 'email',
-                validationMessages: {
+                validationMessages: (control) => {
                   ValidationMessage.required: 'The email must not be empty',
                   ValidationMessage.email:
                       'The email value must be a valid email',
@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
               ReactiveTextField(
                 formControlName: 'password',
                 obscureText: true,
-                validationMessages: {
+                validationMessages: (errors) => {
                   ValidationMessage.required: 'The password must not be empty',
                   ValidationMessage.minLength:
                       'The password must be at least 8 characters',
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                 formControlName: 'passwordConfirmation',
                 decoration: InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
-                validationMessages: {
+                validationMessages: (errors) => {
                   ValidationMessage.mustMatch:
                       'Password confirmation must match',
                 },
@@ -145,7 +145,7 @@ class HomePage extends StatelessWidget {
               ReactiveTextField(
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
-                validationMessages: {
+                validationMessages: (errors) => {
                   ValidationMessage.min:
                       'A value lower than 50.00 is not accepted',
                 },

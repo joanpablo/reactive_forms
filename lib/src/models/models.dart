@@ -156,6 +156,54 @@ abstract class AbstractControl<T> {
   /// valid AND invalid or invalid AND pending.
   ControlStatus get status => _status;
 
+  /// Reports whether the control with the given [path] has the specified
+  /// [errorCode].
+  ///
+  /// If no [path] is given, this method checks for the error on the current
+  /// control.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'address': FormGroup({
+  ///     'street': FormControl<String>(validators: [Validators.required]),
+  ///   }),
+  /// });
+  ///
+  /// final hasError = form.hasError(ValidationMessages.required, 'address.street');
+  /// print(hasError); // outputs: true
+  /// ```
+  bool hasError(String errorCode, [String path]) {
+    return this.getError(errorCode, path) != null;
+  }
+
+  /// Returns the error data for the control with the given [errorCode] in the
+  /// given [path].
+  ///
+  /// If no [path] is given, this method checks for the error on the current
+  /// control.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'payment': FormGroup({
+  ///     'amount': FormControl<double>(
+  ///       value: 5.0,
+  ///       validators: [Validators.min(10.0)]
+  ///      ),
+  ///   }),
+  /// });
+  ///
+  /// final error = form.getError(ValidationMessages.min, 'payment.amount');
+  /// print(error); // outputs: { min: 10.0, actual: 5.0 }
+  /// ```
+  dynamic getError(String errorCode, [String path]) {
+    final AbstractControl<dynamic> control =
+        path != null ? _findControl(path) : this;
+
+    return control.errors[errorCode];
+  }
+
   /// Marks the control as `dirty`.
   ///
   /// A control becomes dirty when the control's value is changed through
@@ -630,6 +678,8 @@ abstract class AbstractControl<T> {
   T _reduceValue();
 
   void _forEachChild(void Function(AbstractControl) callback);
+
+  AbstractControl<dynamic> _findControl(String path);
 }
 
 /// Tracks the value and validation status of an individual form control.
@@ -809,6 +859,9 @@ class FormControl<T> extends AbstractControl<T> {
 
   @override
   bool _anyControls(bool Function(AbstractControl) condition) => false;
+
+  @override
+  AbstractControl<dynamic> _findControl(String path) => this;
 }
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -1189,6 +1242,10 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     return _controls.values
         .any((control) => control.enabled && condition(control));
   }
+
+  @override
+  AbstractControl<dynamic> _findControl(String path) =>
+      this.findControl(path.split('.'));
 }
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -1745,4 +1802,8 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   bool _anyControls(bool Function(AbstractControl) condition) {
     return _controls.any((control) => control.enabled && condition(control));
   }
+
+  @override
+  AbstractControl<dynamic> _findControl(String path) =>
+      this.findControl(path.split('.'));
 }
