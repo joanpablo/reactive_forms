@@ -38,7 +38,6 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          validationMessages: const {},
           builder: (ReactiveFormFieldState<bool> field) {
             return Checkbox(
               value: field.value ?? false,

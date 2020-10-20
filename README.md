@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^6.0.5
+  reactive_forms: ^7.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -726,13 +726,13 @@ Widget build(BuildContext context) {
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'name',
-          validationMessages: {
+          validationMessages: (control) => {
             'required': 'The name must not be empty'
           },
         ),
         ReactiveTextField(
           formControlName: 'email',
-          validationMessages: {
+          validationMessages: (control) => {
             'required': 'The email must not be empty',
             'email': 'The email value must be a valid email'
           },
@@ -740,7 +740,7 @@ Widget build(BuildContext context) {
         ReactiveTextField(
           formControlName: 'password',
           obscureText: true,
-          validationMessages: {
+          validationMessages: (control) => {
             'required': 'The password must not be empty',
             'minLenght': 'The password must have at least 8 characters'
           },
@@ -757,7 +757,7 @@ Widget build(BuildContext context) {
 > ```dart
 > return ReactiveTextField(
 >    formControlName: 'email',
->    validationMessages: {
+>    validationMessages: (control) => {
 >      ValidationMessage.required: 'The email must not be empty',
 >      ValidationMessage.email: 'The email value must be a valid email',
 >    },
@@ -1279,58 +1279,7 @@ You can also check [Star Rating with Flutter Reactive Forms](https://dev.to/joan
 - Remove boilerplate code and brings you the posibility to write clean code defining a separation between model and UI with minimal efforts.
 - And it integrates perfectly well with common state management libraries like [Provider](https://pub.dev/packages/provider), [Bloc](https://pub.dev/packages/bloc) and many others good libraries the community has created.
 
-## Migrate from 1.x to 2.x
+## Migrate versions
 
-Events renamed:
-
-- In **AbstractControl**
-  - *onValueChanged* to **valueChanges**
-  - *onStatusChanged* to **statusChanges**
-  - *onTouched* to **touchChanges**  
-
-- In **FormGroup** and **FormArray**
-  - *onCollectionChanged* to **collectionChanges**
-
-- In **FormControl**
-  - *onFocusChanged* to **focusChanges**  
-
-All events are now **Streams** so previous codes like the following one:
-
-```dart
-final control = FormControl<String>();
-
-// listen to control changes
-control.onValueChanged.addListener((){
-  // must access the control to get the value 
-  print(control.value);
-});
-
-control.value = 'Hello Reactive Forms!';
-```
-
-converts now to:
-
-```dart
-final control = FormControl<String>();
-
-// listen to control changes
-control.valueChanges.listen((String value){
-  // the value arrives from the arguments :)
-  print(value);
-});
-
-control.value = 'Hello Reactive Forms!';
-```
-
-## Breaking changes in 3.x
-
-Set a value directly to a **FormControl** from code do not marks the control as **touched**,
-you must explicitly call **FormControl.markAsTouched()** to show up validation messages in UI. Example:
-
-```dart
-set name(String newName) {
-  final formControl = this.form.control('name');
-  formControl.value = newName;
-  formControl.markAsTouched();// if newName is invalid then validation messages will show up in UI
-}
-```
+Visit [Migration Guide](https://github.com/joanpablo/reactive_forms/wiki/Migration-Guide) to see 
+more details about different version breaking changes.

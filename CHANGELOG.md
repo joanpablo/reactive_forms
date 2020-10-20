@@ -1,3 +1,18 @@
+# 7.0.0
+
+## Breaking changes
+- Change **ReactiveFormField.validationMessages** from a **Map** to a **Function** that receives
+the instance of the control and returns the Map with the customized validation messages. This 
+upgrade now brings the possibility to dynamically change the validation messages based on the 
+current error data.
+- Change **Validators.email** response error Map. Now returns the current control value instead of 
+*true*.
+
+## Features
+- Add **AbstractControl.hasError(...)** for asking if a control has an error based on error code and 
+children path.  
+- Add **AbstractControl.getError(...)** to get error data based on error code and children path.
+
 # 6.0.5
 
 ## Fix
@@ -15,10 +30,10 @@ value is **null**.
 - Add extra arguments to **AbstractControl.setErrors** and **AbstractControl.removeError** to marks
 the control as **dirty** or **pristine**.
 - Refactor **Validators.minLength** and **Validators.maxLength** to be use with:
- - FormArray
- - FormControl of type *Iterable*
- - FormControl of type *String*
- - FormGroup
+  - FormArray
+  - FormControl of type *Iterable*
+  - FormControl of type *String*
+  - FormGroup
 - Add better data types definition in **FormBuilder.array** declaration.
 
 # 6.0.4
