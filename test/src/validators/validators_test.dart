@@ -60,6 +60,32 @@ void main() {
       expect(control.valid, true);
     });
 
+    test('FormGroup valid if minLength valid', () {
+      // Given: a valid control
+      final form = FormGroup({
+        'name': FormControl(
+          value: 'Reactive Forms',
+          validators: [Validators.minLength(6)],
+        ),
+      });
+
+      // Expect: control is valid
+      expect(form.valid, true);
+    });
+
+    test('FormGroup invalid if minLength invalid', () {
+      // Given: an invalid control
+      final form = FormGroup({
+        'name': FormControl(
+          value: 'Forms',
+          validators: [Validators.minLength(6)],
+        ),
+      });
+
+      // Expect: control is invalid
+      expect(form.valid, false);
+    });
+
     test('FormArray invalid if minLength invalid', () {
       // Given: an invalid array
       final array = FormArray([
@@ -134,6 +160,29 @@ void main() {
 
       // Expect: control is valid
       expect(control.valid, true);
+    });
+
+    test('FormGroup invalid if maxLength invalid', () {
+      final form = FormGroup({
+        'name': FormControl(
+          value: 'Hello Reactive Forms',
+          validators: [Validators.maxLength(10)],
+        ),
+      });
+
+      expect(form.invalid, true);
+      expect(form.hasError(ValidationMessage.maxLength, 'name'), true);
+    });
+
+    test('FormGroup is valid if maxLength valid', () {
+      final form = FormGroup({
+        'name': FormControl(
+          value: 'Reactive',
+          validators: [Validators.maxLength(10)],
+        ),
+      });
+
+      expect(form.valid, true);
     });
 
     test('FormControl of list valid if maxLength is valid', () {
