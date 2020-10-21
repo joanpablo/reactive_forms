@@ -55,4 +55,7 @@ class ValidationMessage {
 
   /// Key text for group compare validation message.
   static const String compare = 'compare';
+
+  /// Key text for contain validation message.
+  static const String contains = 'contains';
 }
