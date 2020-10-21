@@ -17,6 +17,7 @@ import 'package:reactive_forms/src/validators/must_match_validator.dart';
 import 'package:reactive_forms/src/validators/number_validator.dart';
 import 'package:reactive_forms/src/validators/pattern_validator.dart';
 import 'package:reactive_forms/src/validators/required_validator.dart';
+import 'package:reactive_forms/src/validators/contains_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
@@ -139,5 +140,22 @@ class Validators {
   /// the union of all the individual errors returned by each validator.
   static ValidatorFunction composeOR(List<ValidatorFunction> validators) {
     return ComposeOrValidator(validators).validate;
+  }
+
+  /// Gets a validator that requires the control's value contains all the
+  /// values specified in [values].
+  ///
+  /// The argument [values] must not be null.
+  ///
+  /// ### Example:
+  /// Validates that 'list' contains all the items provided
+  /// ```dart
+  /// final control = FormControl<List<int>>(
+  ///   'value': [1,2,3],
+  ///   'validators': [Validators.contain([1,3])],
+  /// );
+  /// ```
+  static ValidatorFunction contains<T>(List<T> values) {
+    return ContainsValidator<T>(values).validate;
   }
 }
