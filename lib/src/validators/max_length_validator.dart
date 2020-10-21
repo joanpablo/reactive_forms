@@ -24,7 +24,7 @@ class MaxLengthValidator extends Validator<dynamic> {
       collection = control.value.keys.toList();
     } else if (control is FormControl<Iterable<dynamic>>) {
       collection = control.value.toList();
-    } else if (control is FormControl<String>) {
+    } else if (control is FormControl<String> || control.value is String) {
       collection = control.value.runes.toList();
     }
 
