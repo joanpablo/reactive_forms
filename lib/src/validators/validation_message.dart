@@ -57,5 +57,5 @@ class ValidationMessage {
   static const String compare = 'compare';
 
   /// Key text for contain validation message.
-  static const String contain = 'contain';
+  static const String contains = 'contains';
 }

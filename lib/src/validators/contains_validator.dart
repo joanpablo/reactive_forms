@@ -15,15 +15,8 @@ class ContainsValidator<T> extends Validator<Iterable<dynamic>> {
 
   @override
   Map<String, dynamic> validate(AbstractControl<Iterable<dynamic>> control) {
-    final error = {ValidationMessage.contain: true};
-
-    // error if value is not a List
-    if (control.value == null || control.value != null && !(control.value is List<T>)) {
-      return error;
-    }
-
-    return values.every((value) => control.value.contains(value))
+    return (control.value != null) && values.every((value) => control.value.contains(value))
         ? null
-        : error;
+        : {ValidationMessage.contains: true};
   }
 }

@@ -152,7 +152,16 @@ class Validators {
   /// ```dart
   /// final control = FormControl<List<int>>(
   ///   'value': [1,2,3],
-  ///   'validators': [Validators.contain([1,3])],
+  ///   'validators': [Validators.contains([1,3])],
+  /// );
+  /// ```
+  /// or the same example but with FormArray
+  /// ```dart
+  /// final control = FormArray<int>([
+  ///        FormControl<int>(value: 1),
+  ///        FormControl<int>(value: 2),
+  ///        FormControl<int>(value: 3),
+  ///      ], validators: [Validators.contains([1,3])]
   /// );
   /// ```
   static ValidatorFunction contains<T>(List<T> values) {

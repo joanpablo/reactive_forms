@@ -940,7 +940,7 @@ void main() {
         FormControl<String>(value: 'john@email.com'),
         FormControl<String>(value: 'stark@email.com'),
         FormControl<String>(value: 'bob@email.com'),
-      ], validators: [Validators.contains([1,3,5])]);
+      ], validators: [Validators.contains(['doe@email.com'])]);
 
       // Expect: control invalid
       expect(control.valid, false);
