@@ -1,3 +1,12 @@
+# 7.0.1
+
+## Features
+- Add new AbstractControl validator **Validators.contains**.
+
+## Fixes
+- Fix **Validators.minLength** and **Validators.maxLength** with FormControls of type dynamic
+when a value is a String. 
+
 # 7.0.0
 
 ## Breaking changes
