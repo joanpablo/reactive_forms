@@ -1,7 +1,7 @@
 # 7.0.2
 
 ## Fixes
-- Fix when async validators execution completes the control is not marked as dirty by default. 
+- Fix when the execution of asynchronous validators completes the control is not marked as dirty. 
 
 # 7.0.1
 
