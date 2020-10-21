@@ -688,5 +688,23 @@ void main() {
       expect((form.control('email') as FormControl).hasFocus, false,
           reason: 'other controls have focus');
     });
+
+    test("Reports error on deep control path", () {
+      // Given: nested group
+      final form = FormGroup({
+        'payment': FormGroup({
+          'amount': FormControl<double>(
+            value: 5.0,
+            validators: [Validators.min(10.0)],
+          ),
+        }),
+      });
+
+      // When: get `min` validator error
+      final error = form.getError(ValidationMessage.min, 'payment.amount');
+
+      // Then: the error is not null
+      expect(error, {'min': 10.0, 'actual': 5.0});
+    });
   });
 }

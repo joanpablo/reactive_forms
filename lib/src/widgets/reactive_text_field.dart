@@ -17,7 +17,7 @@ import 'package:reactive_forms/src/widgets/focus_node_controller.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField extends ReactiveFormField {
+class ReactiveTextField extends ReactiveFormField<dynamic> {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -85,7 +85,7 @@ class ReactiveTextField extends ReactiveFormField {
     Key key,
     String formControlName,
     FormControl formControl,
-    Map<String, String> validationMessages,
+    ValidationMessagesFunction validationMessages,
     ControlValueAccessor valueAccessor,
     ShowErrorsFunction showErrors,
     InputDecoration decoration = const InputDecoration(),
@@ -127,7 +127,7 @@ class ReactiveTextField extends ReactiveFormField {
           formControl: formControl,
           formControlName: formControlName,
           valueAccessor: valueAccessor,
-          validationMessages: validationMessages ?? const {},
+          validationMessages: validationMessages,
           showErrors: showErrors,
           builder: (ReactiveFormFieldState field) {
             final state = field as _ReactiveTextFieldState;
@@ -218,7 +218,7 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
 
   @override
   void onControlValueChanged(value) {
-    _textController.text = value == null ? '' : value.toString();
+    _textController.text = (value == null) ? '' : value.toString();
     super.onControlValueChanged(value);
   }
 

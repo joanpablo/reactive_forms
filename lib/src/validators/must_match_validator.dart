@@ -4,7 +4,7 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
-class MustMatchValidator extends Validator {
+class MustMatchValidator extends Validator<dynamic> {
   final String controlName;
   final String matchingControlName;
 
@@ -12,7 +12,7 @@ class MustMatchValidator extends Validator {
       : assert(controlName != null),
         assert(matchingControlName != null);
 
-  Map<String, dynamic> validate(AbstractControl control) {
+  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.mustMatch: true};
 
     final form = control as FormGroup;

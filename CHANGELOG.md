@@ -1,3 +1,57 @@
+# 7.0.0
+
+## Breaking changes
+- Change **ReactiveFormField.validationMessages** from a **Map** to a **Function** that receives
+the instance of the control and returns the Map with the customized validation messages. This 
+upgrade now brings the possibility to dynamically change the validation messages based on the 
+current error data.
+- Change **Validators.email** response error Map. Now returns the current control value instead of 
+*true*.
+
+## Features
+- Add **AbstractControl.hasError(...)** for asking if a control has an error based on error code and 
+children path.  
+- Add **AbstractControl.getError(...)** to get error data based on error code and children path.
+
+# 6.0.5
+
+## Fix
+- Fix error when trying to get a deep control within an array of groups. 
+- Fix minor issues
+- Fix some typos.
+- Fix **ReactiveDatePicker** error when **lastDate** is previous to **DateTime.now()** and control 
+value is **null**.
+
+## Enhanced
+- **FormArray.removeAt** now returns the removed control.
+- Improve code documentation.
+- Add more tests.
+- Add more strict data types in arguments.
+- Add extra arguments to **AbstractControl.setErrors** and **AbstractControl.removeError** to marks
+the control as **dirty** or **pristine**.
+- Refactor **Validators.minLength** and **Validators.maxLength** to be use with:
+  - FormArray
+  - FormControl of type *Iterable*
+  - FormControl of type *String*
+  - FormGroup
+- Add better data types definition in **FormBuilder.array** declaration.
+
+# 6.0.4
+
+## Features
+- Add arguments **emitEvent** and **updateParent** to **FormArray.clear()** method.
+
+# 6.0.3
+
+## Enhanced
+- Changes all arguments of data type **Iterable** with **List** data type to force compiler errors
+when not correctly cast *MappedListIterable* with *List*.
+
+# 6.0.2
+
+## Fixes
+- Fix control value accessor that doesn't update the control when LengthLimitingTextInputFormatter
+reached the max length.
 
 # 6.0.1
 

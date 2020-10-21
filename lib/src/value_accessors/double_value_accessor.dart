@@ -5,6 +5,8 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 
+/// Represents a control value accessor that convert between data types
+/// [double] and [String].
 class DoubleValueAccessor extends ControlValueAccessor<double, String> {
   final int fractionDigits;
 

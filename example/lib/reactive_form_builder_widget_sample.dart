@@ -23,7 +23,7 @@ class ReactiveFormBuilderWidgetSample extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: 'Name',
                     ),
-                    validationMessages: {
+                    validationMessages: (errors) => {
                       ValidationMessage.required: 'Name must not be empty',
                     },
                   ),

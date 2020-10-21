@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/exceptions/form_builder_invalid_initialization_exception.dart';
@@ -58,7 +62,7 @@ class FormBuilder {
   /// ```
   FormGroup group(Map<String, dynamic> controls,
       [List<ValidatorFunction> validators = const []]) {
-    final map = controls.map((key, value) {
+    final map = controls.map((String key, dynamic value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
@@ -75,11 +79,11 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is Iterable<ValidatorFunction> &&
+      } else if (value is List<ValidatorFunction> &&
           value.isNotEmpty &&
           value.first != null) {
         return MapEntry(key, FormControl(validators: value));
-      } else if (value is Iterable<dynamic>) {
+      } else if (value is List<dynamic>) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
         } else {
@@ -191,19 +195,19 @@ class FormBuilder {
   /// ]);
   /// ```
   ///
-  FormArray array(Iterable<dynamic> value,
+  FormArray<T> array<T>(List<dynamic> value,
       [List<ValidatorFunction> validators = const []]) {
-    return FormArray(
-      value?.map((v) {
+    return FormArray<T>(
+      value?.map<AbstractControl<T>>((v) {
         if (v is Map<String, dynamic>) {
-          return this.group(v);
+          return this.group(v) as AbstractControl<T>;
         }
         if (v is AbstractControl) {
-          return v;
+          return v as AbstractControl<T>;
         }
 
-        return this.control(v);
-      }),
+        return this.control<T>(v);
+      })?.toList(),
       validators: validators,
     );
   }

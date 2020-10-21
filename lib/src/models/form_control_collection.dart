@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -8,7 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// that emits events each time you add or remove a control to the collection.
 abstract class FormControlCollection {
   final _collectionChanges =
-      StreamController<Iterable<AbstractControl>>.broadcast();
+      StreamController<List<AbstractControl<dynamic>>>.broadcast();
 
   /// Retrieves a child control given the control's [name] or path.
   ///
@@ -17,7 +21,7 @@ abstract class FormControlCollection {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
-  AbstractControl control(String name);
+  AbstractControl<dynamic> control(String name);
 
   /// Checks if collection contains a control by a given [name].
   ///
@@ -25,7 +29,7 @@ abstract class FormControlCollection {
   bool contains(String name);
 
   /// Emits when a control is added or removed from collection.
-  Stream<Iterable<AbstractControl>> get collectionChanges =>
+  Stream<List<AbstractControl<dynamic>>> get collectionChanges =>
       _collectionChanges.stream;
 
   /// Close stream that emit collection change events
@@ -37,19 +41,19 @@ abstract class FormControlCollection {
   ///
   /// This is for internal use only.
   @protected
-  void emitsCollectionChanged(Iterable<AbstractControl> controls) {
+  void emitsCollectionChanged(List<AbstractControl<dynamic>> controls) {
     _collectionChanges.add(List.unmodifiable(controls));
   }
 
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl findControl(List<String> path) {
+  AbstractControl<dynamic> findControl(List<String> path) {
     if (path == null || path.isEmpty) {
       return null;
     }
 
-    return path.fold(this as AbstractControl, (control, name) {
+    return path.fold(this as AbstractControl<dynamic>, (control, name) {
       if (control is FormControlCollection) {
         final collection = control as FormControlCollection;
         return collection.contains(name) ? collection.control(name) : null;

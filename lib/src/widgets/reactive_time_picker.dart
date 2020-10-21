@@ -78,7 +78,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
               field.context,
               ReactiveTimePickerDelegate._(
                 field,
-                () => showTimePicker(
+                (field) => showTimePicker(
                   context: field.context,
                   initialTime: field.value ?? TimeOfDay.now(),
                   builder: transitionBuilder,
@@ -100,12 +100,16 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
       ReactiveFormFieldState<TimeOfDay>();
 }
 
+/// Definition of the function responsible for show the time picker.
+typedef _ShowTimePickerCallback = Function(
+    ReactiveFormFieldState<TimeOfDay> field);
+
 /// This class is responsible of showing the picker dialog.
 ///
 /// See also [ReactiveTimePicker].
 class ReactiveTimePickerDelegate {
   final ReactiveFormFieldState<TimeOfDay> _field;
-  final VoidCallback _showPickerCallback;
+  final _ShowTimePickerCallback _showPickerCallback;
 
   ReactiveTimePickerDelegate._(this._field, this._showPickerCallback);
 
@@ -118,6 +122,6 @@ class ReactiveTimePickerDelegate {
 
   /// Shows the time picker dialog.
   void showPicker() {
-    this._showPickerCallback();
+    this._showPickerCallback(_field);
   }
 }
