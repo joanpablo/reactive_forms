@@ -1,3 +1,9 @@
+# 7.0.3
+
+## Features
+- Add new control value accessor **Iso8601DateTimeValueAccessor** that brings the possibility to
+bind a **ReactiveDateTimePicker** widget to a control of type String. 
+
 # 7.0.2
 
 ## Fixes
