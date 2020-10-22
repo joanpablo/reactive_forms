@@ -26,6 +26,7 @@ export 'src/value_accessors/datetime_value_accessor.dart';
 export 'src/value_accessors/default_value_accessor.dart';
 export 'src/value_accessors/double_value_accessor.dart';
 export 'src/value_accessors/int_value_accessor.dart';
+export 'src/value_accessors/iso8601_datetime_value_accessor.dart';
 export 'src/value_accessors/time_of_day_value_accessor.dart';
 export 'src/widgets/focus_node_controller.dart';
 export 'src/widgets/reactive_checkbox.dart';

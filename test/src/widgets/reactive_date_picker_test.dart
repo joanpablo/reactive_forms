@@ -104,5 +104,65 @@ void main() {
         expect(initialDate, lastDate);
       },
     );
+
+    testWidgets(
+      'Date picker state returns valid value accessor when control is DateTime',
+      (WidgetTester tester) async {
+        // Given: a form and a date time field
+        final form = FormGroup({
+          'birthday': FormControl<DateTime>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+
+        // And: get initial date of the date picker
+        final datePickerState = tester.allStates
+                .firstWhere((state) => state.widget is ReactiveDatePicker)
+            as ReactiveFormFieldState;
+
+        // Then: initial date is equals to last Date
+        expect(datePickerState.valueAccessor,
+            isInstanceOf<DefaultValueAccessor>());
+      },
+    );
+
+    testWidgets(
+      'Date picker state returns valid value accessor when control is String',
+      (WidgetTester tester) async {
+        // Given: a form and a date time field
+        final form = FormGroup({
+          'birthday': FormControl<String>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+
+        // And: get initial date of the date picker
+        final datePickerState = tester.allStates
+                .firstWhere((state) => state.widget is ReactiveDatePicker)
+            as ReactiveFormFieldState;
+
+        // Then: initial date is equals to last Date
+        expect(datePickerState.valueAccessor,
+            isInstanceOf<Iso8601DateTimeValueAccessor>());
+      },
+    );
+
+    testWidgets(
+      'DatePickerState throws exception when control is not String or DateTime',
+      (WidgetTester tester) async {
+        // Given: a form and a date time field
+        final form = FormGroup({
+          'birthday': FormControl<bool>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+
+        // Then: initial date is equals to last Date
+        expect(tester.takeException(), isInstanceOf<ValueAccessorException>());
+      },
+    );
   });
 }
