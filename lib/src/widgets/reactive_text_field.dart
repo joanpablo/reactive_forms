@@ -203,21 +203,21 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
   }
 
   @override
-  void dispose() {
-    this.control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   void subscribeControl() {
     this.control.registerFocusController(_focusController);
     super.subscribeControl();
   }
 
   @override
-  void onControlValueChanged(value) {
+  void unsubscribeControl() {
+    this.control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+
+    super.unsubscribeControl();
+  }
+
+  @override
+  void onControlValueChanged(dynamic value) {
     _textController.text = (value == null) ? '' : value.toString();
     super.onControlValueChanged(value);
   }

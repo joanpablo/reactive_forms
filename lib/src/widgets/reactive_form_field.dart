@@ -144,6 +144,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   ///
   /// See [ControlValueAccessor].
   @protected
+  @visibleForTesting
   ControlValueAccessor selectValueAccessor() {
     return DefaultValueAccessor();
   }
@@ -185,7 +186,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @protected
   @mustCallSuper
-  void onControlValueChanged(value) {
+  void onControlValueChanged(dynamic value) {
     _checkTouchedState();
   }
 

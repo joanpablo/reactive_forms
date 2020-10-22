@@ -402,5 +402,97 @@ void main() {
         expect(isControlDirty, true, reason: 'control is not marked as dirty');
       },
     );
+
+    testWidgets(
+      'IntValueAccessor selected when control is FormControl<int>',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'age': FormControl<int>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
+          form: form,
+          bindings: {'textField': 'age'},
+        ));
+
+        // When: get the state of the text field
+        ReactiveFormFieldState state = tester.allStates
+            .firstWhere((state) => state.widget is ReactiveTextField);
+
+        // Then: the value accessor is IntValueAccessor
+        expect(state.valueAccessor, isInstanceOf<IntValueAccessor>());
+      },
+    );
+
+    testWidgets(
+      'DoubleValueAccessor selected when control is FormControl<double>',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'amount': FormControl<double>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
+          form: form,
+          bindings: {'textField': 'amount'},
+        ));
+
+        // When: get the state of the text field
+        ReactiveFormFieldState state = tester.allStates
+            .firstWhere((state) => state.widget is ReactiveTextField);
+
+        // Then: the value accessor is DoubleValueAccessor
+        expect(state.valueAccessor, isInstanceOf<DoubleValueAccessor>());
+      },
+    );
+
+    testWidgets(
+      'DateTimeValueAccessor selected when control is FormControl<DateTime>',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'birthDate': FormControl<DateTime>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
+          form: form,
+          bindings: {'textField': 'birthDate'},
+        ));
+
+        // When: get the state of the text field
+        ReactiveFormFieldState state = tester.allStates
+            .firstWhere((state) => state.widget is ReactiveTextField);
+
+        // Then: the value accessor is DateTimeValueAccessor
+        expect(state.valueAccessor, isInstanceOf<DateTimeValueAccessor>());
+      },
+    );
+
+    testWidgets(
+      'TimeOfDayValueAccessor selected when control is FormControl<TimeOfDay>',
+      (WidgetTester tester) async {
+        // Given: a form with
+        final form = FormGroup({
+          'time': FormControl<TimeOfDay>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
+          form: form,
+          bindings: {'textField': 'time'},
+        ));
+
+        // When: get the state of the text field
+        ReactiveFormFieldState state = tester.allStates
+            .firstWhere((state) => state.widget is ReactiveTextField);
+
+        // Then: the value accessor is TimeOfDayValueAccessor
+        expect(state.valueAccessor, isInstanceOf<TimeOfDayValueAccessor>());
+      },
+    );
   });
 }
