@@ -1,3 +1,8 @@
+# 7.0.4
+
+## Fixes
+- Fix **Validators.maxLength** and **Validators.minLength** when control value is null.
+
 # 7.0.3
 
 ## Features
