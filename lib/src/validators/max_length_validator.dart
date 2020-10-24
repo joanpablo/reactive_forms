@@ -16,6 +16,11 @@ class MaxLengthValidator extends Validator<dynamic> {
 
   @override
   Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+    // don't validate empty values to allow optional controls
+    if (control.value == null) {
+      return null;
+    }
+
     List<dynamic> collection;
 
     if (control is FormArray<dynamic>) {
