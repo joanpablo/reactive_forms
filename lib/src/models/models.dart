@@ -897,9 +897,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   FormGroup(
     Map<String, AbstractControl> controls, {
     List<ValidatorFunction> validators,
+    bool disabled = false,
   })  : assert(controls != null),
-        super(validators: validators) {
+        super(validators: validators, disabled: disabled) {
     this.addAll(controls);
+
+    disabled ??= false;
+    if (disabled) {
+      this.markAsDisabled(emitEvent: false);
+    }
   }
 
   @override
