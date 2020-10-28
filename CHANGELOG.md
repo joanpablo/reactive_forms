@@ -1,3 +1,8 @@
+# 7.0.6
+
+## Fixes
+- Fix **Validators.compare** in DateTime controls type.
+
 # 7.0.5
 
 ## Features

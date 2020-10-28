@@ -943,6 +943,19 @@ void main() {
           throwsAssertionError);
       expect(() => CompareValidator('', '', null), throwsAssertionError);
     });
+
+    test('Compare DateTime controls', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'expedition': DateTime(2020),
+        'expiration': DateTime(1985),
+      }, [
+        Validators.compare('expedition', 'expiration', CompareOption.lower),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
   });
 
   group('Contain validator tests', () {

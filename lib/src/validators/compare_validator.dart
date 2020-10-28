@@ -42,7 +42,7 @@ class CompareValidator extends Validator<dynamic> {
       return error;
     }
 
-    if (_meetsComparison(mainControl, compareControl)) {
+    if (_meetsComparison(mainControl.value, compareControl.value)) {
       mainControl.removeError(ValidationMessage.compare);
     } else {
       mainControl.setErrors(error);
@@ -52,19 +52,18 @@ class CompareValidator extends Validator<dynamic> {
     return null;
   }
 
-  bool _meetsComparison(AbstractControl<dynamic> control,
-      AbstractControl<dynamic> compareControl) {
+  bool _meetsComparison(Comparable value, Comparable compareValue) {
     switch (this.compareOption) {
       case CompareOption.lower:
-        return control.value < compareControl.value;
+        return value.compareTo(compareValue) < 0;
       case CompareOption.lower_or_equal:
-        return control.value <= compareControl.value;
+        return value.compareTo(compareValue) <= 0;
       case CompareOption.greater:
-        return control.value > compareControl.value;
+        return value.compareTo(compareValue) > 0;
       case CompareOption.greater_or_equal:
-        return control.value >= compareControl.value;
+        return value.compareTo(compareValue) >= 0;
       default: //CompareOption.equal:
-        return control.value == compareControl.value;
+        return value.compareTo(compareValue) == 0;
     }
   }
 }
