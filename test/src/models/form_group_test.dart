@@ -706,5 +706,35 @@ void main() {
       // Then: the error is not null
       expect(error, {'min': 10.0, 'actual': 5.0});
     });
+
+    test("Initialize disabled form", () {
+      // Given: a disabled form
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      }, disabled: true);
+
+      // Then: form is disabled and all controls are disabled
+      expect(form.enabled, false, reason: 'form is enabled');
+      expect(form.control('name').enabled, false, reason: 'name is enabled');
+      expect(form.control('email').enabled, false, reason: 'email is enabled');
+    });
+
+    test("Initialized disabled form changes to enable when enable children",
+        () {
+      // Given: a disabled form
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      }, disabled: true);
+
+      // When: enabled child
+      form.control('name').markAsEnabled();
+
+      // Then: form is enabled
+      expect(form.enabled, true, reason: 'form is disabled');
+      expect(form.control('name').enabled, true, reason: 'name is disabled');
+      expect(form.control('email').disabled, true, reason: 'email is enabled');
+    });
   });
 }

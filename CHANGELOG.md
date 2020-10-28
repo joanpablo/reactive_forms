@@ -1,3 +1,8 @@
+# 7.0.5
+
+## Features
+- Initialize a **FormGroup** as *disabled* is now possible with optional constructor argument.
+
 # 7.0.4
 
 ## Fixes
