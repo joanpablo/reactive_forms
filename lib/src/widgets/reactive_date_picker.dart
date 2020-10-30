@@ -4,6 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:intl/intl.dart' hide TextDirection;
+import 'package:reactive_forms/src/value_accessors/formatted_datetime_value_acessor.dart';
 
 /// A builder that builds a widget responsible to decide when to show
 /// the picker dialog.
@@ -77,6 +79,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
     String fieldHintText,
     String fieldLabelText,
     Widget child,
+    this.format,
   })  : assert(builder != null),
         super(
           key: key,
@@ -118,6 +121,12 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
           },
         );
 
+  /// DateFormat used on the [DateTime] object returned from the [DatePicker]
+  /// to obtain a customized date string for the control value.
+  /// 
+  /// If used with a form control of type [DateTime], nothing will happen
+  final DateFormat format;
+
   static DateTime _getInitialDate(DateTime fieldValue, DateTime lastDate) {
     if (fieldValue != null) {
       return fieldValue;
@@ -128,7 +137,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   }
 
   @override
-  ReactiveFormFieldState<dynamic> createState() => _ReactiveDatePickerState();
+  ReactiveFormFieldState<dynamic> createState() => _ReactiveDatePickerState(format);
 }
 
 /// Definition of the function responsible for show the date picker.
@@ -157,9 +166,17 @@ class ReactiveDatePickerDelegate {
 }
 
 class _ReactiveDatePickerState extends ReactiveFormFieldState<dynamic> {
+
+  _ReactiveDatePickerState(this.format);
+
+  final DateFormat format;
+
   @override
   ControlValueAccessor selectValueAccessor() {
     if (this.control is AbstractControl<String>) {
+      if (format != null)
+        return FormattedDateTimeValueAccessor(format);
+
       return Iso8601DateTimeValueAccessor();
     } else if (this.control is AbstractControl<DateTime>) {
       return DefaultValueAccessor();

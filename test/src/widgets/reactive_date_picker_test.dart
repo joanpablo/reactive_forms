@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/value_accessors/formatted_datetime_value_acessor.dart';
 
 import 'reactive_date_picker_testing_widget.dart';
 
@@ -34,6 +36,35 @@ void main() {
     );
 
     testWidgets(
+      'Initial date of picker with DateFormat is formatted correctly',
+      (WidgetTester tester) async {
+        final format = DateFormat('dd-MM-yyyy');
+
+        // Given: a form and a date time field with default value
+        final form = FormGroup({
+          'birthday': FormControl<String>(
+            value: format.format(DateTime(2020)),
+          ),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form, format: format));
+
+        // When: open picker
+        await tester.tap(find.byType(FlatButton));
+        await tester.pump();
+
+        // And: get initial date of the date picker
+        final datePicker = tester.widget(find.byType(CalendarDatePicker))
+            as CalendarDatePicker;
+        final initialDate = datePicker.initialDate;
+
+        // Then: initial date id the default value of the control
+        expect(format.format(initialDate), form.control('birthday').value);
+      },
+    );
+
+    testWidgets(
       'Set date in date picker sets value to form control',
       (WidgetTester tester) async {
         // Given: a form and a date time field with default value
@@ -57,6 +88,35 @@ void main() {
 
         // Then: initial date id the default value of the control
         expect(form.control('birthday').value, defaultValue);
+      },
+    );
+
+    testWidgets(
+      'Set date in date picker sets Formated value to form control',
+      (WidgetTester tester) async {
+        final format = DateFormat('dd-MM-yyyy');
+        // Given: a form and a date time field with default value
+        final defaultValue = DateTime(2020);
+        final defaultFormattedValue = format.format(defaultValue);
+        final form = FormGroup({
+          'birthday': FormControl<String>(
+            value: defaultFormattedValue,
+          ),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form, format: format));
+
+        // When: open picker
+        await tester.tap(find.byType(FlatButton));
+        await tester.pump();
+
+        // And: select current selected date
+        await tester.tap(find.text('OK'));
+        await tester.pump();
+
+        // Then: initial date id the default value of the control
+        expect(form.control('birthday').value, defaultFormattedValue);
       },
     );
 
@@ -146,6 +206,28 @@ void main() {
         // Then: initial date is equals to last Date
         expect(datePickerState.valueAccessor,
             isInstanceOf<Iso8601DateTimeValueAccessor>());
+      }  
+    );
+
+    testWidgets(
+      'Date picker state returns valid value accessor when control is String and format is provided',
+      (WidgetTester tester) async {
+        // Given: a form and a date time field
+        final form = FormGroup({
+          'birthday': FormControl<String>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form, format: DateFormat('dd/MM/yyyy')));
+
+        // And: get initial date of the date picker
+        final formattedPickerState = tester.allStates
+                .firstWhere((state) => state.widget is ReactiveDatePicker)
+            as ReactiveFormFieldState;
+
+        // Then: initial date is equals to last Date
+        expect(formattedPickerState.valueAccessor,
+            isInstanceOf<FormattedDateTimeValueAccessor>());
       },
     );
 
@@ -165,4 +247,5 @@ void main() {
       },
     );
   });
+
 }
