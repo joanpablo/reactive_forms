@@ -477,15 +477,14 @@ abstract class AbstractControl<T> {
 
   /// Removes an error given the error [key].
   ///
-  /// If [markAsDirty] is true or not set (default) then the control is marked
-  /// as dirty.
+  /// If [markAsDirty] is true then the control is marked as dirty.
   ///
   /// See [dirty].
-  void removeError(String key, {bool markAsDirty: true}) {
+  void removeError(String key, {bool markAsDirty: false}) {
     _errors.removeWhere((errorKey, value) => errorKey == key);
     _updateControlsErrors();
 
-    markAsDirty ??= true;
+    markAsDirty ??= false;
     if (markAsDirty) {
       this.markAsDirty(emitEvent: false);
     }
