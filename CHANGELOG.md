@@ -1,3 +1,8 @@
+# 7.0.7
+
+## Fixes
+- Fix now **AbstractControl.removeError** doesn't marks the control as dirty by default.
+
 # 7.0.6
 
 ## Fixes
