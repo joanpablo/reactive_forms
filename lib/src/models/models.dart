@@ -896,9 +896,16 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   FormGroup(
     Map<String, AbstractControl> controls, {
     List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
+    int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
   })  : assert(controls != null),
-        super(validators: validators, disabled: disabled) {
+        super(
+          validators: validators,
+          asyncValidators: asyncValidators,
+          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+          disabled: disabled,
+        ) {
     this.addAll(controls);
 
     disabled ??= false;
@@ -1286,9 +1293,22 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   FormArray(
     List<AbstractControl<T>> controls, {
     List<ValidatorFunction> validators,
+    List<AsyncValidatorFunction> asyncValidators,
+    int asyncValidatorsDebounceTime = 250,
+    bool disabled = false,
   })  : assert(controls != null),
-        super(validators: validators) {
+        super(
+          validators: validators,
+          asyncValidators: asyncValidators,
+          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+          disabled: disabled,
+        ) {
     this.addAll(controls);
+
+    disabled ??= false;
+    if (disabled) {
+      this.markAsDisabled(emitEvent: false);
+    }
   }
 
   /// Gets the list of child controls.

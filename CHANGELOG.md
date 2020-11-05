@@ -1,3 +1,9 @@
+# 7.0.8
+
+## Features
+- Add **async validators** to **FormGroup** and **FormArray**.
+- Add disabled optional argument to **FormArrayConstructor**.
+
 # 7.0.7
 
 ## Fixes

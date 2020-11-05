@@ -27,7 +27,7 @@ class MustMatchValidator extends Validator<dynamic> {
       matchingFormControl.setErrors(error);
       matchingFormControl.markAsTouched();
     } else {
-      matchingFormControl.setErrors({});
+      matchingFormControl.removeError(ValidationMessage.mustMatch);
     }
 
     return null;

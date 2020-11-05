@@ -60,8 +60,11 @@ class FormBuilder {
   ///  [Validators.mustMatch('email', 'emailConfirmation')],
   /// );
   /// ```
-  FormGroup group(Map<String, dynamic> controls,
-      [List<ValidatorFunction> validators = const []]) {
+  FormGroup group(
+    Map<String, dynamic> controls, [
+    List<ValidatorFunction> validators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
+  ]) {
     final map = controls.map((String key, dynamic value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
@@ -113,7 +116,11 @@ class FormBuilder {
       return MapEntry(key, FormControl(value: value));
     });
 
-    return FormGroup(map, validators: validators);
+    return FormGroup(
+      map,
+      validators: validators,
+      asyncValidators: asyncValidators,
+    );
   }
 
   /// Creates a ControlState.
@@ -195,8 +202,11 @@ class FormBuilder {
   /// ]);
   /// ```
   ///
-  FormArray<T> array<T>(List<dynamic> value,
-      [List<ValidatorFunction> validators = const []]) {
+  FormArray<T> array<T>(
+    List<dynamic> value, [
+    List<ValidatorFunction> validators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
+  ]) {
     return FormArray<T>(
       value?.map<AbstractControl<T>>((v) {
         if (v is Map<String, dynamic>) {
@@ -209,6 +219,7 @@ class FormBuilder {
         return this.control<T>(v);
       })?.toList(),
       validators: validators,
+      asyncValidators: asyncValidators,
     );
   }
 

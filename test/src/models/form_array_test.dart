@@ -559,6 +559,35 @@ void main() {
     // Then: any control has focus
     expect(array.controls.length, 0, reason: 'array is not empty');
   });
+
+  test("Initialize disabled array", () {
+    // Given: a disabled form
+    final array = FormArray([
+      FormControl<String>(),
+      FormControl<String>(),
+    ], disabled: true);
+
+    // Then: array is disabled and all controls are disabled
+    expect(array.enabled, false, reason: 'array is enabled');
+    expect(array.controls[0].enabled, false, reason: 'first is enabled');
+    expect(array.controls[1].enabled, false, reason: 'second is enabled');
+  });
+
+  test("Disabled array changes to enable when enable children", () {
+    // Given: a disabled form
+    final array = FormArray([
+      FormControl<String>(),
+      FormControl<String>(),
+    ], disabled: true);
+
+    // When: enabled child
+    array.controls.first.markAsEnabled();
+
+    // Then: form is enabled
+    expect(array.enabled, true, reason: 'array is disabled');
+    expect(array.controls[0].enabled, true, reason: 'first is disabled');
+    expect(array.controls[1].disabled, true, reason: 'second is enabled');
+  });
 }
 
 Map<String, dynamic> _emptyAddressee(AbstractControl control) {
