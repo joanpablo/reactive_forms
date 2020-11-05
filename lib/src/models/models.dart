@@ -689,13 +689,18 @@ class FormControl<T> extends AbstractControl<T> {
 
   /// Creates a new FormControl instance.
   ///
-  /// The control can optionally be initialized with a [defaultValue].
+  /// The control can optionally be initialized with a [value].
   ///
   /// The control can optionally have [validators] that validates
   /// the control each time the value changes.
   ///
   /// The control can optionally have [asyncValidators] that validates
-  /// asynchronously the control each time the value changes.
+  /// asynchronously the control each time the value changes. Asynchronous
+  /// validation executes after the synchronous validation, and is performed
+  /// only if the synchronous validation is successful. This check allows
+  /// forms to avoid potentially expensive async validation processes
+  /// (such as an HTTP request) if the more basic validation methods have
+  /// already found invalid input.
   ///
   /// You can set an [asyncValidatorsDebounceTime] in millisecond to set
   /// a delay time before trigger async validators. This is useful for
@@ -704,6 +709,8 @@ class FormControl<T> extends AbstractControl<T> {
   /// You can set [touched] as true to force the validation messages
   /// to show up at the very first time the widget that is bound to this
   /// control builds in the UI.
+  ///
+  /// If [disabled] is true then the control is disabled by default.
   ///
   /// ### Example:
   /// ```dart
@@ -890,7 +897,23 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///   'email': FormControl(),
   /// });
   /// ```
-  /// You can also set [validators] as optionally argument.
+  /// The group can optionally have [validators] that validates
+  /// the group each time the value changes.
+  ///
+  /// The group can optionally have [asyncValidators] that validates
+  /// asynchronously the group each time the value changes. Asynchronous
+  /// validation executes after the synchronous validation, and is performed
+  /// only if the synchronous validation is successful. This check allows
+  /// forms to avoid potentially expensive async validation processes
+  /// (such as an HTTP request) if the more basic validation methods have
+  /// already found invalid input.
+  ///
+  /// You can set an [asyncValidatorsDebounceTime] in millisecond to set
+  /// a delay time before trigger async validators. This is useful for
+  /// minimizing request to a server. The default value is 250 milliseconds.
+  ///
+  /// If [disabled] is true then all children controls of the groups are
+  /// disabled by default.
   ///
   /// See also [AbstractControl.validators]
   FormGroup(
@@ -1287,7 +1310,23 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   ///   ]),
   /// });
   /// ```
-  /// You can also set [validators] as optionally argument.
+  /// The array can optionally have [validators] that validates
+  /// the array each time the value changes.
+  ///
+  /// The array can optionally have [asyncValidators] that validates
+  /// asynchronously the array each time the value changes. Asynchronous
+  /// validation executes after the synchronous validation, and is performed
+  /// only if the synchronous validation is successful. This check allows
+  /// forms to avoid potentially expensive async validation processes
+  /// (such as an HTTP request) if the more basic validation methods have
+  /// already found invalid input.
+  ///
+  /// You can set an [asyncValidatorsDebounceTime] in millisecond to set
+  /// a delay time before trigger async validators. This is useful for
+  /// minimizing request to a server. The default value is 250 milliseconds.
+  ///
+  /// If [disabled] is true then all children controls of the array are
+  /// disabled by default.
   ///
   /// See also [AbstractControl.validators]
   FormArray(
