@@ -956,6 +956,19 @@ void main() {
       // Expect: form is invalid
       expect(form.valid, false);
     });
+
+    test('Compare null DateTime values', () {
+      // Given: an invalid form
+      final form = fb.group({
+        'expedition': fb.control<DateTime>(null),
+        'expiration': fb.control<DateTime>(null),
+      }, [
+        Validators.compare('expedition', 'expiration', CompareOption.lower),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.valid, false);
+    });
   });
 
   group('Contain validator tests', () {
