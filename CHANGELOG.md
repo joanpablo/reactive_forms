@@ -1,3 +1,8 @@
+# 7.0.10
+
+## Fixes
+- Dispose **FocusNode** after **FocusNodeController** is disposed.
+
 # 7.0.9
 
 ## Documentation

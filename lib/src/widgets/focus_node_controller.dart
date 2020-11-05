@@ -19,6 +19,7 @@ class FocusNodeController extends FocusController {
   /// Disposes a focus controller
   void dispose() {
     this.focusNode.removeListener(_onFocusNodeFocusChanges);
+    this.focusNode.dispose();
     super.dispose();
   }
 
