@@ -1167,7 +1167,7 @@ Widget build(BuildContext context) {
 @override
 Widget build(BuildContext context) {
   return ReactiveFormBuilder(
-    form: (context) => this.form,
+    form: () => this.form,
     builder: (context, form, child) {
       return ReactiveTextField(
         formControlName: 'email',
