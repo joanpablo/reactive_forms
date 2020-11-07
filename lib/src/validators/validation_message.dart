@@ -58,4 +58,7 @@ class ValidationMessage {
 
   /// Key text for contain validation message.
   static const String contains = 'contains';
+
+  /// Key text for every validation message.
+  static const String every = 'every';
 }

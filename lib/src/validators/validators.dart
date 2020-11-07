@@ -6,9 +6,11 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/validators/compare_validator.dart';
 import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
+import 'package:reactive_forms/src/validators/contains_validator.dart';
 import 'package:reactive_forms/src/validators/credit_card_validator.dart';
 import 'package:reactive_forms/src/validators/email_validator.dart';
 import 'package:reactive_forms/src/validators/equals_validator.dart';
+import 'package:reactive_forms/src/validators/every_validator.dart';
 import 'package:reactive_forms/src/validators/max_length_validator.dart';
 import 'package:reactive_forms/src/validators/max_validator.dart';
 import 'package:reactive_forms/src/validators/min_length_validator.dart';
@@ -17,7 +19,6 @@ import 'package:reactive_forms/src/validators/must_match_validator.dart';
 import 'package:reactive_forms/src/validators/number_validator.dart';
 import 'package:reactive_forms/src/validators/pattern_validator.dart';
 import 'package:reactive_forms/src/validators/required_validator.dart';
-import 'package:reactive_forms/src/validators/contains_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
@@ -166,5 +167,9 @@ class Validators {
   /// ```
   static ValidatorFunction contains<T>(List<T> values) {
     return ContainsValidator<T>(values).validate;
+  }
+
+  static ValidatorFunction every<T>(EveryValidatorFunctionTest<T> test) {
+    return EveryValidator<T>(test).validate;
   }
 }
