@@ -811,7 +811,7 @@ set name(String newName) {
 
 ### Overriding Reactive Widgets *show errors* behavior
 
-The second way of customize when to show error messages is to override the method **showErrors** in reactive widgets.
+The second way to customize when to show error messages is to override the method **showErrors** in reactive widgets.
 
 Let's suppose you want to show validation messages not only when it is **invalid** and **touched** (default behavior), but also when it's **dirty**:
 
