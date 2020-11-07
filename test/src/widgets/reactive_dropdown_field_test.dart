@@ -241,6 +241,54 @@ void main() {
     );
 
     testWidgets(
+      'ReadOnly Dropdown',
+      (WidgetTester tester) async {
+        // Given: a form and a control
+        final form = FormGroup({
+          'dropdown': FormControl<String>(),
+        });
+
+        // And: a readonly widget that is bind to the form
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+          readOnly: true,
+        ));
+
+        // Then: the dropdown is disabled
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        expect(dropdown.onChanged, null);
+      },
+    );
+
+    testWidgets(
+      'ReadOnly Dropdown with disabledHint',
+      (WidgetTester tester) async {
+        // Given: a form and a control
+        final form = FormGroup({
+          'dropdown': FormControl<String>(),
+        });
+
+        // And: a readonly widget that is bind to the form with disabledHint
+        final disabledHint = Text('disabled');
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+          readOnly: true,
+          disabledHint: disabledHint,
+        ));
+
+        // Then: the dropdown is disabled
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        expect(dropdown.disabledHint, disabledHint);
+      },
+    );
+
+    testWidgets(
       'Disable a control disable Dropdown',
       (WidgetTester tester) async {
         // Given: a form and a control
