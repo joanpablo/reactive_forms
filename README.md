@@ -1244,7 +1244,7 @@ You should use **ReactiveForm** if:
 - The form is complex enough.
 - You need to listen for changes in some child control to execute some business logic.
 - You are using some State Management library like Provider or Bloc.
-- Using a StatefulWidget to declare a very simple form, it really doesn't bother you.
+- Using a StatefulWidget to declare a very simple form is something that really doesn't bother you.
 
 You should use **ReactiveFormBuilder** if:
 - The form is quite simple enough and doesn't need a separate Provider/Bloc state.
