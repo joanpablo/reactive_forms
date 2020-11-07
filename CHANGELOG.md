@@ -1,3 +1,8 @@
+# 7.0.12
+
+## Enhances
+- Add **readOnly** argument as not nullable in **ReactiveDropdownField**.
+
 # 7.0.11
 
 ## Enhances
