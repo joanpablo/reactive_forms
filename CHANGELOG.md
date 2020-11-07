@@ -1,3 +1,11 @@
+# 7.0.11
+
+## Enhances
+- Add **readOnly** argument in **ReactiveDropdownField** constructor to enable/disable widget.
+
+## Documentation
+- Add documentation about customizing when to show errors in reactive widgets. 
+
 # 7.0.10
 
 ## Fixes
