@@ -104,7 +104,7 @@ class Validators {
   /// The arguments [controlName], [compareControlName] and [compareOption]
   /// must not be null.
   ///
-  /// ### Example:
+  /// ## Example:
   /// Validates that 'amount' is lower or equals than 'balance'
   /// ```dart
   /// final form = fb.group({
@@ -148,7 +148,7 @@ class Validators {
   ///
   /// The argument [values] must not be null.
   ///
-  /// ### Example:
+  /// ## Example:
   /// Validates that 'list' contains all the items provided
   /// ```dart
   /// final control = FormControl<List<int>>(
@@ -169,11 +169,36 @@ class Validators {
     return ContainsValidator<T>(values).validate;
   }
 
-  /// Gets a validator that requires any element of the control's value iterable
+  /// Gets a validator that requires any element of the control's iterable value
   /// satisfies [test].
   ///
-  /// Checks every element in iteration order, and returns `true` if
-  /// any of them make [test] return `true`, otherwise returns false.
+  /// Checks every element in control's value in iteration order, and marks
+  /// the control as valid if any of them make [test] return `true`,
+  /// otherwise marks the control as invalid.
+  ///
+  /// ## Example with FormArray
+  /// ```dart
+  /// final array = FormArray<String>([
+  ///     FormControl<String>(value: ''),
+  ///     FormControl<String>(value: ''),
+  ///   ], validators: [
+  ///   Validators.any((String value) => value?.isNotEmpty)
+  /// ]);
+  ///
+  /// print(array.valid); // outputs: false
+  /// ```
+  ///
+  /// ## Example with FormControl
+  /// ```dart
+  /// final control = FormControl<List<String>>(
+  ///   value: [null, null, 'not empty'],
+  ///   validators: [
+  ///     Validators.any((String value) => value?.isNotEmpty)
+  ///   ],
+  /// );
+  ///
+  /// print(control.valid); // outputs: true
+  /// ```
   static ValidatorFunction any<T>(AnyValidatorFunctionTest<T> test) {
     return AnyValidator<T>(test).validate;
   }
