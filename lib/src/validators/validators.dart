@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/any_validator.dart';
+import 'package:reactive_forms/src/validators/at_least_one_validator.dart';
 import 'package:reactive_forms/src/validators/compare_validator.dart';
 import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
@@ -169,7 +169,8 @@ class Validators {
     return ContainsValidator<T>(values).validate;
   }
 
-  static ValidatorFunction any<T>(AnyValidatorFunctionTest<T> test) {
-    return AnyValidator<T>(test).validate;
+  static ValidatorFunction atLeastOne<T>(
+      AtLeastOneValidatorFunctionTest<T> test) {
+    return AtLeastOneValidator<T>(test).validate;
   }
 }
