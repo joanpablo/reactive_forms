@@ -127,12 +127,8 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @override
   void initState() {
     this.control = _resolveFormControl();
-    this.subscribeControl();
     _valueAccessor = _resolveValueAccessor();
-    _valueAccessor.registerControl(
-      this.control,
-      onChange: this.onControlValueChanged,
-    );
+    this.subscribeControl();
 
     super.initState();
   }
@@ -147,6 +143,18 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   @visibleForTesting
   ControlValueAccessor selectValueAccessor() {
     return DefaultValueAccessor();
+  }
+
+  @override
+  void didUpdateWidget(ReactiveFormField<T> oldWidget) {
+    if (widget.valueAccessor != null &&
+        widget.valueAccessor != this.valueAccessor) {
+      this.valueAccessor.dispose();
+      _valueAccessor = widget.valueAccessor;
+      _subscribeValueAccessor();
+    }
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -175,6 +183,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
         this.control.statusChanged.listen(_onControlStatusChanged);
     _touchChangesSubscription =
         this.control.touchChanges.listen(_onControlTouchChanged);
+    _subscribeValueAccessor();
   }
 
   @protected
@@ -182,6 +191,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   void unsubscribeControl() {
     _statusChangesSubscription.cancel();
     _touchChangesSubscription.cancel();
+    this.valueAccessor.dispose();
   }
 
   @protected
@@ -197,6 +207,13 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   void didChange(T value) {
     _valueAccessor.updateModel(value);
     _checkTouchedState();
+  }
+
+  void _subscribeValueAccessor() {
+    _valueAccessor.registerControl(
+      this.control,
+      onChange: this.onControlValueChanged,
+    );
   }
 
   void _checkTouchedState() {

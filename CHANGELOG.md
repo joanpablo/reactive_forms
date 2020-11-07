@@ -4,6 +4,9 @@
 - Add **Validators.any** that requires any element of the control's iterable value satisfies a test
 function.
 
+## Fix
+- Update value accessors in reactive widgets when widget *didUpdateWidget*.
+
 # 7.0.12
 
 ## Enhances

@@ -146,6 +146,7 @@ class HomePage extends StatelessWidget {
               ReactiveTextField(
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
+                showErrors: (control) => control.invalid,
                 validationMessages: (control) => {
                   ValidationMessage.min:
                       'A value lower than 50.00 is not accepted',
