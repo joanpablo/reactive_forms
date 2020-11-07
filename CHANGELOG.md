@@ -1,3 +1,9 @@
+# 7.1.0
+
+## Features
+- Add **Validators.any** that requires any element of the control's iterable value satisfies a test
+function.
+
 # 7.0.12
 
 ## Enhances
