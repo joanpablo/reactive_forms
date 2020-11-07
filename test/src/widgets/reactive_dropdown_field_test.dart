@@ -215,6 +215,17 @@ void main() {
           throwsAssertionError,
           reason: 'itemHeight == null || itemHeight > 0',
         );
+
+        // readOnly
+        expect(
+          () => ReactiveDropdownField<bool>(
+            formControlName: 'dropdown',
+            items: [DropdownMenuItem(value: true, child: Text(''))],
+            readOnly: null,
+          ),
+          throwsAssertionError,
+          reason: 'readOnly != null',
+        );
       },
     );
 
