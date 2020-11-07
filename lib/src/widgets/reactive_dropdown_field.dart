@@ -18,6 +18,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
   /// Must provide one of the arguments [formControl] or a [formControlName],
   /// but not both at the same time.
   ///
+  /// If [readOnly] is true, the button will be disabled, the down arrow will
+  /// be grayed out, and the disabledHint will be shown (if provided).
+  ///
   /// The [DropdownButton] [items] parameters must not be null.
   ReactiveDropdownField({
     Key key,
@@ -39,6 +42,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
     double iconSize = 24.0,
     bool isDense = true,
     bool isExpanded = false,
+    bool readOnly = false,
     double itemHeight,
     ValueChanged<T> onChanged,
   })  : assert(items != null),
@@ -68,9 +72,22 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
               effectiveValue = null;
             }
 
+            final isDisabled = (readOnly || field.control.disabled);
+            final effectiveDisabledHint = isDisabled
+                ? (disabledHint ??
+                    items
+                        ?.firstWhere(
+                          (item) => item.value == effectiveValue,
+                          orElse: () => null,
+                        )
+                        ?.child)
+                : disabledHint;
+
             return InputDecorator(
-              decoration:
-                  effectiveDecoration.copyWith(errorText: field.errorText),
+              decoration: effectiveDecoration.copyWith(
+                errorText: field.errorText,
+                enabled: !isDisabled,
+              ),
               isEmpty: effectiveValue == null,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<T>(
@@ -78,11 +95,11 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: field.control.enabled
-                      ? (T value) => state._onChanged(value, onChanged)
-                      : null,
+                  onChanged: isDisabled
+                      ? null
+                      : (T value) => state._onChanged(value, onChanged),
                   onTap: onTap,
-                  disabledHint: disabledHint,
+                  disabledHint: effectiveDisabledHint,
                   elevation: elevation,
                   style: style,
                   icon: icon,

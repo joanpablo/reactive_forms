@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^7.0.10
+  reactive_forms: ^7.0.11
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -767,6 +767,8 @@ Widget build(BuildContext context) {
 
 ## When does Validation Messages begin to show up?
 
+### Touching a control
+
 Even when the **FormControl** is invalid, validation messages will begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
 
 You can initialize a **FormControl** as **touched** to force the validation messages to show up at the very first time the widget builds.
@@ -806,6 +808,23 @@ set name(String newName) {
 > form.markAllAsTouched();
 >```
 >
+
+### Overriding Reactive Widgets *show errors* behavior
+
+The second way to customize when to show error messages is to override the method **showErrors** in reactive widgets.
+
+Let's suppose you want to show validation messages not only when it is **invalid** and **touched** (default behavior), but also when it's **dirty**:
+
+```dart
+ReactiveTextField(
+  formControlName: 'email',
+  // override default behavior and show errors when: INVALID, TOUCHED and DIRTY
+  showErrors: (control) => control.invalid && control.touched && control.dirty,
+),
+```
+
+> A control becomes **dirty** when its value change through the UI.  
+> The method **setErrors** of the controls can optionally mark it as dirty too.
 
 ## Enable/Disable Submit button
 
@@ -1167,7 +1186,7 @@ Widget build(BuildContext context) {
 @override
 Widget build(BuildContext context) {
   return ReactiveFormBuilder(
-    form: (context) => this.form,
+    form: () => this.form,
     builder: (context, form, child) {
       return ReactiveTextField(
         formControlName: 'email',
@@ -1244,7 +1263,7 @@ You should use **ReactiveForm** if:
 - The form is complex enough.
 - You need to listen for changes in some child control to execute some business logic.
 - You are using some State Management library like Provider or Bloc.
-- Using a StatefulWidget to declare a very simple form, it really doesn't bother you.
+- Using a StatefulWidget to declare a very simple form is something that really doesn't bother you.
 
 You should use **ReactiveFormBuilder** if:
 - The form is quite simple enough and doesn't need a separate Provider/Bloc state.

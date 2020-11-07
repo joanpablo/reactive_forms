@@ -111,8 +111,9 @@ class HomePage extends StatelessWidget {
               ),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
-                hint: Text('Want to stay logged in?'),
-                decoration: InputDecoration(labelText: 'Remember me'),
+                decoration: InputDecoration(
+                  labelText: 'Want to stay logged in?',
+                ),
                 items: [
                   DropdownMenuItem(value: true, child: Text('Yes')),
                   DropdownMenuItem(value: false, child: Text('No')),
