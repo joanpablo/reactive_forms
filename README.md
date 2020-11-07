@@ -767,6 +767,8 @@ Widget build(BuildContext context) {
 
 ## When does Validation Messages begin to show up?
 
+### Touching a control
+
 Even when the **FormControl** is invalid, validation messages will begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
 
 You can initialize a **FormControl** as **touched** to force the validation messages to show up at the very first time the widget builds.
@@ -806,6 +808,23 @@ set name(String newName) {
 > form.markAllAsTouched();
 >```
 >
+
+### Overriding Reactive Widgets *show errors* behavior
+
+The second way of customize when to show error messages is to override the method **showErrors** in the reactive widgets.
+
+Let's suppose you want to show validation messages not only when it is **invalid** and **touched** (default behavior), but also when it's **dirty**:
+
+```dart
+ReactiveTextField(
+  formControlName: 'email',
+  // override default behavior and show errors when: INVALID, TOUCHED and DIRTY
+  showErrors: (control) => control.invalid && control.touched && control.dirty,
+),
+```
+
+> A control becomes **dirty** when its value change through the UI.  
+> The method **setErrors** of the controls can optionally mark it as dirty too.
 
 ## Enable/Disable Submit button
 
