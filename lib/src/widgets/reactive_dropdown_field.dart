@@ -39,6 +39,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
     double iconSize = 24.0,
     bool isDense = true,
     bool isExpanded = false,
+    bool readOnly = false,
     double itemHeight,
     ValueChanged<T> onChanged,
   })  : assert(items != null),
@@ -78,7 +79,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: field.control.enabled
+                  onChanged: (!readOnly && field.control.enabled)
                       ? (T value) => state._onChanged(value, onChanged)
                       : null,
                   onTap: onTap,
