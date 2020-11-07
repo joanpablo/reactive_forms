@@ -10,7 +10,7 @@ void main() {
         FormControl<String>(value: ''),
         FormControl<String>(value: 'not empty'),
       ], validators: [
-        Validators.atLeastOne((String value) => value?.isNotEmpty)
+        Validators.any((String value) => value?.isNotEmpty)
       ]);
 
       // Expect: array is valid
@@ -24,12 +24,12 @@ void main() {
         FormControl<String>(value: ''),
         FormControl<String>(value: ''),
       ], validators: [
-        Validators.atLeastOne((String value) => value?.isNotEmpty)
+        Validators.any((String value) => value?.isNotEmpty)
       ]);
 
       // Expect: array is invalid and has
       expect(array.invalid, true);
-      expect(array.hasError(ValidationMessage.atLeastOne), true);
+      expect(array.hasError(ValidationMessage.any), true);
     });
 
     test(
@@ -38,14 +38,31 @@ void main() {
       final array = FormArray<String>([
         // Given: an array of String with one not empty control and a validator
         FormControl<String>(value: null),
-        FormControl<String>(value: null),
+        FormControl<String>(value: ''),
         FormControl<String>(value: 'not empty'),
       ], validators: [
-        Validators.atLeastOne((String value) => value?.isNotEmpty)
+        Validators.any((String value) => value?.isNotEmpty)
       ]);
 
       // Expect: array is valid
       expect(array.valid, true);
+    });
+
+    test(
+        'At least one control in array has not empty value and controls with null values (invalid)',
+        () {
+      final array = FormArray<String>([
+        // Given: an array with empty and null values and the validator
+        FormControl<String>(value: null),
+        FormControl<String>(value: ''),
+        FormControl<String>(value: null),
+      ], validators: [
+        Validators.any((String value) => value?.isNotEmpty)
+      ]);
+
+      // Expect: array is invalid and has
+      expect(array.invalid, true);
+      expect(array.hasError(ValidationMessage.any), true);
     });
   });
 }

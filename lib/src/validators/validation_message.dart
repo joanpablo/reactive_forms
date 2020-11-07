@@ -59,6 +59,6 @@ class ValidationMessage {
   /// Key text for `contains` validation message.
   static const String contains = 'contains';
 
-  /// Key text for `atLeastOne` validation message.
-  static const String atLeastOne = 'atLeastOne';
+  /// Key text for `any` validation message.
+  static const String any = 'any';
 }
