@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/any_validator.dart';
 import 'package:reactive_forms/src/validators/compare_validator.dart';
 import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
@@ -10,7 +11,6 @@ import 'package:reactive_forms/src/validators/contains_validator.dart';
 import 'package:reactive_forms/src/validators/credit_card_validator.dart';
 import 'package:reactive_forms/src/validators/email_validator.dart';
 import 'package:reactive_forms/src/validators/equals_validator.dart';
-import 'package:reactive_forms/src/validators/every_validator.dart';
 import 'package:reactive_forms/src/validators/max_length_validator.dart';
 import 'package:reactive_forms/src/validators/max_validator.dart';
 import 'package:reactive_forms/src/validators/min_length_validator.dart';
@@ -169,7 +169,7 @@ class Validators {
     return ContainsValidator<T>(values).validate;
   }
 
-  static ValidatorFunction every<T>(EveryValidatorFunctionTest<T> test) {
-    return EveryValidator<T>(test).validate;
+  static ValidatorFunction any<T>(AnyValidatorFunctionTest<T> test) {
+    return AnyValidator<T>(test).validate;
   }
 }

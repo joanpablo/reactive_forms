@@ -47,7 +47,7 @@ class ValidationMessage {
   /// Key text for min validation message.
   static const String min = 'min';
 
-  /// Key text for equals validation message.
+  /// Key text for `equals` validation message.
   static const String equals = 'requiredEquals';
 
   /// Key text for requiredTrue validation message.
@@ -56,9 +56,9 @@ class ValidationMessage {
   /// Key text for group compare validation message.
   static const String compare = 'compare';
 
-  /// Key text for contain validation message.
+  /// Key text for `contains` validation message.
   static const String contains = 'contains';
 
-  /// Key text for every validation message.
-  static const String every = 'every';
+  /// Key text for `any` validation message.
+  static const String any = 'any';
 }
