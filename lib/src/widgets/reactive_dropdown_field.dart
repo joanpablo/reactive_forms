@@ -70,8 +70,10 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
             }
 
             return InputDecorator(
-              decoration:
-                  effectiveDecoration.copyWith(errorText: field.errorText),
+              decoration: effectiveDecoration.copyWith(
+                errorText: field.errorText,
+                enabled: field.control.enabled,
+              ),
               isEmpty: effectiveValue == null,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<T>(
