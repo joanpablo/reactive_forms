@@ -52,6 +52,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
         assert(isDense != null),
         assert(isExpanded != null),
         assert(itemHeight == null || itemHeight > 0),
+        assert(readOnly != null),
         super(
           key: key,
           formControl: formControl,
