@@ -574,7 +574,7 @@ void main() {
   });
 
   test("Disabled array changes to enable when enable children", () {
-    // Given: a disabled form
+    // Given: a disabled array
     final array = FormArray([
       FormControl<String>(),
       FormControl<String>(),
@@ -583,10 +583,24 @@ void main() {
     // When: enabled child
     array.controls.first.markAsEnabled();
 
-    // Then: form is enabled
+    // Then: array is enabled
     expect(array.enabled, true, reason: 'array is disabled');
     expect(array.controls[0].enabled, true, reason: 'first is disabled');
     expect(array.controls[1].disabled, true, reason: 'second is enabled');
+  });
+
+  test("Patch array value", () {
+    // Given: an array
+    final array = FormArray<int>([
+      FormControl<int>(value: 1),
+      FormControl<int>(value: 2),
+    ]);
+
+    // When: patch array value
+    array.patchValue([2]);
+
+    // Then: array value is patched
+    expect(array.value, [2, 2], reason: 'array value not patched');
   });
 }
 

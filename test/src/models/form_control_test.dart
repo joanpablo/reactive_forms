@@ -271,5 +271,17 @@ void main() {
       // Then: the error is not null
       expect(error, true);
     });
+
+    test('Patch control value', () {
+      // Given: a control
+      final control = FormControl<String>(value: 'John');
+
+      // When: patch control value
+      final patchedName = 'John Doe';
+      control.patchValue(patchedName);
+
+      // Then: control value is patched
+      expect(control.value, patchedName);
+    });
   });
 }
