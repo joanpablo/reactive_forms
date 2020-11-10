@@ -4,7 +4,6 @@
 - Add method **patchValue** to FormControl, FormGroup and FormArray to update partially the control 
 value.
 
-
 # 7.1.0
 
 ## Features
