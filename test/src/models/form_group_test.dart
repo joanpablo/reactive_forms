@@ -736,5 +736,54 @@ void main() {
       expect(form.control('name').enabled, true, reason: 'name is disabled');
       expect(form.control('email').disabled, true, reason: 'email is enabled');
     });
+
+    test("Patch form group value", () {
+      // Given: a form
+      final email = 'john@email.com';
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'John'),
+        'email': FormControl<String>(value: email),
+      });
+
+      // When: patch form value
+      final name = 'John Doe';
+      form.patchValue({
+        'name': name,
+      });
+
+      // Then: form value is patched
+      expect(form.value, {'name': name, 'email': email},
+          reason: 'form value not patched');
+    });
+
+    test("Patch nested form group value", () {
+      // Given: a form
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'John'),
+        'address': FormGroup({
+          'country': FormControl<String>(value: 'Bulgaria'),
+          'city': FormControl<String>(value: 'Sofia'),
+        }),
+      });
+
+      // When: patch form value
+      form.patchValue({
+        'address': {
+          'city': 'Varna',
+        },
+      });
+
+      // Then: form value is patched
+      expect(
+          form.value,
+          {
+            'name': 'John',
+            'address': {
+              'country': 'Bulgaria',
+              'city': 'Varna',
+            }
+          },
+          reason: 'form value not patched');
+    });
   });
 }

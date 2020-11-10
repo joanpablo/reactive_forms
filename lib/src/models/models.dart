@@ -371,6 +371,17 @@ abstract class AbstractControl<T> {
   /// and value when the control is reset. When false, no events are emitted.
   void updateValue(T value, {bool updateParent, bool emitEvent});
 
+  /// Patches the value of the control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void patchValue(T value, {bool updateParent, bool emitEvent});
+
   /// Resets the control, marking it as untouched, pristine and setting the
   /// value to null.
   ///
@@ -839,7 +850,7 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   T _reduceValue() => this.value;
 
-  /// Sets the value of the [FormControl].
+  /// Sets the [value] of the [FormControl].
   ///
   /// When [updateParent] is true or not supplied (the default) each change
   /// affects this control and its parent, otherwise only affects to this
@@ -858,6 +869,25 @@ class FormControl<T> extends AbstractControl<T> {
         emitEvent: emitEvent,
       );
     }
+  }
+
+  /// Patches the [value] of a control.
+  ///
+  /// This function is functionally the same as [FormControl.updateValue] at
+  /// this level. It exists for symmetry with [FormGroup.patchValue] on
+  /// [FormGroup] and [FormArray.patchValue] in [FormArray] where it does
+  /// behave differently.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  @override
+  void patchValue(T value, {bool updateParent, bool emitEvent}) {
+    this.updateValue(value, updateParent: updateParent, emitEvent: emitEvent);
   }
 
   @override
@@ -1180,6 +1210,58 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
         updateParent: false,
         emitEvent: emitEvent,
       );
+    });
+
+    this.updateValueAndValidity(
+      updateParent: updateParent,
+      emitEvent: emitEvent,
+    );
+  }
+
+  /// Patches the value of the [FormGroup]. It accepts an object with control
+  /// names as keys, and does its best to match the values to the correct
+  /// controls in the group.
+  ///
+  /// It accepts both super-sets and sub-sets of the group.
+  ///
+  /// The [value] argument matches the structure of the group, with control
+  /// names as keys.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// ## Example
+  /// ```dart
+  /// final form = FormGroup({
+  ///   'name': FormControl<String>(value: 'John'),
+  ///   'email': FormControl<String>(value: 'john@email.com'),
+  /// });
+  ///
+  /// print(form.value); // outputs: {name: 'John', email: 'john@email.com'}
+  ///
+  /// form.patchValue({'name': 'Doe'});
+  ///
+  /// print(form.value); // outputs: {name: 'Doe', email: 'john@email.com'}
+  /// ```
+  @override
+  void patchValue(
+    Map<String, dynamic> value, {
+    bool updateParent,
+    bool emitEvent,
+  }) {
+    value.forEach((name, value) {
+      if (_controls.containsKey(name)) {
+        _controls[name].patchValue(
+          value,
+          updateParent: false,
+          emitEvent: emitEvent,
+        );
+      }
     });
 
     this.updateValueAndValidity(
@@ -1781,6 +1863,73 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
         emitEvent: emitEvent,
       );
     }
+  }
+
+  /// Patches the value of the `FormArray`. It accepts an array that matches the
+  /// structure of the control, and does its best to match the values to the
+  /// correct controls in the array.
+  ///
+  /// It accepts both super-sets and sub-sets of the array without throwing an
+  /// error.
+  ///
+  /// The argument [value] is the array of latest values for the controls.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  ///
+  /// ## Example
+  /// Patch with a sub-set array
+  ///
+  /// ```dart
+  /// final array = FormArray<int>([
+  ///   FormControl<int>(value: 1),
+  ///   FormControl<int>(value: 2),
+  ///   FormControl<int>(value: 3),
+  /// ]);
+  ///
+  /// print(array.value); // outputs: [1, 2, 3]
+  ///
+  /// array.patchValue([4]);
+  ///
+  /// print(array.value); // outputs: [4, 2, 3]
+  /// ```
+  ///
+  /// ## Example
+  /// Patch with a super-set array
+  ///
+  /// ```dart
+  /// final array = FormArray<int>([
+  ///   FormControl<int>(value: 1),
+  ///   FormControl<int>(value: 2),
+  /// ]);
+  ///
+  /// print(array.value); // outputs: [1, 2]
+  ///
+  /// array.patchValue([3, 4, 5]);
+  ///
+  /// print(array.value); // outputs: [3, 4]
+  /// ```
+  @override
+  void patchValue(List<T> value, {bool updateParent, bool emitEvent}) {
+    for (int i = 0; i < value.length; i++) {
+      if (i < _controls.length) {
+        _controls[i].patchValue(
+          value[i],
+          updateParent: false,
+          emitEvent: emitEvent,
+        );
+      }
+    }
+
+    this.updateValueAndValidity(
+      updateParent: updateParent,
+      emitEvent: emitEvent,
+    );
   }
 
   /// Resets the array, marking all controls as untouched, and setting
