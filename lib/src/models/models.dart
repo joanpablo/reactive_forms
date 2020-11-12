@@ -664,6 +664,7 @@ abstract class AbstractControl<T> {
   void focus();
 
   void _updateTouched({bool updateParent}) {
+    updateParent ??= true;
     _touched = _anyControlsTouched();
 
     if (_parent != null && updateParent) {
@@ -672,6 +673,7 @@ abstract class AbstractControl<T> {
   }
 
   void _updatePristine({bool updateParent}) {
+    updateParent ??= true;
     _pristine = !_anyControlsDirty();
 
     if (_parent != null && updateParent) {
