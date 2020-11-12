@@ -1,3 +1,8 @@
+# 7.2.1
+
+## Fixes
+- Fix exception when call **FormGroup.addAll** in a sub-group with parent.
+
 # 7.2.0
 
 ## Features
