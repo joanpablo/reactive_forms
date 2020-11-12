@@ -785,5 +785,33 @@ void main() {
           },
           reason: 'form value not patched');
     });
+
+    test("Add all controls to a sub-group", () {
+      // Given: a nested form
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'John'),
+        'address': FormGroup({
+          'country': FormControl<String>(value: 'Bulgaria'),
+        }),
+      });
+
+      // When: add control to nested group
+      FormGroup address = form.control('address');
+      address.addAll({
+        'city': FormControl<String>(value: 'Sofia'),
+      });
+
+      // Then: form control is added
+      expect(
+          form.value,
+          {
+            'name': 'John',
+            'address': {
+              'country': 'Bulgaria',
+              'city': 'Sofia',
+            }
+          },
+          reason: 'form value not added');
+    });
   });
 }
