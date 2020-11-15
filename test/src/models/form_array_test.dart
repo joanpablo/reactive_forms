@@ -374,6 +374,18 @@ void main() {
       expect(arrayValue.first, 'Reactive');
     });
 
+    test('A control disabled is part of array Raw Value', () {
+      // Given: an array with a disable control
+      final array = FormArray<String>([
+        FormControl(value: 'Reactive'),
+        FormControl(value: 'Forms', disabled: true),
+      ]);
+
+      // Expect: raw value includes disabled controls
+      expect(array.rawValue.length, 2);
+      expect(array.rawValue, ['Reactive', 'Forms']);
+    });
+
     test('Enable a array enable children', () {
       // Given: a form with a disable control
       final array = FormArray([

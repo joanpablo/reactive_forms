@@ -813,5 +813,16 @@ void main() {
           },
           reason: 'form value not added');
     });
+
+    test('A control disabled is part of group Raw Value', () {
+      // Given: a form with a disable control
+      final form = FormGroup({
+        'name': FormControl(value: 'Reactive'),
+        'email': FormControl(value: 'Forms', disabled: true),
+      });
+
+      // Expect: raw value includes disabled controls
+      expect(form.rawValue, {'name': 'Reactive', 'email': 'Forms'});
+    });
   });
 }
