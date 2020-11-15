@@ -969,9 +969,15 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     }
   }
 
+  /// Gets the value of the [FormGroup], including any disabled controls.
+  ///
+  /// Retrieves all values regardless of disabled status.
+  Map<String, dynamic> get rawValue => _controls
+      .map<String, dynamic>((key, control) => MapEntry(key, control.value));
+
   @override
   bool contains(String name) {
-    return this._controls.containsKey(name);
+    return _controls.containsKey(name);
   }
 
   /// Retrieves a child control given the control's [name] or path.
@@ -1437,6 +1443,11 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// Gets the list of child controls.
   List<AbstractControl<T>> get controls =>
       List<AbstractControl<T>>.unmodifiable(_controls);
+
+  /// Gets the value of the [FormArray], including any disabled controls.
+  ///
+  /// Retrieves all values regardless of disabled status.
+  List<T> get rawValue => _controls.map<T>((control) => control.value).toList();
 
   /// Sets the value of the [FormArray].
   ///

@@ -1,3 +1,9 @@
+# 7.3.0
+
+## Features
+- Add **FormGroup.rawValue** and **FormArray.rawValue** to get the value of groups and array 
+including any disabled controls.
+
 # 7.2.1
 
 ## Fixes
