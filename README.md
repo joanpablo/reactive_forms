@@ -182,7 +182,7 @@ final cardNumber = FormControl(
 cardNumber.value = '395465465421'; // not a valid number
 
 expect(cardNumber.valid, false);
-expect(cardNumber.errors.containsKey('pattern'), true);
+expect(cardNumber.hasError('pattern'), true);
 ```
 > The above code is a Unit Test extracted from **Reactive Forms** tests.
 
