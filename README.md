@@ -970,7 +970,7 @@ form.focus('person.name');
 
 ## Focus flow between Text Fields
 
-Another example is when you have a form with several text fields and each time the user completes edition in one field you wnat to request next focus field using the keyboard actions:
+Another example is when you have a form with several text fields and each time the user completes edition in one field you want to request next focus field using the keyboard actions:
 
 ```dart
 final form = fb.group({
