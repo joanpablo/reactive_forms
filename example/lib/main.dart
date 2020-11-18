@@ -3,6 +3,7 @@ import 'package:reactive_forms_example/samples/add_dynamic_controls_sample.dart'
 import 'package:reactive_forms_example/samples/array_sample.dart';
 import 'package:reactive_forms_example/samples/complex_sample.dart';
 import 'package:reactive_forms_example/samples/disable_form_sample.dart';
+import 'package:reactive_forms_example/samples/login_sample.dart';
 import 'package:reactive_forms_example/samples/simple_sample.dart';
 
 void main() {
@@ -19,6 +20,8 @@ class Routes {
   static const disableFormSample = '/disable-form-sample';
 
   static const arraySample = '/array-sample';
+
+  static const loginSample = '/login-sample';
 }
 
 class ReactiveFormsApp extends StatelessWidget {
@@ -32,6 +35,7 @@ class ReactiveFormsApp extends StatelessWidget {
         Routes.addDynamicControls: (_) => AddDynamicControlsSample(),
         Routes.disableFormSample: (_) => DisableFormSample(),
         Routes.arraySample: (_) => ArraySample(),
+        Routes.loginSample: (_) => LoginSample(),
       },
     );
   }
