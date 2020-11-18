@@ -10,6 +10,12 @@ class AppDrawer extends StatelessWidget {
         child: ListView(
           children: [
             ListTile(
+              title: Text('Login sample'),
+              onTap: () => Navigator.of(context).pushReplacementNamed(
+                Routes.loginSample,
+              ),
+            ),
+            ListTile(
               title: Text('Complex sample'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.complex,
