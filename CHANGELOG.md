@@ -3,6 +3,7 @@
 ## Enhances
 - A disabled **ReactiveDropdownField** now tale into account the *selectedItemBuilder* method to 
 show the *disabledHint*.
+- More complete **example** app project inside **Reactive Forms**.
 
 # 7.3.0
 
