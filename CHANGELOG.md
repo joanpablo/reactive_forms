@@ -1,3 +1,9 @@
+# 7.4.0
+
+## Enhances
+- A disabled **ReactiveDropdownField** now tale into account the *selectedItemBuilder* method to 
+show the *disabledHint*.
+
 # 7.3.0
 
 ## Features
