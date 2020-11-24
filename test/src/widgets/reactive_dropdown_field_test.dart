@@ -386,5 +386,39 @@ void main() {
         expect(callbackCalled, true);
       },
     );
+
+    testWidgets(
+      'A disabled Dropdown uses selectedItemBuilder to show selected item',
+      (WidgetTester tester) async {
+        // Given: a form with disabled control
+        final items = ['true', 'false'];
+        final form = FormGroup({
+          'dropdown': FormControl<String>(
+            value: items.elementAt(0),
+            disabled: true,
+          ),
+        });
+
+        // And: a widget that is bound to the form
+        List<Widget> selectedItemBuilderList = [
+          Text('true'),
+          Text('false'),
+        ];
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+          selectedItemBuilder: (context) => selectedItemBuilderList,
+        ));
+
+        // Then: dropdown disabledHint value is equals to selectedItemBuilder
+        // equivalent item
+        Type dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+
+        // Then: callback is called
+        expect(dropdown.disabledHint, selectedItemBuilderList.elementAt(0));
+      },
+    );
   });
 }

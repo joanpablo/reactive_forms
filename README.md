@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^7.3.0
+  reactive_forms: ^7.4.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -182,7 +182,7 @@ final cardNumber = FormControl(
 cardNumber.value = '395465465421'; // not a valid number
 
 expect(cardNumber.valid, false);
-expect(cardNumber.errors.containsKey('pattern'), true);
+expect(cardNumber.hasError('pattern'), true);
 ```
 > The above code is a Unit Test extracted from **Reactive Forms** tests.
 
@@ -970,7 +970,7 @@ form.focus('person.name');
 
 ## Focus flow between Text Fields
 
-Another example is when you have a form with several text fields and each time the user completes edition in one field you wnat to request next focus field using the keyboard actions:
+Another example is when you have a form with several text fields and each time the user completes edition in one field you want to request next focus field using the keyboard actions:
 
 ```dart
 final form = fb.group({

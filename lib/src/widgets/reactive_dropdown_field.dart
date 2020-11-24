@@ -74,15 +74,17 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
             }
 
             final isDisabled = (readOnly || field.control.disabled);
-            final effectiveDisabledHint = isDisabled
-                ? (disabledHint ??
-                    items
-                        ?.firstWhere(
-                          (item) => item.value == effectiveValue,
-                          orElse: () => null,
-                        )
-                        ?.child)
-                : disabledHint;
+            Widget effectiveDisabledHint = disabledHint;
+            if (isDisabled && disabledHint == null) {
+              final selectedItemIndex =
+                  items?.indexWhere((item) => item.value == effectiveValue);
+              if (selectedItemIndex != null && selectedItemIndex > -1) {
+                effectiveDisabledHint = selectedItemBuilder != null
+                    ? selectedItemBuilder(field.context)
+                        .elementAt(selectedItemIndex)
+                    : items.elementAt(selectedItemIndex).child;
+              }
+            }
 
             return InputDecorator(
               decoration: effectiveDecoration.copyWith(
