@@ -7,6 +7,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final bool readOnly;
   final Widget disabledHint;
+  final DropdownButtonBuilder selectedItemBuilder;
 
   const ReactiveDropdownTestingWidget({
     Key key,
@@ -15,6 +16,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.disabledHint,
+    this.selectedItemBuilder,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
             onChanged: this.onChanged,
             readOnly: this.readOnly,
             disabledHint: this.disabledHint,
+            selectedItemBuilder: this.selectedItemBuilder,
             items: this.items.map<DropdownMenuItem<String>>(
               (item) {
                 return DropdownMenuItem<String>(
