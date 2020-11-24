@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms_example/sample_screen.dart';
 
 class ViewModelProvider extends InheritedWidget {
   final NewContactViewModel viewModel;
@@ -40,22 +41,21 @@ class NewContactViewModel {
 class AddDynamicControlsSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider(
-      viewModel: NewContactViewModel(),
-      child: Builder(
-        builder: (context) {
-          final viewModel = ViewModelProvider.of(context);
+    return SampleScreen(
+      title: Text('New contact'),
+      body: ViewModelProvider(
+        viewModel: NewContactViewModel(),
+        child: Builder(
+          builder: (context) {
+            final viewModel = ViewModelProvider.of(context);
 
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('New Contact'),
-            ),
-            body: ReactiveForm(
+            return ReactiveForm(
               formGroup: viewModel.form,
               child: ReactiveFormArray(
                 formArray: viewModel.phones,
                 builder: (context, array, child) {
                   return ListView(
+                    shrinkWrap: true,
                     padding: EdgeInsets.all(20.0),
                     children: [
                       for (final control in array.controls)
@@ -81,9 +81,9 @@ class AddDynamicControlsSample extends StatelessWidget {
                   );
                 },
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
