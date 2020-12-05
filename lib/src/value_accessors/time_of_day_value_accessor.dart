@@ -10,7 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class TimeOfDayValueAccessor extends ControlValueAccessor<TimeOfDay, String> {
   @override
   String modelToViewValue(TimeOfDay modelValue) {
-    return modelValue == null ? '' : '${modelValue.hour}:${modelValue.minute}';
+    return modelValue == null ? '' : '${modelValue.hour}:${_addLeadingZeroIfNeeded(modelValue.minute)}';
   }
 
   @override
@@ -29,4 +29,6 @@ class TimeOfDayValueAccessor extends ControlValueAccessor<TimeOfDay, String> {
       minute: int.parse(parts[1].trim()),
     );
   }
+
+  String _addLeadingZeroIfNeeded(int value) => (value < 10) ? '0$value' : value.toString();
 }
