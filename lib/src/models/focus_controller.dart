@@ -3,14 +3,34 @@
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 /// Represents a focus controller for a [FormControl].
-abstract class FocusController extends ChangeNotifier {
+class FocusController extends ChangeNotifier {
   bool _hasFocus = false;
   bool disposed = false;
+  final FocusNode _focusNode;
+  final bool _shouldDisposeFocusNode;
+  bool _modelToViewChanges = false;
+
+  /// Constructs an instance of the focus controller.
+  ///
+  /// If not [focusNode] is provided, then a FocusNode is created by default.
+  ///
+  /// If the [focusNode] is provided then the focus controller will not dispose
+  /// it and [focusNode] must be explicitly dispose after dispose focus
+  /// controller instance.
+  FocusController({FocusNode focusNode})
+      : _focusNode = (focusNode ?? FocusNode()),
+        _shouldDisposeFocusNode = (focusNode == null) {
+    this.focusNode.addListener(_onFocusNodeFocusChanges);
+  }
 
   /// Gets the focus state of the focus controller.
   bool get hasFocus => _hasFocus;
+
+  /// Gets the UI focus node registered with the controller.
+  FocusNode get focusNode => _focusNode;
 
   /// Update the focus state for controller.
   ///
@@ -31,11 +51,38 @@ abstract class FocusController extends ChangeNotifier {
   /// the focus in the control has changed.
   ///
   /// The [hasFocus] argument represents the state of the [FormControl].
-  void onControlFocusChanged(bool hasFocus);
+  void onControlFocusChanged(bool hasFocus) {
+    _modelToViewChanges = true;
+
+    if (hasFocus && !focusNode.hasFocus) {
+      focusNode.requestFocus();
+    } else if (!hasFocus && focusNode.hasFocus) {
+      focusNode.unfocus();
+    }
+
+    this.updateFocus(hasFocus);
+  }
 
   @override
   void dispose() {
+    this.focusNode.removeListener(_onFocusNodeFocusChanges);
+    if (this._shouldDisposeFocusNode) {
+      this.focusNode.dispose();
+    }
     this.disposed = true;
     super.dispose();
+  }
+
+  void _onFocusNodeFocusChanges() {
+    if (_modelToViewChanges) {
+      _modelToViewChanges = false;
+      return;
+    }
+
+    if (this.hasFocus && !focusNode.hasFocus) {
+      this.updateFocus(false);
+    } else if (!this.hasFocus && focusNode.hasFocus) {
+      this.updateFocus(true);
+    }
   }
 }

@@ -1,3 +1,9 @@
+# 7.6.0
+
+## Features
+- Expose focus controller of the **FormControl**. Now is possible to access UI **FocusNode** with 
+in a control through **control.focusController.focusNode**.
+
 # 7.5.0
 
 ## Features
