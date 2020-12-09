@@ -40,7 +40,7 @@ class _ArraySampleState extends State<ArraySample> {
         formGroup: this.form,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: ListView(
+          child: Column(
             children: [
               ReactiveFormArray<bool>(
                 formArrayName: 'selectedContacts',

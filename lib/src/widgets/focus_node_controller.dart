@@ -6,20 +6,27 @@ import 'package:reactive_forms/reactive_forms.dart';
 class FocusNodeController extends FocusController {
   final FocusNode focusNode;
   bool _modelToViewChanges = false;
+  final bool _isLocalFocusNode;
 
   /// Constructs and instance of [FocusNodeController].
   ///
   /// Can optionally provide a [focusNode].
   FocusNodeController({
     FocusNode focusNode,
-  }) : focusNode = (focusNode ?? FocusNode()) {
+  })  : _isLocalFocusNode = (focusNode == null),
+        focusNode = (focusNode ?? FocusNode()) {
     this.focusNode.addListener(_onFocusNodeFocusChanges);
   }
 
   /// Disposes a focus controller
+  ///
+  /// Disposes the [focusNode] if it was created locally. If [focusNode] was
+  /// provided in constructor, then it must be explicitly disposed.
   void dispose() {
     this.focusNode.removeListener(_onFocusNodeFocusChanges);
-    this.focusNode.dispose();
+    if (this._isLocalFocusNode) {
+      this.focusNode.dispose();
+    }
     super.dispose();
   }
 

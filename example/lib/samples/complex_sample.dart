@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms_example/sample_screen.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
+import 'package:reactive_forms_example/sample_screen.dart';
 
 class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group({
@@ -26,7 +26,7 @@ class ComplexSample extends StatelessWidget {
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
-          return ListView(
+          return Column(
             children: [
               ReactiveTextField(
                 formControlName: 'email',

@@ -15,7 +15,7 @@ class SimpleSample extends StatelessWidget {
       body: ReactiveFormBuilder(
         form: () => this.form,
         builder: (context, form, child) {
-          return ListView(
+          return Column(
             children: [
               ReactiveTextField(
                 formControlName: 'name',

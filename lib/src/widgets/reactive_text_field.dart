@@ -122,6 +122,7 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
+    FocusNode focusNode,
   }) : super(
           key: key,
           formControl: formControl,
@@ -135,9 +136,11 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
                     const InputDecoration())
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
+            state._setFocusNode(focusNode);
+
             return TextField(
               controller: state._textController,
-              focusNode: state._focusController.focusNode,
+              focusNode: state.focusNode,
               decoration:
                   effectiveDecoration.copyWith(errorText: state.errorText),
               keyboardType: keyboardType,
@@ -186,12 +189,15 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
         );
 
   @override
-  ReactiveFormFieldState createState() => _ReactiveTextFieldState();
+  ReactiveFormFieldState<dynamic> createState() => _ReactiveTextFieldState();
 }
 
-class _ReactiveTextFieldState extends ReactiveFormFieldState {
+class _ReactiveTextFieldState extends ReactiveFormFieldState<dynamic> {
   TextEditingController _textController;
-  FocusNodeController _focusController = FocusNodeController();
+  FocusNode _focusNode;
+  FocusNodeController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
 
   @override
   void initState() {
@@ -204,15 +210,13 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
 
   @override
   void subscribeControl() {
-    this.control.registerFocusController(_focusController);
+    _registerFocusController(FocusNodeController());
     super.subscribeControl();
   }
 
   @override
   void unsubscribeControl() {
-    this.control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-
+    _unregisterFocusController();
     super.unsubscribeControl();
   }
 
@@ -235,5 +239,28 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState {
     }
 
     return super.selectValueAccessor();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    this.control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    this.control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode focusNode) {
+    if (_focusNode == focusNode) {
+      return;
+    } else if (focusNode == null && _focusNode != null) {
+      _focusNode = null;
+    } else if (focusNode != null && _focusNode == null) {
+      _focusNode = focusNode;
+    }
+
+    _unregisterFocusController();
+    _registerFocusController(FocusNodeController(focusNode: _focusNode));
   }
 }

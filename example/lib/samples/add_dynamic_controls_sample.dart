@@ -54,9 +54,7 @@ class AddDynamicControlsSample extends StatelessWidget {
               child: ReactiveFormArray(
                 formArray: viewModel.phones,
                 builder: (context, array, child) {
-                  return ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(20.0),
+                  return Column(
                     children: [
                       for (final control in array.controls)
                         Padding(
