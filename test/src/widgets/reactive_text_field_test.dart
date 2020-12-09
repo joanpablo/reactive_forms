@@ -494,5 +494,28 @@ void main() {
         expect(state.valueAccessor, isInstanceOf<TimeOfDayValueAccessor>());
       },
     );
+
+    testWidgets(
+      'Provide a FocusNode to ReactiveTextField',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final form = FormGroup({
+          'name': FormControl(value: 'John'),
+        });
+
+        // And: a focus node
+        final focusNode = FocusNode();
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
+          form: form,
+          focusNode: focusNode,
+        ));
+
+        // Expect: text field has the provided focus node
+        TextField textField = tester.firstWidget(find.byType(TextField));
+        expect(textField.focusNode, focusNode);
+      },
+    );
   });
 }
