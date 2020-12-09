@@ -1,3 +1,8 @@
+# 7.6.1
+
+## Fix
+- Fix code formatting to pass pub static analysis.
+
 # 7.6.0
 
 ## Features
