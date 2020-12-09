@@ -517,5 +517,29 @@ void main() {
         expect(textField.focusNode, focusNode);
       },
     );
+
+    testWidgets(
+      'Provide a FocusNode to ReactiveTextField and access it through focus controller',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final nameControl = FormControl(value: 'John');
+        final form = FormGroup({
+          'name': nameControl,
+        });
+
+        // And: a focus node
+        final focusNode = FocusNode();
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget(
+          form: form,
+          focusNode: focusNode,
+        ));
+
+        // Expect: text field has the provided focus node and is the same of the focus controller
+        TextField textField = tester.firstWidget(find.byType(TextField));
+        expect(textField.focusNode, nameControl.focusController.focusNode);
+      },
+    );
   });
 }

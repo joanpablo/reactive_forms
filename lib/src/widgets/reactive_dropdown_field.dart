@@ -124,7 +124,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
 }
 
 class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
-  FocusNodeController _focusController = FocusNodeController();
+  FocusController _focusController = FocusController();
 
   @override
   void subscribeControl() {
