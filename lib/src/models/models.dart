@@ -754,6 +754,31 @@ class FormControl<T> extends AbstractControl<T> {
   /// True if the control is marked as focused.
   bool get hasFocus => _hasFocus;
 
+  /// Gets the focus controller registered with in this control.
+  ///
+  /// Don't use [focusController] to add/remove focus to a control,
+  /// use instead **control.focus()** and **control.unfocus()**.
+  ///
+  /// Don't use [focusController] to know if the control has focus, use instead
+  /// **control.hasFocus**.
+  ///
+  /// Use only [focusController] if you want to access the inner UI [FocusNode]
+  /// of the control.
+  ///
+  /// ## Example
+  /// Access the inner UI [FocusNode] of the control
+  /// ```dart
+  /// FormControl control = this.form.control('email');
+  ///
+  /// final focusNode =  control.focusController.focusNode;
+  /// ```
+  /// See also [focus()].
+  ///
+  /// See also [unfocus()].
+  ///
+  /// See also [hasFocus].
+  FocusController get focusController => _focusController;
+
   /// Disposes the control
   @override
   void dispose() {
