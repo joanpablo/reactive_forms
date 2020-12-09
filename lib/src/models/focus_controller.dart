@@ -29,6 +29,7 @@ class FocusController extends ChangeNotifier {
   /// Gets the focus state of the focus controller.
   bool get hasFocus => _hasFocus;
 
+  /// Gets the UI focus node registered with the controller.
   FocusNode get focusNode => _focusNode;
 
   /// Update the focus state for controller.
