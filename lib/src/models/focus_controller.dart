@@ -13,6 +13,13 @@ class FocusController extends ChangeNotifier {
   final bool _shouldDisposeFocusNode;
   bool _modelToViewChanges = false;
 
+  /// Constructs an instance of the focus controller.
+  ///
+  /// If not [focusNode] is provided, then a FocusNode is created by default.
+  ///
+  /// If the [focusNode] is provided then the focus controller will not dispose
+  /// it and [focusNode] must be explicitly dispose after dispose focus
+  /// controller instance.
   FocusController({FocusNode focusNode})
       : _focusNode = (focusNode ?? FocusNode()),
         _shouldDisposeFocusNode = (focusNode == null) {
