@@ -1,3 +1,12 @@
+# 7.5.0
+
+## Features
+- Add argument **focusNode** to **ReactiveTextField** to provide a custom **FocusNode**.
+
+## Enhances
+- Add some improvement to *TimeOfDayValueAccessor*.
+- Add some improvement to example application.
+
 # 7.4.0
 
 ## Enhances
