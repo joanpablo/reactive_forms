@@ -663,7 +663,10 @@ final aliases = fb.array(['john', 'little john']);
 
 ```dart
 // creates a control of type String with a required validator
-final control = fb.control<String>(null, [Validators.required]);
+final nameControl = fb.control('', [Validators.required]);
+
+// creates a control of type int with a required validator
+final zipCodeControl = fb.control<int>(null, [Validators.required]);
 ```
 
 ### Control state
