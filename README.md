@@ -140,7 +140,7 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.contains
 
 ### Custom Validators
-A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
+A custom **FormControl** validator is a function that receives the *control* to validate and returns a **Map**. If the value of the *control* is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
 
 Let's implement a custom validator that validates a control's value must be *true*:
 
@@ -160,7 +160,7 @@ Map<String, dynamic> _requiredTrue(AbstractControl control) {
          control.value is bool && 
          control.value == true 
   ? null 
-  : {'required': true};
+  : {'requiredTrue': true};
 }
 ``` 
 
