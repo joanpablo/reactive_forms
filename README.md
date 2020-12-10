@@ -676,8 +676,8 @@ To retrieves nested controls you can specify the name of the control as a dot-de
 ```dart
 final form = FormGroup({
   'address': FormGroup({
-    'zipCode': FormControl<int>(value: 1000),
     'city': FormControl<String>(value: 'Sofia'),
+    'zipCode': FormControl<int>(value: 1000),
   }),
 });
 
