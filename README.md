@@ -155,7 +155,7 @@ final form = FormGroup({
 
 ```dart
 /// Validates that control's value must be `true`
-Map<String, dynamic> _requiredTrue(AbstractControl control) {
+Map<String, dynamic> _requiredTrue(AbstractControl<dynamic> control) {
   return control.isNotNull && 
          control.value is bool && 
          control.value == true 
@@ -173,10 +173,10 @@ Map<String, dynamic> _requiredTrue(AbstractControl control) {
 > American Express card numbers start with 34 or 37 and have 15 digits.
 
 ```dart
-const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+const americanExpressCardPattern = r'^3[47][0-9]{13}$';
 
-final cardNumber = FormControl(
-  validators: [Validators.pattern(AmericanExpressPattern)],
+final cardNumber = FormControl<String>(
+  validators: [Validators.pattern(americanExpressCardPattern)],
 );
 
 cardNumber.value = '395465465421'; // not a valid number
@@ -211,17 +211,17 @@ There are special validators that can be attached to **FormGroup**. In the next 
 
 There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with *email* and *emailConfirmation* or *password* and *passwordConfirmation*.
 
-For that cases we must implement a custom validator and attach it to the **FormGroup**, let's see an example:
+For that cases we could implement a custom validator and attach it to the **FormGroup**, let's see an example:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(validators: [Validators.required]),
-  'email': FormControl(validators: [Validators.required, Validators.email]),
-  'password': FormControl(validators: [
+  'name': FormControl<String>(validators: [Validators.required]),
+  'email': FormControl<String>(validators: [Validators.required, Validators.email]),
+  'password': FormControl<String>(validators: [
     Validators.required,
     Validators.minLength(8),
   ]),
-  'passwordConfirmation': FormControl(),
+  'passwordConfirmation': FormControl<String>(),
 }, validators: [
   _mustMatch('password', 'passwordConfirmation')
 ]);
@@ -234,7 +234,7 @@ However the most important thing here is that we have attached a **validator** t
 
 ```dart
 ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
-  return (AbstractControl control) {
+  return (AbstractControl<dynamic> control) {
     final form = control as FormGroup;
 
     final formControl = form.control(controlName);
@@ -246,7 +246,7 @@ ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
       // force messages to show up as soon as possible
       matchingFormControl.markAsTouched(); 
     } else {
-      matchingFormControl.setErrors({});
+      matchingFormControl.removeError('mustMatch');
     }
 
     return null;
@@ -254,18 +254,15 @@ ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
 }
 ```
 
-Fortunately you don't have to implement a custom *must match* validator because we have already included it into the code of the **reactive_forms** package so you could reuse it. The previous form definition example will become into:
+Fortunately you don't have to implement a custom *must match* validator because we have already included it into the code of the **reactive_forms** package so you should reuse it. The previous form definition becomes into:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(validators: [Validators.required]),
-  'email': FormControl(validators: [Validators.required, Validators.email]),
-  'emailConfirmation': FormControl(),
-  'password': FormControl(validators: [
-    Validators.required,
-    Validators.minLength(8),
-  ]),
-  'passwordConfirmation': FormControl(),
+  'name': FormControl<String>(validators: [Validators.required]),
+  'email': FormControl<String>(validators: [Validators.required, Validators.email]),
+  'emailConfirmation': FormControl<String>(),
+  'password': FormControl<String>(validators: [Validators.required, Validators.minLength(8)]),
+  'passwordConfirmation': FormControl<String>(),
 }, validators: [
   Validators.mustMatch('email', 'emailConfirmation'),
   Validators.mustMatch('password', 'passwordConfirmation'),
@@ -310,7 +307,7 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 
 /// Async validator example that simulates a request to a server
 /// and validates if the email of the user is unique.
-Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+Future<Map<String, dynamic>> _uniqueEmail(AbstractControl<dynamic> control) async {
   final error = {'unique': false};
 
   final emailAlreadyUsed = await Future.delayed(
@@ -410,6 +407,9 @@ final form = FormGroup({
   }),
 });
 ```
+> Note how we have set the *data type* to a **FormControl**, although this is not mandatory when 
+> declaring a *Form*, we highly recommend this syntax as good practice or to use the FormBuilder 
+> syntax.
 
 Using **FormBuilder** *(read FormBuilder section below)*:
 
@@ -430,8 +430,6 @@ final form = fb.group({
   }),
 });
 ```
-
-> Note how we set the *data type* to a **FormControl**, this is not mandatory when define *Forms* but we recommend this syntax.
 
 You can collect all data using **FormGroup.value**:
 
@@ -467,7 +465,7 @@ And of course you can access to a nested **FormGroup** as following:
 FormGroup personalForm = form.control('personal');
 ```
 
-A simple way to create a wizzard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each *Page* inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
+A simple way to create a wizard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each *Page* inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
 
 ## Dynamic forms with **FormArray**
 
@@ -587,12 +585,12 @@ You can also create arrays of groups:
 // an array of groups
 final addressArray = FormArray([
   FormGroup({
-    'city': FormControl(value: 'Sofia'),
-    'zipCode': FormControl(value: 1000),
+    'city': FormControl<String>(value: 'Sofia'),
+    'zipCode': FormControl<int>(value: 1000),
   }),
   FormGroup({
-    'city': FormControl(value: 'Havana'),
-    'zipCode': FormControl(value: 10400),
+    'city': FormControl<String>(value: 'Havana'),
+    'zipCode': FormControl<int>(value: 10400),
   }),
 ]);
 ```
@@ -622,11 +620,12 @@ You can iterate over groups as follow:
 ```dart
 final cities = addressArray.controls
         .map((control) => control as FormGroup)
-        .forEach((form) => form.control('city').value);
+        .map((form) => form.control('city').value)
+        .toList();
 ```
 
-> A common mistake is to declare an *array* of groups as *FormArray&lt;FormGroup&gt;*.   
->An array of *FormGroup* must be declared as **FormArray()** or as **FormArray&lt;Map&lt;String, dynamic&gt;&gt;()**.
+> A common mistake is to declare an *array* of groups as *FormArray&lt;FormGroup&gt;*.  
+> An array of *FormGroup* must be declared as **FormArray()** or as **FormArray&lt;Map&lt;String, dynamic&gt;&gt;()**.
 
 ## FormBuilder
 
