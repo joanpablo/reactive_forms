@@ -659,6 +659,13 @@ final form = FormGroup({
 final aliases = fb.array(['john', 'little john']);
 ```
 
+### Control
+
+```dart
+// creates a control of type String with a required validator
+final control = fb.control<String>(null, [Validators.required]);
+```
+
 ### Control state
 
 ```dart
