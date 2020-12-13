@@ -43,6 +43,7 @@ export 'src/widgets/reactive_radio_list_tile.dart';
 export 'src/widgets/reactive_slider.dart';
 export 'src/widgets/reactive_status_listenable_builder.dart';
 export 'src/widgets/reactive_switch.dart';
+export 'src/widgets/reactive_switch_list_tile.dart';
 export 'src/widgets/reactive_text_field.dart';
 export 'src/widgets/reactive_time_picker.dart';
 export 'src/widgets/reactive_type_def.dart';
