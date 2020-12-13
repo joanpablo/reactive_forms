@@ -1,3 +1,8 @@
+# 7.6.2
+
+## Fix
+- Exposes **ReactiveSwitchListTile**.
+
 # 7.6.1
 
 ## Fix
