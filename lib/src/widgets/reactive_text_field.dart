@@ -221,7 +221,13 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<dynamic> {
 
   @override
   void onControlValueChanged(dynamic value) {
-    _textController.text = (value == null) ? '' : value.toString();
+    String effectiveValue = (value == null) ? '' : value.toString();
+    _textController.value = _textController.value.copyWith(
+      text: effectiveValue,
+      selection: TextSelection.collapsed(offset: effectiveValue.length),
+      composing: TextRange.empty,
+    );
+
     super.onControlValueChanged(value);
   }
 
