@@ -1,3 +1,8 @@
+# 7.6.3
+
+## Fix
+- Set cursor at the end of the text when set value to reactive text field from the FormControl.
+
 # 7.6.2
 
 ## Fix
