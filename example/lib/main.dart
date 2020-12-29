@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms_example/samples/add_dynamic_controls_sample.dart';
 import 'package:reactive_forms_example/samples/array_sample.dart';
 import 'package:reactive_forms_example/samples/complex_sample.dart';
+import 'package:reactive_forms_example/samples/date_picker_sample.dart';
 import 'package:reactive_forms_example/samples/disable_form_sample.dart';
 import 'package:reactive_forms_example/samples/login_sample.dart';
 import 'package:reactive_forms_example/samples/simple_sample.dart';
@@ -21,6 +22,8 @@ class Routes {
 
   static const arraySample = '/array-sample';
 
+  static const datePickerSample = '/date-picker-sample';
+
   static const loginSample = '/login-sample';
 }
 
@@ -36,6 +39,7 @@ class ReactiveFormsApp extends StatelessWidget {
         Routes.disableFormSample: (_) => DisableFormSample(),
         Routes.arraySample: (_) => ArraySample(),
         Routes.loginSample: (_) => LoginSample(),
+        Routes.datePickerSample: (_) => DatePickerSample(),
       },
     );
   }
