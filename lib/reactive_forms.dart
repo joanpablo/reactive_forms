@@ -23,6 +23,7 @@ export 'src/validators/validator.dart';
 export 'src/validators/validators.dart';
 export 'src/value_accessors/control_value_accessor.dart';
 export 'src/value_accessors/datetime_value_accessor.dart';
+export 'src/value_accessors/formatted_datetime_value_accessor.dart';
 export 'src/value_accessors/default_value_accessor.dart';
 export 'src/value_accessors/double_value_accessor.dart';
 export 'src/value_accessors/int_value_accessor.dart';
