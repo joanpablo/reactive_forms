@@ -36,13 +36,16 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
     bool dense,
     Widget secondary,
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
+    bool autofocus = false,
+    EdgeInsetsGeometry contentPadding,
+    bool tristate = false,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState field) {
             return CheckboxListTile(
-              value: field.value ?? false,
+              value: tristate ? field.value : field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               checkColor: checkColor,
@@ -52,6 +55,9 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
               dense: dense,
               secondary: secondary,
               controlAffinity: controlAffinity,
+              autofocus: autofocus,
+              contentPadding: contentPadding,
+              tristate: tristate,
             );
           },
         );

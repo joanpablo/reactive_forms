@@ -26,6 +26,27 @@ void main() {
     );
 
     testWidgets(
+      'Tristate FormControl with null default value then Checkbox not checked',
+      (WidgetTester tester) async {
+        // Given: a form with a boolean field in null
+        final form = FormGroup({
+          'isChecked': FormControl<bool>(),
+        });
+
+        // And: a checkbox is bind to boolean control
+        await tester.pumpWidget(ReactiveCheckboxListTileTestingWidget(
+          form: form,
+          tristate: true,
+        ));
+
+        // Expect: the checkbox is not checked
+        Checkbox checkbox =
+            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        expect(checkbox.value, null);
+      },
+    );
+
+    testWidgets(
       'if FormControl with defaults to True then Checkbox checked',
       (WidgetTester tester) async {
         // Given: a form with a boolean field in True
