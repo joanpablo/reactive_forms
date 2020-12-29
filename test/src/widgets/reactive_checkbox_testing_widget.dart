@@ -3,10 +3,12 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveCheckboxTestingWidget extends StatelessWidget {
   final FormGroup form;
+  final bool tristate;
 
   const ReactiveCheckboxTestingWidget({
     Key key,
     @required this.form,
+    this.tristate = false,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class ReactiveCheckboxTestingWidget extends StatelessWidget {
             children: <Widget>[
               ReactiveCheckbox(
                 formControlName: 'isChecked',
+                tristate: tristate,
               ),
             ],
           ),
