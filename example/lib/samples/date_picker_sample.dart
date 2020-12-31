@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
+import 'package:intl/intl.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
@@ -73,6 +74,9 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                         picker.showPicker();
                       }
                     },
+                    valueAccessor: FormattedDateTimeValueAccessor(
+                      DateFormat('dd MMM yyyy'),
+                    ),
                     focusNode: _focusNode,
                     formControlName: 'date',
                     readOnly: true,
