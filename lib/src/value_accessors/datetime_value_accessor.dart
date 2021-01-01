@@ -2,33 +2,26 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'package:intl/intl.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Represents a control value accessor that convert between data types
 /// [DateTime] and [String].
 class DateTimeValueAccessor extends ControlValueAccessor<DateTime, String> {
+  final DateFormat dateTimeFormat;
+
+  DateTimeValueAccessor({DateFormat dateTimeFormat})
+      : dateTimeFormat = dateTimeFormat ?? DateFormat('yyyy/MM/dd');
+
   @override
   String modelToViewValue(DateTime modelValue) {
-    return modelValue == null
-        ? ''
-        : '${modelValue.year}/${modelValue.month}/${modelValue.day}';
+    return modelValue == null ? '' : dateTimeFormat.format(modelValue);
   }
 
   @override
   DateTime viewToModelValue(String viewValue) {
-    if (viewValue == null) {
-      return null;
-    }
-
-    final parts = viewValue.split('/');
-    if (parts.length != 3) {
-      return null;
-    }
-
-    return DateTime(
-      int.parse(parts[0].trim()),
-      int.parse(parts[1].trim()),
-      int.parse(parts[2].trim()),
-    );
+    return viewValue == null || viewValue.trim().isEmpty
+        ? null
+        : dateTimeFormat.parse(viewValue);
   }
 }
