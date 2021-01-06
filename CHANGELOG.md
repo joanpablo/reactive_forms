@@ -1,3 +1,14 @@
+# 8.0.0
+
+## Breaking changes
+- Upgrade **Reactive Forms** to Flutter 1.20
+
+## Features
+- Add **intl** package and and optional argument to DateTimeValueAccessor to specify
+the format of the date.
+- Add some extra properties to reactive forms widgets.
+
+
 # 7.6.3
 
 ## Fix
