@@ -1,7 +1,7 @@
 # 8.0.0
 
 ## Breaking changes
-- Upgrade **Reactive Forms** to Flutter 1.20.
+- Upgrade **Reactive Forms** to Flutter 1.20
 
 ## Features
 - Add **intl** package and and optional argument to DateTimeValueAccessor to specify
