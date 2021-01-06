@@ -18,6 +18,8 @@ samples, guidance on mobile development, and a full API reference.
 > For using **Reactive Forms** in projects with Flutter 1.17.0 please use the version 7.6.3 of 
 > **Reactive Forms**.
 
+> **Reactive Forms v8.x** includes the **intl** package. If a version conflict is present, then you should use [**dependency_overrides**](https://dart.dev/tools/pub/dependencies#dependency-overrides) to temporarily override all references to **intl** and set the one that better fits your needs.
+
 ## Installation and Usage
 
 Once you're familiar with Flutter you may install this package adding `reactive_forms` to the dependencies list
@@ -1022,6 +1024,28 @@ Widget build(BuildContext context) {
 >// remove the focus to the control and marks it as untouched. 
 >this.form.unfocus(touched: false);
 >```
+
+## How Enable/Disable a widget
+
+To disabled a widget like **ReactiveTextField** all you need to do is to *mark* the *control* as disabled:
+
+```dart
+final form = FormGroup({
+  'name': FormControl(),
+});
+
+FormControl control = form.control('name');
+
+// the control is disabled and also the widget in UI is disabled.
+control.markAsDisabled();
+```
+
+> When a control is disabled it is exempt from validation checks and excluded from the aggregate 
+> value of any parent. Its status is **DISABLED**.
+> 
+>To retrieves all values of a FormGroup or FormArray regardless of disabled status in children use
+> **FormControl.rawValue** or **FormArray.rawValue** respectively.
+
 
 ## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
 
