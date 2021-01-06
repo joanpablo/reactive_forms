@@ -74,8 +74,8 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                         picker.showPicker();
                       }
                     },
-                    valueAccessor: FormattedDateTimeValueAccessor(
-                      DateFormat('dd MMM yyyy'),
+                    valueAccessor: DateTimeValueAccessor(
+                      dateTimeFormat: DateFormat('dd MMM yyyy'),
                     ),
                     focusNode: _focusNode,
                     formControlName: 'date',
