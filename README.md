@@ -35,6 +35,22 @@ dependencies:
 
 Then run the command `flutter packages get` on the console.
 
+## Additional reactive widgets
+
+We are trying to keep `reactive_forms` from bloating with third party dependencies this is why there is 
+a separate library [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets) which provides
+a variety of field widgets. 
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  reactive_forms_widgets: latest
+```
+
+Then run the command `flutter packages get` on the console.
+
 ## Creating a form
 
 A *form* is composed by multiple fields or *controls*.
@@ -1109,6 +1125,13 @@ Widget build(BuildContext context) {
 
 - ReactiveDatePicker
 - ReactiveTimePicker
+
+## Advanced Reactive Field Widgets [library](https://pub.dev/packages/reactive_forms_widgets)
+
+- ReactiveDateTimePicker
+- ReactiveDropdownSearch
+- ReactiveTouchSpin
+- ReactiveSegmentedControl
 
 ## Other Reactive Forms Widgets
 
