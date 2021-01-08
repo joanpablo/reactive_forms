@@ -345,6 +345,10 @@ abstract class AbstractControl<T> {
     updateParent ??= true;
     emitEvent ??= true;
 
+    if (this.disabled) {
+      return;
+    }
+
     _errors.clear();
     _status = ControlStatus.disabled;
     if (emitEvent) {
