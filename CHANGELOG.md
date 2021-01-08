@@ -1,3 +1,9 @@
+# 8.0.1
+
+## Fix
+- If a control is disabled, then it doesn't fire state change again when
+call **markAsDisabled**.
+
 # 8.0.0
 
 ## Breaking changes
