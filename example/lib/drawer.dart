@@ -39,6 +39,12 @@ class AppDrawer extends StatelessWidget {
                 Routes.datePickerSample,
               ),
             ),
+            ListTile(
+              title: Text('Reactive forms widgets'),
+              onTap: () => Navigator.of(context).pushReplacementNamed(
+                Routes.reactiveFormWidgets,
+              ),
+            ),
             // ListTile(
             //   title: Text('Disable form sample'),
             //   onTap: () => Navigator.of(context).pushReplacementNamed(
