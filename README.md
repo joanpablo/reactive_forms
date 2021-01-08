@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^8.0.0
+  reactive_forms: ^8.0.1
 ```
 
 Then run the command `flutter packages get` on the console.
