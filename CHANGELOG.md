@@ -1,3 +1,8 @@
+# 8.0.3
+
+## Fix
+- Code formatting issues
+
 # 8.0.2
 
 ## Fix
