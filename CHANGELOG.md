@@ -1,3 +1,8 @@
+# 8.0.2
+
+## Fix
+- **Validators.pattern** now validates against a **RegExp** instance.
+
 # 8.0.1
 
 ## Fix
