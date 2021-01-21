@@ -17,18 +17,21 @@ import 'package:reactive_forms/src/validators/min_length_validator.dart';
 import 'package:reactive_forms/src/validators/min_validator.dart';
 import 'package:reactive_forms/src/validators/must_match_validator.dart';
 import 'package:reactive_forms/src/validators/number_validator.dart';
+import 'package:reactive_forms/src/validators/pattern/default_pattern_evaluator.dart';
+import 'package:reactive_forms/src/validators/pattern/pattern_evaluator.dart';
+import 'package:reactive_forms/src/validators/pattern/regex_pattern_evaluator.dart';
 import 'package:reactive_forms/src/validators/pattern_validator.dart';
 import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction<T> = Map<String, dynamic> Function(
-    AbstractControl<T> value);
+typedef ValidatorFunction = Map<String, dynamic> Function(
+    AbstractControl<dynamic> value);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
 typedef AsyncValidatorFunction = Future<Map<String, dynamic>> Function(
-    AbstractControl value);
+    AbstractControl<dynamic> value);
 
 /// Provides a set of built-in validators that can be used by form controls.
 class Validators {
@@ -87,8 +90,20 @@ class Validators {
   /// regex [pattern].
   ///
   /// The argument [pattern] must not be null.
-  static ValidatorFunction pattern(Pattern pattern) =>
-      PatternValidator(pattern).validate;
+  static ValidatorFunction pattern(Pattern pattern) {
+    assert(pattern != null);
+
+    PatternEvaluator evaluator;
+    if (pattern is String) {
+      evaluator = RegExpPatternEvaluator(RegExp(pattern));
+    } else if (pattern is RegExp) {
+      evaluator = RegExpPatternEvaluator(pattern);
+    } else {
+      evaluator = DefaultPatternEvaluator(pattern);
+    }
+
+    return PatternValidator(evaluator).validate;
+  }
 
   /// Gets a [FormGroup] validator that checks the controls [controlName] and
   /// [matchingControlName] have the same values.
