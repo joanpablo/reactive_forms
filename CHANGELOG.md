@@ -1,7 +1,7 @@
 # 8.0.3
 
 ## Fix
-- Code Formatting Standard
+- Code formatting issues
 
 # 8.0.2
 
