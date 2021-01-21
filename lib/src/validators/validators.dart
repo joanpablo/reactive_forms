@@ -90,6 +90,31 @@ class Validators {
   /// regex [pattern].
   ///
   /// The argument [pattern] must not be null.
+  ///
+  /// ## Example:
+  /// Using an instance of [RegExp] as argument.
+  /// ```dart
+  /// const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+  ///
+  /// final cardNumber = FormControl(
+  ///   value: '342654321654213',
+  ///   validators: [Validators.pattern(RegExp(AmericanExpressPattern))],
+  /// );
+  ///
+  /// expect(cardNumber.valid, true);
+  /// ```
+  /// ## Example:
+  /// Using a [String] as argument.
+  /// ```dart
+  /// const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+  ///
+  /// final cardNumber = FormControl(
+  ///   value: '342654321654213',
+  ///   validators: [Validators.pattern(AmericanExpressPattern)],
+  /// );
+  ///
+  /// expect(cardNumber.valid, true);
+  /// ```
   static ValidatorFunction pattern(Pattern pattern) {
     assert(pattern != null);
 
