@@ -736,7 +736,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T value,
-    List<ValidatorFunction<T>> validators,
+    List<ValidatorFunction> validators,
     List<AsyncValidatorFunction> asyncValidators,
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,
