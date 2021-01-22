@@ -20,7 +20,7 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction> _validators;
+  final List<ValidatorFunction<T>> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
 
   StreamSubscription _asyncValidationSubscription;
@@ -44,7 +44,7 @@ abstract class AbstractControl<T> {
 
   /// Constructor of the [AbstractControl].
   AbstractControl({
-    List<ValidatorFunction> validators,
+    List<ValidatorFunction<T>> validators,
     List<AsyncValidatorFunction> asyncValidators,
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
@@ -736,7 +736,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T value,
-    List<ValidatorFunction> validators,
+    List<ValidatorFunction<T>> validators,
     List<AsyncValidatorFunction> asyncValidators,
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,

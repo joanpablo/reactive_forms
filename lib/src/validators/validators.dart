@@ -25,8 +25,8 @@ import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction = Map<String, dynamic> Function(
-    AbstractControl<dynamic> value);
+typedef ValidatorFunction<T> = Map<String, dynamic> Function(
+    AbstractControl<T> value);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
