@@ -44,7 +44,7 @@ class Validators {
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
-  static ValidatorFunction get email => EmailValidator().validate;
+  static ValidatorFunction<String> get email => EmailValidator().validate;
 
   /// Gets a validator that validates if control's value is a numeric value.
   static ValidatorFunction get number => NumberValidator().validate;
