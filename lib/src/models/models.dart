@@ -979,7 +979,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// See also [AbstractControl.validators]
   FormGroup(
     Map<String, AbstractControl> controls, {
-    List<ValidatorFunction> validators,
+    List<ValidatorFunction<Map<String, dynamic>>> validators,
     List<AsyncValidatorFunction> asyncValidators,
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
@@ -1450,7 +1450,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<ValidatorFunction> validators,
+    List<ValidatorFunction<List<T>>> validators,
     List<AsyncValidatorFunction> asyncValidators,
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
