@@ -26,9 +26,9 @@ void main() {
     });
 
     test('FormControl invalid with not String email', () {
-      final control = FormControl(validators: [Validators.email]);
+      final control = FormControl<String>(validators: [Validators.email]);
 
-      control.value = 123;
+      control.value = '123';
 
       expect(control.invalid, true);
     });
