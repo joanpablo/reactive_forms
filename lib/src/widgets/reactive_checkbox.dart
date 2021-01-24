@@ -26,7 +26,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
   ReactiveCheckbox({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<bool> formControl,
     bool tristate = false,
     Color activeColor,
     Color checkColor,

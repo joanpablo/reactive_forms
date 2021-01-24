@@ -35,7 +35,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
   ReactiveSwitch({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<bool> formControl,
     Color activeColor,
     Color activeTrackColor,
     Color inactiveThumbColor,

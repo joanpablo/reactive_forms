@@ -16,7 +16,7 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField extends ReactiveFormField<dynamic> {
+class ReactiveTextField<T> extends ReactiveFormField<T> {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -83,9 +83,9 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
   ReactiveTextField({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<T> formControl,
     ValidationMessagesFunction validationMessages,
-    ControlValueAccessor valueAccessor,
+    ControlValueAccessor<T, String> valueAccessor,
     ShowErrorsFunction showErrors,
     InputDecoration decoration = const InputDecoration(),
     TextInputType keyboardType,
@@ -188,10 +188,10 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
         );
 
   @override
-  ReactiveFormFieldState<dynamic> createState() => _ReactiveTextFieldState();
+  ReactiveFormFieldState<T> createState() => _ReactiveTextFieldState<T>();
 }
 
-class _ReactiveTextFieldState extends ReactiveFormFieldState<dynamic> {
+class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   TextEditingController _textController;
   FocusNode _focusNode;
   FocusController _focusController;
