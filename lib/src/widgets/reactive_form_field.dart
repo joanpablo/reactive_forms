@@ -87,7 +87,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   ControlValueAccessor _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  dynamic get value => this.valueAccessor.modelToViewValue(this.control.value);
+  T get value => this.valueAccessor.modelToViewValue(this.control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => this.control.touched;
