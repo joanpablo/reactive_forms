@@ -31,7 +31,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
   ReactiveRadio({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<T> formControl,
     @required T value,
     Color activeColor,
     Color focusColor,
