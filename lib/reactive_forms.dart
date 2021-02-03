@@ -9,6 +9,7 @@ export 'src/exceptions/form_builder_invalid_initialization_exception.dart';
 export 'src/exceptions/form_control_not_found_exception.dart';
 export 'src/exceptions/form_control_parent_not_found_exception.dart';
 export 'src/exceptions/value_accessor_exception.dart';
+export 'src/exceptions/reactive_forms_exception.dart';
 export 'src/models/control_state.dart';
 export 'src/models/control_status.dart';
 export 'src/models/focus_controller.dart';

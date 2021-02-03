@@ -5,7 +5,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Exception that is raised by [ControlValueAccessor]
-class ValueAccessorException implements Exception {
+class ValueAccessorException extends ReactiveFormsException {
   final String message;
 
   /// Constructs an instance of the exception with the provided [message].

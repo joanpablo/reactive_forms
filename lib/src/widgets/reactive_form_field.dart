@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/exceptions/binding_cast_exception.dart';
 import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 import 'package:reactive_forms/src/value_accessors/default_value_accessor.dart';
 
@@ -20,8 +21,8 @@ typedef ShowErrorsFunction = bool Function(AbstractControl<dynamic> control);
 
 /// Signature of the function that returns the [Map] that store custom
 /// validation messages for each error.
-typedef ValidationMessagesFunction = Map<String, String> Function(
-    AbstractControl<dynamic> control);
+typedef ValidationMessagesFunction<T> = Map<String, String> Function(
+    FormControl<T> control);
 
 /// A single reactive form field.
 ///
@@ -39,14 +40,14 @@ class ReactiveFormField<T> extends StatefulWidget {
   final String formControlName;
 
   /// The control that is bound to this widget.
-  final FormControl<dynamic> formControl;
+  final FormControl<T> formControl;
 
   /// A function that returns the [Map] that store custom validation messages
   /// for each error.
-  final ValidationMessagesFunction validationMessages;
+  final ValidationMessagesFunction<T> validationMessages;
 
   /// Gets the widget control value accessor
-  final ControlValueAccessor valueAccessor;
+  final ControlValueAccessor<T, dynamic> valueAccessor;
 
   /// Gets the callback that define when to show errors in UI.
   final ShowErrorsFunction showErrors;
@@ -64,7 +65,7 @@ class ReactiveFormField<T> extends StatefulWidget {
     this.valueAccessor,
     this.showErrors,
     @required ReactiveFormFieldBuilder<T> builder,
-    ValidationMessagesFunction validationMessages,
+    ValidationMessagesFunction<T> validationMessages,
   })  : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
@@ -81,19 +82,19 @@ class ReactiveFormField<T> extends StatefulWidget {
 /// Represents the state of the [ReactiveFormField] stateful widget.
 class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// The [FormControl] that is bound to this state.
-  FormControl<dynamic> control;
+  FormControl<T> control;
   StreamSubscription _statusChangesSubscription;
   StreamSubscription _touchChangesSubscription;
-  ControlValueAccessor _valueAccessor;
+  ControlValueAccessor<T, dynamic> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  T get value => this.valueAccessor.modelToViewValue(this.control.value);
+  dynamic get value => this.valueAccessor.modelToViewValue(this.control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => this.control.touched;
 
   /// Gets the widget control value accessor
-  ControlValueAccessor get valueAccessor => _valueAccessor;
+  ControlValueAccessor<T, dynamic> get valueAccessor => _valueAccessor;
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -141,8 +142,8 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// See [ControlValueAccessor].
   @protected
   @visibleForTesting
-  ControlValueAccessor selectValueAccessor() {
-    return DefaultValueAccessor();
+  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
+    return DefaultValueAccessor<T>();
   }
 
   @override
@@ -230,11 +231,11 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
     setState(() {});
   }
 
-  ControlValueAccessor _resolveValueAccessor() {
+  ControlValueAccessor<dynamic, dynamic> _resolveValueAccessor() {
     return widget.valueAccessor ?? this.selectValueAccessor();
   }
 
-  FormControl<dynamic> _resolveFormControl() {
+  FormControl<T> _resolveFormControl() {
     if (widget.formControl != null) {
       return widget.formControl;
     }
@@ -245,7 +246,12 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
       throw FormControlParentNotFoundException(widget);
     }
 
-    return form.control(widget.formControlName);
+    final control = form.control(widget.formControlName);
+    if (!(control is FormControl<T>)) {
+      throw BindingCastException<T>(this.widget, control);
+    }
+
+    return control;
   }
 
   @override

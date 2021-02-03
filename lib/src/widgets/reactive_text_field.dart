@@ -84,7 +84,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
     Key key,
     String formControlName,
     FormControl<T> formControl,
-    ValidationMessagesFunction validationMessages,
+    ValidationMessagesFunction<T> validationMessages,
     ControlValueAccessor<T, String> valueAccessor,
     ShowErrorsFunction showErrors,
     InputDecoration decoration = const InputDecoration(),
@@ -232,7 +232,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   }
 
   @override
-  ControlValueAccessor selectValueAccessor() {
+  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
     if (this.control is FormControl<int>) {
       return IntValueAccessor();
     } else if (this.control is FormControl<double>) {

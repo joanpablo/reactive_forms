@@ -9,7 +9,7 @@ class DatePickerSample extends StatefulWidget {
 }
 
 class _DatePickerSampleState extends State<DatePickerSample> {
-  FormGroup buildForm() => fb.group({
+  FormGroup buildForm() => fb.group(<String, dynamic>{
         'date': FormControl<DateTime>(value: null),
       });
 

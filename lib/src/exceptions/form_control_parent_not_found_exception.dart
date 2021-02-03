@@ -3,10 +3,11 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// This exception is thrown by Reactive Widgets that doesn't find a
 /// parent widget [ReactiveForm] or [ReactiveFormArray] in the widgets tree.
-class FormControlParentNotFoundException implements Exception {
+class FormControlParentNotFoundException extends ReactiveFormsException {
   /// The widget that throws this exception.
   Widget widget;
 

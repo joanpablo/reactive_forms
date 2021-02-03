@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
 class SimpleSample extends StatelessWidget {
-  FormGroup get form => fb.group({
+  FormGroup get form => fb.group(<String, dynamic>{
         'name': ['', Validators.required],
         'sendNotifications': [null, Validators.required],
       });
@@ -17,7 +17,7 @@ class SimpleSample extends StatelessWidget {
         builder: (context, form, child) {
           return Column(
             children: [
-              ReactiveTextField(
+              ReactiveTextField<String>(
                 formControlName: 'name',
                 decoration: InputDecoration(
                   labelText: 'Name',

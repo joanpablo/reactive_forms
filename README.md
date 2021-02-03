@@ -9,7 +9,6 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
 - [Getting Started](#getting-started)
   - [Minimum Requirements](#minimum-requirements)
   - [Installation and Usage](#installation-and-usage)
-  - [Additional reactive widgets](#additional-reactive-widgets)
 - [Creating a form](#creating-a-form)
 - [How to get/set Form data](#how-to-getset-form-data)
 - [Validators](#what-about-validators)
@@ -43,8 +42,8 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
 - [How does ReactiveTextField differs from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfield-or-textfield)
 - [Reactive Form Field Widgets](#supported-reactive-form-field-widgets)
 - [Bonus Field Widgets](#bonus-field-widgets)
-- [Advanced Reactive Field Widgets](#advanced-reactive-field-widgets-library)
 - [Other Reactive Forms Widgets](#other-reactive-forms-widgets)
+- [Advanced Reactive Field Widgets](#advanced-reactive-field-widgets)
 - [ReactiveValueListenableBuilder to listen when value changes in a FormControl](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
 - [ReactiveForm vs ReactiveFormBuilder which one?](#reactiveform-vs-reactiveformbuilder-which-one)
 - [Reactive Forms + Provider plugin](#reactive-forms--provider-plugin-muscle)
@@ -83,12 +82,6 @@ dependencies:
 ```
 
 Then run the command `flutter packages get` on the console.
-
-## Additional reactive widgets
-
-We are trying to keep `reactive_forms` from bloating with third party dependencies this is why there is 
-a separate library [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets) which provides
-a variety of advanced field widgets. To know more about how to install it please visit the library repo and read the documentation about the widgets it contains.
 
 ## Creating a form
 
@@ -1165,13 +1158,6 @@ Widget build(BuildContext context) {
 - ReactiveDatePicker
 - ReactiveTimePicker
 
-## Advanced Reactive Field Widgets [library](https://pub.dev/packages/reactive_forms_widgets)
-
-- ReactiveDateTimePicker
-- ReactiveDropdownSearch
-- ReactiveTouchSpin
-- ReactiveSegmentedControl
-
 ## Other Reactive Forms Widgets
 
 - ReactiveForm
@@ -1180,6 +1166,17 @@ Widget build(BuildContext context) {
 - ReactiveFormArray
 - ReactiveValueListenableBuilder
 - ReactiveStatusListenableBuilder
+
+## Advanced Reactive Field Widgets
+
+We are trying to keep `reactive_forms` from bloating with third party dependencies this is why there is
+a separate library [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets) which is under construction yet that provides
+a variety of more advanced field widgets. To know more about how to install it please visit the library repo and read the documentation about the widgets it contains.
+
+- ReactiveDateTimePicker
+- ReactiveDropdownSearch
+- ReactiveTouchSpin
+- ReactiveSegmentedControl
 
 ### ReactiveTextField
 
