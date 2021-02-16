@@ -68,7 +68,7 @@ abstract class ControlValueAccessor<T, K> {
   void registerControl(FormControl<T> control, {ChangeFunction<K>? onChange}) {
 
     _control = control;
-    _onChangeSubscription = _control.valueChanges!.listen(_updateView);
+    _onChangeSubscription = _control.valueChanges.listen(_updateView);
 
     _onChange = onChange;
   }

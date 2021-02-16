@@ -122,7 +122,7 @@ abstract class AbstractControl<T> {
   Stream<ControlStatus> get statusChanged => _statusChanges.stream;
 
   /// A [Stream] that emits the value of the control every time it changes.
-  Stream<T>? get valueChanges => _valueChanges.stream;
+  Stream<T> get valueChanges => _valueChanges.stream;
 
   /// A [Stream] that emits an event every time the control
   /// is touched or untouched.
