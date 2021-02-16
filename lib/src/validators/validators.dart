@@ -64,13 +64,13 @@ class Validators {
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction<Comparable> min(Comparable min) => MinValidator(min).validate;
+  static ValidatorFunction min(min) => MinValidator(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction<Comparable> max(Comparable max) => MaxValidator(max).validate;
+  static ValidatorFunction max( max) => MaxValidator(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].

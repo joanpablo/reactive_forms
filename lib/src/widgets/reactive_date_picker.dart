@@ -14,7 +14,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveDatePickerDelegate].
 typedef ReactiveDatePickerBuilder = Widget Function(
-    BuildContext context, ReactiveDatePickerDelegate picker, Widget? child);
+    BuildContext context, ReactiveDatePickerDelegate picker, Widget child);
 
 /// This is a convenience widget that wraps the function
 /// [showDatePicker] in a [ReactiveDatePicker].
@@ -112,7 +112,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
                   }
                 }),
               ),
-              child,
+              child!,
             );
           },
         );
