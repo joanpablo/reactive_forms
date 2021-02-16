@@ -14,7 +14,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveDatePickerDelegate].
 typedef ReactiveDatePickerBuilder = Widget Function(
-    BuildContext context, ReactiveDatePickerDelegate picker, Widget child);
+    BuildContext context, ReactiveDatePickerDelegate picker, Widget? child);
 
 /// This is a convenience widget that wraps the function
 /// [showDatePicker] in a [ReactiveDatePicker].
@@ -55,30 +55,29 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   /// For documentation about the various parameters, see the [showTimePicker]
   /// function parameters.
   ReactiveDatePicker({
-    Key key,
-    String formControlName,
-    FormControl formControl,
-    @required ReactiveDatePickerBuilder builder,
-    @required DateTime firstDate,
-    @required DateTime lastDate,
+    Key? key,
+    String? formControlName,
+    FormControl? formControl,
+    required ReactiveDatePickerBuilder builder,
+    required DateTime firstDate,
+    required DateTime lastDate,
     DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
-    SelectableDayPredicate selectableDayPredicate,
-    String helpText,
-    String cancelText,
-    String confirmText,
-    Locale locale,
+    SelectableDayPredicate? selectableDayPredicate,
+    String? helpText,
+    String? cancelText,
+    String? confirmText,
+    Locale? locale,
     bool useRootNavigator = true,
-    RouteSettings routeSettings,
-    TextDirection textDirection,
-    TransitionBuilder transitionBuilder,
+    RouteSettings? routeSettings,
+    TextDirection? textDirection,
+    TransitionBuilder? transitionBuilder,
     DatePickerMode initialDatePickerMode = DatePickerMode.day,
-    String errorFormatText,
-    String errorInvalidText,
-    String fieldHintText,
-    String fieldLabelText,
-    Widget child,
-  })  : assert(builder != null),
-        super(
+    String? errorFormatText,
+    String? errorInvalidText,
+    String? fieldHintText,
+    String? fieldLabelText,
+    Widget? child,
+  })  : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
@@ -118,7 +117,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
           },
         );
 
-  static DateTime _getInitialDate(DateTime fieldValue, DateTime lastDate) {
+  static DateTime _getInitialDate(DateTime? fieldValue, DateTime lastDate) {
     if (fieldValue != null) {
       return fieldValue;
     }

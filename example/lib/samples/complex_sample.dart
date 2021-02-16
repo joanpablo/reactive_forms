@@ -76,12 +76,12 @@ class ComplexSample extends StatelessWidget {
               ),
               SizedBox(height: 24.0),
               ReactiveFormConsumer(
-                builder: (context, form, child) => RaisedButton(
+                builder: (context, form, child) => ElevatedButton(
                   child: Text('Sign Up'),
                   onPressed: form.valid ? () => print(form.value) : null,
                 ),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email': ControlState(value: 'johnDoe', disabled: true),

@@ -48,8 +48,8 @@ abstract class FormControlCollection {
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl<dynamic> findControl(List<String> path) {
-    if (path == null || path.isEmpty) {
+  AbstractControl<dynamic>? findControl(List<String> path) {
+    if (path.isEmpty) {
       return null;
     }
 

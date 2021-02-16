@@ -11,10 +11,10 @@ class EqualsValidator<T> extends Validator<T> {
   /// Constructs an instance of [EqualsValidator].
   ///
   /// The argument [value] must not be null.
-  EqualsValidator(this.value) : assert(value != null);
+  EqualsValidator(this.value);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<T> control) {
+  Map<String, dynamic>? validate(AbstractControl control) {
     return control.value == this.value
         ? null
         : {

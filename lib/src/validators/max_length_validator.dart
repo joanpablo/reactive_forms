@@ -12,27 +12,28 @@ class MaxLengthValidator extends Validator<dynamic> {
   /// Constructs a [MaxLengthValidator].
   ///
   /// The argument [maxLength] must not be null.
-  MaxLengthValidator(this.maxLength) : assert(maxLength != null);
+  MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     // don't validate empty values to allow optional controls
     if (control.value == null) {
       return null;
     }
 
-    List<dynamic> collection;
+    List<dynamic>? collection;
 
     if (control is FormArray<dynamic>) {
       collection = control.value;
     } else if (control is FormGroup) {
-      collection = control.value.keys.toList();
+      collection = control.value?.keys.toList();
     } else if (control is FormControl<Iterable<dynamic>>) {
-      collection = control.value.toList();
+      collection = control.value?.toList();
     } else if (control is FormControl<String> || control.value is String) {
       collection = control.value.runes.toList();
     }
 
+    // ignore: unnecessary_null_comparison
     return (collection == null || collection.length <= this.maxLength)
         ? null
         : {

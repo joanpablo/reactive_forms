@@ -15,12 +15,12 @@ class DoubleValueAccessor extends ControlValueAccessor<double, String> {
   });
 
   @override
-  String modelToViewValue(double modelValue) {
+  String modelToViewValue(double? modelValue) {
     return modelValue == null ? '' : modelValue.toStringAsFixed(fractionDigits);
   }
 
   @override
-  double viewToModelValue(String viewValue) {
+  double? viewToModelValue(String? viewValue) {
     return (viewValue == '' || viewValue == null)
         ? null
         : double.tryParse(viewValue);

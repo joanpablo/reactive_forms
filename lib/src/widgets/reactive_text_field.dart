@@ -81,47 +81,47 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
   /// For documentation about the various parameters, see the [TextField] class
   /// and [new TextField], the constructor.
   ReactiveTextField({
-    Key key,
-    String formControlName,
-    FormControl formControl,
-    ValidationMessagesFunction validationMessages,
-    ControlValueAccessor valueAccessor,
-    ShowErrorsFunction showErrors,
+    Key? key,
+    String? formControlName,
+    FormControl? formControl,
+    ValidationMessagesFunction? validationMessages,
+    ControlValueAccessor? valueAccessor,
+    ShowErrorsFunction? showErrors,
     InputDecoration decoration = const InputDecoration(),
-    TextInputType keyboardType,
+    TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
-    TextInputAction textInputAction,
-    TextStyle style,
-    StrutStyle strutStyle,
-    TextDirection textDirection,
+    TextInputAction? textInputAction,
+    TextStyle? style,
+    StrutStyle? strutStyle,
+    TextDirection? textDirection,
     TextAlign textAlign = TextAlign.start,
-    TextAlignVertical textAlignVertical,
+    TextAlignVertical? textAlignVertical,
     bool autofocus = false,
     bool readOnly = false,
-    ToolbarOptions toolbarOptions,
-    bool showCursor,
+    ToolbarOptions? toolbarOptions,
+    bool? showCursor,
     bool obscureText = false,
     bool autocorrect = true,
-    SmartDashesType smartDashesType,
-    SmartQuotesType smartQuotesType,
+    SmartDashesType? smartDashesType,
+    SmartQuotesType? smartQuotesType,
     bool enableSuggestions = true,
     bool maxLengthEnforced = true,
     int maxLines = 1,
-    int minLines,
+    int? minLines,
     bool expands = false,
-    int maxLength,
-    GestureTapCallback onTap,
-    List<TextInputFormatter> inputFormatters,
+    int? maxLength,
+    GestureTapCallback? onTap,
+    List<TextInputFormatter>? inputFormatters,
     double cursorWidth = 2.0,
-    Radius cursorRadius,
-    Color cursorColor,
-    Brightness keyboardAppearance,
+    Radius? cursorRadius,
+    Color? cursorColor,
+    Brightness? keyboardAppearance,
     EdgeInsets scrollPadding = const EdgeInsets.all(20.0),
     bool enableInteractiveSelection = true,
-    InputCounterWidgetBuilder buildCounter,
-    ScrollPhysics scrollPhysics,
-    VoidCallback onSubmitted,
-    FocusNode focusNode,
+    InputCounterWidgetBuilder? buildCounter,
+    ScrollPhysics? scrollPhysics,
+    VoidCallback? onSubmitted,
+    FocusNode? focusNode,
   }) : super(
           key: key,
           formControl: formControl,
@@ -131,8 +131,7 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
           showErrors: showErrors,
           builder: (ReactiveFormFieldState field) {
             final state = field as _ReactiveTextFieldState;
-            final InputDecoration effectiveDecoration = (decoration ??
-                    const InputDecoration())
+            final InputDecoration effectiveDecoration = decoration
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
             state._setFocusNode(focusNode);
@@ -165,7 +164,7 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
                       ? SmartQuotesType.disabled
                       : SmartQuotesType.enabled),
               enableSuggestions: enableSuggestions,
-              maxLengthEnforced: maxLengthEnforced,
+              // maxLengthEnforced: maxLengthEnforced,
               maxLines: maxLines,
               minLines: minLines,
               expands: expands,
@@ -192,11 +191,11 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
 }
 
 class _ReactiveTextFieldState extends ReactiveFormFieldState<dynamic> {
-  TextEditingController _textController;
-  FocusNode _focusNode;
-  FocusController _focusController;
+  late TextEditingController _textController;
+  FocusNode? _focusNode;
+  FocusController? _focusController;
 
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+  FocusNode get focusNode => _focusNode ?? _focusController!.focusNode;
 
   @override
   void initState() {
@@ -252,15 +251,15 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<dynamic> {
   }
 
   void _unregisterFocusController() {
-    this.control.unregisterFocusController(_focusController);
-    _focusController.dispose();
+    this.control.unregisterFocusController(_focusController!);
+    _focusController!.dispose();
   }
 
-  void _setFocusNode(FocusNode focusNode) {
+  void _setFocusNode(FocusNode? focusNode) {
     if (_focusNode == focusNode) {
       return;
     } else if (focusNode == null && _focusNode != null) {
-      _focusNode = null;
+      _focusNode = focusNode;
     } else if (focusNode != null && _focusNode == null) {
       _focusNode = focusNode;
     }

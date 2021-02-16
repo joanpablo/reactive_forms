@@ -63,7 +63,7 @@ void main() {
         final reactiveWidget = () => ReactiveValueListenableBuilder(
               formControlName: null,
               builder: (context, control, child) {
-                return null;
+                return Text('hello');
               },
             );
 
@@ -79,7 +79,7 @@ void main() {
         final reactiveWidget = () => ReactiveValueListenableBuilder(
               formControl: null,
               builder: (context, control, child) {
-                return null;
+                return Text('hello');
               },
             );
 
@@ -88,18 +88,18 @@ void main() {
       },
     );
 
-    testWidgets(
-      'Assert error thrown if builder is null',
-      (WidgetTester tester) async {
-        // Given: a ReactiveValueListenableBuilder with null builder
-        final reactiveWidget = () => ReactiveValueListenableBuilder(
-              formControlName: 'someName',
-              builder: null,
-            );
-
-        // Expect assertion error
-        expect(reactiveWidget, throwsAssertionError);
-      },
-    );
+    // testWidgets(
+    //   'Assert error thrown if builder is null',
+    //   (WidgetTester tester) async {
+    //     // Given: a ReactiveValueListenableBuilder with null builder
+    //     final reactiveWidget = () => ReactiveValueListenableBuilder(
+    //           formControlName: 'someName',
+    //           builder: null,
+    //         );
+    //
+    //     // Expect assertion error
+    //     expect(reactiveWidget, throwsAssertionError);
+    //   },
+    // );
   });
 }

@@ -12,11 +12,12 @@ class MaxValidator extends Validator<Comparable> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [max] must not be null.
-  MaxValidator(this.max) : assert(max != null);
+  MaxValidator(this.max);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<Comparable> control) {
-    return (control.value != null) && (control.value.compareTo(max) <= 0)
+  Map<String, dynamic>? validate(AbstractControl<Comparable> control) {
+    // ignore: unnecessary_null_comparison
+    return (control.value != null) && (control.value!.compareTo(max) <= 0)
         ? null
         : {
             ValidationMessage.max: {

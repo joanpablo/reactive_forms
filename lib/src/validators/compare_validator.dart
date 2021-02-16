@@ -15,14 +15,15 @@ class CompareValidator extends Validator<dynamic> {
   /// The arguments [controlName], [compareControlName] and [compareOption]
   /// must not be null.
   CompareValidator(
-      this.controlName, this.compareControlName, this.compareOption)
-      : assert(controlName != null),
-        assert(compareControlName != null),
-        assert(compareOption != null);
+    this.controlName,
+    this.compareControlName,
+    this.compareOption,
+  );
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final form = control as FormGroup;
+    // ignore: unnecessary_null_comparison
     if (form == null) {
       return {ValidationMessage.compare: true};
     }

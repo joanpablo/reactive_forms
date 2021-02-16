@@ -5,8 +5,8 @@ class ReactiveTimePickerTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveTimePickerTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class ReactiveTimePickerTestingWidget extends StatelessWidget {
           child: ReactiveTimePicker(
             formControlName: 'time',
             builder: (context, picker, child) {
-              return FlatButton(
+              return TextButton(
                 onPressed: picker.showPicker,
                 child: Text('Select Time'),
               );

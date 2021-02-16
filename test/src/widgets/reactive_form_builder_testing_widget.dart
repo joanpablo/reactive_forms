@@ -3,12 +3,12 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveFormBuilderTestingWidget extends StatelessWidget {
   final FormGroup form;
-  final ValidationMessagesFunction validationMessages;
+  final ValidationMessagesFunction? validationMessages;
   final Map<String, String> bindings;
 
   const ReactiveFormBuilderTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
     this.validationMessages,
     this.bindings = const {
       'textField': 'name',

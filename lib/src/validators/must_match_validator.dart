@@ -9,13 +9,13 @@ class MustMatchValidator extends Validator<dynamic> {
   final String matchingControlName;
 
   MustMatchValidator(this.controlName, this.matchingControlName)
-      : assert(controlName != null),
-        assert(matchingControlName != null);
+      ;
 
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.mustMatch: true};
 
     final form = control as FormGroup;
+    // ignore: unnecessary_null_comparison
     if (form == null) {
       return error;
     }

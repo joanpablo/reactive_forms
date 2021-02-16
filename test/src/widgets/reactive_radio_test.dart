@@ -21,7 +21,7 @@ void main() {
 
         // Expect radio group value is true
         Type radioType = Radio<bool>(
-          value: null,
+          value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
@@ -46,7 +46,7 @@ void main() {
 
         // Expect radio group value is false
         Type radioType = Radio<bool>(
-          value: null,
+          value: false,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
@@ -75,7 +75,7 @@ void main() {
 
         // Expect radio group value is true
         Type radioType = Radio<bool>(
-          value: null,
+          value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
@@ -104,7 +104,7 @@ void main() {
 
         // Expect radio group value is true
         Type radioType = Radio<bool>(
-          value: null,
+          value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
@@ -129,7 +129,7 @@ void main() {
 
         // Then: the radio is disabled
         Type radioType = Radio<bool>(
-          value: null,
+          value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
@@ -156,7 +156,7 @@ void main() {
 
         // Then: the radio is disabled
         Type radioType = Radio<bool>(
-          value: null,
+          value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
@@ -183,7 +183,7 @@ void main() {
 
         // Then: the radio is enabled
         Type radioType = Radio<bool>(
-          value: null,
+          value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;

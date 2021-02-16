@@ -21,7 +21,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
         // Expect: submit button is enabled
-        RaisedButton submitButton = tester.widget(find.byType(RaisedButton));
+        ElevatedButton submitButton = tester.widget(find.byType(ElevatedButton));
         expect(submitButton.enabled, true);
       },
     );
@@ -40,7 +40,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
         // Expect: submit button is disabled
-        RaisedButton submitButton = tester.widget(find.byType(RaisedButton));
+        ElevatedButton submitButton = tester.widget(find.byType(ElevatedButton));
         expect(submitButton.enabled, false);
       },
     );
@@ -64,7 +64,7 @@ void main() {
         await tester.pump();
 
         // Expect: submit button is disabled
-        RaisedButton submitButton = tester.widget(find.byType(RaisedButton));
+        ElevatedButton submitButton = tester.widget(find.byType(ElevatedButton));
         expect(submitButton.enabled, false);
       },
     );
@@ -87,22 +87,22 @@ void main() {
         await tester.pump();
 
         // Expect: submit button is disabled
-        RaisedButton submitButton = tester.widget(find.byType(RaisedButton));
+        ElevatedButton submitButton = tester.widget(find.byType(ElevatedButton));
         expect(submitButton.enabled, true);
       },
     );
 
-    testWidgets(
-      'Assert error thrown if builder is null',
-      (WidgetTester tester) async {
-        // Given: a ReactiveFormConsumer with null builder
-        final reactiveWidget = () => ReactiveFormConsumer(
-              builder: null,
-            );
-
-        // Expect assertion error
-        expect(reactiveWidget, throwsAssertionError);
-      },
-    );
+    // testWidgets(
+    //   'Assert error thrown if builder is null',
+    //   (WidgetTester tester) async {
+    //     // Given: a ReactiveFormConsumer with null builder
+    //     final reactiveWidget = () => ReactiveFormConsumer(
+    //           builder: null,
+    //         );
+    //
+    //     // Expect assertion error
+    //     expect(reactiveWidget, throwsAssertionError);
+    //   },
+    // );
   });
 }

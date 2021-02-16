@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/exceptions/form_builder_invalid_initialization_exception.dart';
 
+import '../../reactive_forms.dart';
+
 /// Creates an [AbstractControl] from a user-specified configuration.
 class FormBuilder {
   /// Construct a new [FormGroup] instance.
@@ -82,9 +84,7 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction> &&
-          value.isNotEmpty &&
-          value.first != null) {
+      } else if (value is List<ValidatorFunction> && value.isNotEmpty) {
         return MapEntry(key, FormControl(validators: value));
       } else if (value is List<dynamic>) {
         if (value.isEmpty) {
@@ -141,7 +141,7 @@ class FormBuilder {
   ///
   /// print(form.value); // output: {'name': 'name'}
   /// ```
-  ControlState<T> state<T>({T value, bool disabled}) {
+  ControlState<T> state<T>({T? value, bool disabled = false}) {
     return ControlState<T>(value: value, disabled: disabled);
   }
 
@@ -208,16 +208,16 @@ class FormBuilder {
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormArray<T>(
-      value?.map<AbstractControl<T>>((v) {
-        if (v is Map<String, dynamic>) {
-          return this.group(v) as AbstractControl<T>;
-        }
-        if (v is AbstractControl) {
-          return v as AbstractControl<T>;
-        }
-
-        return this.control<T>(v);
-      })?.toList(),
+      value.isNotEmpty
+          ? value.map<AbstractControl<T>>((v) {
+              if (v is Map<String, dynamic>) {
+                return this.group(v) as AbstractControl<T>;
+              } else if (v is AbstractControl) {
+                return v as AbstractControl<T>;
+              }
+              return this.control<T>(v);
+            }).toList()
+          : [],
       validators: validators,
       asyncValidators: asyncValidators,
     );

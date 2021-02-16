@@ -15,14 +15,15 @@ class ComposeOrValidator extends Validator<dynamic> {
   /// Constructs an instance of the validator.
   ///
   /// The argument [validators] must not be null.
-  ComposeOrValidator(this.validators) : assert(validators != null);
+  ComposeOrValidator(this.validators) ;
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final composedError = Map<String, dynamic>();
 
     for (final validator in this.validators) {
       final error = validator(control);
+      // ignore: unnecessary_null_comparison
       if (error != null) {
         composedError.addAll(error);
       } else {

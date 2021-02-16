@@ -14,7 +14,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveTimePickerDelegate].
 typedef ReactiveTimePickerBuilder = Widget Function(
-    BuildContext context, ReactiveTimePickerDelegate picker, Widget child);
+    BuildContext context, ReactiveTimePickerDelegate picker, Widget? child);
 
 /// This is a convenience widget that wraps the function
 /// [showTimePicker] in a [ReactiveTimePicker].
@@ -60,16 +60,15 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
   /// For documentation about the various parameters, see the [showTimePicker]
   /// function parameters.
   ReactiveTimePicker({
-    Key key,
-    String formControlName,
-    FormControl formControl,
-    @required ReactiveTimePickerBuilder builder,
-    TransitionBuilder transitionBuilder,
+    Key? key,
+    String? formControlName,
+    FormControl? formControl,
+    required ReactiveTimePickerBuilder builder,
+    TransitionBuilder? transitionBuilder,
     bool useRootNavigator = true,
-    RouteSettings routeSettings,
-    Widget child,
-  })  : assert(builder != null),
-        super(
+    RouteSettings? routeSettings,
+    Widget? child,
+  })  : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
@@ -118,7 +117,7 @@ class ReactiveTimePickerDelegate {
       _field.control as AbstractControl<TimeOfDay>;
 
   /// Gets the value selected in the time picker.
-  TimeOfDay get value => this.control.value;
+  TimeOfDay? get value => this.control.value;
 
   /// Shows the time picker dialog.
   void showPicker() {

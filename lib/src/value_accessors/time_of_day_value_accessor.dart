@@ -9,14 +9,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// [TimeOfDay] and [String].
 class TimeOfDayValueAccessor extends ControlValueAccessor<TimeOfDay, String> {
   @override
-  String modelToViewValue(TimeOfDay modelValue) {
+  String modelToViewValue(TimeOfDay? modelValue) {
     return modelValue == null
         ? ''
         : '${modelValue.hour}:${_addLeadingZeroIfNeeded(modelValue.minute)}';
   }
 
   @override
-  TimeOfDay viewToModelValue(String viewValue) {
+  TimeOfDay? viewToModelValue(String? viewValue) {
     if (viewValue == null) {
       return null;
     }

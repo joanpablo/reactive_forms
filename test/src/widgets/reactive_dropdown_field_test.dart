@@ -134,76 +134,76 @@ void main() {
       },
     );
 
-    testWidgets(
-      'Assert error if items in null',
-      (WidgetTester tester) async {
-        // Given: a form with and control with default value
-        final dropdown = () => ReactiveDropdownField(
-              formControlName: 'someName',
-              items: null,
-            );
-
-        expect(dropdown, throwsAssertionError);
-      },
-    );
+    // testWidgets(
+    //   'Assert error if items in null',
+    //   (WidgetTester tester) async {
+    //     // Given: a form with and control with default value
+    //     final dropdown = () => ReactiveDropdownField(
+    //           formControlName: 'someName',
+    //           items: null,
+    //         );
+    //
+    //     expect(dropdown, throwsAssertionError);
+    //   },
+    // );
 
     testWidgets(
       'Assert Error if attributes in null',
       (WidgetTester tester) async {
         // decoration
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            decoration: null,
-          ),
-          throwsAssertionError,
-          reason: 'decoration != null',
-        );
+        // expect(
+        //   () => ReactiveDropdownField<bool>(
+        //     formControlName: 'dropdown',
+        //     items: [DropdownMenuItem(value: true, child: Text(''))],
+        //     decoration: null,
+        //   ),
+        //   throwsAssertionError,
+        //   reason: 'decoration != null',
+        // );
 
         // elevation
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            elevation: null,
-          ),
-          throwsAssertionError,
-          reason: 'elevation != null',
-        );
+        // expect(
+        //   () => ReactiveDropdownField<bool>(
+        //     formControlName: 'dropdown',
+        //     items: [DropdownMenuItem(value: true, child: Text(''))],
+        //     elevation: null,
+        //   ),
+        //   throwsAssertionError,
+        //   reason: 'elevation != null',
+        // );
 
         // iconSize
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            iconSize: null,
-          ),
-          throwsAssertionError,
-          reason: 'iconSize != null',
-        );
+        // expect(
+        //   () => ReactiveDropdownField<bool>(
+        //     formControlName: 'dropdown',
+        //     items: [DropdownMenuItem(value: true, child: Text(''))],
+        //     iconSize: null,
+        //   ),
+        //   throwsAssertionError,
+        //   reason: 'iconSize != null',
+        // );
 
         // isDense
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            isDense: null,
-          ),
-          throwsAssertionError,
-          reason: 'isDense != null',
-        );
+        // expect(
+        //   () => ReactiveDropdownField<bool>(
+        //     formControlName: 'dropdown',
+        //     items: [DropdownMenuItem(value: true, child: Text(''))],
+        //     isDense: null,
+        //   ),
+        //   throwsAssertionError,
+        //   reason: 'isDense != null',
+        // );
 
         // isExpanded
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            isExpanded: null,
-          ),
-          throwsAssertionError,
-          reason: 'isExpanded != null',
-        );
+        // expect(
+        //   () => ReactiveDropdownField<bool>(
+        //     formControlName: 'dropdown',
+        //     items: [DropdownMenuItem(value: true, child: Text(''))],
+        //     isExpanded: null,
+        //   ),
+        //   throwsAssertionError,
+        //   reason: 'isExpanded != null',
+        // );
 
         // itemHeight
         expect(
@@ -217,15 +217,15 @@ void main() {
         );
 
         // readOnly
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            readOnly: null,
-          ),
-          throwsAssertionError,
-          reason: 'readOnly != null',
-        );
+        // expect(
+        //   () => ReactiveDropdownField<bool>(
+        //     formControlName: 'dropdown',
+        //     items: [DropdownMenuItem(value: true, child: Text(''))],
+        //     readOnly: null,
+        //   ),
+        //   throwsAssertionError,
+        //   reason: 'readOnly != null',
+        // );
       },
     );
 
@@ -377,9 +377,10 @@ void main() {
         // When: callback on changed in widget
         Type dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
+
         DropdownButton<String> dropdown =
             tester.firstWidget(find.byType(dropdownType));
-        dropdown.onChanged('true');
+        dropdown.onChanged!('true');
         await tester.pump();
 
         // Then: callback is called

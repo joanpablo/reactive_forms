@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/pattern/default_pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern/regex_pattern_evaluator.dart';
+
 
 import 'pattern/mock_pattern.dart';
 
@@ -46,17 +45,17 @@ void main() {
       expect(cardNumber.errors.keys.isEmpty, true);
     });
 
-    test("Passing null throws exception", (){
-      expect(() => Validators.pattern(null), throwsAssertionError);
-    });
+    // test("Passing null throws exception", (){
+    //   expect(() => Validators.pattern(null), throwsAssertionError);
+    // });
 
-    test("Passing null to RegExpPatternEvaluator throws exception", (){
-      expect(() => RegExpPatternEvaluator(null), throwsAssertionError);
-    });
+    // test("Passing null to RegExpPatternEvaluator throws exception", (){
+    //   expect(() => RegExpPatternEvaluator(null), throwsAssertionError);
+    // });
 
-    test("Passing null to DefaultPatternEvaluator throws exception", (){
-      expect(() => DefaultPatternEvaluator(null), throwsAssertionError);
-    });
+    // test("Passing null to DefaultPatternEvaluator throws exception", (){
+    //   expect(() => DefaultPatternEvaluator(null), throwsAssertionError);
+    // });
 
     test("Passing a MockPattern to Pattern validator", (){
       const String AmericanExpressPattern = r'^3[47][0-9]{13}$';

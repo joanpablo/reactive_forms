@@ -27,19 +27,17 @@ class ReactiveForm extends StatefulWidget {
   ///
   ///  * [WillPopScope], another widget that provides a way to intercept the
   ///    back button.
-  final WillPopCallback onWillPop;
+  final WillPopCallback? onWillPop;
 
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
   const ReactiveForm({
-    Key key,
-    @required this.formGroup,
-    @required this.child,
+    Key? key,
+    required this.formGroup,
+    required this.child,
     this.onWillPop,
-  })  : assert(formGroup != null),
-        assert(child != null),
-        super(key: key);
+  })  : super(key: key);
 
   /// Returns the nearest model up its widget tree
   ///
@@ -51,13 +49,13 @@ class ReactiveForm extends StatefulWidget {
   static AbstractControl of(BuildContext context, {bool listen: true}) {
     if (listen) {
       return context
-          .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()
+          .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()!
           .control;
     }
 
     final element = context.getElementForInheritedWidgetOfExactType<
         FormControlInheritedStreamer>();
-    return (element?.widget as FormControlInheritedStreamer)?.control;
+    return (element?.widget as FormControlInheritedStreamer).control;
   }
 
   @override

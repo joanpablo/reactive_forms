@@ -49,7 +49,7 @@ class _ArraySampleState extends State<ArraySample> {
               ),
               ReactiveFormConsumer(
                 builder: (context, form, child) {
-                  return RaisedButton(
+                  return TextButton(
                     child: Text('Send Email'),
                     onPressed: form.valid
                         ? () {
@@ -65,7 +65,7 @@ class _ArraySampleState extends State<ArraySample> {
                   );
                 },
               ),
-              RaisedButton(
+              TextButton(
                 child: Text('add'),
                 onPressed: () {
                   this

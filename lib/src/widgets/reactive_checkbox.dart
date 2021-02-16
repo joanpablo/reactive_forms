@@ -24,17 +24,17 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
   ///
   /// The [formControlName] arguments must not be null.
   ReactiveCheckbox({
-    Key key,
-    String formControlName,
-    FormControl formControl,
+    Key? key,
+    String? formControlName,
+    FormControl? formControl,
     bool tristate = false,
-    Color activeColor,
-    Color checkColor,
-    Color focusColor,
-    Color hoverColor,
-    MouseCursor mouseCursor,
-    MaterialTapTargetSize materialTapTargetSize,
-    VisualDensity visualDensity,
+    Color? activeColor,
+    Color? checkColor,
+    Color? focusColor,
+    Color? hoverColor,
+    MouseCursor? mouseCursor,
+    MaterialTapTargetSize? materialTapTargetSize,
+    VisualDensity? visualDensity,
     bool autofocus = false,
   }) : super(
           key: key,

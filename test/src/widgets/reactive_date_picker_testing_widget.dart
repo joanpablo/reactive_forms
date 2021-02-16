@@ -3,11 +3,11 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveDatePickerTestingWidget extends StatelessWidget {
   final FormGroup form;
-  final DateTime lastDate;
+  final DateTime? lastDate;
 
   const ReactiveDatePickerTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
     this.lastDate,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class ReactiveDatePickerTestingWidget extends StatelessWidget {
             firstDate: DateTime(1985),
             lastDate: lastDate ?? DateTime(2050),
             builder: (context, picker, child) {
-              return FlatButton(
+              return TextButton(
                 onPressed: picker.showPicker,
                 child: Text('Select Birthday'),
               );

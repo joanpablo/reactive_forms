@@ -12,23 +12,24 @@ class MinLengthValidator extends Validator<dynamic> {
   /// Constructs a [MinLengthValidator].
   ///
   /// The argument [minLength] argument must not be null.
-  MinLengthValidator(this.minLength) : assert(minLength != null);
+  MinLengthValidator(this.minLength);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     // don't validate empty values to allow optional controls
+
     if (control.value == null) {
       return null;
     }
 
-    List<dynamic> collection;
+    List<dynamic>? collection;
 
     if (control is FormArray<dynamic>) {
       collection = control.value;
     } else if (control is FormGroup) {
-      collection = control.value.keys.toList();
+      collection = control.value?.keys.toList();
     } else if (control is FormControl<Iterable<dynamic>>) {
-      collection = control.value.toList();
+      collection = control.value?.toList();
     } else if (control is FormControl<String> || control.value is String) {
       collection = control.value.runes.toList();
     }

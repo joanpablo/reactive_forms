@@ -109,35 +109,35 @@ void main() {
       },
     );
 
-    testWidgets(
-      'Assert error thrown if formControlName is null',
-      (WidgetTester tester) async {
-        // Given: a ReactiveValueListenableBuilder with null formControlName
-        final reactiveWidget = () => ReactiveStatusListenableBuilder(
-              formControlName: null,
-              builder: (context, control, child) {
-                return null;
-              },
-            );
+    // testWidgets(
+    //   'Assert error thrown if formControlName is null',
+    //   (WidgetTester tester) async {
+    //     // Given: a ReactiveValueListenableBuilder with null formControlName
+    //     final reactiveWidget = () => ReactiveStatusListenableBuilder(
+    //           formControlName: null,
+    //           builder: (context, control, child) {
+    //             return null;
+    //           },
+    //         );
+    //
+    //     // Expect assertion error
+    //     expect(reactiveWidget, throwsAssertionError);
+    //   },
+    // );
 
-        // Expect assertion error
-        expect(reactiveWidget, throwsAssertionError);
-      },
-    );
-
-    testWidgets(
-      'Assert error thrown if builder is null',
-      (WidgetTester tester) async {
-        // Given: a ReactiveValueListenableBuilder with null builder
-        final reactiveWidget = () => ReactiveStatusListenableBuilder(
-              formControlName: 'someName',
-              builder: null,
-            );
-
-        // Expect assertion error
-        expect(reactiveWidget, throwsAssertionError);
-      },
-    );
+    // testWidgets(
+    //   'Assert error thrown if builder is null',
+    //   (WidgetTester tester) async {
+    //     // Given: a ReactiveValueListenableBuilder with null builder
+    //     final reactiveWidget = () => ReactiveStatusListenableBuilder(
+    //           formControlName: 'someName',
+    //           builder: null,
+    //         );
+    //
+    //     // Expect assertion error
+    //     expect(reactiveWidget, throwsAssertionError);
+    //   },
+    // );
 
     Future<Map<String, dynamic>> failedAsyncValidator(
         AbstractControl control) async {
@@ -173,7 +173,7 @@ void main() {
       },
     );
 
-    Future<Map<String, dynamic>> asyncValidator(AbstractControl control) async {
+    Future<Map<String, dynamic>?> asyncValidator(AbstractControl control) async {
       return null;
     }
 

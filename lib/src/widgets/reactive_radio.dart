@@ -29,15 +29,15 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
   /// For documentation about the various parameters, see the [Radio] class
   /// and [new Radio], the constructor.
   ReactiveRadio({
-    Key key,
-    String formControlName,
-    FormControl formControl,
-    @required T value,
-    Color activeColor,
-    Color focusColor,
-    Color hoverColor,
-    MaterialTapTargetSize materialTapTargetSize,
-    VisualDensity visualDensity,
+    Key? key,
+    String? formControlName,
+    FormControl? formControl,
+    required T value,
+    Color? activeColor,
+    Color? focusColor,
+    Color? hoverColor,
+    MaterialTapTargetSize? materialTapTargetSize,
+    VisualDensity? visualDensity,
     bool autofocus = false,
   }) : super(
           key: key,

@@ -26,16 +26,16 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
   ///
   /// See also [RadioListTile]
   ReactiveRadioListTile({
-    Key key,
-    String formControlName,
-    FormControl formControl,
-    @required T value,
-    Color activeColor,
-    Widget title,
-    Widget subtitle,
+    Key? key,
+    String? formControlName,
+    FormControl? formControl,
+    required T value,
+    Color? activeColor,
+    Widget? title,
+    Widget? subtitle,
     bool isThreeLine = false,
-    bool dense,
-    Widget secondary,
+    bool? dense,
+    Widget? secondary,
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
   }) : super(
           key: key,

@@ -16,7 +16,7 @@ typedef ReactiveFormBuilderCreator = FormGroup Function();
 class ReactiveFormBuilder extends StatefulWidget {
   final ReactiveFormConsumerBuilder builder;
   final ReactiveFormBuilderCreator form;
-  final Widget child;
+  final Widget? child;
 
   /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
   /// that contains the form.
@@ -28,7 +28,7 @@ class ReactiveFormBuilder extends StatefulWidget {
   ///
   ///  * [WillPopScope], another widget that provides a way to intercept the
   ///    back button.
-  final WillPopCallback onWillPop;
+  final WillPopCallback? onWillPop;
 
   /// Creates and instance of [ReactiveFormBuilder].
   ///
@@ -51,21 +51,19 @@ class ReactiveFormBuilder extends StatefulWidget {
   /// }
   /// ```
   const ReactiveFormBuilder({
-    Key key,
+    Key? key,
     this.child,
     this.onWillPop,
-    @required this.builder,
-    @required this.form,
-  })  : assert(form != null),
-        assert(builder != null),
-        super(key: key);
+    required this.builder,
+    required this.form,
+  })  : super(key: key);
 
   @override
   _ReactiveFormBuilderState createState() => _ReactiveFormBuilderState();
 }
 
 class _ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
-  FormGroup _form;
+  late FormGroup _form;
 
   @override
   void initState() {

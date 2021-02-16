@@ -5,8 +5,8 @@ class ReactiveRadioListTileTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveRadioListTileTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override

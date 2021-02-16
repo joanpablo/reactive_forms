@@ -6,8 +6,8 @@ class ReactiveCheckboxTestingWidget extends StatelessWidget {
   final bool tristate;
 
   const ReactiveCheckboxTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
     this.tristate = false,
   }) : super(key: key);
 

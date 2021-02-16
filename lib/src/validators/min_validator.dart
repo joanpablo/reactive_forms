@@ -12,11 +12,12 @@ class MinValidator extends Validator<Comparable> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [min] must not be null.
-  MinValidator(this.min) : assert(min != null);
+  MinValidator(this.min);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<Comparable> control) {
-    return (control.value != null) && (control.value.compareTo(min) >= 0)
+  Map<String, dynamic>? validate(AbstractControl<Comparable> control) {
+    // ignore: unnecessary_null_comparison
+    return (control.value != null) && (control.value!.compareTo(min) >= 0)
         ? null
         : {
             ValidationMessage.min: {

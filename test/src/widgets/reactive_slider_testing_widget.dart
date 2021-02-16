@@ -5,8 +5,8 @@ class ReactiveSliderTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveSliderTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override

@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Validator that requires the control have a non-empty value.
 class RequiredValidator extends Validator<dynamic> {
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.required: true};
 
     if (control.value == null) {

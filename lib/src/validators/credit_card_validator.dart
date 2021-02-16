@@ -9,7 +9,7 @@ import 'package:reactive_forms/src/validators/number_validator.dart';
 /// credit card.
 class CreditCardValidator extends Validator<dynamic> {
   @override
-  Map<String, dynamic> validate(AbstractControl control) {
+  Map<String, dynamic>? validate(AbstractControl control) {
     final error = {ValidationMessage.creditCard: true};
     // error if value is not a String
     if (control.value != null && !(control.value is String)) {
@@ -19,6 +19,7 @@ class CreditCardValidator extends Validator<dynamic> {
     final cardNumber = control.value.toString().replaceAll(' ', '');
     final isNumber = NumberValidator.numberRegex.hasMatch(cardNumber);
 
+    // ignore: unnecessary_null_comparison
     return cardNumber == null ||
             (isNumber &&
                 cardNumber.length >= 13 &&

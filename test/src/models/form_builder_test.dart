@@ -11,10 +11,10 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form != null, true, reason: 'form is null');
+      // expect(form != null, true, reason: 'form is null');
       expect(form is FormGroup, true,
           reason: 'form is not instance of FormGroup');
-      expect(form.control('name') != null, true, reason: 'control is null');
+      // expect(form.control('name') != null, true, reason: 'control is null');
       expect(form.control('name') is FormControl<String>, true,
           reason:
               '${form.control('name').runtimeType} is not instance of FormControl<String>');

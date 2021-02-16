@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+
 void main() {
   group('Form Group', () {
     test('FormGroup is valid by default', () {
@@ -145,9 +146,9 @@ void main() {
       expect(jsonEncode(value), '{"name":"john","email":"john@email.com"}');
     });
 
-    test('Assertion Error if passing null controls to constructor', () {
-      expect(() => FormGroup(null), throwsAssertionError);
-    });
+    // test('Assertion Error if passing null controls to constructor', () {
+    //   expect(() => FormGroup(null), throwsAssertionError);
+    // });
 
     test('Throws FormControlNotFoundException if invalid control name', () {
       final form = FormGroup({});
@@ -279,7 +280,7 @@ void main() {
       final formValue = form.value;
 
       // Then: disabled control not in value
-      expect(formValue.length, 1);
+      expect(formValue!.length, 1);
       expect(formValue.keys.first, 'name');
       expect(formValue.values.first, 'Reactive');
     });
@@ -485,7 +486,7 @@ void main() {
       expect(form.dirty, true);
 
       // When: resets the group
-      form.resetState({'name': null});
+      form.resetState(null);
 
       // Then: all controls has null value
       expect(form.dirty, false, reason: 'form is pristine');
@@ -798,7 +799,7 @@ void main() {
       });
 
       // When: add control to nested group
-      FormGroup address = form.control('address');
+      FormGroup address = form.control('address') as FormGroup;
       address.addAll({
         'city': FormControl<String>(value: 'Sofia'),
       });

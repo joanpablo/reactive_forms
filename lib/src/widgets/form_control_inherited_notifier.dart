@@ -17,12 +17,11 @@ class FormControlInheritedStreamer extends InheritedStreamer {
   final AbstractControl control;
 
   FormControlInheritedStreamer({
-    Key key,
-    @required this.control,
-    @required Stream stream,
-    @required Widget child,
-  })  : assert(control != null),
-        super(
+    Key? key,
+    required this.control,
+    required Stream stream,
+    required Widget child,
+  }) : super(
           key: key,
           stream: stream,
           child: child,
