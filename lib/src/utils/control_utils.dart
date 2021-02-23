@@ -1,12 +1,14 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../reactive_forms.dart';
+
 /// Utility class for [AbstractControl]
 abstract class Control {
   /// Returns true if [control] is null, otherwise return false.
-  static bool isNull(AbstractControl? control) => control?.value;
+  static bool isNull(AbstractControl? control) => control is AbstractControl ? control.value == null : true;
 
   /// Returns true if [control] is not null, otherwise return false.
-  static bool isNotNull(AbstractControl? control) => control?.value != null;
+  static bool isNotNull(AbstractControl? control) => control is AbstractControl ? control.value != null : false;
 
   /// Returns true if [control] is null or empty white spaces,
   /// otherwise return false.

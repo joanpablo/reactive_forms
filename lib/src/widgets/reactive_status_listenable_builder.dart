@@ -54,7 +54,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
     }
 
     return StreamBuilder<ControlStatus>(
-      stream: control.statusChanged,
+      stream: control?.statusChanged,
       builder: (context, snapshot) => this.builder(context, control!, child),
     );
   }

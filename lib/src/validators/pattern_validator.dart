@@ -15,10 +15,10 @@ class PatternValidator extends Validator<dynamic> {
   PatternValidator(this.evaluator);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    return (control.value == null ||
-            control.value.toString() == '' ||
-            this.evaluator.hasMatch(control.value.toString()))
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
+    return (control?.value == null ||
+            control?.value.toString() == '' ||
+            this.evaluator.hasMatch(control!.value.toString()))
         ? null
         : {
             ValidationMessage.pattern: {

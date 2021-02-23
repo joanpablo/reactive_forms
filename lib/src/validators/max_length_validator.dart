@@ -15,9 +15,9 @@ class MaxLengthValidator extends Validator<dynamic> {
   MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
     // don't validate empty values to allow optional controls
-    if (control.value == null) {
+    if (control?.value == null) {
       return null;
     }
 
@@ -29,8 +29,8 @@ class MaxLengthValidator extends Validator<dynamic> {
       collection = control.value?.keys.toList();
     } else if (control is FormControl<Iterable<dynamic>>) {
       collection = control.value?.toList();
-    } else if (control is FormControl<String> || control.value is String) {
-      collection = control.value.runes.toList();
+    } else if (control is FormControl<String> || control?.value is String) {
+      collection = control?.value.runes.toList();
     }
 
     // ignore: unnecessary_null_comparison

@@ -47,12 +47,12 @@ void main() {
 
         //When: set control value
         final control = form.control('name');
-        control.value = 'Reactive Forms';
+        control?.value = 'Reactive Forms';
         await tester.pump();
 
         // Then: the text value is equal to control value
         Text text = tester.widget(find.byType(Text));
-        expect(text.data, control.value);
+        expect(text.data, control?.value);
       },
     );
 

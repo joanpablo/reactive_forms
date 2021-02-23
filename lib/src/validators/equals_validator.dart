@@ -14,13 +14,13 @@ class EqualsValidator<T> extends Validator<T> {
   EqualsValidator(this.value);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl control) {
-    return control.value == this.value
+  Map<String, dynamic>? validate(AbstractControl? control) {
+    return control?.value == this.value
         ? null
         : {
             ValidationMessage.equals: {
               'required': value,
-              'actual': control.value,
+              'actual': control?.value,
             }
           };
   }

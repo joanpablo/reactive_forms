@@ -14,9 +14,9 @@ class ContainsValidator<T> extends Validator<Iterable<dynamic>> {
   ContainsValidator(this.values);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Iterable<dynamic>> control) {
+  Map<String, dynamic>? validate(AbstractControl<Iterable<dynamic>>? control) {
     // ignore: unnecessary_null_comparison
-    return control.value != null && values.every(control.value!.contains)
+    return control?.value != null && values.every(control!.value!.contains)
         ? null
         : {ValidationMessage.contains: true};
   }

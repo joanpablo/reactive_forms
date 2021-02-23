@@ -21,7 +21,7 @@ class CompareValidator extends Validator<dynamic> {
   );
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
     final form = control as FormGroup;
     // ignore: unnecessary_null_comparison
     if (form == null) {
@@ -32,22 +32,22 @@ class CompareValidator extends Validator<dynamic> {
     final compareControl = form.control(this.compareControlName);
     final error = {
       ValidationMessage.compare: {
-        'control': mainControl.value,
-        'compareControl': compareControl.value,
+        'control': mainControl?.value,
+        'compareControl': compareControl?.value,
         'option': this.compareOption,
       }
     };
 
-    if (!(mainControl.value is Comparable) ||
-        !(compareControl.value is Comparable)) {
+    if (!(mainControl?.value is Comparable) ||
+        !(compareControl?.value is Comparable)) {
       return error;
     }
 
-    if (_meetsComparison(mainControl.value, compareControl.value)) {
-      mainControl.removeError(ValidationMessage.compare);
+    if (_meetsComparison(mainControl?.value, compareControl?.value)) {
+      mainControl?.removeError(ValidationMessage.compare);
     } else {
-      mainControl.setErrors(error);
-      mainControl.markAsTouched();
+      mainControl?.setErrors(error);
+      mainControl?.markAsTouched();
     }
 
     return null;

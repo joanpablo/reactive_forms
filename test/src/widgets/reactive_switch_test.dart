@@ -90,7 +90,7 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: change control value to true
-        form.control('switch').value = true;
+        form.control('switch')?.value = true;
         await tester.pump();
 
         // Then: value equals to true
@@ -116,7 +116,7 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: change control value to false
-        form.control('switch').value = false;
+        form.control('switch')?.value = false;
         await tester.pump();
 
         // Then: value equals to false
@@ -183,7 +183,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form
         final form = FormGroup({
-          'switch': FormControl<bool>(disabled: true),
+          'switch': FormControl<bool?>(disabled: true),
         });
 
         // And: a widget that is bind to the form

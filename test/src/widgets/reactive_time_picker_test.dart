@@ -29,7 +29,7 @@ void main() {
         await tester.pump();
 
         // Then: initial date id the default value of the control
-        expect(form.control('time').value, defaultValue);
+        expect(form.control('time')?.value, defaultValue);
       },
     );
 

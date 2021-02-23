@@ -68,7 +68,7 @@ void main() {
         );
 
         // When: change status of control to valid
-        form.control('control').value = 'som valid value';
+        form.control('control')?.value = 'som valid value';
         await tester.pump();
 
         // When: get text widget
@@ -84,7 +84,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with a valid field
         final form = FormGroup({
-          'control': FormControl<String>(
+          'control': FormControl<String?>(
             value: 'some valid value',
             validators: [Validators.required],
           ),
@@ -98,7 +98,7 @@ void main() {
         );
 
         // When: change status of control to invalid
-        form.control('control').value = null;
+        form.control('control')?.value = null;
         await tester.pump();
 
         // When: get text widget
@@ -140,7 +140,7 @@ void main() {
     // );
 
     Future<Map<String, dynamic>> failedAsyncValidator(
-        AbstractControl control) async {
+        AbstractControl? control) async {
       return {'failed': true};
     }
 
@@ -162,7 +162,7 @@ void main() {
         );
 
         // When: change status of control
-        form.control('control').value = 'some value';
+        form.control('control')?.value = 'some value';
         await tester.pumpAndSettle();
 
         // When: get text widget
@@ -173,7 +173,7 @@ void main() {
       },
     );
 
-    Future<Map<String, dynamic>?> asyncValidator(AbstractControl control) async {
+    Future<Map<String, dynamic>?> asyncValidator(AbstractControl? control) async {
       return null;
     }
 
@@ -195,7 +195,7 @@ void main() {
         );
 
         // When: change status of control
-        form.control('control').value = 'some value';
+        form.control('control')?.value = 'some value';
         await tester.pumpAndSettle();
 
         // When: get text widget

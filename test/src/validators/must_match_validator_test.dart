@@ -27,7 +27,7 @@ void main() {
       ]);
 
       final passwordConfirmation = form.control('passwordConfirmation');
-      passwordConfirmation.value = '1234';
+      passwordConfirmation?.value = '1234';
 
       expect(form.valid, true);
       expect(form.hasErrors, false);

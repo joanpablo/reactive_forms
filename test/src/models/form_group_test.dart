@@ -47,7 +47,7 @@ void main() {
         ),
       });
 
-      form.control('name').value = null;
+      form.control('name')?.value = null;
 
       expect(form.invalid, true);
     });
@@ -59,7 +59,7 @@ void main() {
         ),
       });
 
-      form.control('name').value = 'hello';
+      form.control('name')?.value = 'hello';
 
       expect(form.valid, true);
     });
@@ -111,13 +111,13 @@ void main() {
         'email': FormControl<String>(value: 'johndoe@reactiveforms.com'),
       });
 
-      formGroup.control('name').value = 'hello john';
-      formGroup.control('email').value = 'john@reactiveforms.com';
+      formGroup.control('name')?.value = 'hello john';
+      formGroup.control('email')?.value = 'john@reactiveforms.com';
 
       formGroup.reset();
 
-      expect(formGroup.control('name').value, null);
-      expect(formGroup.control('email').value, null);
+      expect(formGroup.control('name')?.value, null);
+      expect(formGroup.control('email')?.value, null);
     });
 
     test('Set value to FormGroup', () {
@@ -131,8 +131,8 @@ void main() {
         'email': 'johndoe@email.com',
       };
 
-      expect(form.control('name').value, 'John Doe');
-      expect(form.control('email').value, 'johndoe@email.com');
+      expect(form.control('name')?.value, 'John Doe');
+      expect(form.control('email')?.value, 'johndoe@email.com');
     });
 
     test('Get value returns a Map with controls name and values', () {
@@ -165,15 +165,15 @@ void main() {
       });
 
       // Expect: all controls are untouched
-      expect(form.control('name').touched, false);
-      expect(form.control('email').touched, false);
+      expect(form.control('name')?.touched, false);
+      expect(form.control('email')?.touched, false);
 
       // When: marks all descendants to touched
       form.markAllAsTouched();
 
       // Then: all controls are touched
-      expect(form.control('name').touched, true);
-      expect(form.control('email').touched, true);
+      expect(form.control('name')?.touched, true);
+      expect(form.control('email')?.touched, true);
     });
 
     test('Mark form as untouched mark all controls as untouched', () {
@@ -184,15 +184,15 @@ void main() {
       });
 
       // Expect: all controls are touched
-      expect(form.control('name').touched, true);
-      expect(form.control('email').touched, true);
+      expect(form.control('name')?.touched, true);
+      expect(form.control('email')?.touched, true);
 
       // When: untouch the form
       form.markAsUntouched();
 
       // Then: all controls are untouched
-      expect(form.control('name').touched, false);
-      expect(form.control('email').touched, false);
+      expect(form.control('name')?.touched, false);
+      expect(form.control('email')?.touched, false);
     });
 
     test('The form is touched if at least one control is touched', () {
@@ -252,7 +252,7 @@ void main() {
       expectLater(form.valueChanges, emits({'name': value}));
 
       // When: change value of the control
-      form.control('name').value = 'Reactive Forms';
+      form.control('name')?.value = 'Reactive Forms';
     });
 
     test('When a group is disable then all children are disabled', () {
@@ -265,7 +265,7 @@ void main() {
       form.markAsDisabled();
 
       // Then: children are disabled
-      expect(form.control('name').disabled, true);
+      expect(form.control('name')?.disabled, true);
       expect(form.disabled, true);
     });
 
@@ -296,7 +296,7 @@ void main() {
       form.markAsEnabled();
 
       // Then: all controls are enabled
-      expect(form.controls.values.every((control) => control.enabled), true);
+      expect(form.controls.values.every((control) => control?.enabled == true), true);
     });
 
     test('Group valid when invalid control is disable', () {
@@ -320,7 +320,7 @@ void main() {
       });
 
       // When: disable invalid control
-      form.control('email').markAsDisabled();
+      form.control('email')?.markAsDisabled();
 
       // Then: form is valid
       expect(form.valid, true);
@@ -336,7 +336,7 @@ void main() {
       });
 
       // When: enable invalid control
-      form.control('email').markAsEnabled();
+      form.control('email')?.markAsEnabled();
 
       // Then: form is invalid
       expect(form.invalid, true, reason: 'form is valid');
@@ -353,7 +353,7 @@ void main() {
       form.dispose();
 
       // And: try to change value of children
-      final addValue = () => form.control('name').value = 'some';
+      final addValue = () => form.control('name')?.value = 'some';
 
       // Then: state error
       expect(() => addValue(), throwsStateError);
@@ -375,8 +375,8 @@ void main() {
       });
 
       // Then: value of the control has the new initial value
-      expect(form.control('name').value, initialValue);
-      expect(form.control('name').touched, false);
+      expect(form.control('name')?.value, initialValue);
+      expect(form.control('name')?.touched, false);
     });
 
     test('Resets a group and set initial values and disabled', () {
@@ -395,9 +395,9 @@ void main() {
       });
 
       // Then: value of the control has the new initial value
-      expect(form.control('name').value, initialValue);
-      expect(form.control('name').touched, false);
-      expect(form.control('name').disabled, true);
+      expect(form.control('name')?.value, initialValue);
+      expect(form.control('name')?.touched, false);
+      expect(form.control('name')?.disabled, true);
     });
 
     test('Resets a group with null state', () {
@@ -413,8 +413,8 @@ void main() {
       form.resetState(null);
 
       // Then: all controls has null value
-      expect(form.control('name').value, null);
-      expect(form.control('name').touched, false);
+      expect(form.control('name')?.value, null);
+      expect(form.control('name')?.touched, false);
     });
 
     test('Resets a group with empty {} state', () {
@@ -430,8 +430,8 @@ void main() {
       form.resetState({});
 
       // Then: all controls has null value
-      expect(form.control('name').value, null, reason: 'value is not null');
-      expect(form.control('name').touched, false, reason: 'control is touched');
+      expect(form.control('name')?.value, null, reason: 'value is not null');
+      expect(form.control('name')?.touched, false, reason: 'control is touched');
     });
 
     test('Reset a group marks it as pristine', () {
@@ -508,7 +508,7 @@ void main() {
       // Then: control is not null
       expect(city is FormControl<String>, true,
           reason: '$city is not a control');
-      expect(city.value, 'Sofia', reason: 'control without correct value');
+      expect(city?.value, 'Sofia', reason: 'control without correct value');
     });
 
     test('Get control with nested deep name', () {
@@ -528,7 +528,7 @@ void main() {
       // Then: control is not null
       expect(city is FormControl<String>, true,
           reason: '$city is not a control');
-      expect(city.value, 'Sofia', reason: 'control without correct value');
+      expect(city?.value, 'Sofia', reason: 'control without correct value');
     });
 
     test('Focused a control', () {
@@ -642,17 +642,17 @@ void main() {
       });
 
       // When: mark control as dirty
-      form.control('name').markAsDirty();
+      form.control('name')?.markAsDirty();
 
       // Then: control and form are dirty
-      expect(form.control('name').dirty, true, reason: 'control is not dirty');
+      expect(form.control('name')?.dirty, true, reason: 'control is not dirty');
       expect(form.dirty, true, reason: 'form is not dirty');
 
       // When: mark control as pristine
-      form.control('name').markAsPristine();
+      form.control('name')?.markAsPristine();
 
       // Then: control and form are pristine
-      expect(form.control('name').pristine, true,
+      expect(form.control('name')?.pristine, true,
           reason: 'control is not pristine');
       expect(form.pristine, true, reason: 'form is not pristine');
     });
@@ -664,14 +664,14 @@ void main() {
       });
 
       // Expect: control and form are touched
-      expect(form.control('name').touched, true, reason: 'control not touched');
+      expect(form.control('name')?.touched, true, reason: 'control not touched');
       expect(form.touched, true, reason: 'form not touched');
 
       // When: mark control as untouched
-      form.control('name').markAsUntouched();
+      form.control('name')?.markAsUntouched();
 
       // Then: control and form are untouched
-      expect(form.control('name').touched, false, reason: 'control is touched');
+      expect(form.control('name')?.touched, false, reason: 'control is touched');
       expect(form.touched, false, reason: 'form is touched');
     });
 
@@ -719,8 +719,8 @@ void main() {
 
       // Then: form is disabled and all controls are disabled
       expect(form.enabled, false, reason: 'form is enabled');
-      expect(form.control('name').enabled, false, reason: 'name is enabled');
-      expect(form.control('email').enabled, false, reason: 'email is enabled');
+      expect(form.control('name')?.enabled, false, reason: 'name is enabled');
+      expect(form.control('email')?.enabled, false, reason: 'email is enabled');
     });
 
     test("Initialized disabled form changes to enable when enable children",
@@ -732,12 +732,12 @@ void main() {
       }, disabled: true);
 
       // When: enabled child
-      form.control('name').markAsEnabled();
+      form.control('name')?.markAsEnabled();
 
       // Then: form is enabled
       expect(form.enabled, true, reason: 'form is disabled');
-      expect(form.control('name').enabled, true, reason: 'name is disabled');
-      expect(form.control('email').disabled, true, reason: 'email is enabled');
+      expect(form.control('name')?.enabled, true, reason: 'name is disabled');
+      expect(form.control('email')?.disabled, true, reason: 'email is enabled');
     });
 
     test("Patch form group value", () {

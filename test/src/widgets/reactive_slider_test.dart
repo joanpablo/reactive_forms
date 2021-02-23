@@ -22,7 +22,7 @@ void main() {
         final sliderValue = slider.value;
 
         // Then: value equals to control value
-        expect(sliderValue, form.control('sliderValue').value);
+        expect(sliderValue, form.control('sliderValue')?.value);
       },
     );
 
@@ -38,7 +38,7 @@ void main() {
         await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
 
         // When: updates control value
-        form.control('sliderValue').value = 100.0;
+        form.control('sliderValue')?.value = 100.0;
 
         // And: gets slider value
         await tester.pump();
@@ -46,7 +46,7 @@ void main() {
         final sliderValue = slider.value;
 
         // Then: value equals to control value
-        expect(sliderValue, form.control('sliderValue').value);
+        expect(sliderValue, form.control('sliderValue')?.value);
       },
     );
 

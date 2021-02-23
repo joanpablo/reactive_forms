@@ -11,7 +11,7 @@ class MustMatchValidator extends Validator<dynamic> {
   MustMatchValidator(this.controlName, this.matchingControlName)
       ;
 
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
     final error = {ValidationMessage.mustMatch: true};
 
     final form = control as FormGroup;
@@ -23,11 +23,11 @@ class MustMatchValidator extends Validator<dynamic> {
     final formControl = form.control(controlName);
     final matchingFormControl = form.control(matchingControlName);
 
-    if (formControl.value != matchingFormControl.value) {
-      matchingFormControl.setErrors(error);
-      matchingFormControl.markAsTouched();
+    if (formControl?.value != matchingFormControl?.value) {
+      matchingFormControl?.setErrors(error);
+      matchingFormControl?.markAsTouched();
     } else {
-      matchingFormControl.removeError(ValidationMessage.mustMatch);
+      matchingFormControl?.removeError(ValidationMessage.mustMatch);
     }
 
     return null;

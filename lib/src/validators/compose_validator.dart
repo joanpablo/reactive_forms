@@ -18,7 +18,7 @@ class ComposeValidator extends Validator<dynamic> {
   ComposeValidator(this.validators);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
     final composedError = Map<String, dynamic>();
 
     for (final validator in this.validators) {

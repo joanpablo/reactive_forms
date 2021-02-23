@@ -81,10 +81,10 @@ void main() {
 
     test('FormArray valid if maxLength is valid', () {
       // Given: a valid array
-      final array = FormArray<int>([
-        FormControl<int>(),
-        FormControl<int>(),
-        FormControl<int>(),
+      final array = FormArray<int?>([
+        FormControl<int?>(),
+        FormControl<int?>(),
+        FormControl<int?>(),
       ], validators: [
         Validators.maxLength(4)
       ]);
@@ -95,10 +95,10 @@ void main() {
 
     test('FormArray invalid if maxLength is invalid', () {
       // Given: an invalid array
-      final array = FormArray<int>([
-        FormControl<int>(),
-        FormControl<int>(),
-        FormControl<int>(),
+      final array = FormArray<int?>([
+        FormControl<int?>(),
+        FormControl<int?>(),
+        FormControl<int?>(),
       ], validators: [
         Validators.maxLength(2)
       ]);

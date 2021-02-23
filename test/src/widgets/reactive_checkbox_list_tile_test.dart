@@ -102,7 +102,7 @@ void main() {
         expect(checkbox.value, false);
 
         // When: set to True the form control
-        form.control('isChecked').value = true;
+        form.control('isChecked')?.value = true;
         await tester.pump();
 
         // Then: the checkbox is checked
@@ -129,7 +129,7 @@ void main() {
         expect(checkbox.value, true);
 
         // When: set to False the form control
-        form.control('isChecked').value = false;
+        form.control('isChecked')?.value = false;
         await tester.pump();
 
         // Then: the checkbox is checked
@@ -183,7 +183,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form
         final form = FormGroup({
-          'isChecked': FormControl<bool>(disabled: true),
+          'isChecked': FormControl<bool?>(disabled: true),
         });
 
         // And: a checkbox is bind to the form

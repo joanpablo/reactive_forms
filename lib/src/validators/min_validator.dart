@@ -15,14 +15,14 @@ class MinValidator extends Validator<Comparable> {
   MinValidator(this.min);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
     // ignore: unnecessary_null_comparison
-    return (control.value != null) && (control.value!.compareTo(min) >= 0)
+    return (control?.value != null) && (control?.value?.compareTo(min) >= 0)
         ? null
         : {
             ValidationMessage.min: {
               'min': min,
-              'actual': control.value,
+              'actual': control?.value,
             },
           };
   }

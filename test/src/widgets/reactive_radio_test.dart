@@ -70,7 +70,7 @@ void main() {
         await tester.pumpWidget(ReactiveRadioTestingWidget(form: form));
 
         // When: changes control to true
-        form.control('radio').value = true;
+        form.control('radio')?.value = true;
         await tester.pump();
 
         // Expect radio group value is true
@@ -99,7 +99,7 @@ void main() {
         await tester.pumpWidget(ReactiveRadioTestingWidget(form: form));
 
         // When: changes control to false
-        form.control('radio').value = false;
+        form.control('radio')?.value = false;
         await tester.pump();
 
         // Expect radio group value is true

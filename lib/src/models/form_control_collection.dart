@@ -21,7 +21,7 @@ abstract class FormControlCollection {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
-  AbstractControl<dynamic> control(String name);
+  AbstractControl<dynamic>? control(String name);
 
   /// Checks if collection contains a control by a given [name].
   ///
@@ -41,7 +41,7 @@ abstract class FormControlCollection {
   ///
   /// This is for internal use only.
   @protected
-  void emitsCollectionChanged(List<AbstractControl<dynamic>> controls) {
+  void emitsCollectionChanged(List<AbstractControl<dynamic>?> controls) {
     _collectionChanges.add(List.unmodifiable(controls));
   }
 

@@ -124,7 +124,7 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<dynamic>, true,
           reason: 'control is not instance of FormControl<dynamic>');
-      expect(form.control('control').validators.first, validator,
+      expect(form.control('control')?.validators.first, validator,
           reason: 'validator not set');
     });
 
@@ -139,11 +139,11 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<dynamic>, true,
           reason: 'control is not instance of FormControl<dynamic>');
-      expect(form.control('control').validators.length, 2,
+      expect(form.control('control')?.validators.length, 2,
           reason: 'not set validators');
-      expect(form.control('control').validators[0], requiredValidator,
+      expect(form.control('control')?.validators[0], requiredValidator,
           reason: 'not set required validator');
-      expect(form.control('control').validators[1], emailValidator,
+      expect(form.control('control')?.validators[1], emailValidator,
           reason: 'not set email validator');
     });
 
@@ -158,13 +158,13 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<String>, true,
           reason: 'control is not instance of FormControl<String>');
-      expect(form.control('control').value, '',
+      expect(form.control('control')?.value, '',
           reason: 'control value is not set');
-      expect(form.control('control').validators.length, 2,
+      expect(form.control('control')?.validators.length, 2,
           reason: 'not set validators');
-      expect(form.control('control').validators[0], requiredValidator,
+      expect(form.control('control')?.validators[0], requiredValidator,
           reason: 'not set required validator');
-      expect(form.control('control').validators[1], emailValidator,
+      expect(form.control('control')?.validators[1], emailValidator,
           reason: 'not set email validator');
     });
 
@@ -178,9 +178,9 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<String>, true,
           reason: 'control is not instance of FormControl<String>');
-      expect(form.control('control').value, '',
+      expect(form.control('control')?.value, '',
           reason: 'control default value not set');
-      expect(form.control('control').validators[0], requiredValidator,
+      expect(form.control('control')?.validators[0], requiredValidator,
           reason: 'not set required validator');
     });
 
@@ -194,9 +194,9 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<dynamic>, true,
           reason: 'control is not instance of FormControl<dynamic>');
-      expect(form.control('control').value, null,
+      expect(form.control('control')?.value, null,
           reason: 'control default value not set to null');
-      expect(form.control('control').validators[0], requiredValidator,
+      expect(form.control('control')?.validators[0], requiredValidator,
           reason: 'not set required validator');
     });
 
@@ -220,7 +220,7 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<String>, true,
           reason: 'control is not instance of FormControl<String>');
-      expect(form.control('control').value, '',
+      expect(form.control('control')?.value, '',
           reason: 'control default value not set');
     });
 
@@ -256,7 +256,7 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<bool>, true,
           reason: 'control is not instance of FormControl<bool>');
-      expect(form.control('control').value, true,
+      expect(form.control('control')?.value, true,
           reason: 'control default value not set');
     });
 
@@ -269,7 +269,7 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<int>, true,
           reason: 'control is not instance of FormControl<int>');
-      expect(form.control('control').value, 50,
+      expect(form.control('control')?.value, 50,
           reason: 'control default value not set');
     });
 
@@ -283,7 +283,7 @@ void main() {
       expect(form.control('control') is FormControl<double>, true,
           reason:
               '${form.control('control').runtimeType} is not instance of FormControl<double>');
-      expect(form.control('control').value, 50.0,
+      expect(form.control('control')?.value, 50.0,
           reason: 'control default value not set');
     });
 
@@ -298,7 +298,7 @@ void main() {
       expect(form.control('control') is FormControl<DateTime>, true,
           reason:
               '${form.control('control').runtimeType} is not instance of FormControl<DateTime>');
-      expect(form.control('control').value, value,
+      expect(form.control('control')?.value, value,
           reason: 'control default value not set');
     });
 
@@ -313,7 +313,7 @@ void main() {
       expect(form.control('control') is FormControl<TimeOfDay>, true,
           reason:
               '${form.control('control').runtimeType} is not instance of FormControl<TimeOfDay>');
-      expect(form.control('control').value, value,
+      expect(form.control('control')?.value, value,
           reason: 'control default value not set');
     });
 
@@ -335,7 +335,7 @@ void main() {
       // Expect: the array is created
       expect(array is FormArray, true,
           reason: '${array.runtimeType} is not instance of FormArray<String>');
-      expect(array.control('0').value, 'john');
+      expect(array.control('0')?.value, 'john');
       expect(array.value, ['john', 'little john']);
     });
 
@@ -398,7 +398,7 @@ void main() {
 
       // Expect: array is created
       expect(addressArray.controls.length, 2);
-      expect(addressArray.control('0').value, {'city': 'Sofia'});
+      expect(addressArray.control('0')?.value, {'city': 'Sofia'});
       expect(addressArray.control('0') is FormGroup, true);
     });
 
@@ -415,7 +415,7 @@ void main() {
 
       // Expect: array is created
       expect(addressArray.controls.length, 2);
-      expect(addressArray.control('0').value, {'city': 'Sofia'});
+      expect(addressArray.control('0')?.value, {'city': 'Sofia'});
       expect(addressArray.control('0') is FormGroup, true);
     });
 
@@ -428,7 +428,7 @@ void main() {
 
       // Expect: array is created
       expect(addressArray.controls.length, 2);
-      expect(addressArray.control('0').value, {'city': 'Sofia'});
+      expect(addressArray.control('0')?.value, {'city': 'Sofia'});
       expect(addressArray.control('0') is FormGroup, true);
     });
   });

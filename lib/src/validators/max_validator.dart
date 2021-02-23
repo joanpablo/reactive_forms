@@ -15,14 +15,14 @@ class MaxValidator extends Validator<Comparable> {
   MaxValidator(this.max);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic>? control) {
     // ignore: unnecessary_null_comparison
-    return (control.value != null) && (control.value!.compareTo(max) <= 0)
+    return (control?.value != null) && (control?.value?.compareTo(max) <= 0)
         ? null
         : {
             ValidationMessage.max: {
               'max': max,
-              'actual': control.value,
+              'actual': control?.value,
             },
           };
   }

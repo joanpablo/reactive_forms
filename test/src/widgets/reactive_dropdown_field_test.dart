@@ -95,7 +95,7 @@ void main() {
         ));
 
         // When: changes control value
-        form.control('dropdown').value = 'true';
+        form.control('dropdown')?.value = 'true';
         await tester.pump();
 
         // Then: dropdown value is equals to control
@@ -103,7 +103,7 @@ void main() {
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
-        expect(dropdown.value, form.control('dropdown').value);
+        expect(dropdown.value, form.control('dropdown')?.value);
       },
     );
 
@@ -122,7 +122,7 @@ void main() {
         ));
 
         // When: changes control value
-        form.control('dropdown').value = 'false';
+        form.control('dropdown')?.value = 'false';
         await tester.pump();
 
         // Then: dropdown value is equals to control
@@ -130,7 +130,7 @@ void main() {
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
 
-        expect(dropdown.value, form.control('dropdown').value);
+        expect(dropdown.value, form.control('dropdown')?.value);
       },
     );
 

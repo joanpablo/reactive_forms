@@ -29,7 +29,7 @@ void main() {
         final initialDate = datePicker.initialDate;
 
         // Then: initial date id the default value of the control
-        expect(initialDate, form.control('birthday').value);
+        expect(initialDate, form.control('birthday')?.value);
       },
     );
 
@@ -56,7 +56,7 @@ void main() {
         await tester.pump();
 
         // Then: initial date id the default value of the control
-        expect(form.control('birthday').value, defaultValue);
+        expect(form.control('birthday')?.value, defaultValue);
       },
     );
 

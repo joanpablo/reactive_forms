@@ -21,7 +21,7 @@ void main() {
         expect(find.text('John'), findsNothing);
 
         // When: set a value to field 'name'
-        form.control('name').value = 'John';
+        form.control('name')?.value = 'John';
         await tester.pump();
 
         // Then: the reactive text field updates its value with the new name
@@ -135,7 +135,7 @@ void main() {
             reason: 'errors are visible');
 
         // When: call FormControl.unfocus(touched: false)
-        form.control('name').unfocus(touched: false);
+        form.control('name')?.unfocus(touched: false);
         await tester.pump();
 
         // Then: the errors are not visible
@@ -164,8 +164,8 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // And: the field is invalid and untouched
-        expect(form.control('name').hasErrors, true);
-        expect(form.control('name').touched, false);
+        expect(form.control('name')?.hasErrors, true);
+        expect(form.control('name')?.touched, false);
 
         // Expect: text field is not showing errors
         final textField =
@@ -240,7 +240,7 @@ void main() {
       expect(textField.decoration?.errorText, isNull);
 
       // When: touch the control
-      form.control('name').markAsTouched();
+      form.control('name')?.markAsTouched();
       await tester.pump();
 
       // Then: text field is showing errors
@@ -272,8 +272,8 @@ void main() {
       expect(textField.decoration?.errorText, isNull);
 
       // When: touch the control and mark as dirty
-      form.control('name').markAsDirty(emitEvent: false);
-      form.control('name').markAsTouched();
+      form.control('name')?.markAsDirty(emitEvent: false);
+      form.control('name')?.markAsTouched();
       await tester.pump();
 
       // Then: text field is showing errors
@@ -367,13 +367,13 @@ void main() {
         await tester.pumpWidget(ReactiveTextFieldTestingWidget(form: form));
 
         // Expect: control isn't dirty
-        expect(form.control('name').dirty, false);
+        expect(form.control('name')?.dirty, false);
 
         // When: change text field value
         await tester.enterText(find.byType(TextField), 'some value');
 
         // Then: the control is dirty
-        expect(form.control('name').dirty, true,
+        expect(form.control('name')?.dirty, true,
             reason: 'control is not marked as dirty');
       },
     );
@@ -384,8 +384,8 @@ void main() {
         // Given: a form with custom validator
         bool isControlDirty = false;
 
-        final customValidator = (AbstractControl control) {
-          isControlDirty = control.dirty;
+        final customValidator = (AbstractControl? control) {
+          isControlDirty = control != null ? control.dirty : false;
           return null;
         };
 

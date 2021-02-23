@@ -101,9 +101,7 @@ abstract class AbstractControl<T> {
 
   /// Sets the value to the control
   set value(T? value) {
-    if (value != null) {
-      this.updateValue(value);
-    }
+    this.updateValue(value);
   }
 
   /// Gets the parent control.
@@ -944,7 +942,7 @@ class FormControl<T> extends AbstractControl<T> {
 /// becomes invalid.
 class FormGroup extends AbstractControl<Map<String, dynamic>>
     with FormControlCollection {
-  final Map<String, AbstractControl> _controls = {};
+  final Map<String, AbstractControl?> _controls = {};
 
   /// Creates a new FormGroup instance.
   ///
@@ -1003,7 +1001,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// Retrieves all values regardless of disabled status.
   Map<String, dynamic> get rawValue => _controls
-      .map<String, dynamic>((key, control) => MapEntry(key, control.value));
+      .map<String, dynamic>((key, control) => MapEntry(key, control?.value));
 
   @override
   bool contains(String name) {
@@ -1039,7 +1037,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// form.control('person.name');
   /// ```
   @override
-  AbstractControl<dynamic> control(String name) {
+  AbstractControl<dynamic>? control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1056,8 +1054,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Gets the collection of child controls.
   ///
   /// The key for each child is the name under which it is registered.
-  Map<String, AbstractControl> get controls =>
-      Map<String, AbstractControl>.unmodifiable(this._controls);
+  Map<String, AbstractControl?> get controls =>
+      Map<String, AbstractControl?>.unmodifiable(this._controls);
 
   /// Reduce the value of the group is a key-value pair for each control
   /// in the group.
@@ -1079,11 +1077,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// This method is for internal use only.
   @override
-  Map<String, dynamic> _reduceValue() {
+  Map<String, dynamic>? _reduceValue() {
     final map = Map<String, dynamic>();
     _controls.forEach((key, control) {
-      if (control.enabled || this.disabled) {
-        map[key] = control.value;
+      if (control?.enabled == true || this.disabled) {
+        map[key] = control?.value;
       }
     });
 
@@ -1127,7 +1125,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   @override
   void markAsDisabled({bool? updateParent, bool? emitEvent}) {
     _controls.forEach((_, control) {
-      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
+      control?.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
@@ -1144,7 +1142,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   @override
   void markAsEnabled({bool? updateParent, bool? emitEvent}) {
     _controls.forEach((_, control) {
-      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
+      control?.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
@@ -1180,7 +1178,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
     if (_controls.isEmpty) {
       return false;
     }
-    return _controls.values.every((control) => control.disabled);
+    return _controls.values.every((control) => control?.disabled == true);
   }
 
   /// Returns true if all children has the specified [status], otherwise
@@ -1189,7 +1187,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// This is for internal use only.
   @override
   bool _anyControlsHaveStatus(ControlStatus status) {
-    return _controls.values.any((control) => control.status == status);
+    return _controls.values.any((control) => control?.status == status);
   }
 
   /// Gets all errors of the group.
@@ -1199,11 +1197,11 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   Map<String, dynamic> get errors {
     final allErrors = Map.of(super.errors);
     _controls.forEach((name, control) {
-      if (control.enabled && control.hasErrors) {
+      if (control?.enabled == true && control?.hasErrors == true) {
         allErrors.update(
           name,
-          (_) => control.errors,
-          ifAbsent: () => control.errors,
+          (_) => control?.errors,
+          ifAbsent: () => control?.errors,
         );
       }
     });
@@ -1342,7 +1340,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
       this.reset(removeFocus: removeFocus);
     } else {
       _controls.forEach((name, control) {
-        control.reset(
+        control?.reset(
           value: state[name]?.value,
           disabled: state[name]?.disabled,
           removeFocus: removeFocus,
@@ -1381,7 +1379,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///```
   void focus([String? name]) {
     if (name == null) {
-      _controls.values.first.focus();
+      _controls.values.first?.focus();
     } else {
       final control = this.findControl(name.split('.'));
       if (control != null) {
@@ -1392,13 +1390,16 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
-    _controls.forEach((name, control) => callback(control));
+    _controls.forEach((name, control) =>
+        control is AbstractControl ? callback(control) : null);
   }
 
   @override
   bool _anyControls(bool Function(AbstractControl) condition) {
-    return _controls.values
-        .any((control) => control.enabled && condition(control));
+    return _controls.values.any((control) =>
+        control?.enabled == true && control is AbstractControl
+            ? condition(control)
+            : false);
   }
 
   @override
@@ -1415,7 +1416,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
 class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
-  final List<AbstractControl<T>> _controls = [];
+  final List<AbstractControl<T>?> _controls = [];
 
   /// Creates a new [FormArray] instance.
   ///
@@ -1480,7 +1481,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// Retrieves all values regardless of disabled status.
   /// TODO again unsure of this | GM 16 Feb 2021
   List<T?> get rawValue =>
-      _controls.map<T?>((control) => control.value).toList();
+      _controls.map<T?>((control) => control?.value).toList();
 
   /// Sets the value of the [FormArray].
   ///
@@ -1497,12 +1498,13 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   ///
   /// This method is for internal use only.
   @override
-  List<T?>? _reduceValue() {
-    return this
+  List<T>? _reduceValue() {
+    var res = this
         ._controls
-        .where((control) => control.enabled || this.disabled)
-        .map((control) => control.value)
+        .where((control) => control is AbstractControl && (control!.enabled == true || this.disabled))
+        .map((control) => control!.value)
         .toList();
+    return List.from(res);
   }
 
   /// Disables the control.
@@ -1522,7 +1524,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   @override
   void markAsDisabled({bool? updateParent = true, bool? emitEvent = true}) {
     _controls.forEach((control) {
-      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
+      control?.markAsDisabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
   }
@@ -1634,7 +1636,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// When [emitEvent] is true or not supplied (the default), both the
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
-  AbstractControl<T> removeAt(
+  AbstractControl<T>? removeAt(
     int index, {
     bool? emitEvent,
     bool updateParent = true,
@@ -1642,7 +1644,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     emitEvent ??= true;
 
     final removedControl = _controls.removeAt(index);
-    removedControl.parent = null;
+    removedControl?.parent = null;
     this.updateValueAndValidity(
       emitEvent: emitEvent,
       updateParent: updateParent,
@@ -1783,7 +1785,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// form.control('address.0.city');
   /// ```
   @override
-  AbstractControl<dynamic> control(String name) {
+  AbstractControl<dynamic>? control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1821,7 +1823,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     if (_controls.isEmpty) {
       return false;
     }
-    return _controls.every((control) => control.disabled);
+    return _controls.every((control) => control?.disabled == true);
   }
 
   /// Returns true if all children has the specified [status], otherwise
@@ -1830,7 +1832,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   /// This is for internal use only.
   @override
   bool _anyControlsHaveStatus(ControlStatus status) {
-    return _controls.any((control) => control.status == status);
+    return _controls.any((control) => control?.status == status);
   }
 
   /// Gets all errors of the array.
@@ -1842,11 +1844,11 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
     _controls.asMap().entries.forEach((entry) {
       final control = entry.value;
       final name = entry.key.toString();
-      if (control.enabled && control.hasErrors) {
+      if (control?.enabled == true && control?.hasErrors == true) {
         allErrors.update(
           name,
-          (_) => control.errors,
-          ifAbsent: () => control.errors,
+          (_) => control?.errors,
+          ifAbsent: () => control?.errors,
         );
       }
     });
@@ -1883,7 +1885,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   void updateValue(List<T>? value, {bool? updateParent, bool? emitEvent}) {
     for (var i = 0; i < _controls.length; i++) {
       if (value == null || i < value.length) {
-        _controls[i].updateValue(
+        _controls[i]?.updateValue(
           value == null ? null : value.elementAt(i),
           updateParent: false,
           emitEvent: emitEvent,
@@ -1966,7 +1968,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   void patchValue(List<T> value, {bool? updateParent, bool? emitEvent}) {
     for (int i = 0; i < value.length; i++) {
       if (i < _controls.length) {
-        _controls[i].patchValue(
+        _controls[i]?.patchValue(
           value[i],
           updateParent: false,
           emitEvent: emitEvent,
@@ -2008,7 +2010,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
       this.reset();
     } else {
       for (var i = 0; i < _controls.length; i++) {
-        _controls[i].reset(
+        _controls[i]?.reset(
           value: i < state.length ? state.elementAt(i).value : null,
           disabled: i < state.length ? state.elementAt(i).disabled : null,
           updateParent: false,
@@ -2046,7 +2048,7 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
   void focus([String? name]) {
     if (name == null) {
       if (_controls.isNotEmpty) {
-        _controls.first.focus();
+        _controls.first?.focus();
       }
     } else {
       final control = this.findControl(name.split('.'));
@@ -2058,12 +2060,15 @@ class FormArray<T> extends AbstractControl<List<T>> with FormControlCollection {
 
   @override
   void _forEachChild(void Function(AbstractControl) callback) {
-    _controls.forEach((control) => callback(control));
+    _controls.forEach(
+        (control) => control is AbstractControl ? callback(control!) : null);
   }
 
   @override
   bool _anyControls(bool Function(AbstractControl) condition) {
-    return _controls.any((control) => control.enabled && condition(control));
+    return _controls.any((control) => control is AbstractControl
+        ? (control!.enabled == true && condition(control))
+        : false);
   }
 
   @override

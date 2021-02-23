@@ -30,9 +30,9 @@ void main() {
         contacts.map((email) => FormControl<bool>(value: true)).toList(),
       );
 
-      formArray.control('0').value = false;
-      formArray.control('1').value = false;
-      formArray.control('2').value = false;
+      formArray.control('0')?.value = false;
+      formArray.control('1')?.value = false;
+      formArray.control('2')?.value = false;
 
       expect(form.valid, false);
     });
@@ -64,9 +64,9 @@ void main() {
         contacts.map((email) => FormControl<bool>(value: true)).toList(),
       );
 
-      formArray.control('0').value = false;
-      formArray.control('1').value = true; // at least one is true
-      formArray.control('2').value = false;
+      formArray.control('0')?.value = false;
+      formArray.control('1')?.value = true; // at least one is true
+      formArray.control('2')?.value = false;
 
       expect(form.valid, true);
     });
@@ -84,19 +84,19 @@ void main() {
 
     test('Add values to array sets value to each item', () {
       // Given: an array with several items
-      final array = FormArray<int>([
-        FormControl<int>(),
-        FormControl<int>(),
-        FormControl<int>(),
+      final array = FormArray<int?>([
+        FormControl<int?>(),
+        FormControl<int?>(),
+        FormControl<int?>(),
       ]);
 
       //When: set a value to array
       array.value = [1, 2, 3];
 
       //Then: items has each value
-      expect(array.control('0').value, 1);
-      expect(array.control('1').value, 2);
-      expect(array.control('2').value, 3);
+      expect(array.control('0')?.value, 1);
+      expect(array.control('1')?.value, 2);
+      expect(array.control('2')?.value, 3);
     });
 
     test('Throws FormControlNotFoundException if invalid control index', () {
@@ -108,19 +108,19 @@ void main() {
 
     test('Reset array restores default value of all items to null', () {
       // Given: an array with items with default values
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
-        FormControl<int>(value: 2),
-        FormControl<int>(value: 3),
+      final array = FormArray<int?>([
+        FormControl<int?>(value: 1),
+        FormControl<int?>(value: 2),
+        FormControl<int?>(value: 3),
       ]);
 
       // And: reset array
       array.reset();
 
       //Then: items has initial default values
-      expect(array.control('0').value, null);
-      expect(array.control('1').value, null);
-      expect(array.control('2').value, null);
+      expect(array.control('0')?.value, null);
+      expect(array.control('1')?.value, null);
+      expect(array.control('2')?.value, null);
     });
 
     test('Reset array with initial values', () {
@@ -135,9 +135,9 @@ void main() {
       array.reset(value: [4, 5, 6]);
 
       //Then: items has initial default values
-      expect(array.control('0').value, 4);
-      expect(array.control('1').value, 5);
-      expect(array.control('2').value, 6);
+      expect(array.control('0')?.value, 4);
+      expect(array.control('1')?.value, 5);
+      expect(array.control('2')?.value, 6);
     });
 
     test('Reset array with less initial values', () {
@@ -152,9 +152,9 @@ void main() {
       array.reset(value: [4, 5]);
 
       //Then: items has initial default values
-      expect(array.control('0').value, 4);
-      expect(array.control('1').value, 5);
-      expect(array.control('2').value, 3);
+      expect(array.control('0')?.value, 4);
+      expect(array.control('1')?.value, 5);
+      expect(array.control('2')?.value, 3);
     });
 
     test('Reset array with more initial values', () {
@@ -170,16 +170,16 @@ void main() {
 
       //Then: items has initial default values
       expect(array.controls.length, 4);
-      expect(array.control('0').value, 4);
-      expect(array.control('1').value, 5);
-      expect(array.control('2').value, 6);
-      expect(array.control('3').value, 7);
+      expect(array.control('0')?.value, 4);
+      expect(array.control('1')?.value, 5);
+      expect(array.control('2')?.value, 6);
+      expect(array.control('3')?.value, 7);
     });
 
     test('Reset array with disabled states', () {
       // Given: an array with items with default values
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
+      final array = FormArray<int?>([
+        FormControl<int?>(value: 1),
       ]);
 
       // And: reset array value and disable the control
@@ -188,8 +188,8 @@ void main() {
       ]);
 
       //Then: items has initial reset values and are disabled
-      expect(array.control('0').value, null);
-      expect(array.control('0').disabled, true);
+      expect(array.control('0')?.value, null);
+      expect(array.control('0')?.disabled, true);
     });
 
     test('Reset array with state', () {
@@ -204,14 +204,14 @@ void main() {
       ]);
 
       //Then: items has initial reset values and are enabled
-      expect(array.control('0').value, 2);
-      expect(array.control('0').enabled, true);
+      expect(array.control('0')?.value, 2);
+      expect(array.control('0')?.enabled, true);
     });
 
     test('Reset array marks it as pristine', () {
       // Given: an array
-      final array = FormArray<int>([
-        FormControl<int>(),
+      final array = FormArray<int?>([
+        FormControl<int?>(),
       ]);
 
       // When: mark it as dirty
@@ -296,7 +296,7 @@ void main() {
       expectLater(array.valueChanges, emits([value]));
 
       // When: change value of a control
-      array.control('0').value = value;
+      array.control('0')?.value = value;
     });
 
     test('Remove control', () {
@@ -315,13 +315,13 @@ void main() {
 
     test('Insert control at index position', () {
       // Given: an array with two controls
-      final array = FormArray<String>([
-        FormControl<String>(),
-        FormControl<String>(),
+      final array = FormArray<String?>([
+        FormControl<String?>(),
+        FormControl<String?>(),
       ]);
 
       // When: insert a control in the middle
-      final control = FormControl<String>();
+      final control = FormControl<String?>();
       array.insert(1, control);
 
       // Then: then the control at index 1 is the one inserted
@@ -355,7 +355,7 @@ void main() {
       array.markAsDisabled();
 
       // Then: children are disabled
-      expect(array.control('0').disabled, true);
+      expect(array.control('0')?.disabled, true);
       expect(array.disabled, true);
     });
 
@@ -420,7 +420,7 @@ void main() {
       ]);
 
       // When: disable invalid control
-      array.control('1').markAsDisabled();
+      array.control('1')?.markAsDisabled();
 
       // Then: form is valid
       expect(array.valid, true);
@@ -435,7 +435,7 @@ void main() {
       ]);
 
       // When: enable invalid control
-      array.control('1').markAsEnabled();
+      array.control('1')?.markAsEnabled();
 
       // Then: form is invalid
       expect(array.invalid, true, reason: 'array is valid');
@@ -452,7 +452,7 @@ void main() {
       array.dispose();
 
       // And: try to change value of children
-      final addValue = () => array.control('0').value = 'some';
+      final addValue = () => array.control('0')?.value = 'some';
 
       // Then: state error
       expect(() => addValue(), throwsStateError);
@@ -470,9 +470,9 @@ void main() {
     array.value = [];
 
     //Then: items has initial default values
-    expect(array.control('0').value, 1);
-    expect(array.control('1').value, 2);
-    expect(array.control('2').value, 3);
+    expect(array.control('0')?.value, 1);
+    expect(array.control('1')?.value, 2);
+    expect(array.control('2')?.value, 3);
   });
 
   test('Get control with nested name', () {
@@ -490,7 +490,7 @@ void main() {
 
     // Then: control is not null
     expect(control is FormControl<int>, true);
-    expect(control.value, 3);
+    expect(control?.value, 3);
   });
 
   test('Array of groups', () {
@@ -502,7 +502,7 @@ void main() {
 
     // Expect: array is created
     expect(addressArray.controls.length, 2);
-    expect(addressArray.control('0').value, {'city': 'Sofia'});
+    expect(addressArray.control('0')?.value, {'city': 'Sofia'});
   });
 
   test('Focused a control', () {
@@ -575,8 +575,8 @@ void main() {
   test("Initialize disabled array", () {
     // Given: a disabled form
     final array = FormArray([
-      FormControl<String>(),
-      FormControl<String>(),
+      FormControl<String?>(),
+      FormControl<String?>(),
     ], disabled: true);
 
     // Then: array is disabled and all controls are disabled
@@ -588,8 +588,8 @@ void main() {
   test("Disabled array changes to enable when enable children", () {
     // Given: a disabled array
     final array = FormArray([
-      FormControl<String>(),
-      FormControl<String>(),
+      FormControl<String?>(),
+      FormControl<String?>(),
     ], disabled: true);
 
     // When: enabled child
@@ -616,7 +616,7 @@ void main() {
   });
 }
 
-Map<String, dynamic>? _emptyAddressee(AbstractControl control) {
+Map<String, dynamic>? _emptyAddressee(AbstractControl? control) {
   final emails = (control as FormArray<bool>).value;
   return emails!.any((isSelected) => isSelected)
       ? null

@@ -14,8 +14,8 @@ class AnyValidator<T> extends Validator<Iterable<T>> {
   AnyValidator(this.test);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Iterable<T>> control) {
-    return control.value?.any((T value) => this.test(value)) == true
+  Map<String, dynamic>? validate(AbstractControl<Iterable<T>>? control) {
+    return control?.value?.any((T value) => this.test(value)) == true
         ? null
         : {ValidationMessage.any: true};
   }
