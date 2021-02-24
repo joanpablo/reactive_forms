@@ -43,7 +43,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
     bool isDense = true,
     bool isExpanded = false,
     bool readOnly = false,
-    double itemHeight = 8.0,
+    double itemHeight = kMinInteractiveDimension,
     ValueChanged<T>? onChanged,
   })  :
         // assert(items != null),

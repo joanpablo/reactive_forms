@@ -183,7 +183,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form
         final form = FormGroup({
-          'switch': FormControl<bool?>(disabled: true),
+          'switch': FormControl<bool>(disabled: true),
         });
 
         // And: a widget that is bind to the form

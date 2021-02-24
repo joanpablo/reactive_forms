@@ -850,7 +850,9 @@ class FormControl<T> extends AbstractControl<T> {
       return;
     }
 
-    unregisterFocusController(_focusController!);
+    if (_focusController != null) {
+      unregisterFocusController(_focusController!);
+    }
 
     _focusController = focusController;
     _focusController!.addListener(_onFocusControllerChanged);
@@ -858,11 +860,11 @@ class FormControl<T> extends AbstractControl<T> {
 
   void _onFocusControllerChanged() {
     _updateFocusState(
-      _focusController!.hasFocus,
+      _focusController?.hasFocus == true,
       notifyFocusController: false,
     );
 
-    if (!_focusController!.hasFocus) {
+    if (_focusController?.hasFocus == false) {
       this.markAsTouched();
     }
   }
@@ -873,8 +875,8 @@ class FormControl<T> extends AbstractControl<T> {
     _hasFocus = value;
     _focusChanges.add(_hasFocus);
 
-    if (notifyFocusController && _focusController != null) {
-      _focusController!.onControlFocusChanged(_hasFocus);
+    if (notifyFocusController) {
+      _focusController?.onControlFocusChanged(_hasFocus);
     }
   }
 

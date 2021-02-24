@@ -112,7 +112,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
                   }
                 }),
               ),
-              child!,
+              child ?? Container(),
             );
           },
         );
