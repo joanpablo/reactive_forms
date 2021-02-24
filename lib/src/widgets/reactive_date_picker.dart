@@ -144,7 +144,7 @@ class ReactiveDatePickerDelegate {
   ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
 
   /// Gets the control bound to the [ReactiveTimePicker] widget
-  AbstractControl<dynamic> get control => _field.control;
+  AbstractControl<dynamic>? get control => _field.control;
 
   /// Gets the value selected in the date picker.
   DateTime get value => _field.value;

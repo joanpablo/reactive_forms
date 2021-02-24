@@ -47,7 +47,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
             return Radio<T>(
               value: value,
               groupValue: field.value,
-              onChanged: field.control.enabled ? field.didChange : null,
+              onChanged: field.control?.enabled == true ? field.didChange : null,
               activeColor: activeColor,
               focusColor: focusColor,
               hoverColor: hoverColor,

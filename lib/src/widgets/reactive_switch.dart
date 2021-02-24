@@ -56,7 +56,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch(
               value: field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
+              onChanged: field.control?.enabled == true ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
@@ -117,7 +117,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           builder: (ReactiveFormFieldState<bool> field) {
             return Switch.adaptive(
               value: field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
+              onChanged: field.control?.enabled == true ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,

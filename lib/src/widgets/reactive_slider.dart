@@ -57,7 +57,7 @@ class ReactiveSlider extends ReactiveFormField<double> {
 
             return Slider(
               value: value,
-              onChanged: field.control.enabled ? field.didChange : null,
+              onChanged: field.control?.enabled == true ? field.didChange : null,
               min: min,
               max: max,
               divisions: divisions,

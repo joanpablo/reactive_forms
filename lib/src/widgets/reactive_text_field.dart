@@ -173,7 +173,7 @@ class ReactiveTextField extends ReactiveFormField<dynamic> {
               onTap: onTap,
               onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
               inputFormatters: inputFormatters,
-              enabled: field.control.enabled,
+              enabled: field.control?.enabled == true,
               cursorWidth: cursorWidth,
               cursorRadius: cursorRadius,
               cursorColor: cursorColor,
@@ -247,11 +247,11 @@ class _ReactiveTextFieldState extends ReactiveFormFieldState<dynamic> {
 
   void _registerFocusController(FocusController focusController) {
     _focusController = focusController;
-    this.control.registerFocusController(focusController);
+    this.control?.registerFocusController(focusController);
   }
 
   void _unregisterFocusController() {
-    this.control.unregisterFocusController(_focusController!);
+    this.control?.unregisterFocusController(_focusController!);
     _focusController!.dispose();
   }
 

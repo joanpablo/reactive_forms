@@ -46,7 +46,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField {
           builder: (ReactiveFormFieldState field) {
             return CheckboxListTile(
               value: tristate ? field.value : field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
+              onChanged: field.control?.enabled == true ? field.didChange : null,
               activeColor: activeColor,
               checkColor: checkColor,
               title: title,

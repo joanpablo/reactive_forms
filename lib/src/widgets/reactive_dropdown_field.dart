@@ -74,7 +74,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
               effectiveValue = null;
             }
 
-            final isDisabled = (readOnly || field.control.disabled);
+            final isDisabled = (readOnly || field.control?.disabled == true);
             Widget? effectiveDisabledHint = disabledHint;
             if (isDisabled && disabledHint == null) {
               final selectedItemIndex =
@@ -129,13 +129,13 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
 
   @override
   void subscribeControl() {
-    this.control.registerFocusController(_focusController);
+    this.control?.registerFocusController(_focusController);
     super.subscribeControl();
   }
 
   @override
   void dispose() {
-    this.control.unregisterFocusController(_focusController);
+    this.control?.unregisterFocusController(_focusController);
     _focusController.dispose();
     super.dispose();
   }
