@@ -14,13 +14,13 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 /// Defines an interface that acts as a bridge between [FormControl] and a
 /// reactive native widget.
 abstract class ControlValueAccessor<T, K> {
-  late FormControl<T> _control;
-  late ChangeFunction<K>? _onChange;
+  FormControl<T>? _control;
+  ChangeFunction<K>? _onChange;
   bool _viewToModelChange = false;
-  late StreamSubscription _onChangeSubscription;
+  StreamSubscription? _onChangeSubscription;
 
   /// Gets the control bind to this value accessor.
-  FormControl<T> get control => _control;
+  FormControl<T>? get control => _control;
 
   /// Returns the value that must be supplied to the [control].
   ///
@@ -51,9 +51,9 @@ abstract class ControlValueAccessor<T, K> {
     _viewToModelChange = true;
 
     final modelValue = this.viewToModelValue(viewValue);
-    if (_control.value != modelValue) {
-      _control.markAsDirty(emitEvent: false);
-      _control.updateValue(modelValue);
+    if (_control?.value != modelValue) {
+      _control?.markAsDirty(emitEvent: false);
+      _control?.updateValue(modelValue);
     } else {
       _viewToModelChange = false;
     }
@@ -68,7 +68,7 @@ abstract class ControlValueAccessor<T, K> {
   void registerControl(FormControl<T> control, {ChangeFunction<K>? onChange}) {
 
     _control = control;
-    _onChangeSubscription = _control.valueChanges.listen(_updateView);
+    _onChangeSubscription = _control?.valueChanges.listen(_updateView);
 
     _onChange = onChange;
   }
@@ -76,7 +76,7 @@ abstract class ControlValueAccessor<T, K> {
   /// Disposes the value accessors.
   @mustCallSuper
   void dispose() {
-    _onChangeSubscription.cancel();
+    _onChangeSubscription?.cancel();
   }
 
   void _updateView(T? modelValue) {
@@ -85,7 +85,7 @@ abstract class ControlValueAccessor<T, K> {
       return;
     }
 
-    final viewValue = this.modelToViewValue(_control.value);
+    final viewValue = this.modelToViewValue(_control?.value);
 
     if (_onChange != null) {
       _onChange!(viewValue);
