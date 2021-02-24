@@ -38,7 +38,8 @@ typedef ReactiveDatePickerBuilder = Widget Function(
 ///   },
 /// )
 /// ```
-class ReactiveDatePicker extends ReactiveFormField<dynamic> {
+class ReactiveDatePicker
+    extends ReactiveFormField<_ReactiveDatePickerState, dynamic> {
   /// Creates a [ReactiveDatePicker] that wraps the function [showDatePicker].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -82,7 +83,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<dynamic> field) {
+          builder: (field) {
             return builder(
               field.context,
               ReactiveDatePickerDelegate._(
@@ -128,18 +129,17 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   }
 
   @override
-  ReactiveFormFieldState<dynamic> createState() => _ReactiveDatePickerState();
+  _ReactiveDatePickerState createState() => _ReactiveDatePickerState();
 }
 
 /// Definition of the function responsible for show the date picker.
-typedef _ShowDatePickerCallback = Function(
-    ReactiveFormFieldState<dynamic> field);
+typedef _ShowDatePickerCallback = Function(_ReactiveDatePickerState field);
 
 /// This class is responsible of showing the picker dialog.
 ///
 /// See also [ReactiveDatePicker].
 class ReactiveDatePickerDelegate {
-  final ReactiveFormFieldState<dynamic> _field;
+  final _ReactiveDatePickerState _field;
   final _ShowDatePickerCallback _showPickerCallback;
 
   ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
@@ -156,7 +156,8 @@ class ReactiveDatePickerDelegate {
   }
 }
 
-class _ReactiveDatePickerState extends ReactiveFormFieldState<dynamic> {
+class _ReactiveDatePickerState extends ReactiveFormFieldState<
+    ReactiveDatePicker, _ReactiveDatePickerState, dynamic> {
   @override
   ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
     if (this.control is AbstractControl<String>) {

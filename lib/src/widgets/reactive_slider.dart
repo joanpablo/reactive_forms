@@ -17,7 +17,7 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 ///
 /// For documentation about the various parameters, see the [Slider] class
 /// and [new Slider], the constructor.
-class ReactiveSlider extends ReactiveFormField<double> {
+class ReactiveSlider extends ReactiveFormFieldValue<double> {
   /// Creates an instance os a [ReactiveSlider].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -47,7 +47,7 @@ class ReactiveSlider extends ReactiveFormField<double> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<double> field) {
+          builder: (field) {
             double value = field.value;
             if (value == null || value < min) {
               value = min;
@@ -74,6 +74,6 @@ class ReactiveSlider extends ReactiveFormField<double> {
         );
 
   @override
-  ReactiveFormFieldState<double> createState() =>
-      ReactiveFormFieldState<double>();
+  ReactiveFormFieldValueState<double> createState() =>
+      ReactiveFormFieldValueState<double>();
 }

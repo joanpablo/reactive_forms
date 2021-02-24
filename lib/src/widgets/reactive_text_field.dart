@@ -16,7 +16,10 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField<T> extends ReactiveFormField<T> {
+class ReactiveTextField<T>
+    extends ReactiveFormField<_ReactiveTextFieldState, T> {
+  final FocusNode focusNode;
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -121,7 +124,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
     InputCounterWidgetBuilder buildCounter,
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
-    FocusNode focusNode,
+    this.focusNode,
   }) : super(
           key: key,
           formControl: formControl,
@@ -129,19 +132,16 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
           valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState<T> field) {
-            final state = field as _ReactiveTextFieldState<T>;
+          builder: (field) {
             final InputDecoration effectiveDecoration = (decoration ??
                     const InputDecoration())
-                .applyDefaults(Theme.of(state.context).inputDecorationTheme);
-
-            state._setFocusNode(focusNode);
+                .applyDefaults(Theme.of(field.context).inputDecorationTheme);
 
             return TextField(
-              controller: state._textController,
-              focusNode: state.focusNode,
+              controller: field._textController,
+              focusNode: field.focusNode,
               decoration:
-                  effectiveDecoration.copyWith(errorText: state.errorText),
+                  effectiveDecoration.copyWith(errorText: field.errorText),
               keyboardType: keyboardType,
               textInputAction: textInputAction,
               style: style,
@@ -188,21 +188,22 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => _ReactiveTextFieldState<T>();
+  _ReactiveTextFieldState<T> createState() => _ReactiveTextFieldState<T>();
 }
 
-class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
+class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<
+    ReactiveTextField<T>, _ReactiveTextFieldState, T> {
   TextEditingController _textController;
-  FocusNode _focusNode;
   FocusController _focusController;
 
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+  FocusNode get focusNode => widget.focusNode ?? _focusController.focusNode;
 
   @override
   void initState() {
     super.initState();
 
     final initialValue = this.value;
+    _registerFocusController(FocusController(focusNode: widget.focusNode));
     _textController = TextEditingController(
         text: initialValue == null ? '' : initialValue.toString());
   }
@@ -254,18 +255,5 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   void _unregisterFocusController() {
     this.control.unregisterFocusController(_focusController);
     _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode focusNode) {
-    if (_focusNode == focusNode) {
-      return;
-    } else if (focusNode == null && _focusNode != null) {
-      _focusNode = null;
-    } else if (focusNode != null && _focusNode == null) {
-      _focusNode = focusNode;
-    }
-
-    _unregisterFocusController();
-    _registerFocusController(FocusController(focusNode: _focusNode));
   }
 }

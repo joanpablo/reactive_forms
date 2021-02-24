@@ -13,7 +13,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [RadioListTile]
 /// class and [new RadioListTile], the constructor.
-class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
+class ReactiveRadioListTile<T> extends ReactiveFormFieldValue<T> {
   /// Create an instance of a [ReactiveRadioListTile].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -41,7 +41,7 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (field) {
             return RadioListTile<T>(
               value: value,
               groupValue: field.value,
@@ -58,5 +58,6 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();
+  ReactiveFormFieldValueState<T> createState() =>
+      ReactiveFormFieldValueState<T>();
 }

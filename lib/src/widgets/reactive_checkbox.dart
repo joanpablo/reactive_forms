@@ -19,7 +19,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Checkbox] class
 /// and [new Checkbox], the constructor.
-class ReactiveCheckbox extends ReactiveFormField<bool> {
+class ReactiveCheckbox extends ReactiveFormFieldValue<bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
@@ -40,7 +40,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool> field) {
+          builder: (field) {
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
@@ -58,5 +58,6 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldValueState<bool> createState() =>
+      ReactiveFormFieldValueState<bool>();
 }

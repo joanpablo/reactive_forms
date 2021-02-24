@@ -13,7 +13,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Radio] class
 /// and [new Radio], the constructor.
-class ReactiveRadio<T> extends ReactiveFormField<T> {
+class ReactiveRadio<T> extends ReactiveFormFieldValue<T> {
   /// Creates a [ReactiveRadio] that contains a [Radio].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -43,7 +43,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (field) {
             return Radio<T>(
               value: value,
               groupValue: field.value,
@@ -59,5 +59,6 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();
+  ReactiveFormFieldValueState<T> createState() =>
+      ReactiveFormFieldValueState<T>();
 }

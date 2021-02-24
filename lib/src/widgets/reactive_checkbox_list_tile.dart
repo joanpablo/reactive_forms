@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [CheckboxListTile]
 /// class and [new CheckboxListTile], the constructor.
-class ReactiveCheckboxListTile extends ReactiveFormField<bool> {
+class ReactiveCheckboxListTile extends ReactiveFormFieldValue {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
@@ -43,7 +43,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState field) {
+          builder: (field) {
             return CheckboxListTile(
               value: tristate ? field.value : field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -63,5 +63,5 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool> {
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldValueState createState() => ReactiveFormFieldValueState();
 }

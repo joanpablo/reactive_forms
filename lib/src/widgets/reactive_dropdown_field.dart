@@ -7,7 +7,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
-class ReactiveDropdownField<T> extends ReactiveFormField<T> {
+class ReactiveDropdownField<T>
+    extends ReactiveFormField<_ReactiveDropdownFieldState<T>, T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -59,8 +60,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
           formControlName: formControlName,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState<T> field) {
-            final state = field as _ReactiveDropdownFieldState<T>;
+          builder: (field) {
+            final state = field;
 
             final InputDecoration effectiveDecoration =
                 decoration.applyDefaults(
@@ -120,10 +121,12 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => _ReactiveDropdownFieldState<T>();
+  _ReactiveDropdownFieldState<T> createState() =>
+      _ReactiveDropdownFieldState<T>();
 }
 
-class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
+class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<
+    ReactiveDropdownField<T>, _ReactiveDropdownFieldState<T>, T> {
   FocusController _focusController = FocusController();
 
   @override

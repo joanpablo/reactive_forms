@@ -68,13 +68,13 @@ void main() {
     );
 
     test('Assert error if field is null in BindingCastException', () {
-      final exception =
-          () => BindingCastException<dynamic>(null, FormControl<dynamic>());
+      final exception = () =>
+          BindingCastException<dynamic, dynamic>(null, FormControl<dynamic>());
       expect(exception, throwsAssertionError);
     });
 
     test('Assert error if control is null in BindingCastException', () {
-      final exception = () => BindingCastException<dynamic>(
+      final exception = () => BindingCastException<dynamic, dynamic>(
             ReactiveFormField(
               builder: (field) => null,
               formControlName: '',

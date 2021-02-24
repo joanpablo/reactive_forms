@@ -19,7 +19,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Switch] class
 /// and [new Switch], the constructor.
-class ReactiveSwitch extends ReactiveFormField<bool> {
+class ReactiveSwitch extends ReactiveFormFieldValue<bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -53,7 +53,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool> field) {
+          builder: (field) {
             return Switch(
               value: field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -114,7 +114,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool> field) {
+          builder: (field) {
             return Switch.adaptive(
               value: field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -135,5 +135,6 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldValueState<bool> createState() =>
+      ReactiveFormFieldValueState<bool>();
 }

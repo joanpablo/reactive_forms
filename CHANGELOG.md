@@ -1,3 +1,8 @@
+# 10.0.0
+
+## Breaking changes
+- improved type system
+
 # 9.0.1
 
 ## Fix

@@ -13,8 +13,7 @@ import 'package:reactive_forms/src/value_accessors/default_value_accessor.dart';
 /// Signature for building the widget representing the form field.
 ///
 /// Used by [FormField.builder].
-typedef ReactiveFormFieldBuilder<T> = Widget Function(
-    ReactiveFormFieldState<T> field);
+typedef ReactiveFormFieldBuilder<S> = Widget Function(S field);
 
 /// Signature for customize when to show errors in a widget.
 typedef ShowErrorsFunction = bool Function(AbstractControl<dynamic> control);
@@ -30,11 +29,11 @@ typedef ValidationMessagesFunction<T> = Map<String, String> Function(
 /// so that updates and validation errors are visually reflected in the UI.
 ///
 /// It is the base class for all other reactive widgets.
-class ReactiveFormField<T> extends StatefulWidget {
+class ReactiveFormField<S, T> extends StatefulWidget {
   /// Function that returns the widget representing this form field. It is
   /// passed the form field state as input, containing the current value and
   /// validation state of this field.
-  final ReactiveFormFieldBuilder<T> _builder;
+  final ReactiveFormFieldBuilder<S> _builder;
 
   /// The name of the [FormControl] that is bound to this widget.
   final String formControlName;
@@ -64,7 +63,7 @@ class ReactiveFormField<T> extends StatefulWidget {
     this.formControlName,
     this.valueAccessor,
     this.showErrors,
-    @required ReactiveFormFieldBuilder<T> builder,
+    @required ReactiveFormFieldBuilder<S> builder,
     ValidationMessagesFunction<T> validationMessages,
   })  : assert(
             (formControlName != null && formControl == null) ||
@@ -76,16 +75,44 @@ class ReactiveFormField<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();
+  ReactiveFormFieldState<ReactiveFormField<S, T>, S, T> createState() =>
+      ReactiveFormFieldState<ReactiveFormField<S, T>, S, T>();
 }
 
+class ReactiveFormFieldValue<T>
+    extends ReactiveFormField<ReactiveFormFieldValueState<T>, T> {
+  ReactiveFormFieldValue({
+    Key key,
+    FormControl<T> formControl,
+    String formControlName,
+    ControlValueAccessor valueAccessor,
+    ShowErrorsFunction showErrors,
+    @required ReactiveFormFieldBuilder<ReactiveFormFieldValueState<T>> builder,
+    ValidationMessagesFunction validationMessages,
+  }) : super(
+            key: key,
+            formControl: formControl,
+            formControlName: formControlName,
+            valueAccessor: valueAccessor,
+            showErrors: showErrors,
+            builder: builder,
+            validationMessages: validationMessages);
+}
+
+class ReactiveFormFieldValueState<T> extends ReactiveFormFieldState<
+    ReactiveFormFieldValue<T>, ReactiveFormFieldValueState<T>, T> {}
+
 /// Represents the state of the [ReactiveFormField] stateful widget.
-class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
+class ReactiveFormFieldState<W extends ReactiveFormField<S, T>, S, T>
+    extends State<ReactiveFormField<S, T>> {
   /// The [FormControl] that is bound to this state.
   FormControl<T> control;
   StreamSubscription _statusChangesSubscription;
   StreamSubscription _touchChangesSubscription;
   ControlValueAccessor<T, dynamic> _valueAccessor;
+
+  @override
+  W get widget => super.widget as W;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
   dynamic get value => this.valueAccessor.modelToViewValue(this.control.value);
@@ -147,7 +174,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   }
 
   @override
-  void didUpdateWidget(ReactiveFormField<T> oldWidget) {
+  void didUpdateWidget(ReactiveFormField<S, T> oldWidget) {
     if (widget.valueAccessor != null &&
         widget.valueAccessor != this.valueAccessor) {
       this.valueAccessor.dispose();
@@ -248,7 +275,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
     final control = form.control(widget.formControlName);
     if (!(control is FormControl<T>)) {
-      throw BindingCastException<T>(this.widget, control);
+      throw BindingCastException<S, T>(this.widget, control);
     }
 
     return control;
@@ -256,6 +283,6 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return widget._builder(this);
+    return widget._builder(this as S);
   }
 }
