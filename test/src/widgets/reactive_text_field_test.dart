@@ -289,7 +289,6 @@ void main() {
           expect(errorDetails.exception,
               isInstanceOf<FormControlParentNotFoundException>());
         };
-
         // Expect: error when create text field without parent widget
         await tester.pumpWidget(ReactiveTextField(formControlName: 'name'));
       },
@@ -423,7 +422,8 @@ void main() {
 
         // When: get the state of the text field
         ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField) as ReactiveFormFieldState;
+                .firstWhere((state) => state.widget is ReactiveTextField)
+            as ReactiveFormFieldState;
 
         // Then: the value accessor is IntValueAccessor
         expect(state.valueAccessor, isInstanceOf<IntValueAccessor>());
@@ -446,7 +446,8 @@ void main() {
 
         // When: get the state of the text field
         ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField) as ReactiveFormFieldState;
+                .firstWhere((state) => state.widget is ReactiveTextField)
+            as ReactiveFormFieldState;
 
         // Then: the value accessor is DoubleValueAccessor
         expect(state.valueAccessor, isInstanceOf<DoubleValueAccessor>());
@@ -469,7 +470,8 @@ void main() {
 
         // When: get the state of the text field
         ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField) as ReactiveFormFieldState;
+                .firstWhere((state) => state.widget is ReactiveTextField)
+            as ReactiveFormFieldState;
 
         // Then: the value accessor is DateTimeValueAccessor
         expect(state.valueAccessor, isInstanceOf<DateTimeValueAccessor>());
@@ -492,7 +494,8 @@ void main() {
 
         // When: get the state of the text field
         ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField) as ReactiveFormFieldState;
+                .firstWhere((state) => state.widget is ReactiveTextField)
+            as ReactiveFormFieldState;
 
         // Then: the value accessor is TimeOfDayValueAccessor
         expect(state.valueAccessor, isInstanceOf<TimeOfDayValueAccessor>());

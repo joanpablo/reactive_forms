@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// It shouldn't be instantiated directly.
 abstract class AbstractControl<T> {
   late final _statusChanges = StreamController<ControlStatus>.broadcast();
-  late final _valueChanges = StreamController<T>.broadcast();
+  late final _valueChanges = StreamController<T?>.broadcast();
   late final _touchChanges = StreamController<bool>.broadcast();
   late final List<ValidatorFunction<T>> _validators;
   late final List<AsyncValidatorFunction> _asyncValidators;
@@ -120,7 +120,7 @@ abstract class AbstractControl<T> {
   Stream<ControlStatus> get statusChanged => _statusChanges.stream;
 
   /// A [Stream] that emits the value of the control every time it changes.
-  Stream<T> get valueChanges => _valueChanges.stream;
+  Stream<T?> get valueChanges => _valueChanges.stream;
 
   /// A [Stream] that emits an event every time the control
   /// is touched or untouched.
@@ -323,6 +323,7 @@ abstract class AbstractControl<T> {
   void markAsEnabled({bool? updateParent, bool? emitEvent}) {
     emitEvent ??= true;
     updateParent ??= true;
+
 
     if (this.enabled) {
       return;
@@ -582,8 +583,8 @@ abstract class AbstractControl<T> {
       }
     }
 
-    if (emitEvent && this.value != null) {
-      _valueChanges.add(this.value!);
+    if (emitEvent) {
+      _valueChanges.add(this.value);
       _statusChanges.add(_status);
     }
 
@@ -1143,7 +1144,9 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Default is false.
   @override
   void markAsEnabled({bool? updateParent, bool? emitEvent}) {
+
     _controls.forEach((_, control) {
+      print(emitEvent);
       control?.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);

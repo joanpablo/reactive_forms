@@ -46,7 +46,7 @@ class ReactiveForm extends StatefulWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static AbstractControl of(BuildContext context, {bool listen: true}) {
+  static AbstractControl? of(BuildContext context, {bool listen: true}) {
     if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()!
@@ -55,7 +55,7 @@ class ReactiveForm extends StatefulWidget {
 
     final element = context.getElementForInheritedWidgetOfExactType<
         FormControlInheritedStreamer>();
-    return (element?.widget as FormControlInheritedStreamer).control;
+    return element != null ? (element.widget as FormControlInheritedStreamer).control : null;
   }
 
   @override

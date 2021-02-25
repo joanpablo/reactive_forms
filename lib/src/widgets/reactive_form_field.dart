@@ -241,8 +241,8 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
       return widget.formControl!;
     }
 
-    final form =
-        ReactiveForm.of(context, listen: false) as FormControlCollection;
+    final FormControlCollection? form =
+        ReactiveForm.of(context, listen: false) as FormControlCollection?;
     // ignore: unnecessary_null_comparison
     if (form == null) {
       throw FormControlParentNotFoundException(widget);
