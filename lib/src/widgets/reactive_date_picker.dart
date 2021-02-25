@@ -57,7 +57,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   ReactiveDatePicker({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<dynamic> formControl,
     @required ReactiveDatePickerBuilder builder,
     @required DateTime firstDate,
     @required DateTime lastDate,
