@@ -26,7 +26,7 @@ dependencies:
 
   reactive_forms:
     path: ../
-  intl: ^0.17.0
+  intl: ^0.16.1
   reactive_forms_widgets: ^0.3.4
 
   # The following adds the Cupertino Icons font to your application.
