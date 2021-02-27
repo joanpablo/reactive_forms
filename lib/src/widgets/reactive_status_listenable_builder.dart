@@ -16,13 +16,13 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   final String formControlName;
 
   // The control bound to this widget
-  final AbstractControl formControl;
+  final AbstractControl<dynamic> formControl;
 
   /// Optionally child widget
   final Widget child;
 
   /// The builder that creates a widget depending on the status of the control.
-  final ReactiveListenableWidgetBuilder builder;
+  final ReactiveListenableWidgetBuilder<dynamic> builder;
 
   /// Creates an instance of [ReactiveStatusListenableBuilder].
   ///
@@ -46,7 +46,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AbstractControl control = this.formControl;
+    AbstractControl<dynamic> control = this.formControl;
     if (control == null) {
       final form =
           ReactiveForm.of(context, listen: false) as FormControlCollection;
