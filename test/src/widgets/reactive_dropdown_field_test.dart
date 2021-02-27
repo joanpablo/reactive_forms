@@ -11,7 +11,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'dropdown': FormControl<bool>(),
+          'dropdown': FormControl<String>(),
         });
 
         // And: a widget that is bind to the form

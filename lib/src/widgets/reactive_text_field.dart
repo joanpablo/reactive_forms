@@ -84,7 +84,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
     Key key,
     String formControlName,
     FormControl<T> formControl,
-    ValidationMessagesFunction validationMessages,
+    ValidationMessagesFunction<T> validationMessages,
     ControlValueAccessor<T, String> valueAccessor,
     ShowErrorsFunction showErrors,
     InputDecoration decoration = const InputDecoration(),
@@ -129,8 +129,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
           valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState field) {
-            final state = field as _ReactiveTextFieldState;
+          builder: (ReactiveFormFieldState<T> field) {
+            final state = field as _ReactiveTextFieldState<T>;
             final InputDecoration effectiveDecoration = (decoration ??
                     const InputDecoration())
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
@@ -232,7 +232,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   }
 
   @override
-  ControlValueAccessor selectValueAccessor() {
+  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
     if (this.control is FormControl<int>) {
       return IntValueAccessor();
     } else if (this.control is FormControl<double>) {

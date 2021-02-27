@@ -57,7 +57,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   ReactiveDatePicker({
     Key key,
     String formControlName,
-    FormControl formControl,
+    FormControl<dynamic> formControl,
     @required ReactiveDatePickerBuilder builder,
     @required DateTime firstDate,
     @required DateTime lastDate,
@@ -158,11 +158,11 @@ class ReactiveDatePickerDelegate {
 
 class _ReactiveDatePickerState extends ReactiveFormFieldState<dynamic> {
   @override
-  ControlValueAccessor selectValueAccessor() {
+  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
     if (this.control is AbstractControl<String>) {
       return Iso8601DateTimeValueAccessor();
     } else if (this.control is AbstractControl<DateTime>) {
-      return DefaultValueAccessor();
+      return DefaultValueAccessor<dynamic>();
     }
 
     throw ValueAccessorException('Invalid widget binding. ReactiveDatePicker '
