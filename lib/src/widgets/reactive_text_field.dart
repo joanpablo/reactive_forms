@@ -129,8 +129,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
           valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState field) {
-            final state = field as _ReactiveTextFieldState;
+          builder: (ReactiveFormFieldState<T> field) {
+            final state = field as _ReactiveTextFieldState<T>;
             final InputDecoration effectiveDecoration = (decoration ??
                     const InputDecoration())
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);

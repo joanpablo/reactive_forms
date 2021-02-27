@@ -205,7 +205,7 @@ class ReactiveFormFieldState<T> extends State<ReactiveFormField<T>> {
   /// child widget changes.
   ///
   /// Updates the value of the [FormControl] bound to this widget.
-  void didChange(T value) {
+  void didChange(dynamic value) {
     _valueAccessor.updateModel(value);
     _checkTouchedState();
   }
