@@ -1,3 +1,10 @@
+# 9.0.0
+
+## Breaking changes
+- An enhanced strongly typed system to improve casting at compilation time and improve casting
+exception handler in runtime. This version was created to be compatible with analysis options
+in "implicit-casts: false" and "implicit-dynamic: false".
+
 # 8.0.3
 
 ## Fix
