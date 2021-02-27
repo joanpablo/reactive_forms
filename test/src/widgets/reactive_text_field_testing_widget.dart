@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class ReactiveTextFieldTestingWidget extends StatelessWidget {
+class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
   final FormGroup form;
   final ValidationMessagesFunction validationMessages;
   final Map<String, String> bindings;
@@ -27,7 +27,7 @@ class ReactiveTextFieldTestingWidget extends StatelessWidget {
           formGroup: this.form,
           child: Column(
             children: <Widget>[
-              ReactiveTextField(
+              ReactiveTextField<T>(
                 formControlName: this.bindings['textField'],
                 validationMessages: this.validationMessages,
                 showErrors: showErrors,
