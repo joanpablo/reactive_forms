@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../widgets/reactive_text_field_testing_widget.dart';
+
 void main() {
   group('Exceptions tests', () {
     test('FormControlNotFoundException message references the control index',
@@ -45,5 +47,41 @@ void main() {
       expect(ValueAccessorException('message').toString(),
           'ValueAccessorException: message');
     });
+
+    testWidgets(
+      'Bind a widget that is expecting a control of type String to a control '
+      'with different data type rises an exception',
+      (WidgetTester tester) async {
+        // Given: a form and a date time field
+        final form = FormGroup({
+          'name': FormControl<dynamic>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(ReactiveTextFieldTestingWidget<String>(
+          form: form,
+        ));
+
+        // Then: initial date is equals to last Date
+        expect(tester.takeException(), isInstanceOf<BindingCastException>());
+      },
+    );
+
+    test('Assert error if field is null in BindingCastException', () {
+      final exception =
+          () => BindingCastException<dynamic>(null, FormControl<dynamic>());
+      expect(exception, throwsAssertionError);
+    });
+
+    // test('Assert error if control is null in BindingCastException', () {
+    //   final exception = () => BindingCastException<dynamic>(
+    //         ReactiveFormField(
+    //           builder: (field) => null,
+    //           formControlName: '',
+    //         ),
+    //         null,
+    //       );
+    //   expect(exception, throwsAssertionError);
+    // },skip: true);
   });
 }

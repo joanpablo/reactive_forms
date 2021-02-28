@@ -25,7 +25,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
   ReactiveDropdownField({
     Key? key,
     String? formControlName,
-    FormControl? formControl,
+    FormControl<T>? formControl,
     required List<DropdownMenuItem<T>> items,
     ValidationMessagesFunction? validationMessages,
     ShowErrorsFunction? showErrors,
@@ -53,14 +53,13 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
         // assert(isDense != null),
         // assert(isExpanded != null),
         assert(itemHeight > 0),
-
         super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState field) {
+          builder: (ReactiveFormFieldState<T> field) {
             final state = field as _ReactiveDropdownFieldState<T>;
 
             final InputDecoration effectiveDecoration =

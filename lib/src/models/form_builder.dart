@@ -84,12 +84,13 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction> && value.isNotEmpty) {
-        return MapEntry(key, FormControl(validators: value));
-      } else if (value is List<dynamic>) {
+      } else if (value is List) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
         } else {
+          if (value.first != null && value is List<ValidatorFunction>) {
+            return MapEntry(key, FormControl(validators: value));
+          }
           final defaultValue = value.first;
           final validators = List.of(value.skip(1));
 

@@ -2,9 +2,11 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'package:reactive_forms/reactive_forms.dart';
+
 /// This exception is thrown by [FormBuilder] when trying to create
 /// controls with bad initialization params.
-class FormBuilderInvalidInitializationException implements Exception {
+class FormBuilderInvalidInitializationException extends ReactiveFormsException {
   final String message;
 
   /// Create an instance of the exception with the specified [message]

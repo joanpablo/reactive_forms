@@ -20,8 +20,8 @@ class ViewModelProvider extends InheritedWidget {
 class NewContactViewModel {
   static const String PHONES = 'phones';
 
-  final form = fb.group({
-    PHONES: fb.array<String>(['']),
+  final form = fb.group(<String, dynamic>{
+    PHONES: fb.array<String>(<String>['']),
   });
 
   NewContactViewModel() {
@@ -35,7 +35,7 @@ class NewContactViewModel {
     });
   }
 
-  FormArray<String> get phones => this.form.control(PHONES);
+  FormArray<String> get phones => this.form.control(PHONES) as FormArray<String>;
 }
 
 class AddDynamicControlsSample extends StatelessWidget {
@@ -59,9 +59,9 @@ class AddDynamicControlsSample extends StatelessWidget {
                       for (final control in array.controls)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
-                          child: ReactiveTextField(
+                          child: ReactiveTextField<String>(
                             key: ObjectKey(control),
-                            formControl: control,
+                            formControl: control as FormControl<String>,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Phone number',

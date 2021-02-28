@@ -14,7 +14,7 @@ class _ArraySampleState extends State<ArraySample> {
   });
 
   FormArray<bool> get selectedContacts =>
-      form.control('selectedContacts') as FormArray;
+      form.control('selectedContacts') as FormArray<bool>;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _ArraySampleState extends State<ArraySample> {
     super.initState();
   }
 
-  Widget _buildEmailListItem(contact) {
+  Widget _buildEmailListItem(String contact) {
     return ReactiveCheckboxListTile(
       formControlName: this.contacts.indexOf(contact).toString(),
       title: Text(contact),
@@ -86,5 +86,5 @@ Map<String, dynamic> _emptyAddressee(AbstractControl control) {
   final emails = (control as FormArray<bool>).value;
   return emails.any((isSelected) => isSelected)
       ? null
-      : {'emptyAddressee': true};
+      : <String, dynamic>{'emptyAddressee': true};
 }

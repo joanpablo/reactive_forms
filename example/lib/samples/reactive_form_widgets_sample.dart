@@ -4,7 +4,7 @@ import 'package:reactive_forms_example/sample_screen.dart';
 import 'package:reactive_forms_widgets/reactive_forms_widgets.dart';
 
 class ReactiveFormWidgetsSample extends StatelessWidget {
-  FormGroup buildForm() => fb.group({
+  FormGroup buildForm() => fb.group(<String, dynamic>{
         'menu': FormControl<String>(value: 'Tunisia'),
         'bottomSheet': FormControl<String>(value: 'Brazil'),
         'touchSpin': FormControl<double>(value: 10),
@@ -79,7 +79,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8),
-              ReactiveTouchSpin(
+              ReactiveTouchSpin<double>(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,
@@ -93,7 +93,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8),
-              ReactiveTouchSpin(
+              ReactiveTouchSpin<double>(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,

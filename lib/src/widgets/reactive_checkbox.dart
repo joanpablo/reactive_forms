@@ -26,7 +26,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
   ReactiveCheckbox({
     Key? key,
     String? formControlName,
-    FormControl? formControl,
+    FormControl<bool>? formControl,
     bool tristate = false,
     Color? activeColor,
     Color? checkColor,
@@ -44,7 +44,8 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
-              onChanged: field.control?.enabled == true ? field.didChange : null,
+              onChanged:
+                  field.control?.enabled == true ? field.didChange : null,
               mouseCursor: mouseCursor,
               activeColor: activeColor,
               checkColor: checkColor,

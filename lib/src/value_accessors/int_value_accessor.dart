@@ -7,7 +7,7 @@ import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 
 /// Represents a control value accessor that convert between data types
 /// [int] and [String].
-class IntValueAccessor extends ControlValueAccessor<int, String> {
+class IntValueAccessor<T> extends ControlValueAccessor<int, String> {
   @override
   String modelToViewValue(int? modelValue) {
     return modelValue == null ? '' : modelValue.toString();

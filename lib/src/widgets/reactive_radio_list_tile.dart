@@ -28,7 +28,7 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
   ReactiveRadioListTile({
     Key? key,
     String? formControlName,
-    FormControl? formControl,
+    FormControl<T>? formControl,
     required T value,
     Color? activeColor,
     Widget? title,
@@ -45,7 +45,8 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
             return RadioListTile<T>(
               value: value,
               groupValue: field.value,
-              onChanged: field.control?.enabled == true ? field.didChange : null,
+              onChanged:
+                  field.control?.enabled == true ? field.didChange : null,
               activeColor: activeColor,
               title: title,
               subtitle: subtitle,
