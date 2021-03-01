@@ -114,8 +114,7 @@ class ReactiveTimePickerDelegate {
   ReactiveTimePickerDelegate._(this._field, this._showPickerCallback);
 
   /// Gets the control bound to the [ReactiveTimePicker] widget
-  AbstractControl<TimeOfDay> get control =>
-      _field.control as AbstractControl<TimeOfDay>;
+  AbstractControl<TimeOfDay> get control => _field.control;
 
   /// Gets the value selected in the time picker.
   TimeOfDay get value => this.control.value;
