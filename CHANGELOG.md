@@ -1,3 +1,9 @@
+# 9.0.1
+
+## Fix
+- Add minor changes to successfully pass pub dev static analysis.
+- Add Library documentation.
+
 # 9.0.0
 
 ## Breaking changes
