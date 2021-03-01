@@ -2,6 +2,8 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+/// This library is a model-driven approach to handling Forms inputs and
+/// validations, heavily inspired in Angular's Reactive Forms.
 library reactive_forms;
 
 export 'src/exceptions/form_array_invalid_index_exception.dart';
