@@ -4,7 +4,7 @@ import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
 class ComplexSample extends StatelessWidget {
-  FormGroup buildForm() => fb.group({
+  FormGroup buildForm() => fb.group(<String, dynamic>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
           asyncValidators: [_uniqueEmail],
@@ -28,7 +28,7 @@ class ComplexSample extends StatelessWidget {
         builder: (context, form, child) {
           return Column(
             children: [
-              ReactiveTextField(
+              ReactiveTextField<String>(
                 formControlName: 'email',
                 validationMessages: (control) => {
                   ValidationMessage.required: 'The email must not be empty',
@@ -50,7 +50,7 @@ class ComplexSample extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24.0),
-              ReactiveTextField(
+              ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
                 validationMessages: (control) => {
@@ -63,7 +63,7 @@ class ComplexSample extends StatelessWidget {
                 decoration: InputDecoration(labelText: 'Password'),
               ),
               SizedBox(height: 24.0),
-              ReactiveTextField(
+              ReactiveTextField<String>(
                 formControlName: 'passwordConfirmation',
                 decoration: InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
@@ -84,9 +84,10 @@ class ComplexSample extends StatelessWidget {
               ElevatedButton(
                 child: Text('Reset all'),
                 onPressed: () => form.resetState({
-                  'email': ControlState(value: 'johnDoe', disabled: true),
-                  'progress': ControlState(value: 50.0),
-                  'rememberMe': ControlState(value: false),
+                  'email':
+                      ControlState<String>(value: 'johnDoe', disabled: true),
+                  'progress': ControlState<double>(value: 50.0),
+                  'rememberMe': ControlState<bool>(value: false),
                 }, removeFocus: true),
               ),
               Row(
@@ -130,7 +131,7 @@ class ComplexSample extends StatelessWidget {
                 labelBuilder: (double value) => '${value?.toStringAsFixed(2)}%',
               ),
               SizedBox(height: 24.0),
-              ReactiveTextField(
+              ReactiveTextField<double>(
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
                 showErrors: (control) => control.invalid,
@@ -140,7 +141,7 @@ class ComplexSample extends StatelessWidget {
                 },
               ),
               SizedBox(height: 24.0),
-              ReactiveTextField(
+              ReactiveTextField<DateTime>(
                 formControlName: 'dateTime',
                 readOnly: true,
                 decoration: InputDecoration(
@@ -159,7 +160,7 @@ class ComplexSample extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 24.0),
-              ReactiveTextField(
+              ReactiveTextField<TimeOfDay>(
                 formControlName: 'time',
                 readOnly: true,
                 decoration: InputDecoration(

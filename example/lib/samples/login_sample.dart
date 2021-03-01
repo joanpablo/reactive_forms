@@ -3,11 +3,11 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
 class LoginSample extends StatelessWidget {
-  FormGroup buildForm() => fb.group({
+  FormGroup buildForm() => fb.group(<String, dynamic>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
         ),
-        'password': [Validators.required, Validators.minLength(8)],
+        'password': ['', Validators.required, Validators.minLength(8)],
         'rememberMe': false,
       });
 
@@ -20,7 +20,7 @@ class LoginSample extends StatelessWidget {
         builder: (context, form, child) {
           return Column(
             children: [
-              ReactiveTextField(
+              ReactiveTextField<String>(
                 formControlName: 'email',
                 validationMessages: (control) => {
                   ValidationMessage.required: 'The email must not be empty',
@@ -37,7 +37,7 @@ class LoginSample extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16.0),
-              ReactiveTextField(
+              ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
                 validationMessages: (control) => {
@@ -73,9 +73,9 @@ class LoginSample extends StatelessWidget {
               ElevatedButton(
                 child: Text('Reset all'),
                 onPressed: () => form.resetState({
-                  'email': ControlState(value: null),
-                  'password': ControlState(value: null),
-                  'rememberMe': ControlState(value: false),
+                  'email': ControlState<String>(value: null),
+                  'password': ControlState<String>(value: null),
+                  'rememberMe': ControlState<bool>(value: false),
                 }, removeFocus: true),
               ),
             ],

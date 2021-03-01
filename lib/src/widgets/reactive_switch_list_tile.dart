@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [SwitchListTile]
 /// class and [new SwitchListTile], the constructor.
-class ReactiveSwitchListTile extends ReactiveFormField {
+class ReactiveSwitchListTile extends ReactiveFormField<bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
@@ -27,7 +27,7 @@ class ReactiveSwitchListTile extends ReactiveFormField {
   ReactiveSwitchListTile({
     Key? key,
     String? formControlName,
-    FormControl? formControl,
+    FormControl<bool>? formControl,
     Color? activeColor,
     Color? activeTrackColor,
     Color? inactiveThumbColor,
@@ -47,7 +47,8 @@ class ReactiveSwitchListTile extends ReactiveFormField {
           builder: (ReactiveFormFieldState field) {
             return SwitchListTile(
               value: field.value,
-              onChanged: field.control?.enabled == true ? field.didChange : null,
+              onChanged:
+                  field.control?.enabled == true ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
@@ -65,5 +66,5 @@ class ReactiveSwitchListTile extends ReactiveFormField {
         );
 
   @override
-  ReactiveFormFieldState createState() => ReactiveFormFieldState();
+  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
 }

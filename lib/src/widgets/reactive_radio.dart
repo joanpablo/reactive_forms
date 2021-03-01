@@ -29,9 +29,10 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
   /// For documentation about the various parameters, see the [Radio] class
   /// and [new Radio], the constructor.
   ReactiveRadio({
+
     Key? key,
     String? formControlName,
-    FormControl? formControl,
+    FormControl<T>? formControl,
     required T value,
     Color? activeColor,
     Color? focusColor,

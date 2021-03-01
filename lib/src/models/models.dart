@@ -1146,7 +1146,6 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   void markAsEnabled({bool? updateParent, bool? emitEvent}) {
 
     _controls.forEach((_, control) {
-      print(emitEvent);
       control?.markAsEnabled(updateParent: true, emitEvent: emitEvent);
     });
     super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
