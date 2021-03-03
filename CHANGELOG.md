@@ -1,3 +1,9 @@
+# 9.0.2
+
+## Fix
+- Remove Validators String type to fix casts errors when calling *form.control('').validators*
+in a control with a non dynamic type validator.
+
 # 9.0.1
 
 ## Fix
