@@ -1177,6 +1177,7 @@ a variety of more advanced field widgets. To know more about how to install it p
 - ReactiveDropdownSearch
 - ReactiveTouchSpin
 - ReactiveSegmentedControl
+- ReactiveImagePicker
 
 ### ReactiveTextField
 
