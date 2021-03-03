@@ -1178,6 +1178,7 @@ a variety of more advanced field widgets. To know more about how to install it p
 - ReactiveTouchSpin
 - ReactiveSegmentedControl
 - ReactiveImagePicker
+- ReactiveDateRangePicker
 
 ### ReactiveTextField
 
