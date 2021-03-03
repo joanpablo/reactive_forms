@@ -25,8 +25,8 @@ import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction<T> = Map<String, dynamic> Function(
-    AbstractControl<T> value);
+typedef ValidatorFunction = Map<String, dynamic> Function(
+    AbstractControl<dynamic> value);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
@@ -44,7 +44,7 @@ class Validators {
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
-  static ValidatorFunction<String> get email => EmailValidator().validate;
+  static ValidatorFunction get email => EmailValidator().validate;
 
   /// Gets a validator that validates if control's value is a numeric value.
   static ValidatorFunction get number => NumberValidator().validate;

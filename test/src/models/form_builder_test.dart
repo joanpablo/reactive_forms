@@ -131,7 +131,7 @@ void main() {
     test('Build a group with multiple validators', () {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
-      final emailValidator = Validators.required;
+      final emailValidator = Validators.email;
       final form = fb.group({
         'control': [requiredValidator, emailValidator],
       });
@@ -147,10 +147,10 @@ void main() {
           reason: 'not set email validator');
     });
 
-    test('Build a group with multiple validators', () {
+    test('Build a group with multiple validators and implicit type', () {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
-      final emailValidator = Validators.required;
+      final emailValidator = Validators.email;
       final form = fb.group({
         'control': ['', requiredValidator, emailValidator],
       });
