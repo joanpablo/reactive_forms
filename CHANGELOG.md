@@ -1,3 +1,8 @@
+# 9.1.0
+
+## Enhances
+- Add latest version of intl package
+
 # 9.0.2
 
 ## Fix
