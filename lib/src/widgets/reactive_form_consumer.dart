@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// Builder function definition of the [ReactiveFormConsumer] [builder].
+/// Builder function definition of the [ReactiveFormConsumer] builder.
 ///
 /// See also [ReactiveFormConsumer].
 typedef ReactiveFormConsumerBuilder = Widget Function(
