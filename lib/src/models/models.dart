@@ -27,7 +27,7 @@ abstract class AbstractControl<T> {
   Map<String, dynamic> _errors = {};
   bool _pristine = true;
 
-  T _value;
+  T? _value;
 
   ControlStatus _status;
 
@@ -567,10 +567,19 @@ abstract class AbstractControl<T> {
     _value = this._reduceValue();
   }
 
-  void updateValueAndValidity({bool updateParent, bool emitEvent}) {
-    emitEvent ??= true;
-    updateParent ??= true;
-
+  /// Recalculates the value and validation status of the control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void updateValueAndValidity({
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
     _setInitialStatus();
     _updateValue();
     if (this.enabled) {
@@ -891,7 +900,11 @@ class FormControl<T> extends AbstractControl<T> {
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
   @override
-  void updateValue(T value, {bool updateParent, bool emitEvent}) {
+  void updateValue(
+    T? value, {
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
     if (_value != value) {
       _value = value;
 

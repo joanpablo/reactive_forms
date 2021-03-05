@@ -60,7 +60,7 @@ class LoginSample extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16.0),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Sign Up'),
                 onPressed: () {
                   if (form.valid) {
@@ -70,7 +70,7 @@ class LoginSample extends StatelessWidget {
                   }
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email': ControlState<String>(value: null),
