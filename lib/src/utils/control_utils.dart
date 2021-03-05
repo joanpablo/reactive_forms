@@ -11,10 +11,10 @@ abstract class Control {
   /// Returns true if [control] is null or empty white spaces,
   /// otherwise return false.
   static bool isNullOrEmpty(AbstractControl<String> control) =>
-      isNull(control) || control.value.trim().isEmpty;
+      isNull(control) || control.value!.trim().isEmpty;
 
   /// Returns true if [control] is not null and not empty white spaces,
   /// otherwise return false.
   static bool isNotNullOrEmpty(AbstractControl<String> control) =>
-      isNotNull(control) && control.value.trim().isNotEmpty;
+      isNotNull(control) && control.value!.trim().isNotEmpty;
 }
