@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -12,23 +12,23 @@ class MaxLengthValidator extends Validator<dynamic> {
   /// Constructs a [MaxLengthValidator].
   ///
   /// The argument [maxLength] must not be null.
-  MaxLengthValidator(this.maxLength) : assert(maxLength != null);
+  MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     // don't validate empty values to allow optional controls
     if (control.value == null) {
       return null;
     }
 
-    List<dynamic> collection;
+    List<dynamic>? collection;
 
     if (control is FormArray<dynamic>) {
-      collection = control.value;
+      collection = control.value!;
     } else if (control is FormGroup) {
-      collection = control.value.keys.toList();
+      collection = control.value!.keys.toList();
     } else if (control is FormControl<Iterable<dynamic>>) {
-      collection = control.value.toList();
+      collection = control.value?.toList();
     } else if (control is FormControl<String> || control.value is String) {
       collection = control.value.runes.toList();
     }

@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -15,7 +15,7 @@ class PatternValidator extends Validator<dynamic> {
   PatternValidator(this.evaluator) : assert(evaluator != null);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     return (control.value == null ||
             control.value.toString() == '' ||
             this.evaluator.hasMatch(control.value.toString()))

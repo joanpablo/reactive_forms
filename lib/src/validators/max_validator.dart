@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -12,11 +12,11 @@ class MaxValidator extends Validator<Comparable> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [max] must not be null.
-  MaxValidator(this.max) : assert(max != null);
+  MaxValidator(this.max);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<Comparable> control) {
-    return (control.value != null) && (control.value.compareTo(max) <= 0)
+  Map<String, dynamic>? validate(AbstractControl<Comparable> control) {
+    return (control.value != null) && (control.value!.compareTo(max) <= 0)
         ? null
         : {
             ValidationMessage.max: {

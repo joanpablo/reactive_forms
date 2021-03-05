@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -9,10 +9,10 @@ import 'package:reactive_forms/src/validators/number_validator.dart';
 /// credit card.
 class CreditCardValidator extends Validator<dynamic> {
   @override
-  Map<String, dynamic> validate(AbstractControl control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.creditCard: true};
     // error if value is not a String
-    if (control.value != null && !(control.value is String)) {
+    if (control.value != null && control.value is! String) {
       return error;
     }
 

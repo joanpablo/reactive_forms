@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -11,10 +11,10 @@ class EqualsValidator<T> extends Validator<T> {
   /// Constructs an instance of [EqualsValidator].
   ///
   /// The argument [value] must not be null.
-  EqualsValidator(this.value) : assert(value != null);
+  EqualsValidator(this.value);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<T> control) {
+  Map<String, dynamic>? validate(AbstractControl<T> control) {
     return control.value == this.value
         ? null
         : {

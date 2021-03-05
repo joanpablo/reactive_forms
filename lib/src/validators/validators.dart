@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -25,8 +25,8 @@ import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction = Map<String, dynamic> Function(
-    AbstractControl<dynamic> value);
+typedef ValidatorFunction<T> = Map<String, dynamic>? Function(
+    AbstractControl<T> value);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
@@ -40,7 +40,8 @@ class Validators {
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static ValidatorFunction get requiredTrue => EqualsValidator(true).validate;
+  static ValidatorFunction<bool> get requiredTrue =>
+      EqualsValidator<bool>(true).validate;
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
@@ -57,20 +58,22 @@ class Validators {
   /// argument [value].
   ///
   /// The argument [value] must not be null.
-  static ValidatorFunction equals<T>(T value) =>
+  static ValidatorFunction<T> equals<T>(T value) =>
       EqualsValidator(value).validate;
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction min(Comparable min) => MinValidator(min).validate;
+  static ValidatorFunction<Comparable> min(Comparable min) =>
+      MinValidator(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction max(Comparable max) => MaxValidator(max).validate;
+  static ValidatorFunction<Comparable> max(Comparable max) =>
+      MaxValidator(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
@@ -116,8 +119,6 @@ class Validators {
   /// expect(cardNumber.valid, true);
   /// ```
   static ValidatorFunction pattern(Pattern pattern) {
-    assert(pattern != null);
-
     PatternEvaluator evaluator;
     if (pattern is String) {
       evaluator = RegExpPatternEvaluator(RegExp(pattern));
@@ -152,7 +153,7 @@ class Validators {
   ///   'balance': 50.00,
   /// }, [Validators.compare('amount', 'balance', CompareOption.lower_or_equals)]);
   /// ```
-  static ValidatorFunction compare(
+  static ValidatorFunction<Map<String, dynamic>> compare(
     String controlName,
     String compareControlName,
     CompareOption compareOption,
@@ -205,7 +206,7 @@ class Validators {
   ///      ], validators: [Validators.contains([1,3])]
   /// );
   /// ```
-  static ValidatorFunction contains<T>(List<T> values) {
+  static ValidatorFunction<Iterable<T>> contains<T>(List<T> values) {
     return ContainsValidator<T>(values).validate;
   }
 
@@ -233,13 +234,14 @@ class Validators {
   /// final control = FormControl<List<String>>(
   ///   value: [null, null, 'not empty'],
   ///   validators: [
-  ///     Validators.any((String value) => value?.isNotEmpty)
+  ///     Validators.any((String? value) => value?.isNotEmpty)
   ///   ],
   /// );
   ///
   /// print(control.valid); // outputs: true
   /// ```
-  static ValidatorFunction any<T>(AnyValidatorFunctionTest<T> test) {
+  static ValidatorFunction<Iterable<T>> any<T>(
+      AnyValidatorFunctionTest<T> test) {
     return AnyValidator<T>(test).validate;
   }
 }

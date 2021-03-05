@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -12,11 +12,11 @@ class MinValidator extends Validator<Comparable> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [min] must not be null.
-  MinValidator(this.min) : assert(min != null);
+  MinValidator(this.min);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<Comparable> control) {
-    return (control.value != null) && (control.value.compareTo(min) >= 0)
+  Map<String, dynamic>? validate(AbstractControl<Comparable> control) {
+    return (control.value != null) && (control.value!.compareTo(min) >= 0)
         ? null
         : {
             ValidationMessage.min: {

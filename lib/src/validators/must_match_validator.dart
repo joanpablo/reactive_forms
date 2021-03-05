@@ -1,22 +1,22 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
 
+/// Represents a [FormGroup] validator that requires that two controls in the
+/// group have the same values.
 class MustMatchValidator extends Validator<dynamic> {
   final String controlName;
   final String matchingControlName;
 
-  MustMatchValidator(this.controlName, this.matchingControlName)
-      : assert(controlName != null),
-        assert(matchingControlName != null);
+  /// Constructs an instance of [MustMatchValidator]
+  MustMatchValidator(this.controlName, this.matchingControlName);
 
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> form) {
     final error = {ValidationMessage.mustMatch: true};
 
-    final form = control as FormGroup;
-    if (form == null) {
+    if (form is! FormGroup) {
       return error;
     }
 

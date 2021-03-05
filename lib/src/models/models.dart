@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -97,10 +97,10 @@ abstract class AbstractControl<T> {
       List<AsyncValidatorFunction>.unmodifiable(_asyncValidators);
 
   /// The current value of the control.
-  T get value => _value;
+  T? get value => _value;
 
   /// Sets the value to the control
-  set value(T value) {
+  set value(T? value) {
     this.updateValue(value);
   }
 
@@ -373,7 +373,7 @@ abstract class AbstractControl<T> {
   /// When [emitEvent] is true or not supplied (the default), both the
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
-  void updateValue(T value, {bool updateParent, bool emitEvent});
+  void updateValue(T? value, {bool updateParent = true, bool emitEvent = true});
 
   /// Patches the value of the control.
   ///
@@ -1120,7 +1120,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// { "name": "John Doe", "email": "johndoe@email.com" }
   ///```
   @override
-  set value(Map<String, dynamic> value) {
+  set value(Map<String, dynamic>? value) {
     this.updateValue(value);
   }
 
