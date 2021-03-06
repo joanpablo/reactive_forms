@@ -8,7 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// doesn't find the [FormControl] by name
 class FormControlNotFoundException extends ReactiveFormsException {
   /// The name of the control that was not found.
-  final String controlName;
+  final String? controlName;
 
   /// Creates an instance of the exception.
   ///
