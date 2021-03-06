@@ -14,7 +14,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveTimePickerDelegate].
 typedef ReactiveTimePickerBuilder = Widget Function(
-    BuildContext context, ReactiveTimePickerDelegate picker, Widget child);
+    BuildContext context, ReactiveTimePickerDelegate picker, Widget? child);
 
 /// This is a convenience widget that wraps the function
 /// [showTimePicker] in a [ReactiveTimePicker].
@@ -43,7 +43,7 @@ typedef ReactiveTimePickerBuilder = Widget Function(
 ///   },
 /// )
 /// ```
-class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
+class ReactiveTimePicker extends ReactiveFormField<TimeOfDay?, TimeOfDay> {
   /// Creates a [ReactiveTimePicker] that wraps the function [showTimePicker].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -60,20 +60,19 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
   /// For documentation about the various parameters, see the [showTimePicker]
   /// function parameters.
   ReactiveTimePicker({
-    Key key,
-    String formControlName,
-    FormControl<TimeOfDay> formControl,
+    Key? key,
+    String? formControlName,
+    FormControl<TimeOfDay?>? formControl,
     required ReactiveTimePickerBuilder builder,
-    TransitionBuilder transitionBuilder,
+    TransitionBuilder? transitionBuilder,
     bool useRootNavigator = true,
-    RouteSettings routeSettings,
-    Widget child,
-  })  : assert(builder != null),
-        super(
+    RouteSettings? routeSettings,
+    Widget? child,
+  }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<TimeOfDay> field) {
+          builder: (ReactiveFormFieldState<TimeOfDay?, TimeOfDay> field) {
             return builder(
               field.context,
               ReactiveTimePickerDelegate._(
@@ -96,28 +95,28 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
         );
 
   @override
-  ReactiveFormFieldState<TimeOfDay> createState() =>
-      ReactiveFormFieldState<TimeOfDay>();
+  ReactiveFormFieldState<TimeOfDay?, TimeOfDay> createState() =>
+      ReactiveFormFieldState<TimeOfDay?, TimeOfDay>();
 }
 
 /// Definition of the function responsible for show the time picker.
 typedef _ShowTimePickerCallback = Function(
-    ReactiveFormFieldState<TimeOfDay> field);
+    ReactiveFormFieldState<TimeOfDay?, TimeOfDay> field);
 
 /// This class is responsible of showing the picker dialog.
 ///
 /// See also [ReactiveTimePicker].
 class ReactiveTimePickerDelegate {
-  final ReactiveFormFieldState<TimeOfDay> _field;
+  final ReactiveFormFieldState<TimeOfDay?, TimeOfDay> _field;
   final _ShowTimePickerCallback _showPickerCallback;
 
   ReactiveTimePickerDelegate._(this._field, this._showPickerCallback);
 
   /// Gets the control bound to the [ReactiveTimePicker] widget
-  AbstractControl<TimeOfDay> get control => _field.control;
+  FormControl<TimeOfDay?> get control => _field.control;
 
   /// Gets the value selected in the time picker.
-  TimeOfDay get value => this.control.value;
+  TimeOfDay? get value => this.control.value;
 
   /// Shows the time picker dialog.
   void showPicker() {

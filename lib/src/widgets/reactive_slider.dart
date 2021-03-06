@@ -17,7 +17,7 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 ///
 /// For documentation about the various parameters, see the [Slider] class
 /// and [new Slider], the constructor.
-class ReactiveSlider extends ReactiveFormField<double> {
+class ReactiveSlider extends ReactiveFormField<double, double> {
   /// Creates an instance os a [ReactiveSlider].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -31,27 +31,29 @@ class ReactiveSlider extends ReactiveFormField<double> {
   /// The [labelBuilder] is called each time the [FormControl] changes its value
   /// so you can supply a label to the Slider.
   ReactiveSlider({
-    Key key,
-    String formControlName,
-    FormControl<double> formControl,
+    Key? key,
+    String? formControlName,
+    FormControl<double>? formControl,
     double min = 0.0,
     double max = 1.0,
-    int divisions,
-    ReactiveSliderLabelBuilder labelBuilder,
-    Color activeColor,
-    Color inactiveColor,
-    SemanticFormatterCallback semanticFormatterCallback,
-    ValueChanged<double> onChangeEnd,
-    ValueChanged<double> onChangeStart,
+    int? divisions,
+    ReactiveSliderLabelBuilder? labelBuilder,
+    Color? activeColor,
+    Color? inactiveColor,
+    SemanticFormatterCallback? semanticFormatterCallback,
+    ValueChanged<double>? onChangeEnd,
+    ValueChanged<double>? onChangeStart,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<double> field) {
-            double value = field.value;
-            if (value == null || value < min) {
+          builder: (ReactiveFormFieldState<double, double> field) {
+            double? value = field.value;
+            if (value == null) {
               value = min;
-            } else if (field.value > max) {
+            } else if (value < min) {
+              value = min;
+            } else if (value > max) {
               value = max;
             }
 
@@ -74,6 +76,6 @@ class ReactiveSlider extends ReactiveFormField<double> {
         );
 
   @override
-  ReactiveFormFieldState<double> createState() =>
-      ReactiveFormFieldState<double>();
+  ReactiveFormFieldState<double, double> createState() =>
+      ReactiveFormFieldState<double, double>();
 }

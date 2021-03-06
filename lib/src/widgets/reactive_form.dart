@@ -46,7 +46,7 @@ class ReactiveForm extends StatefulWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static AbstractControl<dynamic>? of(BuildContext context,
+  static AbstractControl<Object>? of(BuildContext context,
       {bool listen = true}) {
     if (listen) {
       return context

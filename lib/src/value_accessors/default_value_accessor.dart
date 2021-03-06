@@ -7,10 +7,10 @@ import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 
 /// Represents a control value accessor that does not convert between data types
 /// at all.
-class DefaultValueAccessor<T> extends ControlValueAccessor<T, T> {
+class DefaultValueAccessor extends ControlValueAccessor<dynamic, dynamic> {
   @override
-  T? viewToModelValue(T? viewValue) => viewValue;
+  dynamic viewToModelValue(dynamic viewValue) => viewValue;
 
   @override
-  T? modelToViewValue(T? modelValue) => modelValue;
+  dynamic modelToViewValue(dynamic modelValue) => modelValue;
 }

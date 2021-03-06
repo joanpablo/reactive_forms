@@ -12,7 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// that emits events each time you add or remove a control to the collection.
 abstract class FormControlCollection {
   final _collectionChanges =
-      StreamController<List<AbstractControl<dynamic>>>.broadcast();
+      StreamController<List<AbstractControl<Object>>>.broadcast();
 
   /// Retrieves a child control given the control's [name] or path.
   ///
@@ -21,7 +21,7 @@ abstract class FormControlCollection {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
-  AbstractControl<dynamic> control(String name);
+  AbstractControl<Object?> control(String name);
 
   /// Checks if collection contains a control by a given [name].
   ///
@@ -29,7 +29,7 @@ abstract class FormControlCollection {
   bool contains(String name);
 
   /// Emits when a control is added or removed from collection.
-  Stream<List<AbstractControl<dynamic>>> get collectionChanges =>
+  Stream<List<AbstractControl<Object>>> get collectionChanges =>
       _collectionChanges.stream;
 
   /// Close stream that emit collection change events
@@ -41,19 +41,19 @@ abstract class FormControlCollection {
   ///
   /// This is for internal use only.
   @protected
-  void emitsCollectionChanged(List<AbstractControl<dynamic>> controls) {
+  void emitsCollectionChanged(List<AbstractControl<Object?>> controls) {
     _collectionChanges.add(List.unmodifiable(controls));
   }
 
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl<dynamic>? findControl(List<String> path) {
+  AbstractControl<Object?>? findControl(List<String> path) {
     if (path.isEmpty) {
       return null;
     }
 
-    return path.fold(this as AbstractControl<dynamic>, (control, name) {
+    return path.fold(this as AbstractControl<Object>, (control, name) {
       if (control is FormControlCollection) {
         final collection = control as FormControlCollection;
         return collection.contains(name) ? collection.control(name) : null;

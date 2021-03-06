@@ -7,13 +7,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 abstract class InheritedStreamer extends InheritedWidget {
-  const InheritedStreamer({
-    Key key,
-    this.stream,
-    required Widget child,
-  })   : assert(child != null),
-        assert(stream != null),
-        super(key: key, child: child);
+  const InheritedStreamer(this.stream, Widget child, {Key? key})
+      : super(key: key, child: child);
 
   final Stream stream;
 
@@ -36,7 +31,7 @@ class _InheritedNotifierElement extends InheritedElement {
 
   bool _dirty = false;
 
-  StreamSubscription _subscription;
+  late StreamSubscription _subscription;
 
   @override
   void update(InheritedStreamer newWidget) {

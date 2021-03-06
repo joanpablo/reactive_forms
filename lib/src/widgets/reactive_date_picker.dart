@@ -14,7 +14,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveDatePickerDelegate].
 typedef ReactiveDatePickerBuilder = Widget Function(
-    BuildContext context, ReactiveDatePickerDelegate picker, Widget child);
+    BuildContext context, ReactiveDatePickerDelegate picker, Widget? child);
 
 /// This is a convenience widget that wraps the function
 /// [showDatePicker] in a [ReactiveDatePicker].
@@ -38,7 +38,7 @@ typedef ReactiveDatePickerBuilder = Widget Function(
 ///   },
 /// )
 /// ```
-class ReactiveDatePicker extends ReactiveFormField<dynamic> {
+class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
   /// Creates a [ReactiveDatePicker] that wraps the function [showDatePicker].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -55,34 +55,33 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   /// For documentation about the various parameters, see the [showTimePicker]
   /// function parameters.
   ReactiveDatePicker({
-    Key key,
-    String formControlName,
-    FormControl<dynamic> formControl,
+    Key? key,
+    String? formControlName,
+    FormControl<T>? formControl,
     required ReactiveDatePickerBuilder builder,
     required DateTime firstDate,
     required DateTime lastDate,
     DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
-    SelectableDayPredicate selectableDayPredicate,
-    String helpText,
-    String cancelText,
-    String confirmText,
-    Locale locale,
+    SelectableDayPredicate? selectableDayPredicate,
+    String? helpText,
+    String? cancelText,
+    String? confirmText,
+    Locale? locale,
     bool useRootNavigator = true,
-    RouteSettings routeSettings,
-    TextDirection textDirection,
-    TransitionBuilder transitionBuilder,
+    RouteSettings? routeSettings,
+    TextDirection? textDirection,
+    TransitionBuilder? transitionBuilder,
     DatePickerMode initialDatePickerMode = DatePickerMode.day,
-    String errorFormatText,
-    String errorInvalidText,
-    String fieldHintText,
-    String fieldLabelText,
-    Widget child,
-  })  : assert(builder != null),
-        super(
+    String? errorFormatText,
+    String? errorInvalidText,
+    String? fieldHintText,
+    String? fieldLabelText,
+    Widget? child,
+  }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<dynamic> field) {
+          builder: (ReactiveFormFieldState<T, DateTime> field) {
             return builder(
               field.context,
               ReactiveDatePickerDelegate._(
@@ -118,7 +117,7 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
           },
         );
 
-  static DateTime _getInitialDate(DateTime fieldValue, DateTime lastDate) {
+  static DateTime _getInitialDate(DateTime? fieldValue, DateTime lastDate) {
     if (fieldValue != null) {
       return fieldValue;
     }
@@ -128,27 +127,28 @@ class ReactiveDatePicker extends ReactiveFormField<dynamic> {
   }
 
   @override
-  ReactiveFormFieldState<dynamic> createState() => _ReactiveDatePickerState();
+  ReactiveFormFieldState<T, DateTime> createState() =>
+      _ReactiveDatePickerState<T>();
 }
 
 /// Definition of the function responsible for show the date picker.
-typedef _ShowDatePickerCallback = Function(
-    ReactiveFormFieldState<dynamic> field);
+typedef _ShowDatePickerCallback<T> = Function(
+    ReactiveFormFieldState<T?, DateTime> field);
 
 /// This class is responsible of showing the picker dialog.
 ///
 /// See also [ReactiveDatePicker].
-class ReactiveDatePickerDelegate {
-  final ReactiveFormFieldState<dynamic> _field;
+class ReactiveDatePickerDelegate<T> {
+  final ReactiveFormFieldState<T, DateTime> _field;
   final _ShowDatePickerCallback _showPickerCallback;
 
   ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
 
   /// Gets the control bound to the [ReactiveTimePicker] widget
-  AbstractControl<dynamic> get control => _field.control;
+  FormControl<T> get control => _field.control;
 
   /// Gets the value selected in the date picker.
-  DateTime get value => _field.value;
+  DateTime? get value => _field.value;
 
   /// Shows the time picker dialog.
   void showPicker() {
@@ -156,13 +156,14 @@ class ReactiveDatePickerDelegate {
   }
 }
 
-class _ReactiveDatePickerState extends ReactiveFormFieldState<dynamic> {
+class _ReactiveDatePickerState<T> extends ReactiveFormFieldState<T, DateTime> {
   @override
-  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
+  ControlValueAccessor<T, DateTime> selectValueAccessor() {
     if (this.control is AbstractControl<String>) {
-      return Iso8601DateTimeValueAccessor();
+      return Iso8601DateTimeValueAccessor()
+          as ControlValueAccessor<T, DateTime>;
     } else if (this.control is AbstractControl<DateTime>) {
-      return DefaultValueAccessor<dynamic>();
+      return super.selectValueAccessor();
     }
 
     throw ValueAccessorException('Invalid widget binding. ReactiveDatePicker '

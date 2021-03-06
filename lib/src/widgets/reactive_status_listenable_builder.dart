@@ -13,16 +13,16 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 class ReactiveStatusListenableBuilder extends StatelessWidget {
   /// The name of the control bound to this widgets
-  final String formControlName;
+  final String? formControlName;
 
   // The control bound to this widget
-  final AbstractControl<dynamic> formControl;
+  final AbstractControl<Object?>? formControl;
 
   /// Optionally child widget
-  final Widget child;
+  final Widget? child;
 
   /// The builder that creates a widget depending on the status of the control.
-  final ReactiveListenableWidgetBuilder<dynamic> builder;
+  final ReactiveListenableWidgetBuilder<Object?> builder;
 
   /// Creates an instance of [ReactiveStatusListenableBuilder].
   ///
@@ -32,7 +32,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   /// at the same time.
   ///
   const ReactiveStatusListenableBuilder({
-    Key key,
+    Key? key,
     this.formControlName,
     this.formControl,
     required this.builder,
@@ -41,21 +41,24 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
             'Must provide a formControlName or a formControl, but not both at the same time.'),
-        assert(builder != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AbstractControl<dynamic> control = this.formControl;
+    AbstractControl<Object?>? control = this.formControl;
     if (control == null) {
-      final form =
-          ReactiveForm.of(context, listen: false) as FormControlCollection;
-      control = form.control(this.formControlName);
+      final form = ReactiveForm.of(context, listen: false);
+      if (form is! FormControlCollection) {
+        throw FormControlParentNotFoundException(this);
+      }
+
+      final collection = form as FormControlCollection;
+      control = collection.control(this.formControlName!);
     }
 
     return StreamBuilder<ControlStatus>(
       stream: control.statusChanged,
-      builder: (context, snapshot) => this.builder(context, control, child),
+      builder: (context, snapshot) => this.builder(context, control!, child),
     );
   }
 }

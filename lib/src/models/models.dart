@@ -933,9 +933,9 @@ class FormControl<T> extends AbstractControl<T> {
 /// It calculates its status by reducing the status values of its children.
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
-class FormGroup extends AbstractControl<Map<String, dynamic>>
+class FormGroup extends AbstractControl<Map<String, Object?>>
     with FormControlCollection {
-  final Map<String, AbstractControl> _controls = {};
+  final Map<String, AbstractControl<Object?>> _controls = {};
 
   /// Creates a new FormGroup instance.
   ///
@@ -972,7 +972,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// See also [AbstractControl.validators]
   FormGroup(
-    Map<String, AbstractControl> controls, {
+    Map<String, AbstractControl<Object>> controls, {
     List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
@@ -993,8 +993,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// Gets the value of the [FormGroup], including any disabled controls.
   ///
   /// Retrieves all values regardless of disabled status.
-  Map<String, dynamic> get rawValue => _controls
-      .map<String, dynamic>((key, control) => MapEntry(key, control.value));
+  Map<String, Object?> get rawValue => _controls
+      .map<String, Object?>((key, control) => MapEntry(key, control.value));
 
   @override
   bool contains(String name) {
@@ -1030,7 +1030,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// form.control('person.name');
   /// ```
   @override
-  AbstractControl<dynamic> control(String name) {
+  AbstractControl<Object?> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1070,8 +1070,8 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   ///
   /// This method is for internal use only.
   @override
-  Map<String, dynamic> _reduceValue() {
-    final map = Map<String, dynamic>();
+  Map<String, Object?> _reduceValue() {
+    final map = Map<String, Object?>();
     _controls.forEach((key, control) {
       if (control.enabled || this.disabled) {
         map[key] = control.value;
@@ -1082,7 +1082,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }
 
   @override
-  Map<String, dynamic> get value => Map.unmodifiable(_value!);
+  Map<String, Object?> get value => Map.unmodifiable(_value!);
 
   /// Set the complete value for the form group.
   ///
@@ -1102,7 +1102,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// { "name": "John Doe", "email": "johndoe@email.com" }
   ///```
   @override
-  set value(Map<String, dynamic>? value) {
+  set value(Map<String, Object?>? value) {
     this.updateValue(value);
   }
 
@@ -1150,7 +1150,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   }
 
   /// Appends all [controls] to the group.
-  void addAll(Map<String, AbstractControl> controls) {
+  void addAll(Map<String, AbstractControl<Object>> controls) {
     _controls.addAll(controls);
     controls.forEach((name, control) {
       control.parent = this;
@@ -1238,7 +1238,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// ```
   @override
   void updateValue(
-    Map<String, dynamic>? value, {
+    Map<String, Object?>? value, {
     bool updateParent = true,
     bool emitEvent = true,
   }) {
@@ -1290,7 +1290,7 @@ class FormGroup extends AbstractControl<Map<String, dynamic>>
   /// ```
   @override
   void patchValue(
-    Map<String, dynamic> value, {
+    Map<String, Object?> value, {
     bool updateParent = true,
     bool emitEvent = true,
   }) {
@@ -1774,7 +1774,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// form.control('address.0.city');
   /// ```
   @override
-  AbstractControl<dynamic> control(String name) {
+  AbstractControl<Object?> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
