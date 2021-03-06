@@ -77,7 +77,7 @@ abstract class ControlValueAccessor<T, K> {
     _onChangeSubscription?.cancel();
   }
 
-  void _updateView(T modelValue) {
+  void _updateView(T? modelValue) {
     if (_viewToModelChange) {
       _viewToModelChange = false;
       return;
