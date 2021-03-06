@@ -29,7 +29,7 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
     Key key,
     String formControlName,
     FormControl<T> formControl,
-    @required T value,
+    required T value,
     Color activeColor,
     Widget title,
     Widget subtitle,

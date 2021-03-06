@@ -39,7 +39,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   /// with this widget.
   const ReactiveValueListenableBuilder({
     Key key,
-    @required this.builder,
+    required this.builder,
     this.formControlName,
     this.formControl,
     this.child,

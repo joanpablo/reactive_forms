@@ -35,7 +35,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
     Key key,
     this.formControlName,
     this.formControl,
-    @required this.builder,
+    required this.builder,
     this.child,
   })  : assert(
             (formControlName != null && formControl == null) ||

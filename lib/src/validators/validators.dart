@@ -30,7 +30,7 @@ typedef ValidatorFunction<T> = Map<String, dynamic>? Function(
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
-typedef AsyncValidatorFunction = Future<Map<String, dynamic>> Function(
+typedef AsyncValidatorFunction = Future<Map<String, dynamic>?> Function(
     AbstractControl<dynamic> value);
 
 /// Provides a set of built-in validators that can be used by form controls.

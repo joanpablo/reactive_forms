@@ -10,8 +10,8 @@ abstract class InheritedStreamer extends InheritedWidget {
   const InheritedStreamer({
     Key key,
     this.stream,
-    @required Widget child,
-  })  : assert(child != null),
+    required Widget child,
+  })   : assert(child != null),
         assert(stream != null),
         super(key: key, child: child);
 

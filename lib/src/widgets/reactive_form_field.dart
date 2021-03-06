@@ -64,7 +64,7 @@ class ReactiveFormField<T> extends StatefulWidget {
     this.formControlName,
     this.valueAccessor,
     this.showErrors,
-    @required ReactiveFormFieldBuilder<T> builder,
+    required ReactiveFormFieldBuilder<T> builder,
     ValidationMessagesFunction<T> validationMessages,
   })  : assert(
             (formControlName != null && formControl == null) ||

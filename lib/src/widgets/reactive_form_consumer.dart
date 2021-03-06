@@ -37,7 +37,7 @@ class ReactiveFormConsumer extends StatelessWidget {
   /// with this widget.
   const ReactiveFormConsumer({
     Key key,
-    @required this.builder,
+    required this.builder,
     this.child,
   })  : assert(builder != null),
         super(key: key);

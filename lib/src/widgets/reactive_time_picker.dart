@@ -63,7 +63,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay> {
     Key key,
     String formControlName,
     FormControl<TimeOfDay> formControl,
-    @required ReactiveTimePickerBuilder builder,
+    required ReactiveTimePickerBuilder builder,
     TransitionBuilder transitionBuilder,
     bool useRootNavigator = true,
     RouteSettings routeSettings,

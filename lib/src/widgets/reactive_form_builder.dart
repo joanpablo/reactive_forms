@@ -54,9 +54,9 @@ class ReactiveFormBuilder extends StatefulWidget {
     Key key,
     this.child,
     this.onWillPop,
-    @required this.builder,
-    @required this.form,
-  })  : assert(form != null),
+    required this.builder,
+    required this.form,
+  })   : assert(form != null),
         assert(builder != null),
         super(key: key);
 

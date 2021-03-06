@@ -34,7 +34,7 @@ class ReactiveFormArray<T> extends StatefulWidget {
   /// with this widget.
   const ReactiveFormArray({
     Key key,
-    @required this.builder,
+    required this.builder,
     this.formArrayName,
     this.formArray,
     this.child,
