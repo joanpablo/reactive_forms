@@ -85,8 +85,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<ValidatorFunction> get validators =>
-      List<ValidatorFunction>.unmodifiable(_validators);
+  List<ValidatorFunction<AbstractControl<T>>> get validators =>
+      List<ValidatorFunction<AbstractControl<T>>>.unmodifiable(_validators);
 
   /// The list of async functions that determines the validity of this control.
   ///
@@ -934,7 +934,7 @@ class FormControl<T> extends AbstractControl<T> {
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
 class FormGroup extends AbstractControl<Map<String, Object?>>
-    with FormControlCollection {
+    with FormControlCollection<Map<String, Object?>> {
   final Map<String, AbstractControl<Object?>> _controls = {};
 
   /// Creates a new FormGroup instance.
