@@ -9,7 +9,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveFormConsumer].
 typedef ReactiveFormConsumerBuilder = Widget Function(
-    BuildContext context, FormGroup? formGroup, Widget? child);
+    BuildContext context, FormGroup formGroup, Widget? child);
 
 /// Obtains [FormGroup] from its ancestors and passes its value to [builder].
 ///

@@ -21,7 +21,7 @@ void main() {
         await tester.pumpWidget(ReactiveTimePickerTestingWidget(form: form));
 
         // When: open picker
-        await tester.tap(find.byType(FlatButton));
+        await tester.tap(find.byType(TextButton));
         await tester.pump();
 
         // And: get initial date of the date picker
@@ -30,20 +30,6 @@ void main() {
 
         // Then: initial date id the default value of the control
         expect(form.control('time').value, defaultValue);
-      },
-    );
-
-    testWidgets(
-      'Assert Error if builder is null',
-      (WidgetTester tester) async {
-        // Given: a time picker widget with builder in null
-        final timePicker = () => ReactiveTimePicker(
-              formControlName: '',
-              builder: null,
-            );
-
-        // Expect: an assert error
-        expect(timePicker, throwsAssertionError);
       },
     );
   });

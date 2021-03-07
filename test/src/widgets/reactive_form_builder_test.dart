@@ -7,32 +7,6 @@ import 'reactive_form_builder_testing_widget.dart';
 void main() {
   group('ReactiveFormBuilder Tests', () {
     testWidgets(
-      'Assert Error if form is null',
-      (WidgetTester tester) async {
-        expect(
-          () => ReactiveFormBuilder(
-            form: null,
-            builder: (context, form, child) => Container(),
-          ),
-          throwsAssertionError,
-        );
-      },
-    );
-
-    testWidgets(
-      'Assert Error if builder is null',
-      (WidgetTester tester) async {
-        expect(
-          () => ReactiveFormBuilder(
-            form: () => fb.group({}),
-            builder: null,
-          ),
-          throwsAssertionError,
-        );
-      },
-    );
-
-    testWidgets(
       'Binding to a form',
       (WidgetTester tester) async {
         // Given: a form definition

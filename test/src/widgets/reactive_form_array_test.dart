@@ -106,24 +106,11 @@ void main() {
     );
 
     testWidgets(
-      'Assert error if builder is null',
-      (WidgetTester tester) async {
-        expect(
-          () => ReactiveFormArray(
-            formArrayName: '',
-            builder: null,
-          ),
-          throwsAssertionError,
-        );
-      },
-    );
-
-    testWidgets(
       'Assert error if formArrayName and formArray is null',
       (WidgetTester tester) async {
         expect(
           () => ReactiveFormArray(
-            builder: (context, array, child) => null,
+            builder: (context, array, child) => Container(),
           ),
           throwsAssertionError,
         );
@@ -137,7 +124,7 @@ void main() {
           () => ReactiveFormArray(
             formArrayName: 'some',
             formArray: fb.array([1]),
-            builder: (context, array, child) => null,
+            builder: (context, array, child) => Container(),
           ),
           throwsAssertionError,
         );

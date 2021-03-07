@@ -135,101 +135,6 @@ void main() {
     );
 
     testWidgets(
-      'Assert error if items in null',
-      (WidgetTester tester) async {
-        // Given: a form with and control with default value
-        final dropdown = () => ReactiveDropdownField(
-              formControlName: 'someName',
-              items: null,
-            );
-
-        expect(dropdown, throwsAssertionError);
-      },
-    );
-
-    testWidgets(
-      'Assert Error if attributes in null',
-      (WidgetTester tester) async {
-        // decoration
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            decoration: null,
-          ),
-          throwsAssertionError,
-          reason: 'decoration != null',
-        );
-
-        // elevation
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            elevation: null,
-          ),
-          throwsAssertionError,
-          reason: 'elevation != null',
-        );
-
-        // iconSize
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            iconSize: null,
-          ),
-          throwsAssertionError,
-          reason: 'iconSize != null',
-        );
-
-        // isDense
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            isDense: null,
-          ),
-          throwsAssertionError,
-          reason: 'isDense != null',
-        );
-
-        // isExpanded
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            isExpanded: null,
-          ),
-          throwsAssertionError,
-          reason: 'isExpanded != null',
-        );
-
-        // itemHeight
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            itemHeight: 0,
-          ),
-          throwsAssertionError,
-          reason: 'itemHeight == null || itemHeight > 0',
-        );
-
-        // readOnly
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            readOnly: null,
-          ),
-          throwsAssertionError,
-          reason: 'readOnly != null',
-        );
-      },
-    );
-
-    testWidgets(
       'Control disabled by default disable Dropdown',
       (WidgetTester tester) async {
         // Given: a form and a control
@@ -362,7 +267,7 @@ void main() {
 
         // And: a onChanged callback
         bool callbackCalled = false;
-        final onChanged = (String value) {
+        ValueChanged<String?> onChanged = (String? value) {
           callbackCalled = true;
         };
 
@@ -379,7 +284,7 @@ void main() {
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
         DropdownButton<String> dropdown =
             tester.firstWidget(find.byType(dropdownType));
-        dropdown.onChanged('true');
+        dropdown.onChanged!('true');
         await tester.pump();
 
         // Then: callback is called

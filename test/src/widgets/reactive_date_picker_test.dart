@@ -20,7 +20,7 @@ void main() {
         await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
 
         // When: open picker
-        await tester.tap(find.byType(FlatButton));
+        await tester.tap(find.byType(TextButton));
         await tester.pump();
 
         // And: get initial date of the date picker
@@ -48,7 +48,7 @@ void main() {
         await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
 
         // When: open picker
-        await tester.tap(find.byType(FlatButton));
+        await tester.tap(find.byType(TextButton));
         await tester.pump();
 
         // And: select current selected date
@@ -57,22 +57,6 @@ void main() {
 
         // Then: initial date id the default value of the control
         expect(form.control('birthday').value, defaultValue);
-      },
-    );
-
-    testWidgets(
-      'Assert Error if builder is null',
-      (WidgetTester tester) async {
-        // Given: a date picker widget with builder in null
-        final datePicker = () => ReactiveDatePicker(
-              formControlName: '',
-              builder: null,
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now(),
-            );
-
-        // Expect: an assert error
-        expect(datePicker, throwsAssertionError);
       },
     );
 
@@ -92,7 +76,7 @@ void main() {
         ));
 
         // When: open picker
-        await tester.tap(find.byType(FlatButton));
+        await tester.tap(find.byType(TextButton));
         await tester.pump();
 
         // And: get initial date of the date picker

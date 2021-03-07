@@ -164,7 +164,7 @@ class FormBuilder {
   /// ```
   FormControl<T> control<T>(
     T value, [
-    List<ValidatorFunction> validators = const [],
+    List<ValidatorFunction<AbstractControl<T>>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormControl<T>(

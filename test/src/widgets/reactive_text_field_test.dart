@@ -42,7 +42,7 @@ void main() {
 
         // Expect: that the text field has no focus
         TextField textField = tester.firstWidget(find.byType(TextField));
-        expect(textField.focusNode.hasFocus, false);
+        expect(textField.focusNode?.hasFocus, false);
 
         // When: call FormControl.focus()
         (form.control('name') as FormControl).focus();
@@ -50,7 +50,7 @@ void main() {
 
         // Then: the reactive text field is focused
         textField = tester.firstWidget(find.byType(TextField)) as TextField;
-        expect(textField.focusNode.hasFocus, true);
+        expect(textField.focusNode?.hasFocus, true);
       },
     );
 
@@ -67,9 +67,9 @@ void main() {
 
         // And: the text field has focused
         TextField textField = tester.firstWidget(find.byType(TextField));
-        textField.focusNode.requestFocus();
+        textField.focusNode?.requestFocus();
         await tester.pump();
-        expect(textField.focusNode.hasFocus, true);
+        expect(textField.focusNode?.hasFocus, true);
 
         // When: call FormControl.unfocus()
         (form.control('name') as FormControl).unfocus();
@@ -77,7 +77,7 @@ void main() {
 
         // Then: the reactive text field is unfocused
         textField = tester.firstWidget(find.byType(TextField)) as TextField;
-        expect(textField.focusNode.hasFocus, false);
+        expect(textField.focusNode?.hasFocus, false);
       },
     );
 
@@ -94,12 +94,12 @@ void main() {
 
         // And: the text field has focused
         TextField textField = tester.firstWidget(find.byType(TextField));
-        textField.focusNode.requestFocus();
+        textField.focusNode?.requestFocus();
         await tester.pump();
-        expect(textField.focusNode.hasFocus, true);
+        expect(textField.focusNode?.hasFocus, true);
 
         // Expect: errors are not visible yet
-        expect(textField.decoration.errorText, null,
+        expect(textField.decoration?.errorText, null,
             reason: 'errors are visible');
 
         // When: call FormControl.unfocus()
@@ -108,7 +108,7 @@ void main() {
 
         // Then: the errors are visible
         textField = tester.firstWidget(find.byType(TextField)) as TextField;
-        expect(textField.decoration.errorText, ValidationMessage.required);
+        expect(textField.decoration?.errorText, ValidationMessage.required);
       },
     );
 
@@ -125,12 +125,12 @@ void main() {
 
         // And: the text field has focused
         TextField textField = tester.firstWidget(find.byType(TextField));
-        textField.focusNode.requestFocus();
+        textField.focusNode?.requestFocus();
         await tester.pump();
-        expect(textField.focusNode.hasFocus, true);
+        expect(textField.focusNode?.hasFocus, true);
 
         // Expect: errors are not visible yet
-        expect(textField.decoration.errorText, null,
+        expect(textField.decoration?.errorText, null,
             reason: 'errors are visible');
 
         // When: call FormControl.unfocus(touched: false)
@@ -139,7 +139,7 @@ void main() {
 
         // Then: the errors are not visible
         textField = tester.firstWidget(find.byType(TextField)) as TextField;
-        expect(textField.decoration.errorText, null);
+        expect(textField.decoration?.errorText, null);
       },
     );
 
@@ -169,7 +169,7 @@ void main() {
         // Expect: text field is not showing errors
         final textField =
             tester.firstWidget(find.byType(TextField)) as TextField;
-        expect(textField.decoration.errorText, null);
+        expect(textField.decoration?.errorText, null);
       },
     );
 
@@ -188,7 +188,7 @@ void main() {
 
       // Then: text field is showing errors
       final textField = tester.firstWidget(find.byType(TextField)) as TextField;
-      expect(textField.decoration.errorText, ValidationMessage.required);
+      expect(textField.decoration?.errorText, ValidationMessage.required);
     });
 
     testWidgets(
@@ -216,7 +216,7 @@ void main() {
         // Expect: text field is showing the custom message as error
         final textField =
             tester.firstWidget(find.byType(TextField)) as TextField;
-        expect(textField.decoration.errorText, customMessage);
+        expect(textField.decoration?.errorText, customMessage);
       },
     );
 
@@ -235,7 +235,7 @@ void main() {
       // Expect: text field is not showing errors because is not touched
       TextField textField =
           tester.firstWidget(find.byType(TextField)) as TextField;
-      expect(textField.decoration.errorText, null);
+      expect(textField.decoration?.errorText, null);
 
       // When: touch the control
       form.control('name').markAsTouched();
@@ -243,7 +243,7 @@ void main() {
 
       // Then: text field is showing errors
       textField = tester.firstWidget(find.byType(TextField)) as TextField;
-      expect(textField.decoration.errorText, ValidationMessage.required);
+      expect(textField.decoration?.errorText, ValidationMessage.required);
     });
 
     testWidgets('Custom handler to show errors', (WidgetTester tester) async {
@@ -266,7 +266,7 @@ void main() {
       // Expect: text field is not showing errors because is not touched
       TextField textField =
           tester.firstWidget(find.byType(TextField)) as TextField;
-      expect(textField.decoration.errorText, null);
+      expect(textField.decoration?.errorText, null);
 
       // When: touch the control and mark as dirty
       form.control('name').markAsDirty(emitEvent: false);
@@ -275,7 +275,7 @@ void main() {
 
       // Then: text field is showing errors
       textField = tester.firstWidget(find.byType(TextField)) as TextField;
-      expect(textField.decoration.errorText, ValidationMessage.required);
+      expect(textField.decoration?.errorText, ValidationMessage.required);
     });
 
     testWidgets(
@@ -418,8 +418,9 @@ void main() {
         ));
 
         // When: get the state of the text field
-        ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField);
+        ReactiveFormFieldState<int, String> state = tester.allStates
+                .firstWhere((state) => state.widget is ReactiveTextField<int>)
+            as ReactiveFormFieldState<int, String>;
 
         // Then: the value accessor is IntValueAccessor
         expect(state.valueAccessor, isInstanceOf<IntValueAccessor>());
@@ -441,8 +442,10 @@ void main() {
         ));
 
         // When: get the state of the text field
-        ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField);
+        ReactiveFormFieldState<double, String> state = tester.allStates
+                .firstWhere(
+                    (state) => state.widget is ReactiveTextField<double>)
+            as ReactiveFormFieldState<double, String>;
 
         // Then: the value accessor is DoubleValueAccessor
         expect(state.valueAccessor, isInstanceOf<DoubleValueAccessor>());
@@ -464,8 +467,10 @@ void main() {
         ));
 
         // When: get the state of the text field
-        ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField);
+        ReactiveFormFieldState<DateTime, String> state = tester.allStates
+                .firstWhere(
+                    (state) => state.widget is ReactiveTextField<DateTime>)
+            as ReactiveFormFieldState<DateTime, String>;
 
         // Then: the value accessor is DateTimeValueAccessor
         expect(state.valueAccessor, isInstanceOf<DateTimeValueAccessor>());
@@ -487,8 +492,10 @@ void main() {
         ));
 
         // When: get the state of the text field
-        ReactiveFormFieldState state = tester.allStates
-            .firstWhere((state) => state.widget is ReactiveTextField);
+        ReactiveFormFieldState<TimeOfDay, String> state = tester.allStates
+                .firstWhere(
+                    (state) => state.widget is ReactiveTextField<TimeOfDay>)
+            as ReactiveFormFieldState<TimeOfDay, String>;
 
         // Then: the value accessor is TimeOfDayValueAccessor
         expect(state.valueAccessor, isInstanceOf<TimeOfDayValueAccessor>());
@@ -538,7 +545,7 @@ void main() {
 
         // Expect: text field has the provided focus node and is the same of the focus controller
         TextField textField = tester.firstWidget(find.byType(TextField));
-        expect(textField.focusNode, nameControl.focusController.focusNode);
+        expect(textField.focusNode, nameControl.focusController?.focusNode);
       },
     );
   });
