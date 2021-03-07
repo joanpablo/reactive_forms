@@ -5,12 +5,12 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that validates if control's value is a numeric value.
-class NumberValidator extends Validator<dynamic> {
+class NumberValidator extends Validator<Object> {
   /// The regex expression of a numeric string value.
   static final RegExp numberRegex = new RegExp(r'^-?[0-9]+$');
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<Object> control) {
     return (control.value == null) ||
             !(numberRegex.hasMatch(control.value.toString()))
         ? {ValidationMessage.number: true}

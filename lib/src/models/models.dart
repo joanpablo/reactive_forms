@@ -20,7 +20,7 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction<Object>> _validators;
+  final List<ValidatorFunction<AbstractControl<T>>> _validators;
   final List<AsyncValidatorFunction> _asyncValidators;
 
   StreamSubscription? _asyncValidationSubscription;
@@ -44,7 +44,7 @@ abstract class AbstractControl<T> {
 
   /// Constructor of the [AbstractControl].
   AbstractControl({
-    List<ValidatorFunction<Object>> validators = const [],
+    List<ValidatorFunction<AbstractControl<T>>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
@@ -725,7 +725,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T? value,
-    List<ValidatorFunction<Object>> validators = const [],
+    List<ValidatorFunction<AbstractControl<T>>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,
@@ -1455,7 +1455,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<ValidatorFunction<Object>> validators = const [],
+    List<ValidatorFunction<AbstractControl<List<T?>>>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,

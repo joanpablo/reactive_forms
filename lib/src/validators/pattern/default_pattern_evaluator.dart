@@ -6,9 +6,7 @@ class DefaultPatternEvaluator implements PatternEvaluator {
 
   /// Constructs an instance of the class.
   /// The argument [pattern] must not be null.
-  DefaultPatternEvaluator(Pattern pattern)
-      : assert(pattern != null),
-        _pattern = pattern;
+  DefaultPatternEvaluator(Pattern pattern) : _pattern = pattern;
 
   @override
   bool hasMatch(String input) => _pattern.allMatches(input).isNotEmpty;
