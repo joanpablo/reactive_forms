@@ -973,7 +973,8 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// See also [AbstractControl.validators]
   FormGroup(
     Map<String, AbstractControl<Object>> controls, {
-    List<ValidatorFunction<Object>> validators = const [],
+    List<ValidatorFunction<AbstractControl<Map<String, Object?>>>> validators =
+        const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,

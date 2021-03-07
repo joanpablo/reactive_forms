@@ -171,7 +171,7 @@ class Validators {
   ///
   /// The argument [validators] must not be null.
   static ValidatorFunction<AbstractControl<Object>> compose(
-      List<ValidatorFunction> validators) {
+      List<ValidatorFunction<AbstractControl<Object>>> validators) {
     return ComposeValidator(validators).validate;
   }
 
@@ -185,7 +185,7 @@ class Validators {
   /// validator evaluates as 'VALID' and returns null, otherwise returns
   /// the union of all the individual errors returned by each validator.
   static ValidatorFunction<AbstractControl<Object>> composeOR(
-      List<ValidatorFunction> validators) {
+      List<ValidatorFunction<AbstractControl<Object>>> validators) {
     return ComposeOrValidator(validators).validate;
   }
 

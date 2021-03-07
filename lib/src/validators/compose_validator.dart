@@ -10,7 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// returns 'null', otherwise returns the union of the individual error
 /// maps returned by each validator.
 class ComposeValidator extends Validator<Object> {
-  final List<ValidatorFunction> validators;
+  final List<ValidatorFunction<AbstractControl<Object>>> validators;
 
   /// Constructs an instance of the validator.
   ///

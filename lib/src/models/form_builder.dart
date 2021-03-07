@@ -62,7 +62,8 @@ class FormBuilder {
   /// ```
   FormGroup group(
     Map<String, Object> controls, [
-    List<ValidatorFunction> validators = const [],
+    List<ValidatorFunction<AbstractControl<Map<String, Object?>>>> validators =
+        const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     final map = controls

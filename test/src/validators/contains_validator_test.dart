@@ -44,18 +44,6 @@ void main() {
       expect(control.valid, true);
     });
 
-    test('Compare a list of Stings with a List of numbers (invalid)', () {
-      final control = FormControl<List<int>>(
-        value: [1, 2, 3, 4],
-        validators: [
-          Validators.contains(['1', '3'])
-        ],
-      );
-
-      // Expect: control invalid
-      expect(control.valid, false);
-    });
-
     test(
         'Compare a list of numbers with another that contains all of them (valid)',
         () {
