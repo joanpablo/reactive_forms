@@ -61,11 +61,12 @@ class FormBuilder {
   /// );
   /// ```
   FormGroup group(
-    Map<String, dynamic> controls, [
+    Map<String, Object> controls, [
     List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
-    final map = controls.map((String key, dynamic value) {
+    final map = controls
+        .map<String, AbstractControl<Object>>((String key, Object value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
@@ -78,13 +79,11 @@ class FormBuilder {
         return MapEntry(key, FormControl<DateTime>(value: value));
       } else if (value is TimeOfDay) {
         return MapEntry(key, FormControl<TimeOfDay>(value: value));
-      } else if (value is AbstractControl) {
+      } else if (value is AbstractControl<Object>) {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction> &&
-          value.isNotEmpty &&
-          value.first != null) {
+      } else if (value is List<ValidatorFunction> && value.isNotEmpty) {
         return MapEntry(key, FormControl(validators: value));
       } else if (value is List<dynamic>) {
         if (value.isEmpty) {
@@ -109,7 +108,7 @@ class FormBuilder {
               .map<ValidatorFunction>((v) => v as ValidatorFunction)
               .toList();
           final control = _control(defaultValue, effectiveValidators);
-          return MapEntry(key, control);
+          return MapEntry(key, control as AbstractControl<Object>);
         }
       }
 
@@ -141,7 +140,7 @@ class FormBuilder {
   ///
   /// print(form.value); // output: {'name': 'name'}
   /// ```
-  ControlState<T> state<T>({T value, bool disabled}) {
+  ControlState<T> state<T>({T? value, bool? disabled}) {
     return ControlState<T>(value: value, disabled: disabled);
   }
 
@@ -203,21 +202,21 @@ class FormBuilder {
   /// ```
   ///
   FormArray<T> array<T>(
-    List<dynamic> value, [
+    List<T> value, [
     List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormArray<T>(
-      value?.map<AbstractControl<T>>((v) {
-        if (v is Map<String, dynamic>) {
+      value.map<AbstractControl<T>>((v) {
+        if (v is Map<String, Object>) {
           return this.group(v) as AbstractControl<T>;
         }
-        if (v is AbstractControl) {
-          return v as AbstractControl<T>;
+        if (v is AbstractControl<T>) {
+          return v;
         }
 
         return this.control<T>(v);
-      })?.toList(),
+      }).toList(),
       validators: validators,
       asyncValidators: asyncValidators,
     );

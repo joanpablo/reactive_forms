@@ -54,7 +54,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form and a date time field
         final form = FormGroup({
-          'name': FormControl<dynamic>(),
+          'name': FormControl<int>(),
         });
 
         // And: a widget bound to the form
@@ -66,22 +66,5 @@ void main() {
         expect(tester.takeException(), isInstanceOf<BindingCastException>());
       },
     );
-
-    test('Assert error if field is null in BindingCastException', () {
-      final exception =
-          () => BindingCastException<dynamic>(null, FormControl<dynamic>());
-      expect(exception, throwsAssertionError);
-    });
-
-    test('Assert error if control is null in BindingCastException', () {
-      final exception = () => BindingCastException<dynamic>(
-            ReactiveFormField(
-              builder: (field) => null,
-              formControlName: '',
-            ),
-            null,
-          );
-      expect(exception, throwsAssertionError);
-    });
   });
 }

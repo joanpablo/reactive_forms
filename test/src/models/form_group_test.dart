@@ -145,10 +145,6 @@ void main() {
       expect(jsonEncode(value), '{"name":"john","email":"john@email.com"}');
     });
 
-    test('Assertion Error if passing null controls to constructor', () {
-      expect(() => FormGroup(null), throwsAssertionError);
-    });
-
     test('Throws FormControlNotFoundException if invalid control name', () {
       final form = FormGroup({});
 
@@ -399,23 +395,6 @@ void main() {
       expect(form.control('name').disabled, true);
     });
 
-    test('Resets a group with null state', () {
-      // Given: a group
-      final form = FormGroup({
-        'name': FormControl(
-          value: 'someInitialValue',
-          touched: true,
-        ),
-      });
-
-      // When: resets the group
-      form.resetState(null);
-
-      // Then: all controls has null value
-      expect(form.control('name').value, null);
-      expect(form.control('name').touched, false);
-    });
-
     test('Resets a group with empty {} state', () {
       // Given: a group
       final form = FormGroup({
@@ -485,7 +464,7 @@ void main() {
       expect(form.dirty, true);
 
       // When: resets the group
-      form.resetState({'name': null});
+      form.resetState({'name': ControlState()});
 
       // Then: all controls has null value
       expect(form.dirty, false, reason: 'form is pristine');
@@ -798,7 +777,7 @@ void main() {
       });
 
       // When: add control to nested group
-      FormGroup address = form.control('address');
+      FormGroup address = form.control('address') as FormGroup;
       address.addAll({
         'city': FormControl<String>(value: 'Sofia'),
       });

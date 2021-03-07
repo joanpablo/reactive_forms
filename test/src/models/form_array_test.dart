@@ -78,10 +78,6 @@ void main() {
           throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
     });
 
-    test('Assertion Error if passing null controls to constructor', () {
-      expect(() => FormArray(null), throwsAssertionError);
-    });
-
     test('Add values to array sets value to each item', () {
       // Given: an array with several items
       final array = FormArray<int>([
@@ -310,7 +306,7 @@ void main() {
       array.remove(array.controls.last);
 
       // Then: last control is removed
-      expect(array.value.join(''), 'Reactive');
+      expect(array.value!.join(''), 'Reactive');
     });
 
     test('Insert control at index position', () {
@@ -370,7 +366,7 @@ void main() {
       final arrayValue = array.value;
 
       // Then: disabled control not in value
-      expect(arrayValue.length, 1);
+      expect(arrayValue!.length, 1);
       expect(arrayValue.first, 'Reactive');
     });
 
@@ -531,7 +527,8 @@ void main() {
     // When: set a control focus
     addressArray.focus('0.city');
 
-    final FormControl<String> city = addressArray.control('0.city');
+    final FormControl<String?> city =
+        addressArray.control('0.city') as FormControl<String?>;
 
     // Then: control is focused
     expect(city.hasFocus, true, reason: 'control is not focused');
@@ -616,9 +613,9 @@ void main() {
   });
 }
 
-Map<String, dynamic> _emptyAddressee(AbstractControl control) {
+Map<String, dynamic>? _emptyAddressee(AbstractControl<Object> control) {
   final emails = (control as FormArray<bool>).value;
-  return emails.any((isSelected) => isSelected)
+  return emails?.any((isSelected) => isSelected!) == true
       ? null
       : {'emptyAddressee': true};
 }

@@ -65,8 +65,8 @@ class Validators {
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction<Comparable> min(Comparable min) =>
-      MinValidator(min).validate;
+  static ValidatorFunction<Object> min(Comparable min) =>
+      MinValidator(min).validate as ValidatorFunction<Object>;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
