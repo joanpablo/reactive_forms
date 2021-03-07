@@ -41,7 +41,7 @@ abstract class ControlValueAccessor<T, K> {
   /// value accessor.
   ///
   /// See also [registerControl].
-  void updateModel(K viewValue) {
+  void updateModel(K? viewValue) {
     if (_control == null) {
       throw ValueAccessorException(
           'No control registered. Call [ControlValueAccessor.registerControl] to register a control first.');

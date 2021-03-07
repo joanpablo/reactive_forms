@@ -11,17 +11,6 @@ class DummyValueAccessor extends ControlValueAccessor<dynamic, dynamic> {
 
 void main() {
   group('ControlValueAccessor Tests', () {
-    test('Register null raises assert exception', () {
-      // Given: a value accessor
-      final valueAccessor = DummyValueAccessor();
-
-      // When: register a control and pass null as argument
-      final registration = () => valueAccessor.registerControl(null);
-
-      // Then: assert error exception is thrown
-      expect(() => registration(), throwsAssertionError);
-    });
-
     test('Register a control inside value accessor', () {
       // Given: a value accessor
       final valueAccessor = DummyValueAccessor();
