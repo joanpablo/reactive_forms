@@ -13,8 +13,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// that is bound to [ReactiveTimePicker].
 ///
 /// See also [ReactiveDatePickerDelegate].
-typedef ReactiveDatePickerBuilder = Widget Function(
-    BuildContext context, ReactiveDatePickerDelegate picker, Widget? child);
+typedef ReactiveDatePickerBuilder<T> = Widget Function(
+    BuildContext context, ReactiveDatePickerDelegate<T> picker, Widget? child);
 
 /// This is a convenience widget that wraps the function
 /// [showDatePicker] in a [ReactiveDatePicker].
@@ -58,7 +58,7 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
-    required ReactiveDatePickerBuilder builder,
+    required ReactiveDatePickerBuilder<T> builder,
     required DateTime firstDate,
     required DateTime lastDate,
     DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
@@ -84,7 +84,7 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
           builder: (ReactiveFormFieldState<T, DateTime> field) {
             return builder(
               field.context,
-              ReactiveDatePickerDelegate._(
+              ReactiveDatePickerDelegate<T>._(
                 field,
                 (field) => showDatePicker(
                   context: field.context,
@@ -132,7 +132,7 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
 }
 
 /// Definition of the function responsible for show the date picker.
-typedef _ShowDatePickerCallback<T> = Function(
+typedef _ShowDatePickerCallback<T> = void Function(
     ReactiveFormFieldState<T?, DateTime> field);
 
 /// This class is responsible of showing the picker dialog.
@@ -140,7 +140,7 @@ typedef _ShowDatePickerCallback<T> = Function(
 /// See also [ReactiveDatePicker].
 class ReactiveDatePickerDelegate<T> {
   final ReactiveFormFieldState<T, DateTime> _field;
-  final _ShowDatePickerCallback _showPickerCallback;
+  final _ShowDatePickerCallback<T> _showPickerCallback;
 
   ReactiveDatePickerDelegate._(this._field, this._showPickerCallback);
 

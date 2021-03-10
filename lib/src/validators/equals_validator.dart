@@ -14,7 +14,7 @@ class EqualsValidator<T> extends Validator<T> {
   EqualsValidator(this.value);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<T> control) {
+  Map<String, Object>? validate(AbstractControl<T> control) {
     return control.value == this.value
         ? null
         : {

@@ -21,7 +21,7 @@ class CompareValidator extends Validator<Map<String, Object?>> {
   );
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Map<String, Object?>> form) {
+  Map<String, Object>? validate(AbstractControl<Map<String, Object?>> form) {
     if (form is! FormGroup) {
       // Maybe throw an exception is better
       return {ValidationMessage.compare: true};

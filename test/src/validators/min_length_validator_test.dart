@@ -66,7 +66,7 @@ void main() {
 
     test('FormArray invalid if minLength invalid', () {
       // Given: an invalid array
-      final array = FormArray([
+      final array = FormArray<Object>([
         FormControl(),
         FormControl(),
       ], validators: [
@@ -80,7 +80,7 @@ void main() {
 
     test('FormArray valid if minLength valid', () {
       // Given: a valid array
-      final array = FormArray([
+      final array = FormArray<Object>([
         FormControl(),
         FormControl(),
         FormControl(),

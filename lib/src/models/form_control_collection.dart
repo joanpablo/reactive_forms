@@ -10,7 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// The base class form [FormGroup] and [FormArray].
 /// Its provides methods for get a control by name and a [Listenable]
 /// that emits events each time you add or remove a control to the collection.
-abstract class FormControlCollection<T> {
+abstract class FormControlCollection {
   final _collectionChanges =
       StreamController<List<AbstractControl<Object?>>>.broadcast();
 

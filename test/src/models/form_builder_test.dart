@@ -109,7 +109,7 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form.control('control') is FormControl<dynamic>, true,
+      expect(form.control('control') is FormControl<Object>, true,
           reason: 'control is not instance of FormControl<dynamic>');
       expect(form.control('control').validators.first, validator,
           reason: 'validator not set');
@@ -190,7 +190,7 @@ void main() {
     test('Build a group with empty array', () {
       // Given: a form group builder creation
       final form = fb.group({
-        'control': [],
+        'control': <Object>[],
       });
 
       // Expect a form group created
@@ -415,8 +415,9 @@ void main() {
 
       // Expect: array is created
       expect(addressArray.controls.length, 2);
+      expect(addressArray.control('0') is FormGroup, true,
+          reason: 'first item is not a group');
       expect(addressArray.control('0').value, {'city': 'Sofia'});
-      expect(addressArray.control('0') is FormGroup, true);
     });
   });
 }

@@ -10,8 +10,10 @@ class EmailValidator extends Validator<Object> {
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Object> control) {
-    final error = {ValidationMessage.email: control.value};
+  Map<String, Object>? validate(AbstractControl<Object> control) {
+    final error = <String, Object>{
+      ValidationMessage.email: control.value ?? ''
+    };
 
     // don't validate empty values to allow optional controls
     return (control.isNull ||

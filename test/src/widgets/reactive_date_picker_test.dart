@@ -17,7 +17,8 @@ void main() {
         });
 
         // And: a widget bound to the form
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+        await tester
+            .pumpWidget(ReactiveDatePickerTestingWidget<DateTime>(form: form));
 
         // When: open picker
         await tester.tap(find.byType(TextButton));
@@ -45,7 +46,8 @@ void main() {
         });
 
         // And: a widget bound to the form
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+        await tester
+            .pumpWidget(ReactiveDatePickerTestingWidget<DateTime>(form: form));
 
         // When: open picker
         await tester.tap(find.byType(TextButton));
@@ -70,7 +72,7 @@ void main() {
 
         // And: a widget bound to the form
         final lastDate = DateTime(DateTime.now().year - 18);
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget(
+        await tester.pumpWidget(ReactiveDatePickerTestingWidget<DateTime>(
           form: form,
           lastDate: lastDate,
         ));
@@ -98,7 +100,8 @@ void main() {
         });
 
         // And: a widget bound to the form
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+        await tester
+            .pumpWidget(ReactiveDatePickerTestingWidget<DateTime>(form: form));
 
         // And: get initial date of the date picker
         final datePickerState = tester.allStates
@@ -120,7 +123,8 @@ void main() {
         });
 
         // And: a widget bound to the form
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+        await tester
+            .pumpWidget(ReactiveDatePickerTestingWidget<String>(form: form));
 
         // And: get initial date of the date picker
         final datePickerState = tester.allStates
@@ -142,7 +146,8 @@ void main() {
         });
 
         // And: a widget bound to the form
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget(form: form));
+        await tester
+            .pumpWidget(ReactiveDatePickerTestingWidget<bool>(form: form));
 
         // Then: initial date is equals to last Date
         expect(tester.takeException(), isInstanceOf<ValueAccessorException>());

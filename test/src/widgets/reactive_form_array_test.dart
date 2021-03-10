@@ -11,7 +11,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with array
         final form = FormGroup({
-          'array': FormArray([
+          'array': FormArray<Object>([
             FormControl(),
             FormControl(),
             FormControl(),
@@ -32,7 +32,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with array
         final form = FormGroup({
-          'array': FormArray([
+          'array': FormArray<Object>([
             FormControl(),
             FormControl(),
             FormControl(),
@@ -43,7 +43,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormArrayTestingWidget(form: form));
 
         // When: add new control to array
-        (form.control('array') as FormArray).add(FormControl());
+        (form.control('array') as FormArray<Object>).add(FormControl());
         await tester.pump();
 
         // Expect: display the same amount of items of the array
@@ -57,7 +57,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with array
         final form = FormGroup({
-          'array': FormArray([
+          'array': FormArray<Object>([
             FormControl(),
             FormControl(),
             FormControl(),
@@ -68,7 +68,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormArrayTestingWidget(form: form));
 
         // When: add new controls to array
-        (form.control('array') as FormArray).addAll([
+        (form.control('array') as FormArray<Object>).addAll([
           FormControl(),
           FormControl(),
         ]);
@@ -85,7 +85,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with array
         final form = FormGroup({
-          'array': FormArray([
+          'array': FormArray<Object>([
             FormControl(),
             FormControl(),
             FormControl(),

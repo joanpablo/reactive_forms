@@ -40,7 +40,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,

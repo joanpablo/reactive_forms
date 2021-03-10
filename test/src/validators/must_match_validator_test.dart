@@ -13,7 +13,7 @@ void main() {
 
       expect(form.invalid, true);
       expect(
-        form.errors['passwordConfirmation'][ValidationMessage.mustMatch],
+        form.hasError(ValidationMessage.mustMatch, 'passwordConfirmation'),
         true,
       );
     });

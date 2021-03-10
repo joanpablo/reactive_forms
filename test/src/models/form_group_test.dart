@@ -100,7 +100,7 @@ void main() {
 
       expect(form.errors.keys.length, 1);
       expect(form.errors['name'] != null, true, reason: 'Name');
-      expect(form.errors['name'][ValidationMessage.minLength] != null, true,
+      expect(form.hasError(ValidationMessage.minLength, 'name'), true,
           reason: 'name.minLength');
     });
 
@@ -224,7 +224,7 @@ void main() {
       int count = group.controls.length;
 
       // And: get names of controls
-      List names = group.controls.keys.toList();
+      List<String> names = group.controls.keys.toList();
 
       // Then: count is three
       expect(count, 3);

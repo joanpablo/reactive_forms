@@ -123,8 +123,8 @@ void main() {
       },
     );
 
-    Future<Map<String, dynamic>> failedAsyncValidator(
-        AbstractControl control) async {
+    Future<Map<String, Object>?> failedAsyncValidator(
+        AbstractControl<Object> control) async {
       return {'failed': true};
     }
 
@@ -157,8 +157,8 @@ void main() {
       },
     );
 
-    Future<Map<String, dynamic>?> asyncValidator(
-        AbstractControl control) async {
+    Future<Map<String, Object>?> asyncValidator(
+        AbstractControl<Object> control) async {
       return Future.value(null);
     }
 

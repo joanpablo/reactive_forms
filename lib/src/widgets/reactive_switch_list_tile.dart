@@ -44,9 +44,9 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return SwitchListTile(
-              value: field.value,
+              value: field.value!,
               onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,

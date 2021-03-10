@@ -64,7 +64,8 @@ class FormBuilder {
     Map<String, Object> controls, [
     List<ValidatorFunction<AbstractControl<Map<String, Object?>>>> validators =
         const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
+        asyncValidators = const [],
   ]) {
     final map = controls
         .map<String, AbstractControl<Object>>((String key, Object value) {
@@ -86,7 +87,7 @@ class FormBuilder {
         return MapEntry(key, FormControl(validators: [value]));
       } else if (value is List<ValidatorFunction> && value.isNotEmpty) {
         return MapEntry(key, FormControl(validators: value));
-      } else if (value is List<dynamic>) {
+      } else if (value is List<Object>) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
         } else {
@@ -243,7 +244,7 @@ class FormBuilder {
       return FormControl<TimeOfDay>(value: value);
     }
 
-    return FormControl(value: value, validators: validators);
+    return FormControl<Object>(value: value, validators: validators);
   }
 }
 

@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class DummyValueAccessor extends ControlValueAccessor<dynamic, dynamic> {
+class DummyValueAccessor extends ControlValueAccessor<Object, Object> {
   @override
-  modelToViewValue(modelValue) => modelValue;
+  Object? modelToViewValue(Object? modelValue) => modelValue;
 
   @override
-  viewToModelValue(viewValue) => viewValue;
+  Object? viewToModelValue(Object? viewValue) => viewValue;
 }
 
 void main() {

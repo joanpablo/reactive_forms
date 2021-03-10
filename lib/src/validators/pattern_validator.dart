@@ -15,7 +15,7 @@ class PatternValidator extends Validator<Object> {
   PatternValidator(this.evaluator);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Object> control) {
+  Map<String, Object>? validate(AbstractControl<Object> control) {
     return (control.value == null ||
             control.value.toString() == '' ||
             this.evaluator.hasMatch(control.value.toString()))

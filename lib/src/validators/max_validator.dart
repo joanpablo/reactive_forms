@@ -15,7 +15,7 @@ class MaxValidator extends Validator<Comparable> {
   MaxValidator(this.max);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Comparable> control) {
+  Map<String, Object>? validate(AbstractControl<Comparable> control) {
     return (control.value != null) && (control.value!.compareTo(max) <= 0)
         ? null
         : {

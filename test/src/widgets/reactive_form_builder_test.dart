@@ -15,7 +15,8 @@ void main() {
         });
 
         // And: a form builder bind to form
-        await tester.pumpWidget(ReactiveFormBuilderTestingWidget(form: form));
+        await tester
+            .pumpWidget(ReactiveFormBuilderTestingWidget<String>(form: form));
 
         // When: change input text
         final inputText = 'Hello Reactive Form Builder';

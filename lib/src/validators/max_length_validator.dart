@@ -15,7 +15,7 @@ class MaxLengthValidator extends Validator<Object> {
   MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<Object> control) {
+  Map<String, Object>? validate(AbstractControl<Object> control) {
     // don't validate empty values to allow optional controls
     if (control.value == null) {
       return null;
