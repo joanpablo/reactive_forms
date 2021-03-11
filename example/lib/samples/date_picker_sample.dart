@@ -36,7 +36,7 @@ class _DatePickerSampleState extends State<DatePickerSample> {
         builder: (context, form, child) {
           return Column(
             children: [
-              ReactiveDatePicker(
+              ReactiveDatePicker<DateTime>(
                 formControlName: 'date',
                 firstDate: DateTime(1985),
                 lastDate: DateTime(2030),

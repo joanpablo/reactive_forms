@@ -146,7 +146,7 @@ class ComplexSample extends StatelessWidget {
                 readOnly: true,
                 decoration: InputDecoration(
                   labelText: 'Birthday',
-                  suffixIcon: ReactiveDatePicker(
+                  suffixIcon: ReactiveDatePicker<DateTime>(
                     formControlName: 'dateTime',
                     firstDate: DateTime(1985),
                     lastDate: DateTime(2030),
