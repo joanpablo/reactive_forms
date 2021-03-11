@@ -197,11 +197,11 @@ abstract class AbstractControl<T> {
   /// final error = form.getError(ValidationMessages.min, 'payment.amount');
   /// print(error); // outputs: { min: 10.0, actual: 5.0 }
   /// ```
-  Object getError(String errorCode, [String? path]) {
+  Object? getError(String errorCode, [String? path]) {
     final AbstractControl<dynamic>? control =
         path != null ? _findControl(path) : this;
 
-    return control!.errors[errorCode]!;
+    return control!.errors[errorCode];
   }
 
   /// Marks the control as `dirty`.

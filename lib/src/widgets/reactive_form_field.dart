@@ -82,8 +82,8 @@ class ReactiveFormField<T, K> extends StatefulWidget {
 class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   /// The [FormControl] that is bound to this state.
   late FormControl<T> control;
-  late StreamSubscription _statusChangesSubscription;
-  late StreamSubscription _touchChangesSubscription;
+  late StreamSubscription<ControlStatus> _statusChangesSubscription;
+  late StreamSubscription<bool> _touchChangesSubscription;
   late ControlValueAccessor<T?, K?> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].

@@ -82,7 +82,7 @@ class _ArraySampleState extends State<ArraySample> {
   }
 }
 
-Map<String, dynamic> _emptyAddressee(AbstractControl control) {
+Map<String, Object> _emptyAddressee(AbstractControl<dynamic> control) {
   final emails = (control as FormArray<bool>).value;
   return emails.any((isSelected) => isSelected)
       ? null

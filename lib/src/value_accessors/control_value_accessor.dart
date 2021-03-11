@@ -17,7 +17,7 @@ abstract class ControlValueAccessor<T, K> {
   late FormControl<T>? _control;
   ChangeFunction<K>? _onChange;
   bool _viewToModelChange = false;
-  StreamSubscription? _onChangeSubscription;
+  StreamSubscription<T?>? _onChangeSubscription;
 
   /// Gets the control bind to this value accessor.
   FormControl<T>? get control => _control;

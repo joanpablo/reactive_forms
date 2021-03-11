@@ -62,21 +62,21 @@ class Validators {
   ///
   /// The argument [value] must not be null.
   static ValidatorFunction<AbstractControl<T>> equals<T>(T value) =>
-      EqualsValidator(value).validate;
+      EqualsValidator<T>(value).validate;
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction<AbstractControl<Comparable>> min(Comparable min) =>
-      MinValidator(min).validate;
+  static ValidatorFunction<AbstractControl<Comparable<T>>> min<T>(T min) =>
+      MinValidator<T>(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction<AbstractControl<Comparable>> max(Comparable max) =>
-      MaxValidator(max).validate;
+  static ValidatorFunction<AbstractControl<Comparable<T>>> max<T>(T max) =>
+      MaxValidator<T>(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
@@ -161,7 +161,7 @@ class Validators {
     String compareControlName,
     CompareOption compareOption,
   ) {
-    return CompareValidator(controlName, compareControlName, compareOption)
+    return CompareValidator<dynamic>(controlName, compareControlName, compareOption)
         .validate;
   }
 

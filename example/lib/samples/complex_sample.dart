@@ -190,7 +190,7 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 
 /// Async validator example that simulates a request to a server
 /// to validate if the email of the user is unique.
-Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+Future<Map<String, dynamic>> _uniqueEmail(AbstractControl<String> control) async {
   final error = {'unique': false};
 
   final emailAlreadyInUse = await Future.delayed(

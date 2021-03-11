@@ -6,8 +6,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's value to be greater than or equal
 /// to a provided value.
-class MinValidator extends Validator<Comparable> {
-  final Comparable min;
+class MinValidator<T> extends Validator<Comparable<T>> {
+  final T min;
 
   /// Constructs the instance of the validator.
   ///
@@ -15,7 +15,7 @@ class MinValidator extends Validator<Comparable> {
   MinValidator(this.min);
 
   @override
-  Map<String, Object>? validate(AbstractControl<Comparable> control) {
+  Map<String, Object>? validate(AbstractControl<Comparable<T>> control) {
     return (control.value != null) && (control.value!.compareTo(min) >= 0)
         ? null
         : {
