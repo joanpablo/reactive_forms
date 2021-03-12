@@ -166,7 +166,7 @@ class FormBuilder {
   FormControl<T> control<T>(
     T value, [
     List<ValidatorFunction<AbstractControl<T>>> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
   ]) {
     return FormControl<T>(
       value: value,
@@ -205,8 +205,8 @@ class FormBuilder {
   ///
   FormArray<T> array<T>(
     List<T> value, [
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<ValidatorFunction<AbstractControl<List<T?>>>> validators = const [],
+    List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators = const [],
   ]) {
     return FormArray<T>(
       value.map<AbstractControl<T>>((v) {
