@@ -204,7 +204,7 @@ class FormBuilder {
   /// ```
   ///
   FormArray<T> array<T>(
-    List<T> value, [
+    List<Object> value, [
     List<ValidatorFunction<AbstractControl<List<T?>>>> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators = const [],
   ]) {
@@ -217,7 +217,7 @@ class FormBuilder {
           return v;
         }
 
-        return this.control<T>(v);
+        return this.control<T>(v as T);
       }).toList(),
       validators: validators,
       asyncValidators: asyncValidators,

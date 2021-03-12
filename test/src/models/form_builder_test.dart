@@ -320,7 +320,7 @@ void main() {
 
     test('Build an array', () {
       // Given: an array creation
-      final array = fb.array(['john', 'little john']);
+      final array = fb.array<String>(['john', 'little john']);
 
       // Expect: the array is created
       expect(array is FormArray, true,
@@ -354,7 +354,7 @@ void main() {
     test('Build a group with array', () {
       // Given: a group creation
       final form = fb.group({
-        'aliases': fb.array(['john', 'little john']),
+        'aliases': fb.array<String>(['john', 'little john']),
       });
 
       // Expect: the group is created
@@ -381,7 +381,7 @@ void main() {
 
     test('Array of groups defined as Map', () {
       // Given: an array of groups
-      final addressArray = fb.array([
+      final addressArray = fb.array<Map<String, Object?>>([
         {'city': 'Sofia'},
         {'city': 'Havana'},
       ]);
@@ -394,7 +394,7 @@ void main() {
 
     test('Array of groups defined as Map', () {
       // Given: an array of groups
-      final addressArray = fb.array([
+      final addressArray = fb.array<Map<String, Object?>>([
         {
           'city': ['Sofia', Validators.required]
         },
@@ -411,7 +411,7 @@ void main() {
 
     test('Array of groups', () {
       // Given: an array of groups
-      final addressArray = fb.array([
+      final addressArray = fb.array<Map<String, Object?>>([
         fb.group({'city': 'Sofia'}),
         fb.group({'city': 'Havana'}),
       ]);

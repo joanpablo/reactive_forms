@@ -121,9 +121,9 @@ void main() {
       'Assert error if formArrayName and formArray not null',
       (WidgetTester tester) async {
         expect(
-          () => ReactiveFormArray(
+          () => ReactiveFormArray<int>(
             formArrayName: 'some',
-            formArray: fb.array([1]),
+            formArray: fb.array<int>([1]),
             builder: (context, array, child) => Container(),
           ),
           throwsAssertionError,
