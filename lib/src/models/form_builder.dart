@@ -110,7 +110,7 @@ class FormBuilder {
               .map<ValidatorFunction>((v) => v as ValidatorFunction)
               .toList();
           final control = _control(defaultValue, effectiveValidators);
-          return MapEntry(key, control as AbstractControl<Object>);
+          return MapEntry(key, control);
         }
       }
 
@@ -224,13 +224,15 @@ class FormBuilder {
     );
   }
 
-  FormControl _control(dynamic value, List<ValidatorFunction> validators) {
+  FormControl<T> _control<T>(T value, List<ValidatorFunction<AbstractControl<T>>> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
           'Default value of control must not be an AbstractControl.');
     }
 
-    if (value is String) {
+    return FormControl(value: value, validators: validators);
+
+   /* if (value is String) {
       return FormControl<String>(value: value, validators: validators);
     } else if (value is int) {
       return FormControl<int>(value: value, validators: validators);
@@ -244,7 +246,7 @@ class FormBuilder {
       return FormControl<TimeOfDay>(value: value);
     }
 
-    return FormControl<Object>(value: value, validators: validators);
+    return FormControl<Object>(value: value, validators: validators);*/
   }
 }
 

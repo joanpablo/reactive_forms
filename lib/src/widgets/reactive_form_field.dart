@@ -84,7 +84,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   late FormControl<T> control;
   late StreamSubscription<ControlStatus> _statusChangesSubscription;
   late StreamSubscription<bool> _touchChangesSubscription;
-  late ControlValueAccessor<T?, K?> _valueAccessor;
+  late ControlValueAccessor<T, K> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
   K? get value => this.valueAccessor.modelToViewValue(this.control.value);
@@ -142,7 +142,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @protected
   @visibleForTesting
   ControlValueAccessor<T, K> selectValueAccessor() {
-    return DefaultValueAccessor() as ControlValueAccessor<T, K>;
+    return (new DefaultValueAccessor<T>()) as ControlValueAccessor<T, K>;
   }
 
   @override
