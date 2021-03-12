@@ -177,15 +177,9 @@ void main() {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
 
-      final g = {
+      final form = fb.group({
         'control': [null, requiredValidator],
-      };
-
-      print("==================================");
-      print(g['control'].runtimeType.toString());
-      print("==================================");
-
-      final form = fb.group(g);
+      });
 
       // Expect a form group created
       expect(form.control('control') is FormControl<dynamic>, true,

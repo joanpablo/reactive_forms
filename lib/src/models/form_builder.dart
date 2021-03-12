@@ -87,7 +87,7 @@ class FormBuilder {
         return MapEntry(key, FormControl(validators: [value]));
       } else if (value is List<ValidatorFunction<AbstractControl<Object>>>) {
         return MapEntry(key, FormControl(validators: value));
-      } else if (value is List<Object>) {
+      } else if (value is List<Object?>) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
         } else {
