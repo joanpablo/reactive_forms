@@ -14,7 +14,7 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 /// Defines an interface that acts as a bridge between [FormControl] and a
 /// reactive native widget.
 abstract class ControlValueAccessor<T, K> {
-  late FormControl<T>? _control;
+  FormControl<T>? _control;
   ChangeFunction<K>? _onChange;
   bool _viewToModelChange = false;
   StreamSubscription<T?>? _onChangeSubscription;

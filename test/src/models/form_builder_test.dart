@@ -119,6 +119,7 @@ void main() {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
       final emailValidator = Validators.email;
+
       final form = fb.group({
         'control': [requiredValidator, emailValidator],
       });
@@ -138,6 +139,7 @@ void main() {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
       final emailValidator = Validators.email;
+
       final form = fb.group({
         'control': ['', requiredValidator, emailValidator],
       });
@@ -174,9 +176,16 @@ void main() {
     test('Build a group with default value in null and validator', () {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
-      final form = fb.group({
+
+      final g = {
         'control': [null, requiredValidator],
-      });
+      };
+
+      print("==================================");
+      print(g['control'].runtimeType.toString());
+      print("==================================");
+
+      final form = fb.group(g);
 
       // Expect a form group created
       expect(form.control('control') is FormControl<dynamic>, true,

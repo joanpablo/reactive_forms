@@ -85,8 +85,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<ValidatorFunction<AbstractControl<T>>> get validators =>
-      List<ValidatorFunction<AbstractControl<T>>>.unmodifiable(_validators);
+  List<ValidatorFunction<AbstractControl<Object>>> get validators =>
+      List<ValidatorFunction<AbstractControl<Object>>>.unmodifiable(_validators);
 
   /// The list of async functions that determines the validity of this control.
   ///
@@ -372,7 +372,7 @@ abstract class AbstractControl<T> {
   /// When [emitEvent] is true or not supplied (the default), both the
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
-  void patchValue(T value, {bool updateParent, bool emitEvent});
+  void patchValue(T? value, {bool updateParent = true, bool emitEvent = true});
 
   /// Resets the control, marking it as untouched, pristine and setting the
   /// value to null.
@@ -529,7 +529,7 @@ abstract class AbstractControl<T> {
   Map<String, Object> _runValidators() {
     final errors = Map<String, Object>();
     this.validators.forEach((validator) {
-      final error = validator(this);
+      final error = validator(this as AbstractControl<Object>);
       if (error != null) {
         errors.addAll(error);
       }
@@ -912,7 +912,7 @@ class FormControl<T> extends AbstractControl<T> {
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
   @override
-  void patchValue(T value, {bool updateParent = true, bool emitEvent = true}) {
+  void patchValue(T? value, {bool updateParent = true, bool emitEvent = true}) {
     this.updateValue(value, updateParent: updateParent, emitEvent: emitEvent);
   }
 
@@ -936,8 +936,8 @@ class FormControl<T> extends AbstractControl<T> {
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
 class FormGroup extends AbstractControl<Map<String, Object?>>
-    with FormControlCollection {
-  final Map<String, AbstractControl<Object?>> _controls = {};
+    with FormControlCollection<Object> {
+  final Map<String, AbstractControl<Object>> _controls = {};
 
   /// Creates a new FormGroup instance.
   ///
@@ -1034,7 +1034,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// form.control('person.name');
   /// ```
   @override
-  AbstractControl<Object?> control(String name) {
+  AbstractControl<Object> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1294,11 +1294,11 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// ```
   @override
   void patchValue(
-    Map<String, Object?> value, {
+    Map<String, Object?>? value, {
     bool updateParent = true,
     bool emitEvent = true,
   }) {
-    value.forEach((name, value) {
+    value?.forEach((name, value) {
       if (_controls.containsKey(name)) {
         _controls[name]!.patchValue(
           value,
@@ -1420,7 +1420,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
 class FormArray<T> extends AbstractControl<List<T?>>
-    with FormControlCollection {
+    with FormControlCollection<T> {
   final List<AbstractControl<T>> _controls = [];
 
   /// Creates a new [FormArray] instance.
@@ -1780,7 +1780,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// form.control('address.0.city');
   /// ```
   @override
-  AbstractControl<Object?> control(String name) {
+  AbstractControl<T> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1965,10 +1965,14 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// ```
   @override
   void patchValue(
-    List<T?> value, {
+    List<T?>? value, {
     bool updateParent = true,
     bool emitEvent = true,
   }) {
+    if (value == null) {
+      return;
+    }
+
     for (int i = 0; i < value.length; i++) {
       if (i < _controls.length) {
         _controls[i].patchValue(

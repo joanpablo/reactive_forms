@@ -10,7 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// The base class form [FormGroup] and [FormArray].
 /// Its provides methods for get a control by name and a [Listenable]
 /// that emits events each time you add or remove a control to the collection.
-abstract class FormControlCollection {
+abstract class FormControlCollection<T> {
   final _collectionChanges =
       StreamController<List<AbstractControl<Object?>>>.broadcast();
 
@@ -21,7 +21,7 @@ abstract class FormControlCollection {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
-  AbstractControl<Object?> control(String name);
+  AbstractControl<T> control(String name);
 
   /// Checks if collection contains a control by a given [name].
   ///
@@ -48,18 +48,18 @@ abstract class FormControlCollection {
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl<Object?>? findControl(List<String> path) {
+  AbstractControl<T>? findControl(List<String> path) {
     if (path.isEmpty) {
       return null;
     }
 
-    return path.fold(this as AbstractControl<Object>, (control, name) {
+    return path.fold(this as AbstractControl<T>?, (control, name) {
       if (control is FormControlCollection) {
-        final collection = control as FormControlCollection;
+        final collection = control;
         return collection.contains(name) ? collection.control(name) : null;
       } else {
         return null;
       }
-    });
+    }) as AbstractControl<T>?;
   }
 }
