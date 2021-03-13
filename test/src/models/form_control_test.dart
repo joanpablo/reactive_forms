@@ -76,6 +76,41 @@ void main() {
       expect(formControl.errors[ValidationMessage.minLength] != null, true);
     });
 
+    test('FormControl call setValidators()', () {
+      final formControl = FormControl(
+        value: 'hello',
+        validators: [Validators.required],
+      );
+
+      formControl.value = null;
+
+      expect(formControl.errors.containsKey(ValidationMessage.required), true);
+
+      formControl.setValidators([Validators.minLength(6)]);
+      formControl.updateValueAndValidity();
+
+      formControl.value = 'hello';
+
+      expect(formControl.errors.containsKey(ValidationMessage.minLength), true);
+      expect(formControl.errors.containsKey(ValidationMessage.required), false);
+    });
+
+    test('FormControl call clearValidators()', () {
+      final formControl = FormControl(
+        value: 'hello',
+        validators: [Validators.required],
+      );
+
+      formControl.value = null;
+
+      expect(formControl.errors.containsKey(ValidationMessage.required), true);
+
+      formControl.clearValidators();
+      formControl.updateValueAndValidity();
+
+      expect(formControl.errors.containsKey(ValidationMessage.required), false);
+    });
+
     test('Reset a control set value to null', () {
       final formControl = FormControl(
         value: 'john doe',

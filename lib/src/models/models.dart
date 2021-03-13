@@ -20,12 +20,12 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction> _validators;
-  final List<AsyncValidatorFunction> _asyncValidators;
 
   StreamSubscription _asyncValidationSubscription;
   Map<String, dynamic> _errors = {};
   bool _pristine = true;
+  List<ValidatorFunction> _validators;
+  List<AsyncValidatorFunction> _asyncValidators;
 
   T _value;
 
@@ -202,6 +202,40 @@ abstract class AbstractControl<T> {
         path != null ? _findControl(path) : this;
 
     return control.errors[errorCode];
+  }
+
+  /// Sets the synchronous validators that are active on this control.  Calling
+  /// this overwrites any existing sync validators.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// `updateValueAndValidity()` for the new validation to take effect.
+  void setValidators(List<ValidatorFunction> newValidators) {
+    _validators = newValidators ?? const [];
+  }
+
+  /// Sets the async validators that are active on this control.  Calling
+  /// this overwrites any existing async validators.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// `updateValueAndValidity()` for the new validation to take effect.
+  void setAsyncValidators(List<AsyncValidatorFunction> newValidators) {
+    _asyncValidators = newValidators ?? const [];
+  }
+
+  /// Empties out the sync validator list.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// `updateValueAndValidity()` for the new validation to take effect.
+  void clearValidators() {
+    _validators = const [];
+  }
+
+  /// Empties out the async validator list.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// `updateValueAndValidity()` for the new validation to take effect.
+  void clearAsyncValidators() {
+    _asyncValidators = const [];
   }
 
   /// Marks the control as `dirty`.
