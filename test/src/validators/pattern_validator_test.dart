@@ -8,7 +8,7 @@ void main() {
     test('FormControl invalid if value not matched pattern', () {
       const AmericanExpressPattern = r'^3[47][0-9]{13}$';
 
-      final cardNumber = FormControl(
+      final cardNumber = FormControl<String>(
         validators: [Validators.pattern(AmericanExpressPattern)],
       );
 
@@ -21,7 +21,7 @@ void main() {
     test('FormControl valid if value matched pattern', () {
       const AmericanExpressPattern = r'^3[47][0-9]{13}$';
 
-      final cardNumber = FormControl(
+      final cardNumber = FormControl<String>(
         validators: [Validators.pattern(AmericanExpressPattern)],
       );
 
@@ -34,7 +34,7 @@ void main() {
     test("Passing a Regex to Pattern validator", () {
       const AmericanExpressPattern = r'^3[47][0-9]{13}$';
 
-      final cardNumber = FormControl(
+      final cardNumber = FormControl<String>(
         validators: [Validators.pattern(RegExp(AmericanExpressPattern))],
       );
 
@@ -47,7 +47,7 @@ void main() {
     test("Passing a MockPattern to Pattern validator", () {
       const String AmericanExpressPattern = r'^3[47][0-9]{13}$';
 
-      final cardNumber = FormControl(
+      final cardNumber = FormControl<String>(
         validators: [
           Validators.pattern(MockPattern(RegExp(AmericanExpressPattern)))
         ],

@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that validates that the length of the control's value
 /// doesn't exceed the maximum allowed limit.
-class MaxLengthValidator extends Validator<Object> {
+class MaxLengthValidator extends Validator<dynamic> {
   final int maxLength;
 
   /// Constructs a [MaxLengthValidator].
@@ -15,7 +15,7 @@ class MaxLengthValidator extends Validator<Object> {
   MaxLengthValidator(this.maxLength);
 
   @override
-  Map<String, Object>? validate(AbstractControl<Object> control) {
+  Map<String, Object>? validate(AbstractControl<dynamic> control) {
     // don't validate empty values to allow optional controls
     if (control.value == null) {
       return null;

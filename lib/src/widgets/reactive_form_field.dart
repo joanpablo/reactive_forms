@@ -84,16 +84,16 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   late FormControl<T> control;
   late StreamSubscription<ControlStatus> _statusChangesSubscription;
   late StreamSubscription<bool> _touchChangesSubscription;
-  late ControlValueAccessor<T, K> _valueAccessor;
+  late ControlValueAccessor<dynamic, dynamic> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  K? get value => this.valueAccessor.modelToViewValue(this.control.value);
+  K? get value => this.valueAccessor.modelToViewValue(this.control.value) as K?;
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => this.control.touched;
 
   /// Gets the widget control value accessor
-  ControlValueAccessor<T?, K?> get valueAccessor => _valueAccessor;
+  ControlValueAccessor<dynamic, dynamic> get valueAccessor => _valueAccessor;
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -141,8 +141,8 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   /// See [ControlValueAccessor].
   @protected
   @visibleForTesting
-  ControlValueAccessor<T, K> selectValueAccessor() {
-    return (new DefaultValueAccessor<T>()) as ControlValueAccessor<T, K>;
+  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
+    return new DefaultValueAccessor<T>();
   }
 
   @override
@@ -230,7 +230,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
     setState(() {});
   }
 
-  ControlValueAccessor<T, K> _resolveValueAccessor() {
+  ControlValueAccessor<dynamic, dynamic> _resolveValueAccessor() {
     return widget.valueAccessor ?? this.selectValueAccessor();
   }
 

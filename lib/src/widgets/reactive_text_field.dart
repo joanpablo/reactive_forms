@@ -232,7 +232,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   }
 
   @override
-  ControlValueAccessor<T, String> selectValueAccessor() {
+  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
     if (this.control is FormControl<int>) {
       return IntValueAccessor() as ControlValueAccessor<T, String>;
     } else if (this.control is FormControl<double>) {

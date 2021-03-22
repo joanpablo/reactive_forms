@@ -25,7 +25,7 @@ import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction<T> = Map<String, Object>? Function(T control);
+typedef ValidatorFunction = Map<String, Object>? Function(AbstractControl<dynamic> control);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
@@ -35,61 +35,61 @@ typedef AsyncValidatorFunction<T> = Future<Map<String, Object>?> Function(
 /// Provides a set of built-in validators that can be used by form controls.
 class Validators {
   /// Gets a validator that requires the control have a non-empty value.
-  static ValidatorFunction<AbstractControl<dynamic>> get required =>
+  static ValidatorFunction get required =>
       RequiredValidator().validate;
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static ValidatorFunction<AbstractControl<bool>> get requiredTrue =>
+  static ValidatorFunction get requiredTrue =>
       EqualsValidator<bool>(true).validate;
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
-  static ValidatorFunction<AbstractControl<Object>> get email =>
+  static ValidatorFunction get email =>
       EmailValidator().validate;
 
   /// Gets a validator that validates if control's value is a numeric value.
-  static ValidatorFunction<AbstractControl<Object>> get number =>
+  static ValidatorFunction get number =>
       NumberValidator().validate;
 
   /// Gets a validator that validates if the control's value is a valid
   /// credit card number.
-  static ValidatorFunction<AbstractControl<Object>> get creditCard =>
+  static ValidatorFunction get creditCard =>
       CreditCardValidator().validate;
 
   /// Gets a validator that requires the control's value to be equals to
   /// argument [value].
   ///
   /// The argument [value] must not be null.
-  static ValidatorFunction<AbstractControl<T>> equals<T>(T value) =>
+  static ValidatorFunction equals<T>(T value) =>
       EqualsValidator<T>(value).validate;
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction<AbstractControl<Comparable<T>>> min<T>(T min) =>
+  static ValidatorFunction min<T>(T min) =>
       MinValidator<T>(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction<AbstractControl<Comparable<T>>> max<T>(T max) =>
+  static ValidatorFunction max<T>(T max) =>
       MaxValidator<T>(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
   ///
   /// The argument [minLength] argument must not be null.
-  static ValidatorFunction<AbstractControl<Object>> minLength(int minLength) =>
+  static ValidatorFunction minLength(int minLength) =>
       MinLengthValidator(minLength).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// less than or equal to the provided [maxLength].
   ///
   /// The argument [maxLength] must not be null.
-  static ValidatorFunction<AbstractControl<Object>> maxLength(int maxLength) =>
+  static ValidatorFunction maxLength(int maxLength) =>
       MaxLengthValidator(maxLength).validate;
 
   /// Gets a validator that requires the control's value to match a
@@ -121,7 +121,7 @@ class Validators {
   ///
   /// expect(cardNumber.valid, true);
   /// ```
-  static ValidatorFunction<AbstractControl<Object>> pattern(Pattern pattern) {
+  static ValidatorFunction pattern(Pattern pattern) {
     PatternEvaluator evaluator;
     if (pattern is String) {
       evaluator = RegExpPatternEvaluator(RegExp(pattern));
@@ -138,7 +138,7 @@ class Validators {
   /// [matchingControlName] have the same values.
   ///
   /// The arguments [controlName] and [matchingControlName] must not be null.
-  static ValidatorFunction<AbstractControl<Object>> mustMatch(
+  static ValidatorFunction mustMatch(
       String controlName, String matchingControlName) {
     return MustMatchValidator(controlName, matchingControlName).validate;
   }
@@ -156,7 +156,7 @@ class Validators {
   ///   'balance': 50.00,
   /// }, [Validators.compare('amount', 'balance', CompareOption.lower_or_equals)]);
   /// ```
-  static ValidatorFunction<AbstractControl<Map<String, Object?>>> compare(
+  static ValidatorFunction compare(
     String controlName,
     String compareControlName,
     CompareOption compareOption,
@@ -170,8 +170,8 @@ class Validators {
   /// validators.
   ///
   /// The argument [validators] must not be null.
-  static ValidatorFunction<AbstractControl<Object>> compose(
-      List<ValidatorFunction<AbstractControl<Object>>> validators) {
+  static ValidatorFunction compose(
+      List<ValidatorFunction> validators) {
     return ComposeValidator(validators).validate;
   }
 
@@ -184,8 +184,8 @@ class Validators {
   /// If at least one of the [validators] evaluates as 'VALID' then the compose
   /// validator evaluates as 'VALID' and returns null, otherwise returns
   /// the union of all the individual errors returned by each validator.
-  static ValidatorFunction<AbstractControl<Object>> composeOR(
-      List<ValidatorFunction<AbstractControl<Object>>> validators) {
+  static ValidatorFunction composeOR(
+      List<ValidatorFunction> validators) {
     return ComposeOrValidator(validators).validate;
   }
 
@@ -211,7 +211,7 @@ class Validators {
   ///      ], validators: [Validators.contains([1,3])]
   /// );
   /// ```
-  static ValidatorFunction<AbstractControl<Iterable<T>>> contains<T>(
+  static ValidatorFunction contains<T>(
       List<T> values) {
     return ContainsValidator<T>(values).validate;
   }
@@ -246,7 +246,7 @@ class Validators {
   ///
   /// print(control.valid); // outputs: true
   /// ```
-  static ValidatorFunction<AbstractControl<Iterable<T>>> any<T>(
+  static ValidatorFunction any<T>(
       AnyValidatorFunctionTest<T> test) {
     return AnyValidator<T>(test).validate;
   }

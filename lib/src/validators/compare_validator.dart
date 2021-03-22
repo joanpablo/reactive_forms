@@ -5,7 +5,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Represents a [FormGroup] validator that compares two controls in the group.
-class CompareValidator<T> extends Validator<Map<String, Object?>> {
+class CompareValidator<T> extends Validator<dynamic> {
   final String controlName;
   final String compareControlName;
   final CompareOption compareOption;
@@ -21,7 +21,7 @@ class CompareValidator<T> extends Validator<Map<String, Object?>> {
   );
 
   @override
-  Map<String, Object>? validate(AbstractControl<Map<String, Object?>> form) {
+  Map<String, Object>? validate(AbstractControl<dynamic> form) {
     if (form is! FormGroup) {
       // Maybe throw an exception is better
       return {ValidationMessage.compare: true};
@@ -30,7 +30,7 @@ class CompareValidator<T> extends Validator<Map<String, Object?>> {
     final mainControl = form.control(this.controlName);
     final compareControl = form.control(this.compareControlName);
     final error = {
-      ValidationMessage.compare: {
+      ValidationMessage.compare: <String, dynamic>{
         'control': mainControl.value,
         'compareControl': compareControl.value,
         'option': this.compareOption,

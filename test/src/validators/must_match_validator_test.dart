@@ -5,8 +5,8 @@ void main() {
   group('MustMatch Validator Tests', () {
     test('FormGroup invalid if passwords mismatch', () {
       final form = FormGroup({
-        'password': FormControl(value: '1234'),
-        'passwordConfirmation': FormControl(value: '123'),
+        'password': FormControl<String>(value: '1234'),
+        'passwordConfirmation': FormControl<String>(value: '123'),
       }, validators: [
         Validators.mustMatch('password', 'passwordConfirmation'),
       ]);
@@ -20,8 +20,8 @@ void main() {
 
     test('FormGroup valid if passwords match', () {
       final form = FormGroup({
-        'password': FormControl(value: '1234'),
-        'passwordConfirmation': FormControl(value: '123'),
+        'password': FormControl<String>(value: '1234'),
+        'passwordConfirmation': FormControl<String>(value: '123'),
       }, validators: [
         Validators.mustMatch('password', 'passwordConfirmation'),
       ]);

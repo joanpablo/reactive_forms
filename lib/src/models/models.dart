@@ -20,7 +20,7 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction<AbstractControl<T>>> _validators;
+  final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction<AbstractControl<T>>> _asyncValidators;
 
   StreamSubscription<Map<String, Object>?>? _asyncValidationSubscription;
@@ -44,7 +44,7 @@ abstract class AbstractControl<T> {
 
   /// Constructor of the [AbstractControl].
   AbstractControl({
-    List<ValidatorFunction<AbstractControl<T>>> validators = const [],
+    List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
@@ -85,8 +85,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<ValidatorFunction<AbstractControl<Object>>> get validators =>
-      List<ValidatorFunction<AbstractControl<Object>>>.unmodifiable(_validators);
+  List<ValidatorFunction> get validators =>
+      List<ValidatorFunction>.unmodifiable(_validators);
 
   /// The list of async functions that determines the validity of this control.
   ///
@@ -529,7 +529,7 @@ abstract class AbstractControl<T> {
   Map<String, Object> _runValidators() {
     final errors = Map<String, Object>();
     this.validators.forEach((validator) {
-      final error = validator(this as AbstractControl<Object>);
+      final error = validator(this);
       if (error != null) {
         errors.addAll(error);
       }
@@ -726,7 +726,7 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T? value,
-    List<ValidatorFunction<AbstractControl<T>>> validators = const [],
+    List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,
@@ -937,7 +937,7 @@ class FormControl<T> extends AbstractControl<T> {
 /// becomes invalid.
 class FormGroup extends AbstractControl<Map<String, Object?>>
     with FormControlCollection<Object> {
-  final Map<String, AbstractControl<Object>> _controls = {};
+  final Map<String, AbstractControl<dynamic>> _controls = {};
 
   /// Creates a new FormGroup instance.
   ///
@@ -974,8 +974,8 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   ///
   /// See also [AbstractControl.validators]
   FormGroup(
-    Map<String, AbstractControl<Object>> controls, {
-    List<ValidatorFunction<AbstractControl<Map<String, Object?>>>> validators =
+    Map<String, AbstractControl<dynamic>> controls, {
+    List<ValidatorFunction> validators =
         const [],
     List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
         asyncValidators = const [],
@@ -1034,7 +1034,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// form.control('person.name');
   /// ```
   @override
-  AbstractControl<Object> control(String name) {
+  AbstractControl<dynamic> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);
@@ -1154,7 +1154,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   }
 
   /// Appends all [controls] to the group.
-  void addAll(Map<String, AbstractControl<Object>> controls) {
+  void addAll(Map<String, AbstractControl<dynamic>> controls) {
     _controls.addAll(controls);
     controls.forEach((name, control) {
       control.parent = this;
@@ -1460,7 +1460,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<ValidatorFunction<AbstractControl<List<T?>>>> validators = const [],
+    List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators =
         const [],
     int asyncValidatorsDebounceTime = 250,
@@ -1780,7 +1780,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// form.control('address.0.city');
   /// ```
   @override
-  AbstractControl<T> control(String name) {
+  AbstractControl<dynamic> control(String name) {
     final namePath = name.split('.');
     if (namePath.length > 1) {
       final control = this.findControl(namePath);

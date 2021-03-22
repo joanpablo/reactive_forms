@@ -29,7 +29,7 @@ void main() {
     test('FormGroup valid if minLength valid', () {
       // Given: a valid control
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'Reactive Forms',
           validators: [Validators.minLength(6)],
         ),
@@ -42,7 +42,7 @@ void main() {
     test('FormGroup valid if control value is null', () {
       // Given: a valid control
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           validators: [Validators.minLength(6)],
         ),
       });
@@ -54,7 +54,7 @@ void main() {
     test('FormGroup invalid if minLength invalid', () {
       // Given: an invalid control
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'Forms',
           validators: [Validators.minLength(6)],
         ),
@@ -95,8 +95,8 @@ void main() {
     test('FormGroup valid if minLength valid', () {
       // Given: a valid group
       final array = FormGroup({
-        'name': FormControl(),
-        'email': FormControl(),
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
       }, validators: [
         Validators.minLength(2)
       ]);
@@ -108,7 +108,7 @@ void main() {
     test('FormGroup invalid if minLength invalid', () {
       // Given: an invalid group
       final array = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
       }, validators: [
         Validators.minLength(2)
       ]);

@@ -35,7 +35,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: A group with a field
         final form = FormGroup({
-          'name': FormControl(value: 'John'),
+          'name': FormControl<String>(value: 'John'),
         });
 
         // And: a widget that is bind to the form
@@ -61,7 +61,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: A group with a field
         final form = FormGroup({
-          'name': FormControl(value: 'John'),
+          'name': FormControl<String>(value: 'John'),
         });
 
         // And: a widget that is bind to the form
@@ -393,7 +393,7 @@ void main() {
         // Given: a form with custom validator
         bool isControlDirty = false;
 
-        final customValidator = (AbstractControl<String> control) {
+        final customValidator = (AbstractControl<dynamic> control) {
           isControlDirty = control.dirty;
           return null;
         };

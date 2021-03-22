@@ -21,7 +21,7 @@ abstract class FormControlCollection<T> {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
-  AbstractControl<T> control(String name);
+  AbstractControl<dynamic> control(String name);
 
   /// Checks if collection contains a control by a given [name].
   ///
@@ -48,18 +48,20 @@ abstract class FormControlCollection<T> {
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl<T>? findControl(List<String> path) {
+  AbstractControl<Object>? findControl(List<String> path) {
     if (path.isEmpty) {
       return null;
     }
 
-    return path.fold(this as AbstractControl<T>?, (control, name) {
-      if (control is FormControlCollection) {
+    final result = path.fold(this as AbstractControl<Object>, (control, name) {
+      if (control is FormControlCollection<dynamic>) {
         final collection = control;
         return collection.contains(name) ? collection.control(name) : null;
       } else {
         return null;
       }
-    }) as AbstractControl<T>?;
+    });
+
+    return result as AbstractControl<Object>;
   }
 }

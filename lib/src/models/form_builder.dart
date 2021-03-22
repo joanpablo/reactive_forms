@@ -62,7 +62,7 @@ class FormBuilder {
   /// ```
   FormGroup group(
     Map<String, Object> controls, [
-    List<ValidatorFunction<AbstractControl<Map<String, Object?>>>> validators =
+    List<ValidatorFunction> validators =
         const [],
     List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
         asyncValidators = const [],
@@ -85,7 +85,7 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction<AbstractControl<Object>>>) {
+      } else if (value is List<ValidatorFunction>) {
         return MapEntry(key, FormControl(validators: value));
       } else if (value is List<Object?>) {
         if (value.isEmpty) {
@@ -165,7 +165,7 @@ class FormBuilder {
   /// ```
   FormControl<T> control<T>(
     T value, [
-    List<ValidatorFunction<AbstractControl<T>>> validators = const [],
+    List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
   ]) {
     return FormControl<T>(
@@ -205,7 +205,7 @@ class FormBuilder {
   ///
   FormArray<T> array<T>(
     List<Object> value, [
-    List<ValidatorFunction<AbstractControl<List<T?>>>> validators = const [],
+    List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators = const [],
   ]) {
     return FormArray<T>(
@@ -224,7 +224,7 @@ class FormBuilder {
     );
   }
 
-  FormControl<dynamic> _control(dynamic value, List<ValidatorFunction<AbstractControl<Object>>> validators) {
+  FormControl<dynamic> _control(dynamic value, List<ValidatorFunction> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
           'Default value of control must not be an AbstractControl.');

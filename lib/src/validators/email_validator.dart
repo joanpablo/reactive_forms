@@ -5,21 +5,17 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's value pass an email validation test.
-class EmailValidator extends Validator<Object> {
+class EmailValidator extends Validator<dynamic> {
   static final RegExp emailRegex = new RegExp(
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 
   @override
-  Map<String, Object>? validate(AbstractControl<Object> control) {
-    final error = <String, Object>{
-      ValidationMessage.email: control.value ?? ''
-    };
-
+  Map<String, Object>? validate(AbstractControl<dynamic> control) {
     // don't validate empty values to allow optional controls
     return (control.isNull ||
             control.value.toString().isEmpty ||
             emailRegex.hasMatch(control.value.toString()))
         ? null
-        : error;
+        : {ValidationMessage.email: control.value as Object};
   }
 }

@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Represents a [FormGroup] validator that requires that two controls in the
 /// group have the same values.
-class MustMatchValidator extends Validator<Object> {
+class MustMatchValidator extends Validator<dynamic> {
   final String controlName;
   final String matchingControlName;
 
@@ -14,7 +14,7 @@ class MustMatchValidator extends Validator<Object> {
   MustMatchValidator(this.controlName, this.matchingControlName);
 
   @override
-  Map<String, Object>? validate(AbstractControl<Object> form) {
+  Map<String, Object>? validate(AbstractControl<dynamic> form) {
     final error = {ValidationMessage.mustMatch: true};
 
     if (form is! FormGroup) {

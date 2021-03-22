@@ -13,7 +13,7 @@ void main() {
 
     test('FormGroup is valid if FormControl is valid', () {
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<dynamic>(),
       });
 
       expect(form.valid, true);
@@ -21,7 +21,7 @@ void main() {
 
     test('FormGroup is invalid if FormControl is invalid', () {
       final form = FormGroup({
-        'name': FormControl(validators: [Validators.required]),
+        'name': FormControl<dynamic>(validators: [Validators.required]),
       });
 
       expect(form.valid, false);
@@ -29,7 +29,7 @@ void main() {
 
     test('FormGroup is valid if required FormControl has default value', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'hello',
           validators: [Validators.required],
         ),
@@ -40,7 +40,7 @@ void main() {
 
     test('FormGroup is invalid if set invalid value to FormControl', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'hello',
           validators: [Validators.required],
         ),
@@ -53,7 +53,7 @@ void main() {
 
     test('FormGroup is valid if set valid value to FormControl', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           validators: [Validators.required],
         ),
       });
@@ -65,7 +65,7 @@ void main() {
 
     test('FormGroup is invalid if all FormControl are invalid', () {
       final form = FormGroup({
-        'name': FormControl(validators: [Validators.required]),
+        'name': FormControl<String>(validators: [Validators.required]),
         'email': FormControl<String>(validators: [Validators.email]),
       });
 
@@ -74,7 +74,7 @@ void main() {
 
     test('FormGroup is invalid if at least one FormControl is invalid', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'hello',
           validators: [Validators.required],
         ),
@@ -89,7 +89,7 @@ void main() {
 
     test('FormGroup contains all matching errors of nested controls', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'hi',
           validators: [
             Validators.required,
@@ -106,7 +106,7 @@ void main() {
 
     test('Reset group restores value of all controls to null', () {
       final formGroup = FormGroup({
-        'name': FormControl(value: 'john doe'),
+        'name': FormControl<String>(value: 'john doe'),
         'email': FormControl<String>(value: 'johndoe@reactiveforms.com'),
       });
 
@@ -121,7 +121,7 @@ void main() {
 
     test('Set value to FormGroup', () {
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
         'email': FormControl<String>(),
       });
 
@@ -136,7 +136,7 @@ void main() {
 
     test('Get value returns a Map with controls name and values', () {
       final form = FormGroup({
-        'name': FormControl(value: 'john'),
+        'name': FormControl<String>(value: 'john'),
         'email': FormControl<String>(value: 'john@email.com'),
       });
 
@@ -155,7 +155,7 @@ void main() {
     test('Mark form as touched mark all controls in the form as touched', () {
       // Given: an untouched form
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
         'email': FormControl<String>(),
       });
 
@@ -174,7 +174,7 @@ void main() {
     test('Mark form as untouched mark all controls as untouched', () {
       // Given: a form with touched controls
       final form = FormGroup({
-        'name': FormControl(touched: true),
+        'name': FormControl<String>(touched: true),
         'email': FormControl<String>(touched: true),
       });
 
@@ -193,7 +193,7 @@ void main() {
     test('The form is touched if at least one control is touched', () {
       // Given: a form with only one control touched
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
         'email': FormControl<String>(touched: true),
       });
 
@@ -204,7 +204,7 @@ void main() {
     test('The form is untouched if all control are untouched', () {
       // Given: a form with no touched controls
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
         'email': FormControl<String>(),
       });
 
@@ -215,9 +215,9 @@ void main() {
     test('FormGroup.controls contains controls collection', () {
       // Given: a group with three controls
       final group = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
         'email': FormControl<String>(),
-        'password': FormControl(),
+        'password': FormControl<String>(),
       });
 
       // When: count children of array
@@ -238,7 +238,7 @@ void main() {
     test('Group notify value changes when control value changes', () {
       // Given: a form with a controls
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
       });
 
       final value = 'Reactive Forms';
@@ -253,7 +253,7 @@ void main() {
     test('When a group is disable then all children are disabled', () {
       // Given: a form with controls
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
       });
 
       // When: disable group
@@ -267,7 +267,7 @@ void main() {
     test('A control disabled is not part of group value', () {
       // Given: a form with a disable control
       final form = FormGroup({
-        'name': FormControl(value: 'Reactive'),
+        'name': FormControl<String>(value: 'Reactive'),
         'email': FormControl<String>(value: 'Forms', disabled: true),
       });
 
@@ -283,7 +283,7 @@ void main() {
     test('Enable a group enable children and recalculate validity', () {
       // Given: a form with a disable control
       final form = FormGroup({
-        'name': FormControl(value: 'Reactive'),
+        'name': FormControl<String>(value: 'Reactive'),
         'email': FormControl<String>(value: 'Forms', disabled: true),
       });
 
@@ -297,7 +297,7 @@ void main() {
     test('Group valid when invalid control is disable', () {
       // Given: a form with an invalid disable control
       final form = FormGroup({
-        'name': FormControl(value: 'Reactive'),
+        'name': FormControl<String>(value: 'Reactive'),
         'email': FormControl<String>(
             disabled: true, validators: [Validators.required]),
       });
@@ -310,7 +310,7 @@ void main() {
     test('Group valid when invalid control is disable', () {
       // Given: a form with an invalid control
       final form = FormGroup({
-        'name': FormControl(value: 'Reactive'),
+        'name': FormControl<String>(value: 'Reactive'),
         'email': FormControl<String>(validators: [Validators.required]),
       });
 
@@ -325,7 +325,7 @@ void main() {
     test('Group invalid when enable invalid control', () {
       // Given: a form with a invalid disable control
       final form = FormGroup({
-        'name': FormControl(value: 'Reactive'),
+        'name': FormControl<String>(value: 'Reactive'),
         'email': FormControl<String>(
             disabled: true, validators: [Validators.required]),
       });
@@ -341,7 +341,7 @@ void main() {
     test('State error if dispose a Group and try to change control value', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
       });
 
       // When: dispose the form
@@ -357,7 +357,7 @@ void main() {
     test('Resets a group and set initial values', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'someInitialValue',
           touched: true,
         ),
@@ -377,7 +377,7 @@ void main() {
     test('Resets a group and set initial values and disabled', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'someInitialValue',
           touched: true,
         ),
@@ -398,7 +398,7 @@ void main() {
     test('Resets a group with empty {} state', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'someInitialValue',
           touched: true,
         ),
@@ -415,7 +415,7 @@ void main() {
     test('Reset a group marks it as pristine', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
       });
 
       // When: marks it as dirty
@@ -434,7 +434,7 @@ void main() {
     test('Resets a group state marks it as pristine', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(),
+        'name': FormControl<String>(),
       });
 
       // When: marks it as dirty
@@ -454,7 +454,7 @@ void main() {
     test('Resets a group state marks it as pristine', () {
       // Given: a group
       final form = FormGroup({
-        'name': FormControl(value: 'initial value'),
+        'name': FormControl<String>(value: 'initial value'),
       });
 
       // When: marks it as dirty
@@ -569,7 +569,7 @@ void main() {
 
       // When: add controls
       form.addAll({
-        'password': FormControl(),
+        'password': FormControl<String>(),
       });
 
       // Then: controls are added
@@ -585,7 +585,7 @@ void main() {
 
       // When: add controls
       form.addAll({
-        'password': FormControl(),
+        'password': FormControl<String>(),
       });
 
       // Then: controls are added
@@ -798,7 +798,7 @@ void main() {
     test('A control disabled is part of group Raw Value', () {
       // Given: a form with a disable control
       final form = FormGroup({
-        'name': FormControl(value: 'Reactive'),
+        'name': FormControl<String>(value: 'Reactive'),
         'email': FormControl<String>(value: 'Forms', disabled: true),
       });
 

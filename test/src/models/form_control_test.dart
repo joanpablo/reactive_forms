@@ -50,7 +50,7 @@ void main() {
     });
 
     test('FormControl.errors contains all matching errors', () {
-      final formControl = FormControl(
+      final formControl = FormControl<dynamic>(
         validators: [
           Validators.required,
           Validators.minLength(5),
