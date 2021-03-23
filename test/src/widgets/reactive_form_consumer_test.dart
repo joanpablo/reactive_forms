@@ -21,8 +21,8 @@ void main() {
         await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
         // Expect: submit button is enabled
-        ElevatedButton submitButton =
-            tester.widget(find.byType(ElevatedButton));
+        final submitButton =
+            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(submitButton.enabled, true);
       },
     );
@@ -41,8 +41,8 @@ void main() {
         await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
         // Expect: submit button is disabled
-        ElevatedButton submitButton =
-            tester.widget(find.byType(ElevatedButton));
+        final submitButton =
+            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(submitButton.enabled, false);
       },
     );
@@ -66,8 +66,8 @@ void main() {
         await tester.pump();
 
         // Expect: submit button is disabled
-        ElevatedButton submitButton =
-            tester.widget(find.byType(ElevatedButton));
+        final submitButton =
+            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(submitButton.enabled, false);
       },
     );
@@ -90,8 +90,8 @@ void main() {
         await tester.pump();
 
         // Expect: submit button is disabled
-        ElevatedButton submitButton =
-            tester.widget(find.byType(ElevatedButton));
+        final submitButton =
+            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
         expect(submitButton.enabled, true);
       },
     );

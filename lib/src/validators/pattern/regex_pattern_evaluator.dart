@@ -10,9 +10,9 @@ class RegExpPatternEvaluator implements PatternEvaluator {
 
   @override
   bool hasMatch(String input) {
-    return this.regExp.hasMatch(input);
+    return regExp.hasMatch(input);
   }
 
   @override
-  String get pattern => this.regExp.pattern;
+  String get pattern => regExp.pattern;
 }

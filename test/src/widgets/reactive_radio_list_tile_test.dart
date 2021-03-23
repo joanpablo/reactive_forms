@@ -20,15 +20,13 @@ void main() {
         );
 
         // Expect radio group value is true
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: false,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
 
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
-
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.groupValue, true);
       },
     );
@@ -45,15 +43,13 @@ void main() {
         await tester.pumpWidget(ReactiveRadioListTileTestingWidget(form: form));
 
         // Expect radio group value is false
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
 
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
-
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.groupValue, false);
       },
     );
@@ -74,15 +70,13 @@ void main() {
         await tester.pump();
 
         // Expect radio group value is true
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: false,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
 
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
-
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.groupValue, true);
       },
     );
@@ -103,15 +97,13 @@ void main() {
         await tester.pump();
 
         // Expect radio group value is true
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
 
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
-
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.groupValue, false);
       },
     );
@@ -128,13 +120,13 @@ void main() {
         await tester.pumpWidget(ReactiveRadioListTileTestingWidget(form: form));
 
         // Then: the radio is disabled
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
+
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.onChanged, null);
       },
     );
@@ -155,13 +147,13 @@ void main() {
         await tester.pump();
 
         // Then: the radio is disabled
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
+
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.onChanged, null);
       },
     );
@@ -182,13 +174,13 @@ void main() {
         await tester.pump();
 
         // Then: the radio is enabled
-        Type radioType = Radio<bool>(
+        final radioType = const Radio<bool>(
           value: true,
           groupValue: null,
           onChanged: null,
         ).runtimeType;
-        Radio<bool> radio =
-            tester.firstWidget(find.byType(radioType)) as Radio<bool>;
+
+        final radio = tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(radio.onChanged != null, true);
       },
     );

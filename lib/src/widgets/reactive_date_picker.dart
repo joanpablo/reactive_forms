@@ -152,22 +152,22 @@ class ReactiveDatePickerDelegate<T> {
 
   /// Shows the time picker dialog.
   void showPicker() {
-    this._showPickerCallback(_field);
+    _showPickerCallback(_field);
   }
 }
 
 class _ReactiveDatePickerState<T> extends ReactiveFormFieldState<T, DateTime> {
   @override
   ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    if (this.control is AbstractControl<String>) {
+    if (control is AbstractControl<String>) {
       return Iso8601DateTimeValueAccessor();
-    } else if (this.control is AbstractControl<DateTime>) {
+    } else if (control is AbstractControl<DateTime>) {
       return super.selectValueAccessor();
     }
 
     throw ValueAccessorException('Invalid widget binding. ReactiveDatePicker '
         'widget must be bound to a control that inherited from '
         'AbstractControl<String> or AbstractControl<DateTime>. '
-        'Control of type: ${this.control.runtimeType} is not valid.');
+        'Control of type: ${control.runtimeType} is not valid.');
   }
 }

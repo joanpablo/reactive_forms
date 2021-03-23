@@ -14,7 +14,7 @@ class ReactiveFormConsumerTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveFormConsumer(
             builder: (context, form, child) {
               return ElevatedButton(

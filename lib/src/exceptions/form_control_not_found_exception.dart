@@ -18,7 +18,7 @@ class FormControlNotFoundException extends ReactiveFormsException {
 
   @override
   String toString() {
-    if (this.controlName == null) {
+    if (controlName == null) {
       return 'FormControlNotFoundException: control not found.';
     }
 

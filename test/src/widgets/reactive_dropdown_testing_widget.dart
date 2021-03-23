@@ -24,14 +24,14 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveDropdownField<String>(
             formControlName: 'dropdown',
-            onChanged: this.onChanged,
-            readOnly: this.readOnly,
-            disabledHint: this.disabledHint,
-            selectedItemBuilder: this.selectedItemBuilder,
-            items: this.items.map<DropdownMenuItem<String>>(
+            onChanged: onChanged,
+            readOnly: readOnly,
+            disabledHint: disabledHint,
+            selectedItemBuilder: selectedItemBuilder,
+            items: items.map<DropdownMenuItem<String>>(
               (item) {
                 return DropdownMenuItem<String>(
                   value: item,

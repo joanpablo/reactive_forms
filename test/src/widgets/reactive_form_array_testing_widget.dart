@@ -14,7 +14,7 @@ class ReactiveFormArrayTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveFormArray(
             formArrayName: 'array',
             builder: (context, array, child) {

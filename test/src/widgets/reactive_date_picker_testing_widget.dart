@@ -16,7 +16,7 @@ class ReactiveDatePickerTestingWidget<T> extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveDatePicker<T>(
             formControlName: 'birthday',
             firstDate: DateTime(1985),
@@ -25,7 +25,7 @@ class ReactiveDatePickerTestingWidget<T> extends StatelessWidget {
                 ReactiveDatePickerDelegate<T> picker, Widget? child) {
               return TextButton(
                 onPressed: picker.showPicker,
-                child: Text('Select Birthday'),
+                child: const Text('Select Birthday'),
               );
             },
           ),

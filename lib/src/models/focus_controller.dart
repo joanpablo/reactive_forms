@@ -21,8 +21,8 @@ class FocusController extends ChangeNotifier {
   /// it and [focusNode] must be explicitly dispose after dispose focus
   /// controller instance.
   FocusController({FocusNode? focusNode})
-      : _focusNode = (focusNode ?? FocusNode()),
-        _shouldDisposeFocusNode = (focusNode == null) {
+      : _focusNode = focusNode ?? FocusNode(),
+        _shouldDisposeFocusNode = focusNode == null {
     this.focusNode.addListener(_onFocusNodeFocusChanges);
   }
 
@@ -60,16 +60,16 @@ class FocusController extends ChangeNotifier {
       focusNode.unfocus();
     }
 
-    this.updateFocus(hasFocus);
+    updateFocus(hasFocus);
   }
 
   @override
   void dispose() {
-    this.focusNode.removeListener(_onFocusNodeFocusChanges);
-    if (this._shouldDisposeFocusNode) {
-      this.focusNode.dispose();
+    focusNode.removeListener(_onFocusNodeFocusChanges);
+    if (_shouldDisposeFocusNode) {
+      focusNode.dispose();
     }
-    this.disposed = true;
+    disposed = true;
     super.dispose();
   }
 
@@ -79,10 +79,10 @@ class FocusController extends ChangeNotifier {
       return;
     }
 
-    if (this.hasFocus && !focusNode.hasFocus) {
-      this.updateFocus(false);
-    } else if (!this.hasFocus && focusNode.hasFocus) {
-      this.updateFocus(true);
+    if (hasFocus && !focusNode.hasFocus) {
+      updateFocus(false);
+    } else if (!hasFocus && focusNode.hasFocus) {
+      updateFocus(true);
     }
   }
 }

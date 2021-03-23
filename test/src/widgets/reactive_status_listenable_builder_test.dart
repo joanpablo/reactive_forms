@@ -22,7 +22,7 @@ void main() {
         );
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'invalid');
@@ -45,7 +45,7 @@ void main() {
         );
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'valid');
@@ -72,7 +72,7 @@ void main() {
         await tester.pump();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'valid');
@@ -102,7 +102,7 @@ void main() {
         await tester.pump();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'invalid');
@@ -150,7 +150,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'invalid');
@@ -184,7 +184,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'valid');

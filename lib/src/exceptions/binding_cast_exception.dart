@@ -14,11 +14,11 @@ class BindingCastException<T, K> extends ReactiveFormsException {
 
   @override
   String toString() {
-    return '''BindingCastException: The widget ${this.field.runtimeType} bound to "${this.field.formControlName}" control
+    return '''BindingCastException: The widget ${field.runtimeType} bound to "${field.formControlName}" control
     is expecting a "FormControl<$T>" data type, 
     but received a "${control.runtimeType}" data type.
     
-    This is caused because the template data type declared in the widget "${this.field.runtimeType}"
+    This is caused because the template data type declared in the widget "${field.runtimeType}"
     is not a 'subtype' of the template data type declared in the control "${control.runtimeType}".
     
     To fix the error:
@@ -26,9 +26,9 @@ class BindingCastException<T, K> extends ReactiveFormsException {
     1- Explicitly set the data type of the control in its declaration. 
       
     Example: 
-    { '${this.field.formControlName}': FormControl<$T>(), }
+    { '${field.formControlName}': FormControl<$T>(), }
     
-    2- If you are using the syntax: "{ '${this.field.formControlName}': [], }"
+    2- If you are using the syntax: "{ '${field.formControlName}': [], }"
     Then you should initialize the control with a default value (not-null) or use "fb.control"
     to explicitly set a data type.
     

@@ -14,7 +14,7 @@ class ReactiveValueListenableTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveValueListenableBuilder<String>(
             formControlName: 'name',
             builder: (context, control, child) {

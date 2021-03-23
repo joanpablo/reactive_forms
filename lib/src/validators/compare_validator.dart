@@ -21,19 +21,19 @@ class CompareValidator<T> extends Validator<dynamic> {
   );
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> form) {
-    if (form is! FormGroup) {
+  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+    if (control is! FormGroup) {
       // Maybe throw an exception is better
       return {ValidationMessage.compare: true};
     }
 
-    final mainControl = form.control(this.controlName);
-    final compareControl = form.control(this.compareControlName);
+    final mainControl = control.control(controlName);
+    final compareControl = control.control(compareControlName);
     final error = {
       ValidationMessage.compare: <String, dynamic>{
         'control': mainControl.value,
         'compareControl': compareControl.value,
-        'option': this.compareOption,
+        'option': compareOption,
       }
     };
 
@@ -54,7 +54,7 @@ class CompareValidator<T> extends Validator<dynamic> {
   }
 
   bool _meetsComparison(Comparable<T> value, T compareValue) {
-    switch (this.compareOption) {
+    switch (compareOption) {
       case CompareOption.lower:
         return value.compareTo(compareValue) < 0;
       case CompareOption.lower_or_equal:

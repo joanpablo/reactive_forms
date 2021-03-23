@@ -221,10 +221,10 @@ void main() {
       });
 
       // When: count children of array
-      int count = group.controls.length;
+      final count = group.controls.length;
 
       // And: get names of controls
-      List<String> names = group.controls.keys.toList();
+      final names = group.controls.keys.toList();
 
       // Then: count is three
       expect(count, 3);
@@ -777,7 +777,7 @@ void main() {
       });
 
       // When: add control to nested group
-      FormGroup address = form.control('address') as FormGroup;
+      final address = form.control('address') as FormGroup;
       address.addAll({
         'city': FormControl<String>(value: 'Sofia'),
       });

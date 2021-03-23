@@ -49,7 +49,7 @@ abstract class ControlValueAccessor<T, K> {
 
     _viewToModelChange = true;
 
-    final modelValue = this.viewToModelValue(viewValue);
+    final modelValue = viewToModelValue(viewValue);
     if (_control?.value != modelValue) {
       _control?.markAsDirty(emitEvent: false);
       _control?.updateValue(modelValue);
@@ -83,7 +83,7 @@ abstract class ControlValueAccessor<T, K> {
       return;
     }
 
-    final viewValue = this.modelToViewValue(_control?.value);
+    final viewValue = modelToViewValue(_control?.value);
 
     if (_onChange != null) {
       _onChange!(viewValue);

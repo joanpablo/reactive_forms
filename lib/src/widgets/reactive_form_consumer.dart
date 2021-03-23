@@ -47,6 +47,6 @@ class ReactiveFormConsumer extends StatelessWidget {
     if (form is! FormGroup) {
       throw FormControlParentNotFoundException(this);
     }
-    return this.builder(context, form, this.child);
+    return builder(context, form, child);
   }
 }

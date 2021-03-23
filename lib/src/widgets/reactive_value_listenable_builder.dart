@@ -51,7 +51,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AbstractControl<T>? control = this.formControl;
+    var control = formControl;
     if (control == null) {
       final form = ReactiveForm.of(context, listen: false);
       if (form is! FormControlCollection) {
@@ -59,12 +59,12 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
       }
       final collection = form as FormControlCollection;
       control =
-          collection.control(this.formControlName!) as AbstractControl<T>?;
+          collection.control(formControlName!) as AbstractControl<T>?;
     }
 
     return StreamBuilder<T?>(
       stream: control!.valueChanges,
-      builder: (context, snapshot) => this.builder(context, control!, child),
+      builder: (context, snapshot) => builder(context, control!, child),
     );
   }
 }

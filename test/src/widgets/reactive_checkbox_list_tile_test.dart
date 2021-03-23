@@ -19,7 +19,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
+        final checkbox =
             tester.firstWidget(find.byType(Checkbox)) as Checkbox;
         expect(checkbox.value, false);
       },
@@ -40,7 +40,7 @@ void main() {
         ));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
+        final checkbox =
             tester.firstWidget(find.byType(Checkbox)) as Checkbox;
         expect(checkbox.value, null);
       },
@@ -59,7 +59,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // Expect: the checkbox is checked
-        Checkbox checkbox =
+        final checkbox =
             tester.firstWidget(find.byType(Checkbox)) as Checkbox;
         expect(checkbox.value, true);
       },
@@ -78,7 +78,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
+        final checkbox =
             tester.firstWidget(find.byType(Checkbox)) as Checkbox;
         expect(checkbox.value, false);
       },
@@ -97,7 +97,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
+        var checkbox =
             tester.firstWidget(find.byType(Checkbox)) as Checkbox;
         expect(checkbox.value, false);
 
@@ -124,7 +124,7 @@ void main() {
             .pumpWidget(ReactiveCheckboxListTileTestingWidget(form: form));
 
         // Expect: the checkbox is checked
-        Checkbox checkbox =
+        var checkbox =
             tester.firstWidget(find.byType(Checkbox)) as Checkbox;
         expect(checkbox.value, true);
 

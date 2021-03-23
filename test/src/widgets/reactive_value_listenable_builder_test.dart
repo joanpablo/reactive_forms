@@ -23,7 +23,7 @@ void main() {
         );
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text value is equal to control default value
         expect(text.data, defaultValue);
@@ -51,7 +51,7 @@ void main() {
         await tester.pump();
 
         // Then: the text value is equal to control value
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
         expect(text.data, control.value);
       },
     );

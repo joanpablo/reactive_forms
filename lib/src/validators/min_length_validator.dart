@@ -33,11 +33,11 @@ class MinLengthValidator extends Validator<dynamic> {
       collection = control.value.toString().runes.toList();
     }
 
-    return (collection != null && collection.length >= this.minLength)
+    return (collection != null && collection.length >= minLength)
         ? null
         : {
             ValidationMessage.minLength: {
-              'requiredLength': this.minLength,
+              'requiredLength': minLength,
               'actualLength': collection != null ? collection.length : 0,
             }
           };

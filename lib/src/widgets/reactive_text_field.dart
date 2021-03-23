@@ -131,7 +131,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
           showErrors: showErrors,
           builder: (ReactiveFormFieldState<T, String> field) {
             final state = field as _ReactiveTextFieldState<T>;
-            final InputDecoration effectiveDecoration = decoration
+            final effectiveDecoration = decoration
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
             state._setFocusNode(focusNode);
@@ -202,7 +202,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   void initState() {
     super.initState();
 
-    final initialValue = this.value;
+    final initialValue = value;
     _textController = TextEditingController(
         text: initialValue == null ? '' : initialValue.toString());
   }
@@ -221,7 +221,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
 
   @override
   void onControlValueChanged(dynamic value) {
-    String effectiveValue = (value == null) ? '' : value.toString();
+    final effectiveValue = (value == null) ? '' : value.toString();
     _textController.value = _textController.value.copyWith(
       text: effectiveValue,
       selection: TextSelection.collapsed(offset: effectiveValue.length),
@@ -233,13 +233,13 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
 
   @override
   ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    if (this.control is FormControl<int>) {
+    if (control is FormControl<int>) {
       return IntValueAccessor();
-    } else if (this.control is FormControl<double>) {
+    } else if (control is FormControl<double>) {
       return DoubleValueAccessor();
-    } else if (this.control is FormControl<DateTime>) {
+    } else if (control is FormControl<DateTime>) {
       return DateTimeValueAccessor();
-    } else if (this.control is FormControl<TimeOfDay>) {
+    } else if (control is FormControl<TimeOfDay>) {
       return TimeOfDayValueAccessor();
     }
 
@@ -248,11 +248,11 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
 
   void _registerFocusController(FocusController focusController) {
     _focusController = focusController;
-    this.control.registerFocusController(focusController);
+    control.registerFocusController(focusController);
   }
 
   void _unregisterFocusController() {
-    this.control.unregisterFocusController(_focusController);
+    control.unregisterFocusController(_focusController);
     _focusController.dispose();
   }
 

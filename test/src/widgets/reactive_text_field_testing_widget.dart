@@ -24,12 +24,12 @@ class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: Column(
             children: <Widget>[
               ReactiveTextField<T>(
-                formControlName: this.bindings['textField'],
-                validationMessages: this.validationMessages,
+                formControlName: bindings['textField'],
+                validationMessages: validationMessages,
                 showErrors: showErrors,
                 focusNode: focusNode,
               ),

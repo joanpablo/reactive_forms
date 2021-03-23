@@ -48,7 +48,7 @@ class ReactiveSlider extends ReactiveFormField<double, double> {
           formControl: formControl,
           formControlName: formControlName,
           builder: (ReactiveFormFieldState<double, double> field) {
-            double? value = field.value;
+            var value = field.value;
             if (value == null) {
               value = min;
             } else if (value < min) {

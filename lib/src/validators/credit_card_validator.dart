@@ -32,11 +32,11 @@ class CreditCardValidator extends Validator<dynamic> {
   ///
   /// See [Luhn algorithm](https://en.wikipedia.org/wiki/Luhn_algorithm)
   static bool checkLuhn(String cardNumber) {
-    int sum = 0;
+    var sum = 0;
 
-    bool isEven = false;
-    for (int i = cardNumber.length - 1; i >= 0; i--) {
-      int digit = int.parse(cardNumber[i]);
+    var isEven = false;
+    for (var i = cardNumber.length - 1; i >= 0; i--) {
+      var digit = int.parse(cardNumber[i]);
 
       if (isEven) {
         digit *= 2;

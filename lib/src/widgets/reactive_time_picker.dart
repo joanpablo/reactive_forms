@@ -116,10 +116,10 @@ class ReactiveTimePickerDelegate {
   FormControl<TimeOfDay> get control => _field.control;
 
   /// Gets the value selected in the time picker.
-  TimeOfDay? get value => this.control.value;
+  TimeOfDay? get value => control.value;
 
   /// Shows the time picker dialog.
   void showPicker() {
-    this._showPickerCallback(_field);
+    _showPickerCallback(_field);
   }
 }

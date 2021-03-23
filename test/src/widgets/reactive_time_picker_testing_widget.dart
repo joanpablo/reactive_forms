@@ -14,13 +14,13 @@ class ReactiveTimePickerTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveTimePicker(
             formControlName: 'time',
             builder: (context, picker, child) {
               return TextButton(
                 onPressed: picker.showPicker,
-                child: Text('Select Time'),
+                child: const Text('Select Time'),
               );
             },
           ),

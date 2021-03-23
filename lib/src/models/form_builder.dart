@@ -211,13 +211,13 @@ class FormBuilder {
     return FormArray<T>(
       value.map<AbstractControl<T>>((v) {
         if (v is Map<String, Object>) {
-          return this.group(v) as AbstractControl<T>;
+          return group(v) as AbstractControl<T>;
         }
         if (v is AbstractControl<T>) {
           return v;
         }
 
-        return this.control<T>(v as T);
+        return control<T>(v as T);
       }).toList(),
       validators: validators,
       asyncValidators: asyncValidators,

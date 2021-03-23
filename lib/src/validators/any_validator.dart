@@ -24,8 +24,6 @@ class AnyValidator<T> extends Validator<dynamic> {
         "${control.value.runtimeType.toString()} $T?");
 
     final iterable = control.value as Iterable<T>;
-    return iterable.any((T value) => this.test(value))
-        ? null
-        : {ValidationMessage.any: true};
+    return iterable.any(test) ? null : {ValidationMessage.any: true};
   }
 }

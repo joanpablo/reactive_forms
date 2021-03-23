@@ -118,23 +118,23 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
 }
 
 class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
-  FocusController _focusController = FocusController();
+  final _focusController = FocusController();
 
   @override
   void subscribeControl() {
-    this.control.registerFocusController(_focusController);
+    control.registerFocusController(_focusController);
     super.subscribeControl();
   }
 
   @override
   void dispose() {
-    this.control.unregisterFocusController(_focusController);
+    control.unregisterFocusController(_focusController);
     _focusController.dispose();
     super.dispose();
   }
 
   void _onChanged(T? value, ValueChanged<T?>? callBack) {
-    this.didChange(value);
+    didChange(value);
     if (callBack != null) {
       callBack(value);
     }

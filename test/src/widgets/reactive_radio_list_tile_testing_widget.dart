@@ -14,7 +14,7 @@ class ReactiveRadioListTileTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveRadioListTile(
             formControlName: 'radio',
             value: true,

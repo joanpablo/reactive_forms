@@ -14,17 +14,17 @@ class ReactiveStatusListenableTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveStatusListenableBuilder(
             formControlName: 'control',
             builder: (context, control, child) {
               switch (control.status) {
                 case ControlStatus.pending:
-                  return Text('pending');
+                  return const Text('pending');
                 case ControlStatus.valid:
-                  return Text('valid');
+                  return const Text('valid');
                 default:
-                  return Text('invalid');
+                  return const Text('invalid');
               }
             },
           ),

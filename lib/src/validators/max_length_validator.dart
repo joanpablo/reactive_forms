@@ -33,11 +33,11 @@ class MaxLengthValidator extends Validator<dynamic> {
       collection = control.value.toString().runes.toList();
     }
 
-    return (collection == null || collection.length <= this.maxLength)
+    return (collection == null || collection.length <= maxLength)
         ? null
         : {
             ValidationMessage.maxLength: {
-              'requiredLength': this.maxLength,
+              'requiredLength': maxLength,
               'actualLength': collection.length,
             }
           };

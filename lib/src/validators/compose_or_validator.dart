@@ -21,7 +21,7 @@ class ComposeOrValidator extends Validator<dynamic> {
   Map<String, Object>? validate(AbstractControl<dynamic> control) {
     final composedError = Map<String, Object>();
 
-    for (final validator in this.validators) {
+    for (final validator in validators) {
       final error = validator(control);
       if (error != null) {
         composedError.addAll(error);

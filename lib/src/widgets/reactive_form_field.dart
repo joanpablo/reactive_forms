@@ -87,10 +87,10 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   late ControlValueAccessor<T, K> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  K? get value => this.valueAccessor.modelToViewValue(this.control.value);
+  K? get value => valueAccessor.modelToViewValue(control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
-  bool get touched => this.control.touched;
+  bool get touched => control.touched;
 
   /// Gets the widget control value accessor
   ControlValueAccessor<T, K> get valueAccessor => _valueAccessor;
@@ -101,10 +101,10 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   /// for visualizing in UI.
   String? get errorText {
     if (_showErrors()) {
-      final validationMessages = _getValidationMessages(this.control);
-      return validationMessages.containsKey(this.control.errors.keys.first)
-          ? validationMessages[this.control.errors.keys.first]
-          : this.control.errors.keys.first;
+      final validationMessages = _getValidationMessages(control);
+      return validationMessages.containsKey(control.errors.keys.first)
+          ? validationMessages[control.errors.keys.first]
+          : control.errors.keys.first;
     }
 
     return null;
@@ -112,10 +112,10 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
 
   bool _showErrors() {
     if (widget.showErrors != null) {
-      return widget.showErrors!(this.control);
+      return widget.showErrors!(control);
     }
 
-    return this.control.invalid && this.touched;
+    return control.invalid && touched;
   }
 
   Map<String, String> _getValidationMessages(FormControl<dynamic> control) {
@@ -126,9 +126,9 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
 
   @override
   void initState() {
-    this.control = _resolveFormControl();
+    control = _resolveFormControl();
     _valueAccessor = _resolveValueAccessor() as ControlValueAccessor<T, K>;
-    this.subscribeControl();
+    subscribeControl();
 
     super.initState();
   }
@@ -148,8 +148,8 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @override
   void didUpdateWidget(ReactiveFormField<T, K> oldWidget) {
     if (widget.valueAccessor != null &&
-        widget.valueAccessor != this.valueAccessor) {
-      this.valueAccessor.dispose();
+        widget.valueAccessor != valueAccessor) {
+      valueAccessor.dispose();
       _valueAccessor = widget.valueAccessor!;
       _subscribeValueAccessor();
     }
@@ -160,9 +160,9 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @override
   void didChangeDependencies() {
     final newControl = _resolveFormControl();
-    if (this.control != newControl) {
-      this.unsubscribeControl();
-      this.control = newControl;
+    if (control != newControl) {
+      unsubscribeControl();
+      control = newControl;
       subscribeControl();
     }
 
@@ -171,7 +171,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
 
   @override
   void dispose() {
-    this.unsubscribeControl();
+    unsubscribeControl();
     _valueAccessor.dispose();
     super.dispose();
   }
@@ -180,9 +180,9 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @mustCallSuper
   void subscribeControl() {
     _statusChangesSubscription =
-        this.control.statusChanged.listen(_onControlStatusChanged);
+        control.statusChanged.listen(_onControlStatusChanged);
     _touchChangesSubscription =
-        this.control.touchChanges.listen(_onControlTouchChanged);
+        control.touchChanges.listen(_onControlTouchChanged);
     _subscribeValueAccessor();
   }
 
@@ -191,7 +191,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   void unsubscribeControl() {
     _statusChangesSubscription.cancel();
     _touchChangesSubscription.cancel();
-    this.valueAccessor.dispose();
+    valueAccessor.dispose();
   }
 
   @protected
@@ -211,13 +211,13 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
 
   void _subscribeValueAccessor() {
     _valueAccessor.registerControl(
-      this.control,
-      onChange: this.onControlValueChanged,
+      control,
+      onChange: onControlValueChanged,
     );
   }
 
   void _checkTouchedState() {
-    if (this.touched) {
+    if (touched) {
       setState(() {});
     }
   }
@@ -231,7 +231,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   }
 
   ControlValueAccessor<dynamic, dynamic> _resolveValueAccessor() {
-    return widget.valueAccessor ?? this.selectValueAccessor();
+    return widget.valueAccessor ?? selectValueAccessor();
   }
 
   FormControl<T> _resolveFormControl() {
@@ -247,7 +247,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
     final collection = parent as FormControlCollection;
     final control = collection.control(widget.formControlName!);
     if (control is! FormControl<T>) {
-      throw BindingCastException<T, K>(this.widget, control);
+      throw BindingCastException<T, K>(widget, control);
     }
 
     return control;
