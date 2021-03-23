@@ -64,14 +64,13 @@ class ReactiveFormField<T, K> extends StatefulWidget {
     this.formControlName,
     this.valueAccessor,
     this.showErrors,
-    ValidationMessagesFunction<T>? validationMessages,
+    this.validationMessages,
     required ReactiveFormFieldBuilder<T, K> builder,
   })   : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
             'Must provide a formControlName or a formControl, but not both at the same time.'),
         _builder = builder,
-        validationMessages = validationMessages,
         super(key: key);
 
   @override
@@ -142,7 +141,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @protected
   @visibleForTesting
   ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    return new DefaultValueAccessor<T>();
+    return DefaultValueAccessor<T>();
   }
 
   @override

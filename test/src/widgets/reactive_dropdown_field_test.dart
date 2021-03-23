@@ -326,10 +326,10 @@ void main() {
 
         // Then: dropdown disabledHint value is equals to selectedItemBuilder
         // equivalent item
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton<String> dropdown =
-            tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         // Then: callback is called
         expect(dropdown.disabledHint, selectedItemBuilderList.elementAt(0));

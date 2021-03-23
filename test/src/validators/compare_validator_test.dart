@@ -33,7 +33,7 @@ void main() {
         'amount': 10,
         'balance': 20,
       }, [
-        Validators.compare('amount', 'balance', CompareOption.lower_or_equal),
+        Validators.compare('amount', 'balance', CompareOption.lowerOrEqual),
       ]);
 
       // Expect: form is valid
@@ -45,7 +45,7 @@ void main() {
         'amount': 10,
         'balance': 10,
       }, [
-        Validators.compare('amount', 'balance', CompareOption.lower_or_equal),
+        Validators.compare('amount', 'balance', CompareOption.lowerOrEqual),
       ]);
 
       // Expect: form is invalid
@@ -57,7 +57,7 @@ void main() {
         'amount': 11,
         'balance': 10,
       }, [
-        Validators.compare('amount', 'balance', CompareOption.lower_or_equal),
+        Validators.compare('amount', 'balance', CompareOption.lowerOrEqual),
       ]);
 
       // Expect: form is invalid
@@ -144,7 +144,7 @@ void main() {
         'amount': 20,
         'balance': 10,
       }, [
-        Validators.compare('amount', 'balance', CompareOption.greater_or_equal),
+        Validators.compare('amount', 'balance', CompareOption.greaterOrEqual),
       ]);
 
       // Expect: form is invalid
@@ -157,7 +157,7 @@ void main() {
         'amount': 20,
         'balance': 20,
       }, [
-        Validators.compare('amount', 'balance', CompareOption.greater_or_equal)
+        Validators.compare('amount', 'balance', CompareOption.greaterOrEqual)
       ]);
 
       // Expect: form is invalid
@@ -170,7 +170,7 @@ void main() {
         'amount': 20,
         'balance': 30,
       }, [
-        Validators.compare('amount', 'balance', CompareOption.greater_or_equal),
+        Validators.compare('amount', 'balance', CompareOption.greaterOrEqual),
       ]);
 
       // Expect: form is invalid

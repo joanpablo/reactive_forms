@@ -18,8 +18,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        final checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, false);
       },
     );

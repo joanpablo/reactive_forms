@@ -55,19 +55,18 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
           builder: (ReactiveFormFieldState<T, T> field) {
             final state = field as _ReactiveDropdownFieldState<T>;
 
-            final InputDecoration effectiveDecoration =
-                decoration.applyDefaults(
+            final effectiveDecoration = decoration.applyDefaults(
               Theme.of(field.context).inputDecorationTheme,
             );
 
-            T? effectiveValue = field.value;
+            var effectiveValue = field.value;
             if (effectiveValue != null &&
                 !items.any((item) => item.value == effectiveValue)) {
               effectiveValue = null;
             }
 
-            final isDisabled = (readOnly || field.control.disabled);
-            Widget? effectiveDisabledHint = disabledHint;
+            final isDisabled = readOnly || field.control.disabled;
+            var effectiveDisabledHint = disabledHint;
             if (isDisabled && disabledHint == null) {
               final selectedItemIndex =
                   items.indexWhere((item) => item.value == effectiveValue);

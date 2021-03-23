@@ -57,11 +57,11 @@ class CompareValidator<T> extends Validator<dynamic> {
     switch (compareOption) {
       case CompareOption.lower:
         return value.compareTo(compareValue) < 0;
-      case CompareOption.lower_or_equal:
+      case CompareOption.lowerOrEqual:
         return value.compareTo(compareValue) <= 0;
       case CompareOption.greater:
         return value.compareTo(compareValue) > 0;
-      case CompareOption.greater_or_equal:
+      case CompareOption.greaterOrEqual:
         return value.compareTo(compareValue) >= 0;
       default: //CompareOption.equal:
         return value.compareTo(compareValue) == 0;

@@ -6,10 +6,10 @@ import 'pattern/mock_pattern.dart';
 void main() {
   group('Pattern Validator Tests', () {
     test('FormControl invalid if value not matched pattern', () {
-      const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+      const americanExpressPattern = r'^3[47][0-9]{13}$';
 
       final cardNumber = FormControl<String>(
-        validators: [Validators.pattern(AmericanExpressPattern)],
+        validators: [Validators.pattern(americanExpressPattern)],
       );
 
       cardNumber.value = '395465465421'; // not a valid number
@@ -19,10 +19,10 @@ void main() {
     });
 
     test('FormControl valid if value matched pattern', () {
-      const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+      const americanExpressPattern = r'^3[47][0-9]{13}$';
 
       final cardNumber = FormControl<String>(
-        validators: [Validators.pattern(AmericanExpressPattern)],
+        validators: [Validators.pattern(americanExpressPattern)],
       );
 
       cardNumber.value = '342654321654213';
@@ -32,10 +32,10 @@ void main() {
     });
 
     test("Passing a Regex to Pattern validator", () {
-      const AmericanExpressPattern = r'^3[47][0-9]{13}$';
+      const americanExpressPattern = r'^3[47][0-9]{13}$';
 
       final cardNumber = FormControl<String>(
-        validators: [Validators.pattern(RegExp(AmericanExpressPattern))],
+        validators: [Validators.pattern(RegExp(americanExpressPattern))],
       );
 
       cardNumber.value = '342654321654213';
@@ -45,11 +45,11 @@ void main() {
     });
 
     test("Passing a MockPattern to Pattern validator", () {
-      const String AmericanExpressPattern = r'^3[47][0-9]{13}$';
+      const americanExpressPattern = r'^3[47][0-9]{13}$';
 
       final cardNumber = FormControl<String>(
         validators: [
-          Validators.pattern(MockPattern(RegExp(AmericanExpressPattern)))
+          Validators.pattern(MockPattern(RegExp(americanExpressPattern)))
         ],
       );
 

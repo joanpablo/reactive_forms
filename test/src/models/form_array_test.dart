@@ -273,11 +273,8 @@ void main() {
         FormControl<dynamic>(),
       ]);
 
-      // When: count children of array
-      int count = array.controls.length;
-
-      // Then: count is three
-      expect(count, 3);
+      // Expect: array contains all children
+      expect(array.controls.length, 3);
     });
 
     test('Array notify value changes when control value changes', () {
@@ -527,8 +524,7 @@ void main() {
     // When: set a control focus
     addressArray.focus('0.city');
 
-    final FormControl<String?> city =
-        addressArray.control('0.city') as FormControl<String?>;
+    final city = addressArray.control('0.city') as FormControl<String?>;
 
     // Then: control is focused
     expect(city.hasFocus, true, reason: 'control is not focused');

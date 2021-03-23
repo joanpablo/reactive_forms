@@ -36,8 +36,8 @@ class _InheritedNotifierElement<T> extends InheritedElement {
 
   @override
   void update(InheritedStreamer<T> newWidget) {
-    final Stream<T> oldStream = widget.stream;
-    final Stream<T> newStream = newWidget.stream;
+    final oldStream = widget.stream;
+    final newStream = newWidget.stream;
     if (oldStream != newStream) {
       _subscription.cancel();
       _subscription = newStream.listen(_handleUpdate);

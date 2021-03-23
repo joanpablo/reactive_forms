@@ -16,6 +16,6 @@ class Iso8601DateTimeValueAccessor
 
   @override
   String? viewToModelValue(DateTime? viewValue) {
-    return viewValue == null ? null : viewValue.toIso8601String();
+    return viewValue?.toIso8601String();
   }
 }

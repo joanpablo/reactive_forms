@@ -22,7 +22,7 @@ void main() {
         await tester.pumpWidget(ReactiveFormArrayTestingWidget(form: form));
 
         // Expect: display the same amount of items of the array
-        Iterable<Text> texts = tester.widgetList(find.byType(Text));
+        final texts = tester.widgetList(find.byType(Text));
         expect(texts.length, 3);
       },
     );
@@ -47,7 +47,7 @@ void main() {
         await tester.pump();
 
         // Expect: display the same amount of items of the array
-        Iterable<Text> texts = tester.widgetList(find.byType(Text));
+        final texts = tester.widgetList(find.byType(Text));
         expect(texts.length, 4);
       },
     );
@@ -75,7 +75,7 @@ void main() {
         await tester.pump();
 
         // Expect: display the same amount of items of the array
-        Iterable<Text> texts = tester.widgetList(find.byType(Text));
+        final texts = tester.widgetList(find.byType(Text));
         expect(texts.length, 5);
       },
     );
@@ -100,7 +100,7 @@ void main() {
         await tester.pump();
 
         // Expect: display the same amount of items of the array
-        Iterable<Text> texts = tester.widgetList(find.byType(Text));
+        final texts = tester.widgetList(find.byType(Text));
         expect(texts.length, 2);
       },
     );
