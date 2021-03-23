@@ -1,24 +1,24 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's value to be equals to provided [value].
-class EqualsValidator<T> extends Validator<T> {
+class EqualsValidator<T> extends Validator<dynamic> {
   final T value;
 
   /// Constructs an instance of [EqualsValidator].
   ///
   /// The argument [value] must not be null.
-  EqualsValidator(this.value) : assert(value != null);
+  EqualsValidator(this.value);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<T> control) {
+  Map<String, Object>? validate(AbstractControl<dynamic> control) {
     return control.value == this.value
         ? null
         : {
-            ValidationMessage.equals: {
+            ValidationMessage.equals: <String, dynamic>{
               'required': value,
               'actual': control.value,
             }

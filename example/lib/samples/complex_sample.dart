@@ -76,12 +76,12 @@ class ComplexSample extends StatelessWidget {
               ),
               SizedBox(height: 24.0),
               ReactiveFormConsumer(
-                builder: (context, form, child) => RaisedButton(
+                builder: (context, form, child) => ElevatedButton(
                   child: Text('Sign Up'),
                   onPressed: form.valid ? () => print(form.value) : null,
                 ),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email':
@@ -146,7 +146,7 @@ class ComplexSample extends StatelessWidget {
                 readOnly: true,
                 decoration: InputDecoration(
                   labelText: 'Birthday',
-                  suffixIcon: ReactiveDatePicker(
+                  suffixIcon: ReactiveDatePicker<DateTime>(
                     formControlName: 'dateTime',
                     firstDate: DateTime(1985),
                     lastDate: DateTime(2030),
@@ -190,7 +190,7 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 
 /// Async validator example that simulates a request to a server
 /// to validate if the email of the user is unique.
-Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+Future<Map<String, dynamic>> _uniqueEmail(AbstractControl<String> control) async {
   final error = {'unique': false};
 
   final emailAlreadyInUse = await Future.delayed(

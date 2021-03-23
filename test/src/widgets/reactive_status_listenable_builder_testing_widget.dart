@@ -5,8 +5,8 @@ class ReactiveStatusListenableTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveStatusListenableTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override

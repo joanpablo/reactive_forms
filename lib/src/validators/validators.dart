@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -25,52 +25,58 @@ import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction = Map<String, dynamic> Function(
-    AbstractControl<dynamic> value);
+typedef ValidatorFunction = Map<String, Object>? Function(AbstractControl<dynamic> control);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
-typedef AsyncValidatorFunction = Future<Map<String, dynamic>> Function(
-    AbstractControl<dynamic> value);
+typedef AsyncValidatorFunction<T> = Future<Map<String, Object>?> Function(
+    T control);
 
 /// Provides a set of built-in validators that can be used by form controls.
 class Validators {
   /// Gets a validator that requires the control have a non-empty value.
-  static ValidatorFunction get required => RequiredValidator().validate;
+  static ValidatorFunction get required =>
+      RequiredValidator().validate;
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static ValidatorFunction get requiredTrue => EqualsValidator(true).validate;
+  static ValidatorFunction get requiredTrue =>
+      EqualsValidator<bool>(true).validate;
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
-  static ValidatorFunction get email => EmailValidator().validate;
+  static ValidatorFunction get email =>
+      EmailValidator().validate;
 
   /// Gets a validator that validates if control's value is a numeric value.
-  static ValidatorFunction get number => NumberValidator().validate;
+  static ValidatorFunction get number =>
+      NumberValidator().validate;
 
   /// Gets a validator that validates if the control's value is a valid
   /// credit card number.
-  static ValidatorFunction get creditCard => CreditCardValidator().validate;
+  static ValidatorFunction get creditCard =>
+      CreditCardValidator().validate;
 
   /// Gets a validator that requires the control's value to be equals to
   /// argument [value].
   ///
   /// The argument [value] must not be null.
   static ValidatorFunction equals<T>(T value) =>
-      EqualsValidator(value).validate;
+      EqualsValidator<T>(value).validate;
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction min(Comparable min) => MinValidator(min).validate;
+  static ValidatorFunction min<T>(T min) =>
+      MinValidator<T>(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction max(Comparable max) => MaxValidator(max).validate;
+  static ValidatorFunction max<T>(T max) =>
+      MaxValidator<T>(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
@@ -116,8 +122,6 @@ class Validators {
   /// expect(cardNumber.valid, true);
   /// ```
   static ValidatorFunction pattern(Pattern pattern) {
-    assert(pattern != null);
-
     PatternEvaluator evaluator;
     if (pattern is String) {
       evaluator = RegExpPatternEvaluator(RegExp(pattern));
@@ -157,7 +161,7 @@ class Validators {
     String compareControlName,
     CompareOption compareOption,
   ) {
-    return CompareValidator(controlName, compareControlName, compareOption)
+    return CompareValidator<dynamic>(controlName, compareControlName, compareOption)
         .validate;
   }
 
@@ -166,7 +170,8 @@ class Validators {
   /// validators.
   ///
   /// The argument [validators] must not be null.
-  static ValidatorFunction compose(List<ValidatorFunction> validators) {
+  static ValidatorFunction compose(
+      List<ValidatorFunction> validators) {
     return ComposeValidator(validators).validate;
   }
 
@@ -179,7 +184,8 @@ class Validators {
   /// If at least one of the [validators] evaluates as 'VALID' then the compose
   /// validator evaluates as 'VALID' and returns null, otherwise returns
   /// the union of all the individual errors returned by each validator.
-  static ValidatorFunction composeOR(List<ValidatorFunction> validators) {
+  static ValidatorFunction composeOR(
+      List<ValidatorFunction> validators) {
     return ComposeOrValidator(validators).validate;
   }
 
@@ -205,7 +211,8 @@ class Validators {
   ///      ], validators: [Validators.contains([1,3])]
   /// );
   /// ```
-  static ValidatorFunction contains<T>(List<T> values) {
+  static ValidatorFunction contains<T>(
+      List<T> values) {
     return ContainsValidator<T>(values).validate;
   }
 
@@ -233,13 +240,14 @@ class Validators {
   /// final control = FormControl<List<String>>(
   ///   value: [null, null, 'not empty'],
   ///   validators: [
-  ///     Validators.any((String value) => value?.isNotEmpty)
+  ///     Validators.any((String? value) => value?.isNotEmpty)
   ///   ],
   /// );
   ///
   /// print(control.valid); // outputs: true
   /// ```
-  static ValidatorFunction any<T>(AnyValidatorFunctionTest<T> test) {
+  static ValidatorFunction any<T>(
+      AnyValidatorFunctionTest<T> test) {
     return AnyValidator<T>(test).validate;
   }
 }

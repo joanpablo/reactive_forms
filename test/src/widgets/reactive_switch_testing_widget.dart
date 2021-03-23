@@ -6,8 +6,8 @@ class ReactiveSwitchTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveSwitchTestingWidget({
-    Key key,
-    this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override

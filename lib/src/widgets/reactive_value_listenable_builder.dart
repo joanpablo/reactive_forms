@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -16,16 +16,16 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   /// The name of the control bound to this widgets.
-  final String formControlName;
+  final String? formControlName;
 
   /// The control bound to this widgets.
-  final AbstractControl<T> formControl;
+  final AbstractControl<T>? formControl;
 
   /// Optionally child widget.
-  final Widget child;
+  final Widget? child;
 
   /// The builder that creates a widget depending on the value of the control.
-  final ReactiveListenableWidgetBuilder<T> builder;
+  final ReactiveListenableWidgetBuilder<T?> builder;
 
   /// Create an instance of a [ReactiveValueListenableBuilder].
   ///
@@ -38,8 +38,8 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   /// subtree does not depend on the value of the [FormControl] that is bind
   /// with this widget.
   const ReactiveValueListenableBuilder({
-    Key key,
-    @required this.builder,
+    Key? key,
+    required this.builder,
     this.formControlName,
     this.formControl,
     this.child,
@@ -47,21 +47,24 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
             'Must provide a formControlName or a formControl, but not both at the same time.'),
-        assert(builder != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AbstractControl<T> control = this.formControl;
+    AbstractControl<T>? control = this.formControl;
     if (control == null) {
-      final form =
-          ReactiveForm.of(context, listen: false) as FormControlCollection;
-      control = form.control(this.formControlName);
+      final form = ReactiveForm.of(context, listen: false);
+      if (form is! FormControlCollection) {
+        throw FormControlParentNotFoundException(this);
+      }
+      final collection = form as FormControlCollection;
+      control =
+          collection.control(this.formControlName!) as AbstractControl<T>?;
     }
 
-    return StreamBuilder<T>(
-      stream: control.valueChanges,
-      builder: (context, snapshot) => this.builder(context, control, child),
+    return StreamBuilder<T?>(
+      stream: control!.valueChanges,
+      builder: (context, snapshot) => this.builder(context, control!, child),
     );
   }
 }

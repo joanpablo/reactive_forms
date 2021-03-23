@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -6,13 +6,13 @@
 /// validations, heavily inspired in Angular's Reactive Forms.
 library reactive_forms;
 
+export 'src/exceptions/binding_cast_exception.dart';
 export 'src/exceptions/form_array_invalid_index_exception.dart';
 export 'src/exceptions/form_builder_invalid_initialization_exception.dart';
 export 'src/exceptions/form_control_not_found_exception.dart';
 export 'src/exceptions/form_control_parent_not_found_exception.dart';
-export 'src/exceptions/value_accessor_exception.dart';
 export 'src/exceptions/reactive_forms_exception.dart';
-export 'src/exceptions/binding_cast_exception.dart';
+export 'src/exceptions/value_accessor_exception.dart';
 export 'src/models/control_state.dart';
 export 'src/models/control_status.dart';
 export 'src/models/focus_controller.dart';

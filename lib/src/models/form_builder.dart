@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -61,11 +61,14 @@ class FormBuilder {
   /// );
   /// ```
   FormGroup group(
-    Map<String, dynamic> controls, [
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    Map<String, Object> controls, [
+    List<ValidatorFunction> validators =
+        const [],
+    List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
+        asyncValidators = const [],
   ]) {
-    final map = controls.map((String key, dynamic value) {
+    final map = controls
+        .map<String, AbstractControl<Object>>((String key, Object value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
@@ -78,15 +81,13 @@ class FormBuilder {
         return MapEntry(key, FormControl<DateTime>(value: value));
       } else if (value is TimeOfDay) {
         return MapEntry(key, FormControl<TimeOfDay>(value: value));
-      } else if (value is AbstractControl) {
+      } else if (value is AbstractControl<Object>) {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction> &&
-          value.isNotEmpty &&
-          value.first != null) {
+      } else if (value is List<ValidatorFunction>) {
         return MapEntry(key, FormControl(validators: value));
-      } else if (value is List<dynamic>) {
+      } else if (value is List<Object?>) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
         } else {
@@ -109,7 +110,7 @@ class FormBuilder {
               .map<ValidatorFunction>((v) => v as ValidatorFunction)
               .toList();
           final control = _control(defaultValue, effectiveValidators);
-          return MapEntry(key, control);
+          return MapEntry(key, control as AbstractControl<Object>);
         }
       }
 
@@ -141,7 +142,7 @@ class FormBuilder {
   ///
   /// print(form.value); // output: {'name': 'name'}
   /// ```
-  ControlState<T> state<T>({T value, bool disabled}) {
+  ControlState<T> state<T>({T? value, bool? disabled}) {
     return ControlState<T>(value: value, disabled: disabled);
   }
 
@@ -165,7 +166,7 @@ class FormBuilder {
   FormControl<T> control<T>(
     T value, [
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
   ]) {
     return FormControl<T>(
       value: value,
@@ -203,27 +204,27 @@ class FormBuilder {
   /// ```
   ///
   FormArray<T> array<T>(
-    List<dynamic> value, [
+    List<Object> value, [
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators = const [],
   ]) {
     return FormArray<T>(
-      value?.map<AbstractControl<T>>((v) {
-        if (v is Map<String, dynamic>) {
+      value.map<AbstractControl<T>>((v) {
+        if (v is Map<String, Object>) {
           return this.group(v) as AbstractControl<T>;
         }
-        if (v is AbstractControl) {
-          return v as AbstractControl<T>;
+        if (v is AbstractControl<T>) {
+          return v;
         }
 
-        return this.control<T>(v);
-      })?.toList(),
+        return this.control<T>(v as T);
+      }).toList(),
       validators: validators,
       asyncValidators: asyncValidators,
     );
   }
 
-  FormControl _control(dynamic value, List<ValidatorFunction> validators) {
+  FormControl<dynamic> _control(dynamic value, List<ValidatorFunction> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
           'Default value of control must not be an AbstractControl.');
@@ -243,7 +244,7 @@ class FormBuilder {
       return FormControl<TimeOfDay>(value: value);
     }
 
-    return FormControl(value: value, validators: validators);
+    return FormControl<Object>(value: value, validators: validators);
   }
 }
 

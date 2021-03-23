@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
-class ReactiveDropdownField<T> extends ReactiveFormField<T> {
+class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -23,43 +23,36 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
   ///
   /// The [DropdownButton] [items] parameters must not be null.
   ReactiveDropdownField({
-    Key key,
-    String formControlName,
-    FormControl<T> formControl,
-    @required List<DropdownMenuItem<T>> items,
-    ValidationMessagesFunction validationMessages,
-    ShowErrorsFunction showErrors,
-    DropdownButtonBuilder selectedItemBuilder,
-    Widget hint,
-    VoidCallback onTap,
+    Key? key,
+    String? formControlName,
+    FormControl<T>? formControl,
+    required List<DropdownMenuItem<T>> items,
+    ValidationMessagesFunction<T>? validationMessages,
+    ShowErrorsFunction? showErrors,
+    DropdownButtonBuilder? selectedItemBuilder,
+    Widget? hint,
+    VoidCallback? onTap,
     InputDecoration decoration = const InputDecoration(),
-    Widget disabledHint,
+    Widget? disabledHint,
     int elevation = 8,
-    TextStyle style,
-    Widget icon,
-    Color iconDisabledColor,
-    Color iconEnabledColor,
+    TextStyle? style,
+    Widget? icon,
+    Color? iconDisabledColor,
+    Color? iconEnabledColor,
     double iconSize = 24.0,
     bool isDense = true,
     bool isExpanded = false,
     bool readOnly = false,
-    double itemHeight,
-    ValueChanged<T> onChanged,
-  })  : assert(items != null),
-        assert(decoration != null),
-        assert(elevation != null),
-        assert(iconSize != null),
-        assert(isDense != null),
-        assert(isExpanded != null),
-        assert(itemHeight == null || itemHeight > 0),
-        assert(readOnly != null),
+    double? itemHeight,
+    ValueChanged<T?>? onChanged,
+  })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (ReactiveFormFieldState<T, T> field) {
             final state = field as _ReactiveDropdownFieldState<T>;
 
             final InputDecoration effectiveDecoration =
@@ -67,18 +60,18 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
               Theme.of(field.context).inputDecorationTheme,
             );
 
-            T effectiveValue = field.value;
+            T? effectiveValue = field.value;
             if (effectiveValue != null &&
                 !items.any((item) => item.value == effectiveValue)) {
               effectiveValue = null;
             }
 
             final isDisabled = (readOnly || field.control.disabled);
-            Widget effectiveDisabledHint = disabledHint;
+            Widget? effectiveDisabledHint = disabledHint;
             if (isDisabled && disabledHint == null) {
               final selectedItemIndex =
-                  items?.indexWhere((item) => item.value == effectiveValue);
-              if (selectedItemIndex != null && selectedItemIndex > -1) {
+                  items.indexWhere((item) => item.value == effectiveValue);
+              if (selectedItemIndex > -1) {
                 effectiveDisabledHint = selectedItemBuilder != null
                     ? selectedItemBuilder(field.context)
                         .elementAt(selectedItemIndex)
@@ -100,7 +93,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
                   hint: hint,
                   onChanged: isDisabled
                       ? null
-                      : (T value) => state._onChanged(value, onChanged),
+                      : (T? value) => state._onChanged(value, onChanged),
                   onTap: onTap,
                   disabledHint: effectiveDisabledHint,
                   elevation: elevation,
@@ -120,10 +113,11 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => _ReactiveDropdownFieldState<T>();
+  ReactiveFormFieldState<T, T> createState() =>
+      _ReactiveDropdownFieldState<T>();
 }
 
-class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
+class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
   FocusController _focusController = FocusController();
 
   @override
@@ -139,7 +133,7 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T> {
     super.dispose();
   }
 
-  void _onChanged(T value, ValueChanged<T> callBack) {
+  void _onChanged(T? value, ValueChanged<T?>? callBack) {
     this.didChange(value);
     if (callBack != null) {
       callBack(value);

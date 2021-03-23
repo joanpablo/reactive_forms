@@ -78,10 +78,6 @@ void main() {
           throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
     });
 
-    test('Assertion Error if passing null controls to constructor', () {
-      expect(() => FormArray(null), throwsAssertionError);
-    });
-
     test('Add values to array sets value to each item', () {
       // Given: an array with several items
       final array = FormArray<int>([
@@ -250,7 +246,7 @@ void main() {
       final array = FormArray([]);
 
       // Expect value as an empty array
-      expect([], array.value);
+      expect(<Object?>[], array.value);
 
       // When: add one control
       array.add(FormControl<int>(value: 1));
@@ -261,8 +257,8 @@ void main() {
 
     test('Array is invalid if control is invalid', () {
       // Given: an array with invalid control
-      final array = FormArray([
-        FormControl(validators: [Validators.required]),
+      final array = FormArray<dynamic>([
+        FormControl<dynamic>(validators: [Validators.required]),
       ]);
 
       // Expect: array is also invalid
@@ -271,10 +267,10 @@ void main() {
 
     test('FormArray.controls contains controls collection', () {
       // Given: an array with three controls
-      final array = FormArray([
-        FormControl(),
-        FormControl(),
-        FormControl(),
+      final array = FormArray<dynamic>([
+        FormControl<dynamic>(),
+        FormControl<dynamic>(),
+        FormControl<dynamic>(),
       ]);
 
       // When: count children of array
@@ -286,8 +282,8 @@ void main() {
 
     test('Array notify value changes when control value changes', () {
       // Given: an array with a controls
-      final array = FormArray([
-        FormControl(),
+      final array = FormArray<dynamic>([
+        FormControl<dynamic>(),
       ]);
 
       final value = 'Reactive Forms';
@@ -310,7 +306,7 @@ void main() {
       array.remove(array.controls.last);
 
       // Then: last control is removed
-      expect(array.value.join(''), 'Reactive');
+      expect(array.value!.join(''), 'Reactive');
     });
 
     test('Insert control at index position', () {
@@ -347,8 +343,8 @@ void main() {
 
     test('When an array is disable then all children are disabled', () {
       // Given: a form with controls
-      final array = FormArray([
-        FormControl(),
+      final array = FormArray<dynamic>([
+        FormControl<dynamic>(),
       ]);
 
       // When: disable group
@@ -370,7 +366,7 @@ void main() {
       final arrayValue = array.value;
 
       // Then: disabled control not in value
-      expect(arrayValue.length, 1);
+      expect(arrayValue!.length, 1);
       expect(arrayValue.first, 'Reactive');
     });
 
@@ -402,7 +398,7 @@ void main() {
 
     test('Array valid when invalid control is disable', () {
       // Given: an array with an invalid disable control
-      final array = FormArray([
+      final array = FormArray<String>([
         FormControl(value: 'Reactive'),
         FormControl(disabled: true, validators: [Validators.required]),
       ]);
@@ -414,7 +410,7 @@ void main() {
 
     test('Array valid when invalid control is disable', () {
       // Given: an array with an invalid control
-      final array = FormArray([
+      final array = FormArray<String>([
         FormControl(value: 'Reactive'),
         FormControl(validators: [Validators.required]),
       ]);
@@ -429,7 +425,7 @@ void main() {
 
     test('Array invalid when enable invalid control', () {
       // Given: an array with a invalid disable control
-      final array = FormArray([
+      final array = FormArray<String>([
         FormControl(value: 'Reactive'),
         FormControl(disabled: true, validators: [Validators.required]),
       ]);
@@ -444,7 +440,7 @@ void main() {
 
     test('State error if dispose an array and try to change value', () {
       // Given: an array
-      final array = FormArray([
+      final array = FormArray<Object>([
         FormControl(),
       ]);
 
@@ -479,9 +475,9 @@ void main() {
     // Given: a nested array
     final form = FormGroup({
       'numbers': FormArray<int>([
-        FormControl<int>(value: 1),
-        FormControl<int>(value: 2),
-        FormControl<int>(value: 3),
+        FormControl(value: 1),
+        FormControl(value: 2),
+        FormControl(value: 3),
       ]),
     });
 
@@ -508,9 +504,9 @@ void main() {
   test('Focused a control', () {
     // Given: an array
     final array = FormArray<int>([
-      FormControl<int>(value: 1),
-      FormControl<int>(value: 2),
-      FormControl<int>(value: 3),
+      FormControl(value: 1),
+      FormControl(value: 2),
+      FormControl(value: 3),
     ]);
 
     // When: set a control focus
@@ -531,7 +527,8 @@ void main() {
     // When: set a control focus
     addressArray.focus('0.city');
 
-    final FormControl<String> city = addressArray.control('0.city');
+    final FormControl<String?> city =
+        addressArray.control('0.city') as FormControl<String?>;
 
     // Then: control is focused
     expect(city.hasFocus, true, reason: 'control is not focused');
@@ -616,9 +613,9 @@ void main() {
   });
 }
 
-Map<String, dynamic> _emptyAddressee(AbstractControl control) {
+Map<String, Object>? _emptyAddressee(AbstractControl<dynamic> control) {
   final emails = (control as FormArray<bool>).value;
-  return emails.any((isSelected) => isSelected)
+  return emails?.any((isSelected) => isSelected!) == true
       ? null
       : {'emptyAddressee': true};
 }

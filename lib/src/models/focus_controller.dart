@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -20,7 +20,7 @@ class FocusController extends ChangeNotifier {
   /// If the [focusNode] is provided then the focus controller will not dispose
   /// it and [focusNode] must be explicitly dispose after dispose focus
   /// controller instance.
-  FocusController({FocusNode focusNode})
+  FocusController({FocusNode? focusNode})
       : _focusNode = (focusNode ?? FocusNode()),
         _shouldDisposeFocusNode = (focusNode == null) {
     this.focusNode.addListener(_onFocusNodeFocusChanges);

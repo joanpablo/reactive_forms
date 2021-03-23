@@ -5,7 +5,7 @@ void main() {
   group('Utils tests', () {
     test('Test control is null', () {
       // Given: a control
-      final control = FormControl();
+      final control = FormControl<dynamic>();
 
       // Expect: value is null
       expect(control.isNull, true);

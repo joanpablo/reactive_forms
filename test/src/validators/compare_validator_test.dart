@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/compare_validator.dart';
 
 void main() {
   group('Compare Validator Tests', () {
@@ -178,14 +177,6 @@ void main() {
       expect(form.valid, false);
     });
 
-    test('Assert error on Null arguments', () {
-      expect(() => CompareValidator(null, '', CompareOption.equal),
-          throwsAssertionError);
-      expect(() => CompareValidator('', null, CompareOption.equal),
-          throwsAssertionError);
-      expect(() => CompareValidator('', '', null), throwsAssertionError);
-    });
-
     test('Compare DateTime controls', () {
       // Given: an invalid form
       final form = fb.group({
@@ -202,8 +193,8 @@ void main() {
     test('Compare null DateTime values', () {
       // Given: an invalid form
       final form = fb.group({
-        'expedition': fb.control<DateTime>(null),
-        'expiration': fb.control<DateTime>(null),
+        'expedition': fb.control<DateTime?>(null),
+        'expiration': fb.control<DateTime?>(null),
       }, [
         Validators.compare('expedition', 'expiration', CompareOption.lower),
       ]);

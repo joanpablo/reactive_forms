@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -6,42 +6,38 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-abstract class InheritedStreamer extends InheritedWidget {
-  const InheritedStreamer({
-    Key key,
-    this.stream,
-    @required Widget child,
-  })  : assert(child != null),
-        assert(stream != null),
-        super(key: key, child: child);
+abstract class InheritedStreamer<T> extends InheritedWidget {
+  const InheritedStreamer(this.stream, Widget child, {Key? key})
+      : super(key: key, child: child);
 
-  final Stream stream;
+  final Stream<T> stream;
 
   @override
-  bool updateShouldNotify(InheritedStreamer oldWidget) {
+  bool updateShouldNotify(InheritedStreamer<T> oldWidget) {
     return oldWidget.stream != stream;
   }
 
   @override
-  _InheritedNotifierElement createElement() => _InheritedNotifierElement(this);
+  _InheritedNotifierElement<T> createElement() =>
+      _InheritedNotifierElement<T>(this);
 }
 
-class _InheritedNotifierElement extends InheritedElement {
-  _InheritedNotifierElement(InheritedStreamer widget) : super(widget) {
+class _InheritedNotifierElement<T> extends InheritedElement {
+  _InheritedNotifierElement(InheritedStreamer<T> widget) : super(widget) {
     _subscription = widget.stream.listen(_handleUpdate);
   }
 
   @override
-  InheritedStreamer get widget => super.widget as InheritedStreamer;
+  InheritedStreamer<T> get widget => super.widget as InheritedStreamer<T>;
 
   bool _dirty = false;
 
-  StreamSubscription _subscription;
+  late StreamSubscription<T> _subscription;
 
   @override
-  void update(InheritedStreamer newWidget) {
-    final Stream oldStream = widget.stream;
-    final Stream newStream = newWidget.stream;
+  void update(InheritedStreamer<T> newWidget) {
+    final Stream<T> oldStream = widget.stream;
+    final Stream<T> newStream = newWidget.stream;
     if (oldStream != newStream) {
       _subscription.cancel();
       _subscription = newStream.listen(_handleUpdate);
@@ -55,13 +51,13 @@ class _InheritedNotifierElement extends InheritedElement {
     return super.build();
   }
 
-  void _handleUpdate(_) {
+  void _handleUpdate(T status) {
     _dirty = true;
     markNeedsBuild();
   }
 
   @override
-  void notifyClients(InheritedStreamer oldWidget) {
+  void notifyClients(InheritedStreamer<T> oldWidget) {
     super.notifyClients(oldWidget);
     _dirty = false;
   }

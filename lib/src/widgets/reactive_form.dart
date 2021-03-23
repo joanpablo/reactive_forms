@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -27,19 +27,17 @@ class ReactiveForm extends StatefulWidget {
   ///
   ///  * [WillPopScope], another widget that provides a way to intercept the
   ///    back button.
-  final WillPopCallback onWillPop;
+  final WillPopCallback? onWillPop;
 
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
   const ReactiveForm({
-    Key key,
-    @required this.formGroup,
-    @required this.child,
+    Key? key,
+    required this.formGroup,
+    required this.child,
     this.onWillPop,
-  })  : assert(formGroup != null),
-        assert(child != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// Returns the nearest model up its widget tree
   ///
@@ -48,16 +46,19 @@ class ReactiveForm extends StatefulWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static AbstractControl of(BuildContext context, {bool listen: true}) {
+  static AbstractControl<Object>? of(BuildContext context,
+      {bool listen = true}) {
     if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()
-          .control;
+          ?.control;
     }
 
     final element = context.getElementForInheritedWidgetOfExactType<
         FormControlInheritedStreamer>();
-    return (element?.widget as FormControlInheritedStreamer)?.control;
+    return element == null
+        ? null
+        : (element.widget as FormControlInheritedStreamer).control;
   }
 
   @override

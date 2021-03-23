@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -12,7 +12,7 @@ import '../widgets/form_control_inherited_notifier.dart';
 /// the [formArray] and an optional [child] and returns a [Widget].
 ///
 typedef ReactiveFormArrayBuilder<T> = Widget Function(
-    BuildContext context, FormArray<T> formArray, Widget child);
+    BuildContext context, FormArray<T> formArray, Widget? child);
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormArray] to all descendants widgets.
@@ -21,9 +21,9 @@ typedef ReactiveFormArrayBuilder<T> = Widget Function(
 /// context each time the [FormArray] append or remove new controls.
 ///
 class ReactiveFormArray<T> extends StatefulWidget {
-  final String formArrayName;
-  final FormArray<T> formArray;
-  final Widget child;
+  final String? formArrayName;
+  final FormArray<T>? formArray;
+  final Widget? child;
   final ReactiveFormArrayBuilder<T> builder;
 
   /// Creates an instance of [ReactiveFormArray].
@@ -33,8 +33,8 @@ class ReactiveFormArray<T> extends StatefulWidget {
   /// subtree does not depend on the value of the [FormArray] that is bind
   /// with this widget.
   const ReactiveFormArray({
-    Key key,
-    @required this.builder,
+    Key? key,
+    required this.builder,
     this.formArrayName,
     this.formArray,
     this.child,
@@ -42,7 +42,6 @@ class ReactiveFormArray<T> extends StatefulWidget {
             (formArrayName != null && formArray == null) ||
                 (formArrayName == null && formArray != null),
             'Must provide a formArrayName or a formArray, but not both at the same time.'),
-        assert(builder != null),
         super(key: key);
 
   @override
@@ -50,15 +49,16 @@ class ReactiveFormArray<T> extends StatefulWidget {
 }
 
 class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
-  FormArray<T> _formArray;
+  late FormArray<T> _formArray;
 
   @override
   void didChangeDependencies() {
-    _formArray = widget.formArray;
-    if (_formArray == null) {
+    if (widget.formArray != null) {
+      _formArray = widget.formArray!;
+    } else {
       final form =
           ReactiveForm.of(context, listen: false) as FormControlCollection;
-      _formArray = form.control(widget.formArrayName) as FormArray<T>;
+      _formArray = form.control(widget.formArrayName!) as FormArray<T>;
     }
     super.didChangeDependencies();
   }

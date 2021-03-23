@@ -1,27 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class DummyValueAccessor extends ControlValueAccessor<dynamic, dynamic> {
+class DummyValueAccessor extends ControlValueAccessor<Object, Object> {
   @override
-  modelToViewValue(modelValue) => modelValue;
+  Object? modelToViewValue(Object? modelValue) => modelValue;
 
   @override
-  viewToModelValue(viewValue) => viewValue;
+  Object? viewToModelValue(Object? viewValue) => viewValue;
 }
 
 void main() {
   group('ControlValueAccessor Tests', () {
-    test('Register null raises assert exception', () {
-      // Given: a value accessor
-      final valueAccessor = DummyValueAccessor();
-
-      // When: register a control and pass null as argument
-      final registration = () => valueAccessor.registerControl(null);
-
-      // Then: assert error exception is thrown
-      expect(() => registration(), throwsAssertionError);
-    });
-
     test('Register a control inside value accessor', () {
       // Given: a value accessor
       final valueAccessor = DummyValueAccessor();
@@ -41,7 +30,7 @@ void main() {
       final valueAccessor = DummyValueAccessor();
 
       // When: call updateModel before register a control
-      final updateModel = () => valueAccessor.updateModel('');
+      final updateModel = () => valueAccessor.updateModel(null);
 
       // Then: value accessor hold the instance of the control
       expect(

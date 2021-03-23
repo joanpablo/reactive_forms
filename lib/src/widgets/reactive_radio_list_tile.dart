@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -13,7 +13,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [RadioListTile]
 /// class and [new RadioListTile], the constructor.
-class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
+class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
   /// Create an instance of a [ReactiveRadioListTile].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -26,22 +26,22 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
   ///
   /// See also [RadioListTile]
   ReactiveRadioListTile({
-    Key key,
-    String formControlName,
-    FormControl<T> formControl,
-    @required T value,
-    Color activeColor,
-    Widget title,
-    Widget subtitle,
+    Key? key,
+    String? formControlName,
+    FormControl<T>? formControl,
+    required T value,
+    Color? activeColor,
+    Widget? title,
+    Widget? subtitle,
     bool isThreeLine = false,
-    bool dense,
-    Widget secondary,
+    bool? dense,
+    Widget? secondary,
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (ReactiveFormFieldState<T, T> field) {
             return RadioListTile<T>(
               value: value,
               groupValue: field.value,
@@ -58,5 +58,5 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();
+  ReactiveFormFieldState<T, T> createState() => ReactiveFormFieldState<T, T>();
 }

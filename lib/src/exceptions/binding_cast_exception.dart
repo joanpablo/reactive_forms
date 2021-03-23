@@ -3,16 +3,14 @@ import 'package:reactive_forms/src/exceptions/reactive_forms_exception.dart';
 
 /// Represents an exception that is thrown when trying to bound a widget that is
 /// expecting a specific data type, to a control with a different data type.
-class BindingCastException<T> extends ReactiveFormsException {
-  final ReactiveFormField<T> field;
-  final FormControl<dynamic> control;
+class BindingCastException<T, K> extends ReactiveFormsException {
+  final ReactiveFormField<T, K> field;
+  final Object control;
 
   /// Constructs the instance of the exception.
   ///
   /// The Arguments [field] and [control] must not be null.
-  BindingCastException(this.field, this.control)
-      : assert(field != null),
-        assert(control != null);
+  BindingCastException(this.field, this.control);
 
   @override
   String toString() {

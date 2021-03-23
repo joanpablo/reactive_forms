@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -9,7 +9,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveFormConsumer].
 typedef ReactiveFormConsumerBuilder = Widget Function(
-    BuildContext context, FormGroup formGroup, Widget child);
+    BuildContext context, FormGroup formGroup, Widget? child);
 
 /// Obtains [FormGroup] from its ancestors and passes its value to [builder].
 ///
@@ -26,7 +26,7 @@ typedef ReactiveFormConsumerBuilder = Widget Function(
 ///   so that if the validity of the [FormGroup] change then the current
 ///   context is rebuilt.
 class ReactiveFormConsumer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final ReactiveFormConsumerBuilder builder;
 
   /// Creates an instance of the [ReactiveFormConsumer]
@@ -36,14 +36,17 @@ class ReactiveFormConsumer extends StatelessWidget {
   /// subtree does not depend on the value of the [FormGroup] that is bind
   /// with this widget.
   const ReactiveFormConsumer({
-    Key key,
-    @required this.builder,
+    Key? key,
+    required this.builder,
     this.child,
-  })  : assert(builder != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return this.builder(context, ReactiveForm.of(context), this.child);
+    final form = ReactiveForm.of(context);
+    if (form is! FormGroup) {
+      throw FormControlParentNotFoundException(this);
+    }
+    return this.builder(context, form, this.child);
   }
 }

@@ -5,8 +5,8 @@ class ReactiveFormConsumerTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveFormConsumerTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -17,8 +17,9 @@ class ReactiveFormConsumerTestingWidget extends StatelessWidget {
           formGroup: this.form,
           child: ReactiveFormConsumer(
             builder: (context, form, child) {
-              return RaisedButton(
+              return ElevatedButton(
                 onPressed: form.valid ? () {} : null,
+                child: Container(),
               );
             },
           ),

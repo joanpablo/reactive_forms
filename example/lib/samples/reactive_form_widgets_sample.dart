@@ -169,7 +169,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              // RaisedButton(
+              // ElevatedButton(
               //   child: Text('Sign Up'),
               //   onPressed: () {
               //     if (form.valid) {

@@ -26,7 +26,7 @@ void main() {
 
     test('FormGroup invalid if maxLength invalid', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'Hello Reactive Forms',
           validators: [Validators.maxLength(10)],
         ),
@@ -38,7 +38,7 @@ void main() {
 
     test('FormGroup is valid if maxLength valid', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           value: 'Reactive',
           validators: [Validators.maxLength(10)],
         ),
@@ -49,7 +49,7 @@ void main() {
 
     test('FormGroup is valid if control value is null', () {
       final form = FormGroup({
-        'name': FormControl(
+        'name': FormControl<String>(
           validators: [Validators.maxLength(10)],
         ),
       });
@@ -110,9 +110,9 @@ void main() {
     test('FormGroup valid if maxLength is valid', () {
       // Given: a valid group
       final form = FormGroup({
-        'name': FormControl(),
-        'email': FormControl(),
-        'password': FormControl(),
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+        'password': FormControl<String>(),
       }, validators: [
         Validators.maxLength(4)
       ]);
@@ -124,9 +124,9 @@ void main() {
     test('FormGroup invalid if maxLength is invalid', () {
       // Given: an invalid group
       final form = FormGroup({
-        'name': FormControl(),
-        'email': FormControl(),
-        'password': FormControl(),
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+        'password': FormControl<String>(),
       }, validators: [
         Validators.maxLength(2)
       ]);
