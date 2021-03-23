@@ -1,3 +1,10 @@
+# 10.0.0
+
+## Breaking changes
+- Reactive Forms is now migrated to Flutter 2.x.
+- Reactive Forms is now Null-safety.
+- New Definitions in Custom Reactive Widgets.
+
 # 9.1.0
 
 ## Enhances
