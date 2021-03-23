@@ -146,8 +146,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
 
   @override
   void didUpdateWidget(ReactiveFormField<T, K> oldWidget) {
-    if (widget.valueAccessor != null &&
-        widget.valueAccessor != valueAccessor) {
+    if (widget.valueAccessor != null && widget.valueAccessor != valueAccessor) {
       valueAccessor.dispose();
       _valueAccessor = widget.valueAccessor!;
       _subscribeValueAccessor();

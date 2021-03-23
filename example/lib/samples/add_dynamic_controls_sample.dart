@@ -35,7 +35,8 @@ class NewContactViewModel {
     });
   }
 
-  FormArray<String> get phones => this.form.control(PHONES) as FormArray<String>;
+  FormArray<String> get phones =>
+      this.form.control(PHONES) as FormArray<String>;
 }
 
 class AddDynamicControlsSample extends StatelessWidget {

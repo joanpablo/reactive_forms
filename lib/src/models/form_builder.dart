@@ -62,8 +62,7 @@ class FormBuilder {
   /// ```
   FormGroup group(
     Map<String, Object> controls, [
-    List<ValidatorFunction> validators =
-        const [],
+    List<ValidatorFunction> validators = const [],
     List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
         asyncValidators = const [],
   ]) {
@@ -206,7 +205,8 @@ class FormBuilder {
   FormArray<T> array<T>(
     List<Object> value, [
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators = const [],
+    List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators =
+        const [],
   ]) {
     return FormArray<T>(
       value.map<AbstractControl<T>>((v) {
@@ -224,7 +224,8 @@ class FormBuilder {
     );
   }
 
-  FormControl<dynamic> _control(dynamic value, List<ValidatorFunction> validators) {
+  FormControl<dynamic> _control(
+      dynamic value, List<ValidatorFunction> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
           'Default value of control must not be an AbstractControl.');

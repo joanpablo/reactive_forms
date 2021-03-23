@@ -63,7 +63,8 @@ void main() {
         ));
 
         // Then: initial date is equals to last Date
-        expect(tester.takeException(), isInstanceOf<BindingCastException<String, String>>());
+        expect(tester.takeException(),
+            isInstanceOf<BindingCastException<String, String>>());
       },
     );
   });

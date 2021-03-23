@@ -37,8 +37,7 @@ class CompareValidator<T> extends Validator<dynamic> {
       }
     };
 
-    if (mainControl.value is! Comparable<T> ||
-        compareControl.value is! T) {
+    if (mainControl.value is! Comparable<T> || compareControl.value is! T) {
       return error;
     }
 

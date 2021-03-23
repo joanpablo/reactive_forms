@@ -6,7 +6,8 @@ abstract class Control {
   static bool isNull(AbstractControl<dynamic> control) => control.value == null;
 
   /// Returns true if [control] is not null, otherwise return false.
-  static bool isNotNull(AbstractControl<dynamic> control) => control.value != null;
+  static bool isNotNull(AbstractControl<dynamic> control) =>
+      control.value != null;
 
   /// Returns true if [control] is null or empty white spaces,
   /// otherwise return false.

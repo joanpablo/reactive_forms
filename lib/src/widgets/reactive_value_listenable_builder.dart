@@ -58,8 +58,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
         throw FormControlParentNotFoundException(this);
       }
       final collection = form as FormControlCollection;
-      control =
-          collection.control(formControlName!) as AbstractControl<T>?;
+      control = collection.control(formControlName!) as AbstractControl<T>?;
     }
 
     return StreamBuilder<T?>(
