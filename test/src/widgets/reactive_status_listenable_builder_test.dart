@@ -202,7 +202,7 @@ void main() {
             );
 
         // Expect: assert error
-        expect(() => statusListenable(), throwsAssertionError);
+        expect(statusListenable, throwsAssertionError);
       },
     );
 

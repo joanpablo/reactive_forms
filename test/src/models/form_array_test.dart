@@ -448,7 +448,7 @@ void main() {
       final addValue = () => array.control('0').value = 'some';
 
       // Then: state error
-      expect(() => addValue(), throwsStateError);
+      expect(addValue, throwsStateError);
     });
   });
   test('Set empty array value to array does not update values', () {

@@ -351,7 +351,7 @@ void main() {
       final addValue = () => form.control('name').value = 'some';
 
       // Then: state error
-      expect(() => addValue(), throwsStateError);
+      expect(addValue, throwsStateError);
     });
 
     test('Resets a group and set initial values', () {

@@ -221,7 +221,7 @@ void main() {
           });
 
       // Expect an exception
-      expect(() => createGroup(),
+      expect(createGroup,
           throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
     });
 
@@ -233,7 +233,7 @@ void main() {
           });
 
       // Expect an exception
-      expect(() => createGroup(),
+      expect(createGroup,
           throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
     });
 

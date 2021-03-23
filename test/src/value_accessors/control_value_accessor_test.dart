@@ -33,8 +33,7 @@ void main() {
       final updateModel = () => valueAccessor.updateModel(null);
 
       // Then: value accessor hold the instance of the control
-      expect(
-          () => updateModel(), throwsA(isInstanceOf<ValueAccessorException>()));
+      expect(updateModel, throwsA(isInstanceOf<ValueAccessorException>()));
     });
   });
 }
