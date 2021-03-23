@@ -56,7 +56,9 @@ class ReactiveForm extends StatefulWidget {
 
     final element = context.getElementForInheritedWidgetOfExactType<
         FormControlInheritedStreamer>();
-    return (element?.widget as FormControlInheritedStreamer).control;
+    return element == null
+        ? null
+        : (element.widget as FormControlInheritedStreamer).control;
   }
 
   @override
