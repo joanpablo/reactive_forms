@@ -85,17 +85,17 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   late FormControl<ModelDataType> control;
   late StreamSubscription<ControlStatus> _statusChangesSubscription;
   late StreamSubscription<bool> _touchChangesSubscription;
-  late ControlValueAccessor<ModelDataType, ViewDataType> _valueAccessor;
+  late ControlValueAccessor<dynamic, dynamic> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  ViewDataType? get value => valueAccessor.modelToViewValue(control.value);
+  ViewDataType? get value =>
+      valueAccessor.modelToViewValue(control.value) as ViewDataType?;
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => control.touched;
 
   /// Gets the widget control value accessor
-  ControlValueAccessor<ModelDataType, ViewDataType> get valueAccessor =>
-      _valueAccessor;
+  ControlValueAccessor<dynamic, dynamic> get valueAccessor => _valueAccessor;
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -129,8 +129,7 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   @override
   void initState() {
     control = _resolveFormControl();
-    _valueAccessor = _resolveValueAccessor()
-        as ControlValueAccessor<ModelDataType, ViewDataType>;
+    _valueAccessor = _resolveValueAccessor();
     subscribeControl();
 
     super.initState();
