@@ -36,6 +36,9 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     MaterialTapTargetSize? materialTapTargetSize,
     VisualDensity? visualDensity,
     bool autofocus = false,
+    MaterialStateProperty<Color?>? fillColor,
+    MaterialStateProperty<Color?>? overlayColor,
+    double? splashRadius,
   }) : super(
           key: key,
           formControl: formControl,
@@ -53,6 +56,9 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               materialTapTargetSize: materialTapTargetSize,
               visualDensity: visualDensity,
               autofocus: autofocus,
+              fillColor: fillColor,
+              overlayColor: overlayColor,
+              splashRadius: splashRadius,
             );
           },
         );

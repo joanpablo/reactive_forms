@@ -45,6 +45,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     bool readOnly = false,
     double? itemHeight,
     ValueChanged<T?>? onChanged,
+    Color? dropdownColor,
+    Color? focusColor,
+    Widget? underline,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
@@ -105,6 +108,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   isExpanded: isExpanded,
                   itemHeight: itemHeight,
                   focusNode: state._focusController.focusNode,
+                  dropdownColor: dropdownColor,
+                  focusColor: focusColor,
+                  underline: underline,
                 ),
               ),
             );

@@ -2,7 +2,11 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
@@ -101,6 +105,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     ToolbarOptions? toolbarOptions,
     bool? showCursor,
     bool obscureText = false,
+    String obscuringCharacter = '•',
     bool autocorrect = true,
     SmartDashesType? smartDashesType,
     SmartQuotesType? smartQuotesType,
@@ -113,6 +118,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     GestureTapCallback? onTap,
     List<TextInputFormatter>? inputFormatters,
     double cursorWidth = 2.0,
+    double? cursorHeight,
     Radius? cursorRadius,
     Color? cursorColor,
     Brightness? keyboardAppearance,
@@ -122,6 +128,15 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     ScrollPhysics? scrollPhysics,
     VoidCallback? onSubmitted,
     FocusNode? focusNode,
+    Iterable<String>? autofillHints,
+    MouseCursor? mouseCursor,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    String? restorationId,
+    ScrollController? scrollController,
+    TextSelectionControls? selectionControls,
+    ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
+    ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
   }) : super(
           key: key,
           formControl: formControl,
@@ -175,6 +190,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               inputFormatters: inputFormatters,
               enabled: field.control.enabled,
               cursorWidth: cursorWidth,
+              cursorHeight: cursorHeight,
               cursorRadius: cursorRadius,
               cursorColor: cursorColor,
               scrollPadding: scrollPadding,
@@ -182,6 +198,16 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               keyboardAppearance: keyboardAppearance,
               enableInteractiveSelection: enableInteractiveSelection,
               buildCounter: buildCounter,
+              autofillHints: autofillHints,
+              mouseCursor: mouseCursor,
+              obscuringCharacter: obscuringCharacter,
+              dragStartBehavior: dragStartBehavior,
+              onAppPrivateCommand: onAppPrivateCommand,
+              restorationId: restorationId,
+              scrollController: scrollController,
+              selectionControls: selectionControls,
+              selectionHeightStyle: selectionHeightStyle,
+              selectionWidthStyle: selectionWidthStyle,
             );
           },
         );

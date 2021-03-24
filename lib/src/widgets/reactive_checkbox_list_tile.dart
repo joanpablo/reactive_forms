@@ -39,6 +39,9 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     bool autofocus = false,
     EdgeInsetsGeometry? contentPadding,
     bool tristate = false,
+    Color? selectedTileColor,
+    Color? tileColor,
+    ShapeBorder? shape,
   }) : super(
           key: key,
           formControl: formControl,
@@ -58,6 +61,9 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               autofocus: autofocus,
               contentPadding: contentPadding,
               tristate: tristate,
+              selectedTileColor: selectedTileColor,
+              tileColor: tileColor,
+              shape: shape,
             );
           },
         );
