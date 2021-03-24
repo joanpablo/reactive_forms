@@ -64,7 +64,8 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
   ///
   /// The argument [onChange] is optionally and will be called every time the
   /// [control] emits the value change event.
-  void registerControl(FormControl<ModelDataType> control, {ChangeFunction<ViewDataType>? onChange}) {
+  void registerControl(FormControl<ModelDataType> control,
+      {ChangeFunction<ViewDataType>? onChange}) {
     _control = control;
     _onChangeSubscription = _control!.valueChanges.listen(_updateView);
 

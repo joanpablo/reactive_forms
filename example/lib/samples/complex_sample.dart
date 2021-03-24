@@ -65,7 +65,8 @@ class ComplexSample extends StatelessWidget {
               const SizedBox(height: 24.0),
               ReactiveTextField<String>(
                 formControlName: 'passwordConfirmation',
-                decoration: const InputDecoration(labelText: 'Confirm Password'),
+                decoration:
+                    const InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
                 validationMessages: (control) => {
                   ValidationMessage.mustMatch:
@@ -195,7 +196,8 @@ Future<Map<String, dynamic>> _uniqueEmail(
   final error = {'unique': false};
 
   final emailAlreadyInUse = await Future.delayed(
-    const Duration(seconds: 5), // a delay to simulate a time consuming operation
+    const Duration(
+        seconds: 5), // a delay to simulate a time consuming operation
     () => inUseEmails.contains(control.value),
   );
 
