@@ -58,5 +58,99 @@ void main() {
       expect(cardNumber.valid, true, reason: "card number is not valid");
       expect(cardNumber.errors.keys.isEmpty, true, reason: "has errors");
     });
+
+    test("Customize Validation Message", () {
+      // Give: some regular expressions
+      const containsLettersPattern = r'[a-z]+';
+      const containsNumbersPattern = r'\d+';
+
+      const containsLettersValidationMessage = "containsLetters";
+      const containsNumbersValidationMessage = "containsNumbers";
+
+      // And: a control with pattern validators
+      final password = FormControl<String>(
+        value: '123abc',
+        validators: [
+          Validators.pattern(
+            containsLettersPattern,
+            validationMessage: containsLettersValidationMessage,
+          ),
+          Validators.pattern(
+            containsNumbersPattern,
+            validationMessage: containsNumbersValidationMessage,
+          ),
+        ],
+      );
+
+      // When: set an invalid value
+      password.value = '_';
+
+      // Then: password contains all pattern errors
+      expect(password.valid, false, reason: "password is valid");
+      expect(password.hasError(containsLettersValidationMessage), true, reason: "password does not contains the containsLettersValidationMessage error");
+      expect(password.hasError(containsNumbersValidationMessage), true, reason: "password does not contains the containsNumbersValidationMessage error");
+    });
+
+    test("Customize Validation Message with one valid pattern", () {
+      // Give: some regular expressions
+      const containsLettersPattern = r'[a-z]+';
+      const containsNumbersPattern = r'\d+';
+
+      const containsLettersValidationMessage = "containsLetters";
+      const containsNumbersValidationMessage = "containsNumbers";
+
+      // And: a control with pattern validators
+      final password = FormControl<String>(
+        validators: [
+          Validators.pattern(
+            containsLettersPattern,
+            validationMessage: containsLettersValidationMessage,
+          ),
+          Validators.pattern(
+            containsNumbersPattern,
+            validationMessage: containsNumbersValidationMessage,
+          ),
+        ],
+      );
+
+      // When: set an invalid value
+      password.value = '123';
+
+      // Then: password contains all pattern errors
+      expect(password.valid, false, reason: "password is valid");
+      expect(password.hasError(containsLettersValidationMessage), true, reason: "password does not contains the containsLettersValidationMessage error");
+      expect(password.hasError(containsNumbersValidationMessage), false, reason: "password contains the containsNumbersValidationMessage error");
+    });
+
+    test("Customize Validation Message with all valid pattern", () {
+      // Give: some regular expressions
+      const containsLettersPattern = r'[a-z]+';
+      const containsNumbersPattern = r'\d+';
+
+      const containsLettersValidationMessage = "containsLetters";
+      const containsNumbersValidationMessage = "containsNumbers";
+
+      // And: a control with pattern validators
+      final password = FormControl<String>(
+        validators: [
+          Validators.pattern(
+            containsLettersPattern,
+            validationMessage: containsLettersValidationMessage,
+          ),
+          Validators.pattern(
+            containsNumbersPattern,
+            validationMessage: containsNumbersValidationMessage,
+          ),
+        ],
+      );
+
+      // When: set a valid value
+      password.value = '123abc';
+
+      // Then: password is valid without errors
+      expect(password.valid, true, reason: "password is valid");
+      expect(password.hasError(containsLettersValidationMessage), false, reason: "password contains the containsLettersValidationMessage error");
+      expect(password.hasError(containsNumbersValidationMessage), false, reason: "password contains the containsNumbersValidationMessage error");
+    });
   });
 }

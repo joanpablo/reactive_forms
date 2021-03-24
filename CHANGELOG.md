@@ -3,7 +3,11 @@
 ## Breaking changes
 - Reactive Forms is now migrated to Flutter 2.x.
 - Reactive Forms is now Null-safety.
-- New Definitions in Custom Reactive Widgets.
+- New Definitions in Custom Reactive Widgets. **ReactiveFormField** now defines the data type of the model (control) and the data type of the view (widget).
+- **Validators.requiredTrue** now has the 'requiredTrue' validation message and not 'requiredEquals' as in previous versions.
+
+## Features
+- Now you can specify a different *validation message* to the **Validators.pattern** validator.
 
 # 9.1.0
 

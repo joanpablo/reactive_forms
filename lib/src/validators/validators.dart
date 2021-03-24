@@ -40,8 +40,9 @@ class Validators {
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static ValidatorFunction get requiredTrue =>
-      EqualsValidator<bool>(true).validate;
+  static ValidatorFunction get requiredTrue => EqualsValidator<bool>(true,
+          validationMessage: ValidationMessage.requiredTrue)
+      .validate;
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
@@ -92,6 +93,10 @@ class Validators {
   ///
   /// The argument [pattern] must not be null.
   ///
+  /// The argument [validationMessage] is optional and specify the key text for
+  /// the validation error. I none value is supplied then the default value is
+  /// [ValidationMessage.pattern].
+  ///
   /// ## Example:
   /// Using an instance of [RegExp] as argument.
   /// ```dart
@@ -116,7 +121,35 @@ class Validators {
   ///
   /// expect(cardNumber.valid, true);
   /// ```
-  static ValidatorFunction pattern(Pattern pattern) {
+  /// ## Example:
+  /// Specifying a custom validation message.
+  /// ```dart
+  /// const containsLettersPattern = r'[a-z]+';
+  /// const containsNumbersPattern = r'\d+';
+  ///
+  /// const containsLettersValidationMessage = "containsLetters";
+  /// const containsNumbersValidationMessage = "containsNumbers";
+  ///
+  /// final password = FormControl(
+  ///   value: '123abc',
+  ///   validators: [
+  ///     Validators.pattern(
+  ///       containsLettersPattern,
+  ///       validationMessage: containsLettersValidationMessage,
+  ///     ),
+  ///     Validators.pattern(
+  ///       containsNumbersPattern,
+  ///       validationMessage: containsNumbersValidationMessage,
+  ///     ),
+  ///   ],
+  /// );
+  ///
+  /// expect(password.valid, true);
+  /// ```
+  static ValidatorFunction pattern(
+    Pattern pattern, {
+    String validationMessage = ValidationMessage.pattern,
+  }) {
     PatternEvaluator evaluator;
     if (pattern is String) {
       evaluator = RegExpPatternEvaluator(RegExp(pattern));
@@ -126,7 +159,8 @@ class Validators {
       evaluator = DefaultPatternEvaluator(pattern);
     }
 
-    return PatternValidator(evaluator).validate;
+    return PatternValidator(evaluator, validationMessage: validationMessage)
+        .validate;
   }
 
   /// Gets a [FormGroup] validator that checks the controls [controlName] and
