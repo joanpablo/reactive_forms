@@ -13,24 +13,24 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 
 /// Defines an interface that acts as a bridge between [FormControl] and a
 /// reactive native widget.
-abstract class ControlValueAccessor<T, K> {
-  FormControl<T>? _control;
-  ChangeFunction<K>? _onChange;
+abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
+  FormControl<ModelDataType>? _control;
+  ChangeFunction<ViewDataType>? _onChange;
   bool _viewToModelChange = false;
-  StreamSubscription<T?>? _onChangeSubscription;
+  StreamSubscription<ModelDataType?>? _onChangeSubscription;
 
   /// Gets the control bind to this value accessor.
-  FormControl<T>? get control => _control;
+  FormControl<ModelDataType>? get control => _control;
 
   /// Returns the value that must be supplied to the [control].
   ///
   /// Converts value from UI data type to [control] data type.
-  T? viewToModelValue(K? viewValue);
+  ModelDataType? viewToModelValue(ViewDataType? viewValue);
 
   /// Returns the value that must be supplied to the UI widget.
   ///
   /// Converts value from [control] data type to UI data type.
-  K? modelToViewValue(T? modelValue);
+  ViewDataType? modelToViewValue(ModelDataType? modelValue);
 
   /// Updates the [control] with the provided value.
   ///
@@ -41,7 +41,7 @@ abstract class ControlValueAccessor<T, K> {
   /// value accessor.
   ///
   /// See also [registerControl].
-  void updateModel(K? viewValue) {
+  void updateModel(ViewDataType? viewValue) {
     if (_control == null) {
       throw ValueAccessorException(
           'No control registered. Call [ControlValueAccessor.registerControl] to register a control first.');
@@ -64,7 +64,7 @@ abstract class ControlValueAccessor<T, K> {
   ///
   /// The argument [onChange] is optionally and will be called every time the
   /// [control] emits the value change event.
-  void registerControl(FormControl<T> control, {ChangeFunction<K>? onChange}) {
+  void registerControl(FormControl<ModelDataType> control, {ChangeFunction<ViewDataType>? onChange}) {
     _control = control;
     _onChangeSubscription = _control!.valueChanges.listen(_updateView);
 
@@ -77,7 +77,7 @@ abstract class ControlValueAccessor<T, K> {
     _onChangeSubscription?.cancel();
   }
 
-  void _updateView(T? modelValue) {
+  void _updateView(ModelDataType? modelValue) {
     if (_viewToModelChange) {
       _viewToModelChange = false;
       return;

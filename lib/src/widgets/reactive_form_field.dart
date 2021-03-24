@@ -30,24 +30,24 @@ typedef ValidationMessagesFunction<T> = Map<String, String> Function(
 /// so that updates and validation errors are visually reflected in the UI.
 ///
 /// It is the base class for all other reactive widgets.
-class ReactiveFormField<T, K> extends StatefulWidget {
+class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   /// Function that returns the widget representing this form field. It is
   /// passed the form field state as input, containing the current value and
   /// validation state of this field.
-  final ReactiveFormFieldBuilder<T, K> _builder;
+  final ReactiveFormFieldBuilder<ModelDataType, ViewDataType> _builder;
 
   /// The name of the [FormControl] that is bound to this widget.
   final String? formControlName;
 
   /// The control that is bound to this widget.
-  final FormControl<T>? formControl;
+  final FormControl<ModelDataType>? formControl;
 
   /// A function that returns the [Map] that store custom validation messages
   /// for each error.
-  final ValidationMessagesFunction<T>? validationMessages;
+  final ValidationMessagesFunction<ModelDataType>? validationMessages;
 
   /// Gets the widget control value accessor
-  final ControlValueAccessor<T, K>? valueAccessor;
+  final ControlValueAccessor<ModelDataType, ViewDataType>? valueAccessor;
 
   /// Gets the callback that define when to show errors in UI.
   final ShowErrorsFunction? showErrors;
@@ -65,7 +65,7 @@ class ReactiveFormField<T, K> extends StatefulWidget {
     this.valueAccessor,
     this.showErrors,
     this.validationMessages,
-    required ReactiveFormFieldBuilder<T, K> builder,
+    required ReactiveFormFieldBuilder<ModelDataType, ViewDataType> builder,
   })   : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
@@ -74,25 +74,28 @@ class ReactiveFormField<T, K> extends StatefulWidget {
         super(key: key);
 
   @override
-  ReactiveFormFieldState<T, K> createState() => ReactiveFormFieldState<T, K>();
+  ReactiveFormFieldState<ModelDataType, ViewDataType> createState() =>
+      ReactiveFormFieldState<ModelDataType, ViewDataType>();
 }
 
 /// Represents the state of the [ReactiveFormField] stateful widget.
-class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
+class ReactiveFormFieldState<ModelDataType, ViewDataType>
+    extends State<ReactiveFormField<ModelDataType, ViewDataType>> {
   /// The [FormControl] that is bound to this state.
-  late FormControl<T> control;
+  late FormControl<ModelDataType> control;
   late StreamSubscription<ControlStatus> _statusChangesSubscription;
   late StreamSubscription<bool> _touchChangesSubscription;
-  late ControlValueAccessor<T, K> _valueAccessor;
+  late ControlValueAccessor<ModelDataType, ViewDataType> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  K? get value => valueAccessor.modelToViewValue(control.value);
+  ViewDataType? get value => valueAccessor.modelToViewValue(control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => control.touched;
 
   /// Gets the widget control value accessor
-  ControlValueAccessor<T, K> get valueAccessor => _valueAccessor;
+  ControlValueAccessor<ModelDataType, ViewDataType> get valueAccessor =>
+      _valueAccessor;
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -126,7 +129,8 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @override
   void initState() {
     control = _resolveFormControl();
-    _valueAccessor = _resolveValueAccessor() as ControlValueAccessor<T, K>;
+    _valueAccessor = _resolveValueAccessor()
+        as ControlValueAccessor<ModelDataType, ViewDataType>;
     subscribeControl();
 
     super.initState();
@@ -141,11 +145,12 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   @protected
   @visibleForTesting
   ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    return DefaultValueAccessor<T>();
+    return DefaultValueAccessor<ModelDataType>();
   }
 
   @override
-  void didUpdateWidget(ReactiveFormField<T, K> oldWidget) {
+  void didUpdateWidget(
+      ReactiveFormField<ModelDataType, ViewDataType> oldWidget) {
     if (widget.valueAccessor != null && widget.valueAccessor != valueAccessor) {
       valueAccessor.dispose();
       _valueAccessor = widget.valueAccessor!;
@@ -202,7 +207,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
   /// child widget changes.
   ///
   /// Updates the value of the [FormControl] bound to this widget.
-  void didChange(K? value) {
+  void didChange(ViewDataType? value) {
     _valueAccessor.updateModel(value);
     _checkTouchedState();
   }
@@ -232,7 +237,7 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
     return widget.valueAccessor ?? selectValueAccessor();
   }
 
-  FormControl<T> _resolveFormControl() {
+  FormControl<ModelDataType> _resolveFormControl() {
     if (widget.formControl != null) {
       return widget.formControl!;
     }
@@ -244,8 +249,8 @@ class ReactiveFormFieldState<T, K> extends State<ReactiveFormField<T, K>> {
 
     final collection = parent as FormControlCollection;
     final control = collection.control(widget.formControlName!);
-    if (control is! FormControl<T>) {
-      throw BindingCastException<T, K>(widget, control);
+    if (control is! FormControl<ModelDataType>) {
+      throw BindingCastException<ModelDataType, ViewDataType>(widget, control);
     }
 
     return control;
