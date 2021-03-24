@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -19,7 +19,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Switch] class
 /// and [new Switch], the constructor.
-class ReactiveSwitch extends ReactiveFormField<bool> {
+class ReactiveSwitch extends ReactiveFormField<bool, bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -33,27 +33,27 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
   /// For documentation about the various parameters, see the [Switch] class
   /// and [new Switch], the constructor.
   ReactiveSwitch({
-    Key key,
-    String formControlName,
-    FormControl<bool> formControl,
-    Color activeColor,
-    Color activeTrackColor,
-    Color inactiveThumbColor,
-    Color inactiveTrackColor,
-    ImageProvider activeThumbImage,
-    ImageErrorListener onActiveThumbImageError,
-    ImageProvider inactiveThumbImage,
-    ImageErrorListener onInactiveThumbImageError,
-    MaterialTapTargetSize materialTapTargetSize,
+    Key? key,
+    String? formControlName,
+    FormControl<bool>? formControl,
+    Color? activeColor,
+    Color? activeTrackColor,
+    Color? inactiveThumbColor,
+    Color? inactiveTrackColor,
+    ImageProvider? activeThumbImage,
+    ImageErrorListener? onActiveThumbImageError,
+    ImageProvider? inactiveThumbImage,
+    ImageErrorListener? onInactiveThumbImageError,
+    MaterialTapTargetSize? materialTapTargetSize,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    Color focusColor,
-    Color hoverColor,
+    Color? focusColor,
+    Color? hoverColor,
     bool autofocus = false,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool> field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return Switch(
               value: field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -95,26 +95,26 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
   /// For documentation about the various parameters, see the [Switch.adaptive]
   /// constructor.
   ReactiveSwitch.adaptive({
-    Key key,
-    String formControlName,
-    FormControl formControl,
-    Color activeColor,
-    Color activeTrackColor,
-    Color inactiveThumbColor,
-    Color inactiveTrackColor,
-    ImageProvider activeThumbImage,
-    ImageErrorListener onActiveThumbImageError,
-    ImageProvider inactiveThumbImage,
-    ImageErrorListener onInactiveThumbImageError,
-    MaterialTapTargetSize materialTapTargetSize,
+    Key? key,
+    String? formControlName,
+    FormControl<bool>? formControl,
+    Color? activeColor,
+    Color? activeTrackColor,
+    Color? inactiveThumbColor,
+    Color? inactiveTrackColor,
+    ImageProvider? activeThumbImage,
+    ImageErrorListener? onActiveThumbImageError,
+    ImageProvider? inactiveThumbImage,
+    ImageErrorListener? onInactiveThumbImageError,
+    MaterialTapTargetSize? materialTapTargetSize,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
-    Color focusColor,
-    Color hoverColor,
+    Color? focusColor,
+    Color? hoverColor,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool> field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return Switch.adaptive(
               value: field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -127,7 +127,7 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
               inactiveThumbImage: inactiveThumbImage,
               onInactiveThumbImageError: onInactiveThumbImageError,
               materialTapTargetSize: materialTapTargetSize,
-              dragStartBehavior: DragStartBehavior.start,
+              dragStartBehavior: dragStartBehavior,
               focusColor: focusColor,
               hoverColor: hoverColor,
             );
@@ -135,5 +135,6 @@ class ReactiveSwitch extends ReactiveFormField<bool> {
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldState<bool, bool> createState() =>
+      ReactiveFormFieldState<bool, bool>();
 }

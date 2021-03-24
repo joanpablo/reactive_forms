@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -15,13 +15,13 @@ class ComposeValidator extends Validator<dynamic> {
   /// Constructs an instance of the validator.
   ///
   /// The argument [validators] must not be null.
-  ComposeValidator(this.validators) : assert(validators != null);
+  ComposeValidator(this.validators);
 
   @override
-  Map<String, dynamic> validate(AbstractControl<dynamic> control) {
-    final composedError = Map<String, dynamic>();
+  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+    final composedError = <String, Object>{};
 
-    for (final validator in this.validators) {
+    for (final validator in validators) {
       final error = validator(control);
       if (error != null) {
         composedError.addAll(error);

@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -20,9 +20,9 @@ class FocusController extends ChangeNotifier {
   /// If the [focusNode] is provided then the focus controller will not dispose
   /// it and [focusNode] must be explicitly dispose after dispose focus
   /// controller instance.
-  FocusController({FocusNode focusNode})
-      : _focusNode = (focusNode ?? FocusNode()),
-        _shouldDisposeFocusNode = (focusNode == null) {
+  FocusController({FocusNode? focusNode})
+      : _focusNode = focusNode ?? FocusNode(),
+        _shouldDisposeFocusNode = focusNode == null {
     this.focusNode.addListener(_onFocusNodeFocusChanges);
   }
 
@@ -60,16 +60,16 @@ class FocusController extends ChangeNotifier {
       focusNode.unfocus();
     }
 
-    this.updateFocus(hasFocus);
+    updateFocus(hasFocus);
   }
 
   @override
   void dispose() {
-    this.focusNode.removeListener(_onFocusNodeFocusChanges);
-    if (this._shouldDisposeFocusNode) {
-      this.focusNode.dispose();
+    focusNode.removeListener(_onFocusNodeFocusChanges);
+    if (_shouldDisposeFocusNode) {
+      focusNode.dispose();
     }
-    this.disposed = true;
+    disposed = true;
     super.dispose();
   }
 
@@ -79,10 +79,10 @@ class FocusController extends ChangeNotifier {
       return;
     }
 
-    if (this.hasFocus && !focusNode.hasFocus) {
-      this.updateFocus(false);
-    } else if (!this.hasFocus && focusNode.hasFocus) {
-      this.updateFocus(true);
+    if (hasFocus && !focusNode.hasFocus) {
+      updateFocus(false);
+    } else if (!hasFocus && focusNode.hasFocus) {
+      updateFocus(true);
     }
   }
 }

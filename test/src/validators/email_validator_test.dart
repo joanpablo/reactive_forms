@@ -4,13 +4,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 void main() {
   group('Email Validator Tests', () {
     test('FormControl valid with null email', () {
-      final control = FormControl(validators: [Validators.email]);
+      final control = FormControl<String>(validators: [Validators.email]);
 
       expect(control.valid, true);
     });
 
     test('FormControl invalid with invalid email', () {
-      final control = FormControl(validators: [Validators.email]);
+      final control = FormControl<String>(validators: [Validators.email]);
 
       control.value = 'johndoe@email';
 
@@ -18,7 +18,7 @@ void main() {
     });
 
     test('FormControl valid with valid email', () {
-      final control = FormControl(validators: [Validators.email]);
+      final control = FormControl<String>(validators: [Validators.email]);
 
       control.value = 'johndoe@email.com';
 

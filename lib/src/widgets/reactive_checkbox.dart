@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -19,28 +19,31 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Checkbox] class
 /// and [new Checkbox], the constructor.
-class ReactiveCheckbox extends ReactiveFormField<bool> {
+class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
   ReactiveCheckbox({
-    Key key,
-    String formControlName,
-    FormControl<bool> formControl,
+    Key? key,
+    String? formControlName,
+    FormControl<bool>? formControl,
     bool tristate = false,
-    Color activeColor,
-    Color checkColor,
-    Color focusColor,
-    Color hoverColor,
-    MouseCursor mouseCursor,
-    MaterialTapTargetSize materialTapTargetSize,
-    VisualDensity visualDensity,
+    Color? activeColor,
+    Color? checkColor,
+    Color? focusColor,
+    Color? hoverColor,
+    MouseCursor? mouseCursor,
+    MaterialTapTargetSize? materialTapTargetSize,
+    VisualDensity? visualDensity,
     bool autofocus = false,
+    MaterialStateProperty<Color?>? fillColor,
+    MaterialStateProperty<Color?>? overlayColor,
+    double? splashRadius,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool> field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
@@ -53,10 +56,14 @@ class ReactiveCheckbox extends ReactiveFormField<bool> {
               materialTapTargetSize: materialTapTargetSize,
               visualDensity: visualDensity,
               autofocus: autofocus,
+              fillColor: fillColor,
+              overlayColor: overlayColor,
+              splashRadius: splashRadius,
             );
           },
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldState<bool, bool> createState() =>
+      ReactiveFormFieldState<bool, bool>();
 }

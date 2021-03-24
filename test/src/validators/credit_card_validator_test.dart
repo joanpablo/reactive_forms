@@ -96,10 +96,10 @@ void main() {
         validators: [Validators.creditCard],
       );
 
-      cardNumbers.forEach((cardNumber) {
+      for (final cardNumber in cardNumbers) {
         control.value = cardNumber;
         expect(control.valid, true, reason: '[$cardNumber] is not valid');
-      });
+      }
     });
   });
 }

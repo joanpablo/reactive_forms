@@ -3,14 +3,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
   final FormGroup form;
-  final ValidationMessagesFunction validationMessages;
+  final ValidationMessagesFunction<T>? validationMessages;
   final Map<String, String> bindings;
-  final ShowErrorsFunction showErrors;
-  final FocusNode focusNode;
+  final ShowErrorsFunction? showErrors;
+  final FocusNode? focusNode;
 
   const ReactiveTextFieldTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
     this.validationMessages,
     this.showErrors,
     this.focusNode,
@@ -24,12 +24,12 @@ class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: Column(
             children: <Widget>[
               ReactiveTextField<T>(
-                formControlName: this.bindings['textField'],
-                validationMessages: this.validationMessages,
+                formControlName: bindings['textField'],
+                validationMessages: validationMessages,
                 showErrors: showErrors,
                 focusNode: focusNode,
               ),

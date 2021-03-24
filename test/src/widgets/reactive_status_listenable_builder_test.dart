@@ -22,7 +22,7 @@ void main() {
         );
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'invalid');
@@ -45,7 +45,7 @@ void main() {
         );
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'valid');
@@ -72,7 +72,7 @@ void main() {
         await tester.pump();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'valid');
@@ -102,7 +102,7 @@ void main() {
         await tester.pump();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'invalid');
@@ -115,9 +115,7 @@ void main() {
         // Given: a ReactiveValueListenableBuilder with null formControlName
         final reactiveWidget = () => ReactiveStatusListenableBuilder(
               formControlName: null,
-              builder: (context, control, child) {
-                return null;
-              },
+              builder: (context, control, child) => Container(),
             );
 
         // Expect assertion error
@@ -125,22 +123,8 @@ void main() {
       },
     );
 
-    testWidgets(
-      'Assert error thrown if builder is null',
-      (WidgetTester tester) async {
-        // Given: a ReactiveValueListenableBuilder with null builder
-        final reactiveWidget = () => ReactiveStatusListenableBuilder(
-              formControlName: 'someName',
-              builder: null,
-            );
-
-        // Expect assertion error
-        expect(reactiveWidget, throwsAssertionError);
-      },
-    );
-
-    Future<Map<String, dynamic>> failedAsyncValidator(
-        AbstractControl control) async {
+    Future<Map<String, Object>?> failedAsyncValidator(
+        AbstractControl<Object> control) async {
       return {'failed': true};
     }
 
@@ -166,15 +150,16 @@ void main() {
         await tester.pumpAndSettle();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'invalid');
       },
     );
 
-    Future<Map<String, dynamic>> asyncValidator(AbstractControl control) async {
-      return null;
+    Future<Map<String, Object>?> asyncValidator(
+        AbstractControl<Object> control) async {
+      return Future.value(null);
     }
 
     testWidgets(
@@ -199,7 +184,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text is displaying status invalid
         expect(text.data, 'valid');
@@ -217,7 +202,7 @@ void main() {
             );
 
         // Expect: assert error
-        expect(() => statusListenable(), throwsAssertionError);
+        expect(statusListenable, throwsAssertionError);
       },
     );
 

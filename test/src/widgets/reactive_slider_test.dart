@@ -18,7 +18,7 @@ void main() {
         await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
 
         // When: gets slider value
-        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
         final sliderValue = slider.value;
 
         // Then: value equals to control value
@@ -42,7 +42,7 @@ void main() {
 
         // And: gets slider value
         await tester.pump();
-        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
         final sliderValue = slider.value;
 
         // Then: value equals to control value
@@ -62,7 +62,7 @@ void main() {
         await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
 
         // Then: the slider is disabled
-        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
         expect(slider.onChanged, null);
       },
     );
@@ -83,7 +83,7 @@ void main() {
         await tester.pump();
 
         // Then: the slider is disabled
-        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
         expect(slider.onChanged, null);
       },
     );
@@ -104,7 +104,7 @@ void main() {
         await tester.pump();
 
         // Then: the slider is enabled
-        Slider slider = tester.firstWidget(find.byType(Slider)) as Slider;
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
         expect(slider.onChanged != null, true);
       },
     );

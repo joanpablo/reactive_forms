@@ -11,10 +11,8 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form != null, true, reason: 'form is null');
       expect(form is FormGroup, true,
           reason: 'form is not instance of FormGroup');
-      expect(form.control('name') != null, true, reason: 'control is null');
       expect(form.control('name') is FormControl<String>, true,
           reason:
               '${form.control('name').runtimeType} is not instance of FormControl<String>');
@@ -103,17 +101,6 @@ void main() {
           reason: 'control is not instance of FormControl<String>');
     });
 
-    test('Build a group with null control', () {
-      // Given: a form group builder creation
-      final form = fb.group({
-        'control': null,
-      });
-
-      // Expect a form group created
-      expect(form.control('control') is FormControl<dynamic>, true,
-          reason: 'control is not instance of FormControl<dynamic>');
-    });
-
     test('Build a group with single validator', () {
       // Given: a form group builder creation
       final validator = Validators.required;
@@ -122,7 +109,7 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form.control('control') is FormControl<dynamic>, true,
+      expect(form.control('control') is FormControl<Object>, true,
           reason: 'control is not instance of FormControl<dynamic>');
       expect(form.control('control').validators.first, validator,
           reason: 'validator not set');
@@ -132,6 +119,7 @@ void main() {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
       final emailValidator = Validators.email;
+
       final form = fb.group({
         'control': [requiredValidator, emailValidator],
       });
@@ -151,6 +139,7 @@ void main() {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
       final emailValidator = Validators.email;
+
       final form = fb.group({
         'control': ['', requiredValidator, emailValidator],
       });
@@ -187,6 +176,7 @@ void main() {
     test('Build a group with default value in null and validator', () {
       // Given: a form group builder creation
       final requiredValidator = Validators.required;
+
       final form = fb.group({
         'control': [null, requiredValidator],
       });
@@ -203,7 +193,7 @@ void main() {
     test('Build a group with empty array', () {
       // Given: a form group builder creation
       final form = fb.group({
-        'control': [],
+        'control': <Object>[],
       });
 
       // Expect a form group created
@@ -231,7 +221,7 @@ void main() {
           });
 
       // Expect an exception
-      expect(() => createGroup(),
+      expect(createGroup,
           throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
     });
 
@@ -243,7 +233,7 @@ void main() {
           });
 
       // Expect an exception
-      expect(() => createGroup(),
+      expect(createGroup,
           throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
     });
 
@@ -330,7 +320,7 @@ void main() {
 
     test('Build an array', () {
       // Given: an array creation
-      final array = fb.array(['john', 'little john']);
+      final array = fb.array<String>(['john', 'little john']);
 
       // Expect: the array is created
       expect(array is FormArray, true,
@@ -364,7 +354,7 @@ void main() {
     test('Build a group with array', () {
       // Given: a group creation
       final form = fb.group({
-        'aliases': fb.array(['john', 'little john']),
+        'aliases': fb.array<String>(['john', 'little john']),
       });
 
       // Expect: the group is created
@@ -391,7 +381,7 @@ void main() {
 
     test('Array of groups defined as Map', () {
       // Given: an array of groups
-      final addressArray = fb.array([
+      final addressArray = fb.array<Map<String, Object?>>([
         {'city': 'Sofia'},
         {'city': 'Havana'},
       ]);
@@ -404,7 +394,7 @@ void main() {
 
     test('Array of groups defined as Map', () {
       // Given: an array of groups
-      final addressArray = fb.array([
+      final addressArray = fb.array<Map<String, Object?>>([
         {
           'city': ['Sofia', Validators.required]
         },
@@ -421,15 +411,16 @@ void main() {
 
     test('Array of groups', () {
       // Given: an array of groups
-      final addressArray = fb.array([
+      final addressArray = fb.array<Map<String, Object?>>([
         fb.group({'city': 'Sofia'}),
         fb.group({'city': 'Havana'}),
       ]);
 
       // Expect: array is created
       expect(addressArray.controls.length, 2);
+      expect(addressArray.control('0') is FormGroup, true,
+          reason: 'first item is not a group');
       expect(addressArray.control('0').value, {'city': 'Sofia'});
-      expect(addressArray.control('0') is FormGroup, true);
     });
   });
 }

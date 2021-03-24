@@ -9,7 +9,7 @@ class DisableFormSample extends StatefulWidget {
 class _DisableFormSampleState extends State<DisableFormSample> {
   @override
   Widget build(BuildContext context) {
-    return SampleScreen(
+    return const SampleScreen(
       title: Text('Disable form sample'),
     );
   }

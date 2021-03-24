@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -51,7 +51,7 @@ class ValidationMessage {
   static const String equals = 'requiredEquals';
 
   /// Key text for `requiredTrue` validation message.
-  static const String requiredTrue = 'requiredEquals';
+  static const String requiredTrue = 'requiredTrue';
 
   /// Key text for group compare validation message.
   static const String compare = 'compare';

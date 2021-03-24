@@ -22,7 +22,7 @@ class ComplexSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Complex sample'),
+      title: const Text('Complex sample'),
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
@@ -43,13 +43,13 @@ class ComplexSample extends StatelessWidget {
                   suffixIcon: ReactiveStatusListenableBuilder(
                     formControlName: 'email',
                     builder: (context, control, child) => Visibility(
-                      child: ProgressIndicator(),
                       visible: control.pending,
+                      child: ProgressIndicator(),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
@@ -60,12 +60,13 @@ class ComplexSample extends StatelessWidget {
                 },
                 onSubmitted: () => form.focus('passwordConfirmation'),
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<String>(
                 formControlName: 'passwordConfirmation',
-                decoration: InputDecoration(labelText: 'Confirm Password'),
+                decoration:
+                    const InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
                 validationMessages: (control) => {
                   ValidationMessage.mustMatch:
@@ -74,21 +75,21 @@ class ComplexSample extends StatelessWidget {
                 onSubmitted: () => form.focus('rememberMe'),
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveFormConsumer(
-                builder: (context, form, child) => RaisedButton(
-                  child: Text('Sign Up'),
+                builder: (context, form, child) => ElevatedButton(
                   onPressed: form.valid ? () => print(form.value) : null,
+                  child: const Text('Sign Up'),
                 ),
               ),
-              RaisedButton(
-                child: Text('Reset all'),
+              ElevatedButton(
                 onPressed: () => form.resetState({
                   'email':
                       ControlState<String>(value: 'johnDoe', disabled: true),
                   'progress': ControlState<double>(value: 50.0),
                   'rememberMe': ControlState<bool>(value: false),
                 }, removeFocus: true),
+                child: const Text('Reset all'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -99,25 +100,25 @@ class ComplexSample extends StatelessWidget {
               ),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Want to stay logged in?',
                 ),
                 items: [
-                  DropdownMenuItem(value: true, child: Text('Yes')),
-                  DropdownMenuItem(value: false, child: Text('No')),
+                  const DropdownMenuItem(value: true, child: Text('Yes')),
+                  const DropdownMenuItem(value: false, child: Text('No')),
                 ],
               ),
               ReactiveRadioListTile(
                 formControlName: 'rememberMe',
-                title: Text('Remember me'),
+                title: const Text('Remember me'),
                 value: true,
               ),
               ReactiveRadioListTile(
                 formControlName: 'rememberMe',
-                title: Text('Don\'t Remember me'),
+                title: const Text('Don\'t Remember me'),
                 value: false,
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveValueListenableBuilder<double>(
                 formControlName: 'progress',
                 builder: (context, control, child) => Text(control.isNull
@@ -130,7 +131,7 @@ class ComplexSample extends StatelessWidget {
                 divisions: 100,
                 labelBuilder: (double value) => '${value?.toStringAsFixed(2)}%',
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<double>(
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
@@ -140,26 +141,26 @@ class ComplexSample extends StatelessWidget {
                       'A value lower than 50.00 is not accepted',
                 },
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<DateTime>(
                 formControlName: 'dateTime',
                 readOnly: true,
                 decoration: InputDecoration(
                   labelText: 'Birthday',
-                  suffixIcon: ReactiveDatePicker(
+                  suffixIcon: ReactiveDatePicker<DateTime>(
                     formControlName: 'dateTime',
                     firstDate: DateTime(1985),
                     lastDate: DateTime(2030),
                     builder: (context, picker, child) {
                       return IconButton(
                         onPressed: picker.showPicker,
-                        icon: Icon(Icons.date_range),
+                        icon: const Icon(Icons.date_range),
                       );
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<TimeOfDay>(
                 formControlName: 'time',
                 readOnly: true,
@@ -170,13 +171,13 @@ class ComplexSample extends StatelessWidget {
                     builder: (context, picker, child) {
                       return IconButton(
                         onPressed: picker.showPicker,
-                        icon: Icon(Icons.access_time),
+                        icon: const Icon(Icons.access_time),
                       );
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
             ],
           );
         },
@@ -190,11 +191,13 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 
 /// Async validator example that simulates a request to a server
 /// to validate if the email of the user is unique.
-Future<Map<String, dynamic>> _uniqueEmail(AbstractControl control) async {
+Future<Map<String, dynamic>> _uniqueEmail(
+    AbstractControl<String> control) async {
   final error = {'unique': false};
 
   final emailAlreadyInUse = await Future.delayed(
-    Duration(seconds: 5), // a delay to simulate a time consuming operation
+    const Duration(
+        seconds: 5), // a delay to simulate a time consuming operation
     () => inUseEmails.contains(control.value),
   );
 

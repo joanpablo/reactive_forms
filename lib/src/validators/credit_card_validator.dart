@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -9,21 +9,20 @@ import 'package:reactive_forms/src/validators/number_validator.dart';
 /// credit card.
 class CreditCardValidator extends Validator<dynamic> {
   @override
-  Map<String, dynamic> validate(AbstractControl control) {
+  Map<String, Object>? validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.creditCard: true};
     // error if value is not a String
-    if (control.value != null && !(control.value is String)) {
+    if (control.value != null && control.value is! String) {
       return error;
     }
 
     final cardNumber = control.value.toString().replaceAll(' ', '');
     final isNumber = NumberValidator.numberRegex.hasMatch(cardNumber);
 
-    return cardNumber == null ||
-            (isNumber &&
-                cardNumber.length >= 13 &&
-                cardNumber.length <= 19 &&
-                checkLuhn(cardNumber))
+    return isNumber &&
+            cardNumber.length >= 13 &&
+            cardNumber.length <= 19 &&
+            checkLuhn(cardNumber)
         ? null
         : error;
   }
@@ -33,11 +32,11 @@ class CreditCardValidator extends Validator<dynamic> {
   ///
   /// See [Luhn algorithm](https://en.wikipedia.org/wiki/Luhn_algorithm)
   static bool checkLuhn(String cardNumber) {
-    int sum = 0;
+    var sum = 0;
 
-    bool isEven = false;
-    for (int i = cardNumber.length - 1; i >= 0; i--) {
-      int digit = int.parse(cardNumber[i]);
+    var isEven = false;
+    for (var i = cardNumber.length - 1; i >= 0; i--) {
+      var digit = int.parse(cardNumber[i]);
 
       if (isEven) {
         digit *= 2;

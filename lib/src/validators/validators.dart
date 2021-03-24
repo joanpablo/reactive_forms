@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -25,13 +25,13 @@ import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Signature of a function that receives a control and synchronously
 /// returns a map of validation errors if present, otherwise null.
-typedef ValidatorFunction = Map<String, dynamic> Function(
-    AbstractControl<dynamic> value);
+typedef ValidatorFunction = Map<String, Object>? Function(
+    AbstractControl<dynamic> control);
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
-typedef AsyncValidatorFunction = Future<Map<String, dynamic>> Function(
-    AbstractControl<dynamic> value);
+typedef AsyncValidatorFunction<T> = Future<Map<String, Object>?> Function(
+    T control);
 
 /// Provides a set of built-in validators that can be used by form controls.
 class Validators {
@@ -40,7 +40,9 @@ class Validators {
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static ValidatorFunction get requiredTrue => EqualsValidator(true).validate;
+  static ValidatorFunction get requiredTrue => EqualsValidator<bool>(true,
+          validationMessage: ValidationMessage.requiredTrue)
+      .validate;
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
@@ -58,19 +60,19 @@ class Validators {
   ///
   /// The argument [value] must not be null.
   static ValidatorFunction equals<T>(T value) =>
-      EqualsValidator(value).validate;
+      EqualsValidator<T>(value).validate;
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction min(Comparable min) => MinValidator(min).validate;
+  static ValidatorFunction min<T>(T min) => MinValidator<T>(min).validate;
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction max(Comparable max) => MaxValidator(max).validate;
+  static ValidatorFunction max<T>(T max) => MaxValidator<T>(max).validate;
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
@@ -90,6 +92,10 @@ class Validators {
   /// regex [pattern].
   ///
   /// The argument [pattern] must not be null.
+  ///
+  /// The argument [validationMessage] is optional and specify the key text for
+  /// the validation error. I none value is supplied then the default value is
+  /// [ValidationMessage.pattern].
   ///
   /// ## Example:
   /// Using an instance of [RegExp] as argument.
@@ -115,9 +121,35 @@ class Validators {
   ///
   /// expect(cardNumber.valid, true);
   /// ```
-  static ValidatorFunction pattern(Pattern pattern) {
-    assert(pattern != null);
-
+  /// ## Example:
+  /// Specifying a custom validation message.
+  /// ```dart
+  /// const containsLettersPattern = r'[a-z]+';
+  /// const containsNumbersPattern = r'\d+';
+  ///
+  /// const containsLettersValidationMessage = "containsLetters";
+  /// const containsNumbersValidationMessage = "containsNumbers";
+  ///
+  /// final password = FormControl(
+  ///   value: '123abc',
+  ///   validators: [
+  ///     Validators.pattern(
+  ///       containsLettersPattern,
+  ///       validationMessage: containsLettersValidationMessage,
+  ///     ),
+  ///     Validators.pattern(
+  ///       containsNumbersPattern,
+  ///       validationMessage: containsNumbersValidationMessage,
+  ///     ),
+  ///   ],
+  /// );
+  ///
+  /// expect(password.valid, true);
+  /// ```
+  static ValidatorFunction pattern(
+    Pattern pattern, {
+    String validationMessage = ValidationMessage.pattern,
+  }) {
     PatternEvaluator evaluator;
     if (pattern is String) {
       evaluator = RegExpPatternEvaluator(RegExp(pattern));
@@ -127,7 +159,8 @@ class Validators {
       evaluator = DefaultPatternEvaluator(pattern);
     }
 
-    return PatternValidator(evaluator).validate;
+    return PatternValidator(evaluator, validationMessage: validationMessage)
+        .validate;
   }
 
   /// Gets a [FormGroup] validator that checks the controls [controlName] and
@@ -157,7 +190,8 @@ class Validators {
     String compareControlName,
     CompareOption compareOption,
   ) {
-    return CompareValidator(controlName, compareControlName, compareOption)
+    return CompareValidator<dynamic>(
+            controlName, compareControlName, compareOption)
         .validate;
   }
 
@@ -233,7 +267,7 @@ class Validators {
   /// final control = FormControl<List<String>>(
   ///   value: [null, null, 'not empty'],
   ///   validators: [
-  ///     Validators.any((String value) => value?.isNotEmpty)
+  ///     Validators.any((String? value) => value?.isNotEmpty)
   ///   ],
   /// );
   ///

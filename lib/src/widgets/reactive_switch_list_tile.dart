@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -18,35 +18,35 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [SwitchListTile]
 /// class and [new SwitchListTile], the constructor.
-class ReactiveSwitchListTile extends ReactiveFormField<bool> {
+class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
   ///
   /// See also [CheckboxListTile]
   ReactiveSwitchListTile({
-    Key key,
-    String formControlName,
-    FormControl<bool> formControl,
-    Color activeColor,
-    Color activeTrackColor,
-    Color inactiveThumbColor,
-    Color inactiveTrackColor,
-    ImageProvider activeThumbImage,
-    ImageProvider inactiveThumbImage,
-    Widget title,
-    Widget subtitle,
+    Key? key,
+    String? formControlName,
+    FormControl<bool>? formControl,
+    Color? activeColor,
+    Color? activeTrackColor,
+    Color? inactiveThumbColor,
+    Color? inactiveTrackColor,
+    ImageProvider? activeThumbImage,
+    ImageProvider? inactiveThumbImage,
+    Widget? title,
+    Widget? subtitle,
     bool isThreeLine = false,
-    bool dense,
-    EdgeInsetsGeometry contentPadding,
-    Widget secondary,
+    bool? dense,
+    EdgeInsetsGeometry? contentPadding,
+    Widget? secondary,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return SwitchListTile(
-              value: field.value,
+              value: field.value!,
               onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
@@ -65,5 +65,6 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool> {
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldState<bool, bool> createState() =>
+      ReactiveFormFieldState<bool, bool>();
 }

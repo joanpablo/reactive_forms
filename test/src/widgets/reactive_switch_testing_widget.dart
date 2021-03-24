@@ -6,8 +6,8 @@ class ReactiveSwitchTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveSwitchTestingWidget({
-    Key key,
-    this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class ReactiveSwitchTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: Column(
             children: <Widget>[
               ReactiveSwitch(

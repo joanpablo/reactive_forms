@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -18,32 +18,35 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [CheckboxListTile]
 /// class and [new CheckboxListTile], the constructor.
-class ReactiveCheckboxListTile extends ReactiveFormField<bool> {
+class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
   ///
   /// See also [CheckboxListTile]
   ReactiveCheckboxListTile({
-    Key key,
-    String formControlName,
-    FormControl<bool> formControl,
-    Color activeColor,
-    Color checkColor,
-    Widget title,
-    Widget subtitle,
+    Key? key,
+    String? formControlName,
+    FormControl<bool>? formControl,
+    Color? activeColor,
+    Color? checkColor,
+    Widget? title,
+    Widget? subtitle,
     bool isThreeLine = false,
-    bool dense,
-    Widget secondary,
+    bool? dense,
+    Widget? secondary,
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
     bool autofocus = false,
-    EdgeInsetsGeometry contentPadding,
+    EdgeInsetsGeometry? contentPadding,
     bool tristate = false,
+    Color? selectedTileColor,
+    Color? tileColor,
+    ShapeBorder? shape,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState field) {
+          builder: (ReactiveFormFieldState<bool, bool> field) {
             return CheckboxListTile(
               value: tristate ? field.value : field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -58,10 +61,14 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool> {
               autofocus: autofocus,
               contentPadding: contentPadding,
               tristate: tristate,
+              selectedTileColor: selectedTileColor,
+              tileColor: tileColor,
+              shape: shape,
             );
           },
         );
 
   @override
-  ReactiveFormFieldState<bool> createState() => ReactiveFormFieldState<bool>();
+  ReactiveFormFieldState<bool, bool> createState() =>
+      ReactiveFormFieldState<bool, bool>();
 }

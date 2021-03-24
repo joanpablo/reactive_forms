@@ -5,8 +5,8 @@ class ReactiveSliderTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveSliderTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class ReactiveSliderTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: Column(
             children: <Widget>[
               ReactiveSlider(

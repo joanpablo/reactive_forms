@@ -1,8 +1,12 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
@@ -16,7 +20,7 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 ///
 /// A [ReactiveForm] ancestor is required.
 ///
-class ReactiveTextField<T> extends ReactiveFormField<T> {
+class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -81,47 +85,58 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
   /// For documentation about the various parameters, see the [TextField] class
   /// and [new TextField], the constructor.
   ReactiveTextField({
-    Key key,
-    String formControlName,
-    FormControl<T> formControl,
-    ValidationMessagesFunction<T> validationMessages,
-    ControlValueAccessor<T, String> valueAccessor,
-    ShowErrorsFunction showErrors,
+    Key? key,
+    String? formControlName,
+    FormControl<T>? formControl,
+    ValidationMessagesFunction<T>? validationMessages,
+    ControlValueAccessor<T, String>? valueAccessor,
+    ShowErrorsFunction? showErrors,
     InputDecoration decoration = const InputDecoration(),
-    TextInputType keyboardType,
+    TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
-    TextInputAction textInputAction,
-    TextStyle style,
-    StrutStyle strutStyle,
-    TextDirection textDirection,
+    TextInputAction? textInputAction,
+    TextStyle? style,
+    StrutStyle? strutStyle,
+    TextDirection? textDirection,
     TextAlign textAlign = TextAlign.start,
-    TextAlignVertical textAlignVertical,
+    TextAlignVertical? textAlignVertical,
     bool autofocus = false,
     bool readOnly = false,
-    ToolbarOptions toolbarOptions,
-    bool showCursor,
+    ToolbarOptions? toolbarOptions,
+    bool? showCursor,
     bool obscureText = false,
+    String obscuringCharacter = '•',
     bool autocorrect = true,
-    SmartDashesType smartDashesType,
-    SmartQuotesType smartQuotesType,
+    SmartDashesType? smartDashesType,
+    SmartQuotesType? smartQuotesType,
     bool enableSuggestions = true,
-    bool maxLengthEnforced = true,
+    MaxLengthEnforcement? maxLengthEnforcement,
     int maxLines = 1,
-    int minLines,
+    int? minLines,
     bool expands = false,
-    int maxLength,
-    GestureTapCallback onTap,
-    List<TextInputFormatter> inputFormatters,
+    int? maxLength,
+    GestureTapCallback? onTap,
+    List<TextInputFormatter>? inputFormatters,
     double cursorWidth = 2.0,
-    Radius cursorRadius,
-    Color cursorColor,
-    Brightness keyboardAppearance,
+    double? cursorHeight,
+    Radius? cursorRadius,
+    Color? cursorColor,
+    Brightness? keyboardAppearance,
     EdgeInsets scrollPadding = const EdgeInsets.all(20.0),
     bool enableInteractiveSelection = true,
-    InputCounterWidgetBuilder buildCounter,
-    ScrollPhysics scrollPhysics,
-    VoidCallback onSubmitted,
-    FocusNode focusNode,
+    InputCounterWidgetBuilder? buildCounter,
+    ScrollPhysics? scrollPhysics,
+    VoidCallback? onSubmitted,
+    FocusNode? focusNode,
+    Iterable<String>? autofillHints,
+    MouseCursor? mouseCursor,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    AppPrivateCommandCallback? onAppPrivateCommand,
+    String? restorationId,
+    ScrollController? scrollController,
+    TextSelectionControls? selectionControls,
+    ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
+    ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
   }) : super(
           key: key,
           formControl: formControl,
@@ -129,10 +144,9 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
           valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (ReactiveFormFieldState<T, String> field) {
             final state = field as _ReactiveTextFieldState<T>;
-            final InputDecoration effectiveDecoration = (decoration ??
-                    const InputDecoration())
+            final effectiveDecoration = decoration
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
             state._setFocusNode(focusNode);
@@ -165,7 +179,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
                       ? SmartQuotesType.disabled
                       : SmartQuotesType.enabled),
               enableSuggestions: enableSuggestions,
-              maxLengthEnforced: maxLengthEnforced,
+              maxLengthEnforcement: maxLengthEnforcement,
               maxLines: maxLines,
               minLines: minLines,
               expands: expands,
@@ -176,6 +190,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
               inputFormatters: inputFormatters,
               enabled: field.control.enabled,
               cursorWidth: cursorWidth,
+              cursorHeight: cursorHeight,
               cursorRadius: cursorRadius,
               cursorColor: cursorColor,
               scrollPadding: scrollPadding,
@@ -183,18 +198,29 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
               keyboardAppearance: keyboardAppearance,
               enableInteractiveSelection: enableInteractiveSelection,
               buildCounter: buildCounter,
+              autofillHints: autofillHints,
+              mouseCursor: mouseCursor,
+              obscuringCharacter: obscuringCharacter,
+              dragStartBehavior: dragStartBehavior,
+              onAppPrivateCommand: onAppPrivateCommand,
+              restorationId: restorationId,
+              scrollController: scrollController,
+              selectionControls: selectionControls,
+              selectionHeightStyle: selectionHeightStyle,
+              selectionWidthStyle: selectionWidthStyle,
             );
           },
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => _ReactiveTextFieldState<T>();
+  ReactiveFormFieldState<T, String> createState() =>
+      _ReactiveTextFieldState<T>();
 }
 
-class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
-  TextEditingController _textController;
-  FocusNode _focusNode;
-  FocusController _focusController;
+class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
+  late TextEditingController _textController;
+  FocusNode? _focusNode;
+  late FocusController _focusController;
 
   FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
 
@@ -202,7 +228,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
   void initState() {
     super.initState();
 
-    final initialValue = this.value;
+    final initialValue = value;
     _textController = TextEditingController(
         text: initialValue == null ? '' : initialValue.toString());
   }
@@ -221,7 +247,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
 
   @override
   void onControlValueChanged(dynamic value) {
-    String effectiveValue = (value == null) ? '' : value.toString();
+    final effectiveValue = (value == null) ? '' : value.toString();
     _textController.value = _textController.value.copyWith(
       text: effectiveValue,
       selection: TextSelection.collapsed(offset: effectiveValue.length),
@@ -233,13 +259,13 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
 
   @override
   ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    if (this.control is FormControl<int>) {
+    if (control is FormControl<int>) {
       return IntValueAccessor();
-    } else if (this.control is FormControl<double>) {
+    } else if (control is FormControl<double>) {
       return DoubleValueAccessor();
-    } else if (this.control is FormControl<DateTime>) {
+    } else if (control is FormControl<DateTime>) {
       return DateTimeValueAccessor();
-    } else if (this.control is FormControl<TimeOfDay>) {
+    } else if (control is FormControl<TimeOfDay>) {
       return TimeOfDayValueAccessor();
     }
 
@@ -248,15 +274,15 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T> {
 
   void _registerFocusController(FocusController focusController) {
     _focusController = focusController;
-    this.control.registerFocusController(focusController);
+    control.registerFocusController(focusController);
   }
 
   void _unregisterFocusController() {
-    this.control.unregisterFocusController(_focusController);
+    control.unregisterFocusController(_focusController);
     _focusController.dispose();
   }
 
-  void _setFocusNode(FocusNode focusNode) {
+  void _setFocusNode(FocusNode? focusNode) {
     if (_focusNode == focusNode) {
       return;
     } else if (focusNode == null && _focusNode != null) {

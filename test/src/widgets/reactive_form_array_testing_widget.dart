@@ -5,8 +5,8 @@ class ReactiveFormArrayTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveFormArrayTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -14,13 +14,14 @@ class ReactiveFormArrayTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveFormArray(
             formArrayName: 'array',
             builder: (context, array, child) {
               return Column(
-                children:
-                    array.value.map((value) => Text(value.toString())).toList(),
+                children: array.value!
+                    .map((value) => Text(value.toString()))
+                    .toList(),
               );
             },
           ),

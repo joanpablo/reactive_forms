@@ -5,8 +5,8 @@ class ReactiveValueListenableTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveValueListenableTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class ReactiveValueListenableTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveValueListenableBuilder<String>(
             formControlName: 'name',
             builder: (context, control, child) {

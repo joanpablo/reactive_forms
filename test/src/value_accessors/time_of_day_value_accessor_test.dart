@@ -15,7 +15,7 @@ void main() {
       valueAccessor.registerControl(control);
 
       // And: set control value:
-      control.value = TimeOfDay(hour: 8, minute: 30);
+      control.value = const TimeOfDay(hour: 8, minute: 30);
 
       // Then: value is converted correctly
       expect(valueAccessor.modelToViewValue(control.value), '8:30');
@@ -35,7 +35,7 @@ void main() {
       valueAccessor.updateModel('8:30');
 
       // Then: value is converted correctly
-      expect(control.value, TimeOfDay(hour: 8, minute: 30));
+      expect(control.value, const TimeOfDay(hour: 8, minute: 30));
     });
 
     test('TimeOfDayValueAccessor converts to empty string a null value', () {
