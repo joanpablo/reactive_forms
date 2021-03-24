@@ -27,7 +27,7 @@ class _ArraySampleState extends State<ArraySample> {
 
   Widget _buildEmailListItem(String contact) {
     return ReactiveCheckboxListTile(
-      formControlName: this.contacts.indexOf(contact).toString(),
+      formControlName: contacts.indexOf(contact).toString(),
       title: Text(contact),
     );
   }
@@ -35,9 +35,9 @@ class _ArraySampleState extends State<ArraySample> {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Array sample'),
+      title: const Text('Array sample'),
       body: ReactiveForm(
-        formGroup: this.form,
+        formGroup: form,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
@@ -45,20 +45,19 @@ class _ArraySampleState extends State<ArraySample> {
               ReactiveFormArray<bool>(
                 formArrayName: 'selectedContacts',
                 builder: (context, formArray, child) => Column(
-                    children: this.contacts.map(_buildEmailListItem).toList()),
+                    children: contacts.map(_buildEmailListItem).toList()),
               ),
               ReactiveFormConsumer(
                 builder: (context, form, child) {
                   return ElevatedButton(
-                    child: Text('Send Email'),
+                    child: const Text('Send Email'),
                     onPressed: form.valid
                         ? () {
-                            final selectedEmails = this
-                                .contacts
+                            final selectedEmails = contacts
                                 .asMap()
                                 .keys
-                                .where(this.selectedContacts.value.elementAt)
-                                .map(this.contacts.elementAt);
+                                .where(selectedContacts.value.elementAt)
+                                .map(contacts.elementAt);
                             print('Sent emails to: $selectedEmails');
                           }
                         : null,
@@ -66,12 +65,10 @@ class _ArraySampleState extends State<ArraySample> {
                 },
               ),
               ElevatedButton(
-                child: Text('add'),
+                child: const Text('add'),
                 onPressed: () {
-                  this
-                      .contacts
-                      .add('other${this.contacts.length + 1}@email.com');
-                  this.selectedContacts.add(FormControl<bool>(value: true));
+                  contacts.add('other${contacts.length + 1}@email.com');
+                  selectedContacts.add(FormControl<bool>(value: true));
                 },
               ),
             ],

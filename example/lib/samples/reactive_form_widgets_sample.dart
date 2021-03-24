@@ -17,7 +17,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Reactive form widgets sample'),
+      title: const Text('Reactive form widgets sample'),
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
@@ -25,7 +25,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
             children: [
               ReactiveDropdownSearch(
                 formControlName: 'menu',
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   helperText: '',
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   border: OutlineInputBorder(),
@@ -38,11 +38,11 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                 showClearButton: true,
                 popupItemDisabled: (String s) => s.startsWith('I'),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveDropdownSearch<String>(
                 formControlName: 'bottomSheet',
                 mode: ReactiveDropdownSearchMode.BOTTOM_SHEET,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   helperText: '',
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   border: OutlineInputBorder(),
@@ -55,12 +55,12 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                   height: 50,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColorDark,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Country',
                       style: TextStyle(
@@ -71,46 +71,46 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                     ),
                   ),
                 ),
-                popupShape: RoundedRectangleBorder(
+                popupShape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24),
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveTouchSpin<double>(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,
                 step: 5,
                 textStyle: const TextStyle(fontSize: 18),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   labelText: "Search amount",
                   helperText: '',
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveTouchSpin<double>(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,
                 step: 5,
                 textStyle: const TextStyle(fontSize: 18),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: BoxDecorationBorder(
                       decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
                       topRight: Radius.circular(8),
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
-                        offset: const Offset(0, 2),
+                        offset: Offset(0, 2),
                         blurRadius: 7,
                         spreadRadius: 0,
                       ),
@@ -121,22 +121,22 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                   helperText: '',
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveSegmentedControl(
                 decoration: const InputDecoration(
                   labelText: 'Rating',
                   border: OutlineInputBorder(),
                   helperText: '',
                 ),
-                padding: EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
                 formControlName: 'rate',
                 children: {
-                  'a': Text('A'),
-                  'b': Text('B'),
-                  'c': Text('C'),
+                  'a': const Text('A'),
+                  'b': const Text('B'),
+                  'c': const Text('C'),
                 },
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveDateTimePicker(
                 formControlName: 'date',
                 decoration: const InputDecoration(
@@ -146,7 +146,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                   suffixIcon: Icon(Icons.calendar_today),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveDateTimePicker(
                 formControlName: 'time',
                 type: ReactiveDatePickerFieldType.time,
@@ -157,7 +157,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                   suffixIcon: Icon(Icons.watch_later_outlined),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ReactiveDateTimePicker(
                 formControlName: 'dateTime',
                 type: ReactiveDatePickerFieldType.dateTime,
@@ -168,7 +168,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                   suffixIcon: Icon(Icons.calendar_today),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // ElevatedButton(
               //   child: Text('Sign Up'),
               //   onPressed: () {

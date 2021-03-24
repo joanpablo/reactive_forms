@@ -11,15 +11,15 @@ class SimpleSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Simple sample'),
+      title: const Text('Simple sample'),
       body: ReactiveFormBuilder(
-        form: () => this.form,
+        form: () => form,
         builder: (context, form, child) {
           return Column(
             children: [
               ReactiveTextField<String>(
                 formControlName: 'name',
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Name',
                 ),
                 validationMessages: (errors) => {
@@ -27,25 +27,25 @@ class SimpleSample extends StatelessWidget {
                 },
               ),
               ReactiveRadioListTile(
-                title: Text('Send notifications'),
+                title: const Text('Send notifications'),
                 value: true,
                 formControlName: 'sendNotifications',
               ),
               ReactiveRadioListTile(
-                title: Text('Don\'t send'),
+                title: const Text('Don\'t send'),
                 value: false,
                 formControlName: 'sendNotifications',
               ),
               ReactiveFormConsumer(
                 builder: (context, form, child) {
                   return ElevatedButton(
-                    child: Text('CONTINUE'),
+                    child: const Text('CONTINUE'),
                     onPressed: form.valid ? () => print(form.value) : null,
                   );
                 },
               ),
               ElevatedButton(
-                child: Text('RESET'),
+                child: const Text('RESET'),
                 onPressed: () => form.reset(),
               ),
             ],

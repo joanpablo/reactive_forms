@@ -22,7 +22,7 @@ class ComplexSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Complex sample'),
+      title: const Text('Complex sample'),
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
@@ -49,7 +49,7 @@ class ComplexSample extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
@@ -60,12 +60,12 @@ class ComplexSample extends StatelessWidget {
                 },
                 onSubmitted: () => form.focus('passwordConfirmation'),
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<String>(
                 formControlName: 'passwordConfirmation',
-                decoration: InputDecoration(labelText: 'Confirm Password'),
+                decoration: const InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
                 validationMessages: (control) => {
                   ValidationMessage.mustMatch:
@@ -74,15 +74,15 @@ class ComplexSample extends StatelessWidget {
                 onSubmitted: () => form.focus('rememberMe'),
                 textInputAction: TextInputAction.next,
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveFormConsumer(
                 builder: (context, form, child) => ElevatedButton(
-                  child: Text('Sign Up'),
+                  child: const Text('Sign Up'),
                   onPressed: form.valid ? () => print(form.value) : null,
                 ),
               ),
               ElevatedButton(
-                child: Text('Reset all'),
+                child: const Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email':
                       ControlState<String>(value: 'johnDoe', disabled: true),
@@ -99,25 +99,25 @@ class ComplexSample extends StatelessWidget {
               ),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Want to stay logged in?',
                 ),
                 items: [
-                  DropdownMenuItem(value: true, child: Text('Yes')),
-                  DropdownMenuItem(value: false, child: Text('No')),
+                  const DropdownMenuItem(value: true, child: Text('Yes')),
+                  const DropdownMenuItem(value: false, child: Text('No')),
                 ],
               ),
               ReactiveRadioListTile(
                 formControlName: 'rememberMe',
-                title: Text('Remember me'),
+                title: const Text('Remember me'),
                 value: true,
               ),
               ReactiveRadioListTile(
                 formControlName: 'rememberMe',
-                title: Text('Don\'t Remember me'),
+                title: const Text('Don\'t Remember me'),
                 value: false,
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveValueListenableBuilder<double>(
                 formControlName: 'progress',
                 builder: (context, control, child) => Text(control.isNull
@@ -130,7 +130,7 @@ class ComplexSample extends StatelessWidget {
                 divisions: 100,
                 labelBuilder: (double value) => '${value?.toStringAsFixed(2)}%',
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<double>(
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
@@ -140,7 +140,7 @@ class ComplexSample extends StatelessWidget {
                       'A value lower than 50.00 is not accepted',
                 },
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<DateTime>(
                 formControlName: 'dateTime',
                 readOnly: true,
@@ -153,13 +153,13 @@ class ComplexSample extends StatelessWidget {
                     builder: (context, picker, child) {
                       return IconButton(
                         onPressed: picker.showPicker,
-                        icon: Icon(Icons.date_range),
+                        icon: const Icon(Icons.date_range),
                       );
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ReactiveTextField<TimeOfDay>(
                 formControlName: 'time',
                 readOnly: true,
@@ -170,13 +170,13 @@ class ComplexSample extends StatelessWidget {
                     builder: (context, picker, child) {
                       return IconButton(
                         onPressed: picker.showPicker,
-                        icon: Icon(Icons.access_time),
+                        icon: const Icon(Icons.access_time),
                       );
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
             ],
           );
         },
@@ -195,7 +195,7 @@ Future<Map<String, dynamic>> _uniqueEmail(
   final error = {'unique': false};
 
   final emailAlreadyInUse = await Future.delayed(
-    Duration(seconds: 5), // a delay to simulate a time consuming operation
+    const Duration(seconds: 5), // a delay to simulate a time consuming operation
     () => inUseEmails.contains(control.value),
   );
 

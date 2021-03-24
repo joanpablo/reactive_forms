@@ -30,7 +30,7 @@ class _DatePickerSampleState extends State<DatePickerSample> {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Datepicker sample'),
+      title: const Text('Datepicker sample'),
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
@@ -42,7 +42,7 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                 lastDate: DateTime(2030),
                 builder: (context, picker, child) {
                   Widget suffix = InkWell(
-                    child: Icon(Icons.clear),
+                    child: const Icon(Icons.clear),
                     onTap: () {
                       // workaround until https://github.com/flutter/flutter/issues/39376
                       // will be fixed
@@ -57,14 +57,14 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                       picker.control.value = null;
 
                       //Enable the text field's focus node request after some delay
-                      Future.delayed(Duration(milliseconds: 100), () {
+                      Future.delayed(const Duration(milliseconds: 100), () {
                         _focusNode.canRequestFocus = true;
                       });
                     },
                   );
 
                   if (picker.value == null) {
-                    suffix = Icon(Icons.calendar_today);
+                    suffix = const Icon(Icons.calendar_today);
                   }
 
                   return ReactiveTextField(

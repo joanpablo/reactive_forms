@@ -25,25 +25,24 @@ class NewContactViewModel {
   });
 
   NewContactViewModel() {
-    this.phones.valueChanges.listen((value) {
-      final emptyPhones = this.phones.controls.where(Control.isNullOrEmpty);
-      if (emptyPhones.length == 0) {
-        this.phones.add(fb.control(''));
+    phones.valueChanges.listen((value) {
+      final emptyPhones = phones.controls.where(Control.isNullOrEmpty);
+      if (emptyPhones.isEmpty) {
+        phones.add(fb.control(''));
       } else if (emptyPhones.length > 1) {
-        this.phones.remove(emptyPhones.last);
+        phones.remove(emptyPhones.last);
       }
     });
   }
 
-  FormArray<String> get phones =>
-      this.form.control(PHONES) as FormArray<String>;
+  FormArray<String> get phones => form.control(PHONES) as FormArray<String>;
 }
 
 class AddDynamicControlsSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('New contact'),
+      title: const Text('New contact'),
       body: ViewModelProvider(
         viewModel: NewContactViewModel(),
         child: Builder(
@@ -67,7 +66,7 @@ class AddDynamicControlsSample extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: 'Phone number',
                               suffixIcon: IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.remove_circle,
                                   color: Colors.red,
                                 ),

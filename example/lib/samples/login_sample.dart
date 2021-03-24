@@ -14,7 +14,7 @@ class LoginSample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Login sample'),
+      title: const Text('Login sample'),
       body: ReactiveFormBuilder(
         form: buildForm,
         builder: (context, form, child) {
@@ -29,14 +29,14 @@ class LoginSample extends StatelessWidget {
                   'unique': 'This email is already in use',
                 },
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   helperText: '',
                   helperStyle: TextStyle(height: 0.7),
                   errorStyle: TextStyle(height: 0.7),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
@@ -46,7 +46,7 @@ class LoginSample extends StatelessWidget {
                       'The password must be at least 8 characters',
                 },
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   helperText: '',
                   helperStyle: TextStyle(height: 0.7),
@@ -56,12 +56,12 @@ class LoginSample extends StatelessWidget {
               Row(
                 children: [
                   ReactiveCheckbox(formControlName: 'rememberMe'),
-                  Text('Remember me')
+                  const Text('Remember me')
                 ],
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
                 onPressed: () {
                   if (form.valid) {
                     print(form.value);
@@ -71,7 +71,7 @@ class LoginSample extends StatelessWidget {
                 },
               ),
               ElevatedButton(
-                child: Text('Reset all'),
+                child: const Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email': ControlState<String>(value: null),
                   'password': ControlState<String>(value: null),

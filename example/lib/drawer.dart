@@ -10,37 +10,37 @@ class AppDrawer extends StatelessWidget {
         child: ListView(
           children: [
             ListTile(
-              title: Text('Login sample'),
+              title: const Text('Login sample'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.loginSample,
               ),
             ),
             ListTile(
-              title: Text('Complex sample'),
+              title: const Text('Complex sample'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.complex,
               ),
             ),
             ListTile(
-              title: Text('Simple sample'),
+              title: const Text('Simple sample'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.simple,
               ),
             ),
             ListTile(
-              title: Text('Array sample'),
+              title: const Text('Array sample'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.arraySample,
               ),
             ),
             ListTile(
-              title: Text('Datepicker sample'),
+              title: const Text('Datepicker sample'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.datePickerSample,
               ),
             ),
             ListTile(
-              title: Text('Reactive forms widgets'),
+              title: const Text('Reactive forms widgets'),
               onTap: () => Navigator.of(context).pushReplacementNamed(
                 Routes.reactiveFormWidgets,
               ),
