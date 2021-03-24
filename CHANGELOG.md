@@ -1,3 +1,8 @@
+# 10.0.1
+
+## Fix
+- Fix the error when defining a ReactiveFormField<dynamic> (related to control value accessor)
+
 # 10.0.0
 
 ## Breaking changes
