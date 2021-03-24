@@ -16,7 +16,7 @@ class _DatePickerSampleState extends State<DatePickerSample> {
   FocusNode _focusNode;
 
   @override
-  initState() {
+  void initState() {
     _focusNode = FocusNode();
     super.initState();
   }

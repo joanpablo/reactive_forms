@@ -18,10 +18,10 @@ class ViewModelProvider extends InheritedWidget {
 }
 
 class NewContactViewModel {
-  static const String PHONES = 'phones';
+  static const String kPhones = 'phones';
 
   final form = fb.group(<String, dynamic>{
-    PHONES: fb.array<String>(<String>['']),
+    kPhones: fb.array<String>(<String>['']),
   });
 
   NewContactViewModel() {
@@ -35,7 +35,7 @@ class NewContactViewModel {
     });
   }
 
-  FormArray<String> get phones => form.control(PHONES) as FormArray<String>;
+  FormArray<String> get phones => form.control(kPhones) as FormArray<String>;
 }
 
 class AddDynamicControlsSample extends StatelessWidget {
