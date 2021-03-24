@@ -50,7 +50,6 @@ class _ArraySampleState extends State<ArraySample> {
               ReactiveFormConsumer(
                 builder: (context, form, child) {
                   return ElevatedButton(
-                    child: const Text('Send Email'),
                     onPressed: form.valid
                         ? () {
                             final selectedEmails = contacts
@@ -61,15 +60,16 @@ class _ArraySampleState extends State<ArraySample> {
                             print('Sent emails to: $selectedEmails');
                           }
                         : null,
+                    child: const Text('Send Email'),
                   );
                 },
               ),
               ElevatedButton(
-                child: const Text('add'),
                 onPressed: () {
                   contacts.add('other${contacts.length + 1}@email.com');
                   selectedContacts.add(FormControl<bool>(value: true));
                 },
+                child: const Text('add'),
               ),
             ],
           ),

@@ -21,7 +21,7 @@ class AnyValidator<T> extends Validator<dynamic> {
 
     // TODO: change the assert for an exception
     assert(control.value is Iterable<T>,
-        "${control.value.runtimeType.toString()} $T?");
+        '${control.value.runtimeType.toString()} $T?');
 
     final iterable = control.value as Iterable<T>;
     return iterable.any(test) ? null : {ValidationMessage.any: true};

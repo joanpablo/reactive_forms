@@ -42,7 +42,6 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                 lastDate: DateTime(2030),
                 builder: (context, picker, child) {
                   Widget suffix = InkWell(
-                    child: const Icon(Icons.clear),
                     onTap: () {
                       // workaround until https://github.com/flutter/flutter/issues/39376
                       // will be fixed
@@ -61,6 +60,7 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                         _focusNode.canRequestFocus = true;
                       });
                     },
+                    child: const Icon(Icons.clear),
                   );
 
                   if (picker.value == null) {

@@ -61,7 +61,6 @@ class LoginSample extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                child: const Text('Sign Up'),
                 onPressed: () {
                   if (form.valid) {
                     print(form.value);
@@ -69,14 +68,15 @@ class LoginSample extends StatelessWidget {
                     form.markAllAsTouched();
                   }
                 },
+                child: const Text('Sign Up'),
               ),
               ElevatedButton(
-                child: const Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email': ControlState<String>(value: null),
                   'password': ControlState<String>(value: null),
                   'rememberMe': ControlState<bool>(value: false),
                 }, removeFocus: true),
+                child: const Text('Reset all'),
               ),
             ],
           );

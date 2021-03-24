@@ -513,7 +513,7 @@ abstract class AbstractControl<T> {
   }
 
   Map<String, Object> _runValidators() {
-    final errors = Map<String, Object>();
+    final errors = <String, Object>{};
     for (final validator in validators) {
       final error = validator(this);
       if (error != null) {
@@ -592,7 +592,7 @@ abstract class AbstractControl<T> {
         final validatorsStream = Stream.fromFutures(
             asyncValidators.map((validator) => validator(this)).toList());
 
-        final errors = Map<String, Object>();
+        final errors = <String, Object>{};
         _asyncValidationSubscription = validatorsStream.listen(
           (Map<String, Object>? error) {
             if (error != null) {
@@ -803,6 +803,7 @@ class FormControl<T> extends AbstractControl<T> {
   /// formControl.focus();
   ///```
   ///
+  @override
   void focus() {
     if (!hasFocus) {
       _updateFocusState(true);
@@ -1059,7 +1060,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// This method is for internal use only.
   @override
   Map<String, Object?> _reduceValue() {
-    final map = Map<String, Object?>();
+    final map = <String, Object?>{};
     _controls.forEach((key, control) {
       if (control.enabled || disabled) {
         map[key] = control.value;
@@ -2036,6 +2037,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// // UI text field get focus and the device keyboard pop up
   /// array.focus('0.name');
   ///```
+  @override
   void focus([String name = '']) {
     if (name.isNotEmpty) {
       final control = findControl(name.split('.'));

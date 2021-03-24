@@ -565,7 +565,7 @@ void main() {
     expect(array.controls.length, 0, reason: 'array is not empty');
   });
 
-  test("Initialize disabled array", () {
+  test('Initialize disabled array', () {
     // Given: a disabled form
     final array = FormArray([
       FormControl<String>(),
@@ -578,7 +578,7 @@ void main() {
     expect(array.controls[1].enabled, false, reason: 'second is enabled');
   });
 
-  test("Disabled array changes to enable when enable children", () {
+  test('Disabled array changes to enable when enable children', () {
     // Given: a disabled array
     final array = FormArray([
       FormControl<String>(),
@@ -594,7 +594,7 @@ void main() {
     expect(array.controls[1].disabled, true, reason: 'second is enabled');
   });
 
-  test("Patch array value", () {
+  test('Patch array value', () {
     // Given: an array
     final array = FormArray<int>([
       FormControl<int>(value: 1),

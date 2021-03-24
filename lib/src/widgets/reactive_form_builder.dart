@@ -75,8 +75,8 @@ class _ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
   Widget build(BuildContext context) {
     return ReactiveForm(
       formGroup: _form,
-      child: widget.builder(context, _form, widget.child),
       onWillPop: widget.onWillPop,
+      child: widget.builder(context, _form, widget.child),
     );
   }
 }

@@ -39,14 +39,14 @@ class SimpleSample extends StatelessWidget {
               ReactiveFormConsumer(
                 builder: (context, form, child) {
                   return ElevatedButton(
-                    child: const Text('CONTINUE'),
                     onPressed: form.valid ? () => print(form.value) : null,
+                    child: const Text('CONTINUE'),
                   );
                 },
               ),
               ElevatedButton(
-                child: const Text('RESET'),
                 onPressed: () => form.reset(),
+                child: const Text('RESET'),
               ),
             ],
           );

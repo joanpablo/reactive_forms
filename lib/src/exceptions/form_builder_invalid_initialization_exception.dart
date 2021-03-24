@@ -13,7 +13,8 @@ class FormBuilderInvalidInitializationException extends ReactiveFormsException {
   FormBuilderInvalidInitializationException(this.message);
 
   /// Returns the string representation of the exception.
+  @override
   String toString() {
-    return "FormBuilderInvalidInitializationException: $message";
+    return 'FormBuilderInvalidInitializationException: $message';
   }
 }

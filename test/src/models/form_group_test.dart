@@ -613,7 +613,7 @@ void main() {
       expect(email.parent, form, reason: 'parent did not update');
     });
 
-    test("Mark a control as pristine also marks the parent as pristine", () {
+    test('Mark a control as pristine also marks the parent as pristine', () {
       // Given: a group
       final form = FormGroup({
         'name': FormControl<String>(),
@@ -635,7 +635,7 @@ void main() {
       expect(form.pristine, true, reason: 'form is not pristine');
     });
 
-    test("Mark a control as untouched also marks the parent as untouched", () {
+    test('Mark a control as untouched also marks the parent as untouched', () {
       // Given: a group with touched control
       final form = FormGroup({
         'name': FormControl<String>(touched: true),
@@ -670,7 +670,7 @@ void main() {
           reason: 'other controls have focus');
     });
 
-    test("Reports error on deep control path", () {
+    test('Reports error on deep control path', () {
       // Given: nested group
       final form = FormGroup({
         'payment': FormGroup({
@@ -688,7 +688,7 @@ void main() {
       expect(error, {'min': 10.0, 'actual': 5.0});
     });
 
-    test("Initialize disabled form", () {
+    test('Initialize disabled form', () {
       // Given: a disabled form
       final form = FormGroup({
         'name': FormControl<String>(),
@@ -701,7 +701,7 @@ void main() {
       expect(form.control('email').enabled, false, reason: 'email is enabled');
     });
 
-    test("Initialized disabled form changes to enable when enable children",
+    test('Initialized disabled form changes to enable when enable children',
         () {
       // Given: a disabled form
       final form = FormGroup({
@@ -718,7 +718,7 @@ void main() {
       expect(form.control('email').disabled, true, reason: 'email is enabled');
     });
 
-    test("Patch form group value", () {
+    test('Patch form group value', () {
       // Given: a form
       final email = 'john@email.com';
       final form = FormGroup({
@@ -737,7 +737,7 @@ void main() {
           reason: 'form value not patched');
     });
 
-    test("Patch nested form group value", () {
+    test('Patch nested form group value', () {
       // Given: a form
       final form = FormGroup({
         'name': FormControl<String>(value: 'John'),
@@ -767,7 +767,7 @@ void main() {
           reason: 'form value not patched');
     });
 
-    test("Add all controls to a sub-group", () {
+    test('Add all controls to a sub-group', () {
       // Given: a nested form
       final form = FormGroup({
         'name': FormControl<String>(value: 'John'),

@@ -43,8 +43,8 @@ class ComplexSample extends StatelessWidget {
                   suffixIcon: ReactiveStatusListenableBuilder(
                     formControlName: 'email',
                     builder: (context, control, child) => Visibility(
-                      child: ProgressIndicator(),
                       visible: control.pending,
+                      child: ProgressIndicator(),
                     ),
                   ),
                 ),
@@ -78,18 +78,18 @@ class ComplexSample extends StatelessWidget {
               const SizedBox(height: 24.0),
               ReactiveFormConsumer(
                 builder: (context, form, child) => ElevatedButton(
-                  child: const Text('Sign Up'),
                   onPressed: form.valid ? () => print(form.value) : null,
+                  child: const Text('Sign Up'),
                 ),
               ),
               ElevatedButton(
-                child: const Text('Reset all'),
                 onPressed: () => form.resetState({
                   'email':
                       ControlState<String>(value: 'johnDoe', disabled: true),
                   'progress': ControlState<double>(value: 50.0),
                   'rememberMe': ControlState<bool>(value: false),
                 }, removeFocus: true),
+                child: const Text('Reset all'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
