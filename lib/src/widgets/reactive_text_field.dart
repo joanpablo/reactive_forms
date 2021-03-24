@@ -2,7 +2,11 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:ui';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
@@ -105,7 +109,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
     SmartDashesType smartDashesType,
     SmartQuotesType smartQuotesType,
     bool enableSuggestions = true,
-    bool maxLengthEnforced = true,
+    MaxLengthEnforcement maxLengthEnforcement,
     int maxLines = 1,
     int minLines,
     bool expands = false,
@@ -122,6 +126,18 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
     ScrollPhysics scrollPhysics,
     VoidCallback onSubmitted,
     FocusNode focusNode,
+    Iterable<String> autofillHints,
+    MouseCursor mouseCursor,
+    void Function() onEditingComplete,
+    double cursorHeight,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    String obscuringCharacter = '•',
+    void Function(String, Map<String, dynamic>) onAppPrivateCommand,
+    String restorationId,
+    ScrollController scrollController,
+    TextSelectionControls selectionControls,
+    BoxHeightStyle selectionHeightStyle = BoxHeightStyle.tight,
+    BoxWidthStyle selectionWidthStyle = BoxWidthStyle.tight,
   }) : super(
           key: key,
           formControl: formControl,
@@ -165,7 +181,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
                       ? SmartQuotesType.disabled
                       : SmartQuotesType.enabled),
               enableSuggestions: enableSuggestions,
-              maxLengthEnforced: maxLengthEnforced,
+              maxLengthEnforcement: maxLengthEnforcement,
               maxLines: maxLines,
               minLines: minLines,
               expands: expands,
@@ -183,6 +199,18 @@ class ReactiveTextField<T> extends ReactiveFormField<T> {
               keyboardAppearance: keyboardAppearance,
               enableInteractiveSelection: enableInteractiveSelection,
               buildCounter: buildCounter,
+              autofillHints: autofillHints,
+              mouseCursor: mouseCursor,
+              onEditingComplete: onEditingComplete,
+              cursorHeight: cursorHeight,
+              dragStartBehavior: dragStartBehavior,
+              obscuringCharacter: obscuringCharacter,
+              onAppPrivateCommand: onAppPrivateCommand,
+              restorationId: restorationId,
+              scrollController: scrollController,
+              selectionControls: selectionControls,
+              selectionHeightStyle: selectionHeightStyle,
+              selectionWidthStyle: selectionWidthStyle,
             );
           },
         );
