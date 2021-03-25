@@ -16,16 +16,21 @@ class MaxValidator<T> extends Validator<dynamic> {
 
   @override
   Map<String, Object>? validate(AbstractControl<dynamic> control) {
-    assert(control is AbstractControl<Comparable<dynamic>>);
+    final error = {
+      ValidationMessage.max: <String, dynamic>{
+        'max': max,
+        'actual': control.value,
+      },
+    };
 
-    final comparable = control as AbstractControl<Comparable<dynamic>>;
-    return (comparable.value != null) && (comparable.value!.compareTo(max) <= 0)
-        ? null
-        : {
-            ValidationMessage.max: {
-              'max': max,
-              'actual': control.value,
-            },
-          };
+    if (control.value == null) {
+      return error;
+    }
+
+    assert(control.value is Comparable<dynamic>,
+        'The MinValidator validator is expecting a control of type `Comparable` but received a control of type ${control.value.runtimeType}');
+
+    final comparableValue = control.value as Comparable<dynamic>;
+    return comparableValue.compareTo(max) <= 0 ? null : error;
   }
 }
