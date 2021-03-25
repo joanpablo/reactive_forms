@@ -1,3 +1,9 @@
+# 10.0.2
+
+## Enhances
+- Add minor changes in Validators.min and Validators.max for handlig type checks
+- Add minor changes in ReactiveValueListenableBuilder for handlig type checks
+
 # 10.0.1
 
 ## Fix
