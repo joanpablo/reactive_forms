@@ -25,7 +25,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   final Widget? child;
 
   /// The builder that creates a widget depending on the value of the control.
-  final ReactiveListenableWidgetBuilder<T?> builder;
+  final ReactiveListenableWidgetBuilder<T> builder;
 
   /// Create an instance of a [ReactiveValueListenableBuilder].
   ///
@@ -58,11 +58,11 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
         throw FormControlParentNotFoundException(this);
       }
       final collection = form as FormControlCollection;
-      control = collection.control(formControlName!) as AbstractControl<T>?;
+      control = collection.control(formControlName!) as AbstractControl<T>;
     }
 
     return StreamBuilder<T?>(
-      stream: control!.valueChanges,
+      stream: control.valueChanges,
       builder: (context, snapshot) => builder(context, control!, child),
     );
   }
