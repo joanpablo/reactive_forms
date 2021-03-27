@@ -8,14 +8,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 class Iso8601DateTimeValueAccessor
     extends ControlValueAccessor<String, DateTime> {
   @override
-  DateTime modelToViewValue(String modelValue) {
+  DateTime? modelToViewValue(String? modelValue) {
     return modelValue == null || modelValue.trim().isEmpty
         ? null
         : DateTime.parse(modelValue);
   }
 
   @override
-  String viewToModelValue(DateTime viewValue) {
-    return viewValue == null ? null : viewValue.toIso8601String();
+  String? viewToModelValue(DateTime? viewValue) {
+    return viewValue?.toIso8601String();
   }
 }

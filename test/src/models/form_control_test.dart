@@ -13,7 +13,7 @@ void main() {
     });
 
     test('FormControl has no errors if is valid', () {
-      final formControl = FormControl(
+      final formControl = FormControl<dynamic>(
         validators: [Validators.required],
       );
 
@@ -50,7 +50,7 @@ void main() {
     });
 
     test('FormControl.errors contains all matching errors', () {
-      final formControl = FormControl(
+      final formControl = FormControl<dynamic>(
         validators: [
           Validators.required,
           Validators.minLength(5),
@@ -124,13 +124,14 @@ void main() {
     });
 
     test('Assert error if debounce time < 0', () {
-      final formControl = () => FormControl(asyncValidatorsDebounceTime: -1);
+      final formControl =
+          () => FormControl<dynamic>(asyncValidatorsDebounceTime: -1);
       expect(formControl, throwsAssertionError);
     });
 
     test('Call enable() set enabled status', () {
       // Given: a control
-      final control = FormControl();
+      final control = FormControl<dynamic>();
 
       // Expect: control is enabled
       expect(control.enabled, true);
@@ -146,7 +147,7 @@ void main() {
 
     test('Create control with disabled status', () {
       // Given: a disabled control
-      final control = FormControl(disabled: true);
+      final control = FormControl<dynamic>(disabled: true);
 
       // Expect: is disabled
       expect(control.disabled, true);

@@ -9,8 +9,7 @@ class MockPattern implements Pattern {
   }
 
   @override
-  Match matchAsPrefix(String string, [int start = 0]) {
+  Match? matchAsPrefix(String string, [int start = 0]) {
     return pattern.matchAsPrefix(string);
   }
-
 }

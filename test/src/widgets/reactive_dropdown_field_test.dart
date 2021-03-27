@@ -23,9 +23,10 @@ void main() {
         );
 
         // When: gets dropdown
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         // Expect: dropdown value is null
         expect(dropdown.value, null);
@@ -47,9 +48,10 @@ void main() {
         ));
 
         // When: gets dropdown
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         // Expect: dropdown value is null
         expect(dropdown.value, 'true');
@@ -71,9 +73,10 @@ void main() {
         ));
 
         // When: gets dropdown
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         // Expect: dropdown value is null
         expect(dropdown.value, 'false');
@@ -99,9 +102,10 @@ void main() {
         await tester.pump();
 
         // Then: dropdown value is equals to control
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         expect(dropdown.value, form.control('dropdown').value);
       },
@@ -126,106 +130,12 @@ void main() {
         await tester.pump();
 
         // Then: dropdown value is equals to control
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         expect(dropdown.value, form.control('dropdown').value);
-      },
-    );
-
-    testWidgets(
-      'Assert error if items in null',
-      (WidgetTester tester) async {
-        // Given: a form with and control with default value
-        final dropdown = () => ReactiveDropdownField(
-              formControlName: 'someName',
-              items: null,
-            );
-
-        expect(dropdown, throwsAssertionError);
-      },
-    );
-
-    testWidgets(
-      'Assert Error if attributes in null',
-      (WidgetTester tester) async {
-        // decoration
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            decoration: null,
-          ),
-          throwsAssertionError,
-          reason: 'decoration != null',
-        );
-
-        // elevation
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            elevation: null,
-          ),
-          throwsAssertionError,
-          reason: 'elevation != null',
-        );
-
-        // iconSize
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            iconSize: null,
-          ),
-          throwsAssertionError,
-          reason: 'iconSize != null',
-        );
-
-        // isDense
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            isDense: null,
-          ),
-          throwsAssertionError,
-          reason: 'isDense != null',
-        );
-
-        // isExpanded
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            isExpanded: null,
-          ),
-          throwsAssertionError,
-          reason: 'isExpanded != null',
-        );
-
-        // itemHeight
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            itemHeight: 0,
-          ),
-          throwsAssertionError,
-          reason: 'itemHeight == null || itemHeight > 0',
-        );
-
-        // readOnly
-        expect(
-          () => ReactiveDropdownField<bool>(
-            formControlName: 'dropdown',
-            items: [DropdownMenuItem(value: true, child: Text(''))],
-            readOnly: null,
-          ),
-          throwsAssertionError,
-          reason: 'readOnly != null',
-        );
       },
     );
 
@@ -244,9 +154,10 @@ void main() {
         ));
 
         // Then: the dropdown is disabled
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
         expect(dropdown.onChanged, null);
       },
     );
@@ -267,9 +178,10 @@ void main() {
         ));
 
         // Then: the dropdown is disabled
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
         expect(dropdown.onChanged, null);
       },
     );
@@ -283,7 +195,7 @@ void main() {
         });
 
         // And: a readonly widget that is bind to the form with disabledHint
-        final disabledHint = Text('disabled');
+        final disabledHint = const Text('disabled');
         await tester.pumpWidget(ReactiveDropdownTestingWidget(
           form: form,
           items: ['true', 'false'],
@@ -292,9 +204,10 @@ void main() {
         ));
 
         // Then: the dropdown is disabled
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
         expect(dropdown.disabledHint, disabledHint);
       },
     );
@@ -318,9 +231,10 @@ void main() {
         await tester.pump();
 
         // Then: the dropdown is disabled
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
         expect(dropdown.onChanged, null);
       },
     );
@@ -344,10 +258,10 @@ void main() {
         await tester.pump();
 
         // Then: the dropdown is enable
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton<String> dropdown =
-            tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
         expect(dropdown.onChanged != null, true);
       },
     );
@@ -361,8 +275,8 @@ void main() {
         });
 
         // And: a onChanged callback
-        bool callbackCalled = false;
-        final onChanged = (String value) {
+        var callbackCalled = false;
+        final onChanged = (String? value) {
           callbackCalled = true;
         };
 
@@ -375,11 +289,11 @@ void main() {
         ));
 
         // When: callback on changed in widget
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton<String> dropdown =
-            tester.firstWidget(find.byType(dropdownType));
-        dropdown.onChanged('true');
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
+        dropdown.onChanged!('true');
         await tester.pump();
 
         // Then: callback is called
@@ -400,9 +314,9 @@ void main() {
         });
 
         // And: a widget that is bound to the form
-        List<Widget> selectedItemBuilderList = [
-          Text('true'),
-          Text('false'),
+        final selectedItemBuilderList = [
+          const Text('true'),
+          const Text('false'),
         ];
         await tester.pumpWidget(ReactiveDropdownTestingWidget(
           form: form,
@@ -412,9 +326,10 @@ void main() {
 
         // Then: dropdown disabledHint value is equals to selectedItemBuilder
         // equivalent item
-        Type dropdownType =
+        final dropdownType =
             DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        DropdownButton dropdown = tester.firstWidget(find.byType(dropdownType));
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
 
         // Then: callback is called
         expect(dropdown.disabledHint, selectedItemBuilderList.elementAt(0));

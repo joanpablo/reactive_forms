@@ -1,3 +1,25 @@
+# 10.0.2
+
+## Enhances
+- Add minor changes in Validators.min and Validators.max for handlig type checks
+- Add minor changes in ReactiveValueListenableBuilder for handlig type checks
+
+# 10.0.1
+
+## Fix
+- Fix the error when defining a ReactiveFormField<dynamic> (related to control value accessor)
+
+# 10.0.0
+
+## Breaking changes
+- Reactive Forms is now migrated to Flutter 2.x.
+- Reactive Forms is now Null-safety.
+- New Definitions in Custom Reactive Widgets. **ReactiveFormField** now defines the data type of the model (control) and the data type of the view (widget).
+- **Validators.requiredTrue** now has the 'requiredTrue' validation message and not 'requiredEquals' as in previous versions.
+
+## Features
+- Now you can specify a different *validation message* to the **Validators.pattern** validator.
+
 # 9.1.0
 
 ## Enhances

@@ -27,7 +27,7 @@ class _ArraySampleState extends State<ArraySample> {
 
   Widget _buildEmailListItem(String contact) {
     return ReactiveCheckboxListTile(
-      formControlName: this.contacts.indexOf(contact).toString(),
+      formControlName: contacts.indexOf(contact).toString(),
       title: Text(contact),
     );
   }
@@ -35,9 +35,9 @@ class _ArraySampleState extends State<ArraySample> {
   @override
   Widget build(BuildContext context) {
     return SampleScreen(
-      title: Text('Array sample'),
+      title: const Text('Array sample'),
       body: ReactiveForm(
-        formGroup: this.form,
+        formGroup: form,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
@@ -45,34 +45,31 @@ class _ArraySampleState extends State<ArraySample> {
               ReactiveFormArray<bool>(
                 formArrayName: 'selectedContacts',
                 builder: (context, formArray, child) => Column(
-                    children: this.contacts.map(_buildEmailListItem).toList()),
+                    children: contacts.map(_buildEmailListItem).toList()),
               ),
               ReactiveFormConsumer(
                 builder: (context, form, child) {
-                  return RaisedButton(
-                    child: Text('Send Email'),
+                  return ElevatedButton(
                     onPressed: form.valid
                         ? () {
-                            final selectedEmails = this
-                                .contacts
+                            final selectedEmails = contacts
                                 .asMap()
                                 .keys
-                                .where(this.selectedContacts.value.elementAt)
-                                .map(this.contacts.elementAt);
+                                .where(selectedContacts.value.elementAt)
+                                .map(contacts.elementAt);
                             print('Sent emails to: $selectedEmails');
                           }
                         : null,
+                    child: const Text('Send Email'),
                   );
                 },
               ),
-              RaisedButton(
-                child: Text('add'),
+              ElevatedButton(
                 onPressed: () {
-                  this
-                      .contacts
-                      .add('other${this.contacts.length + 1}@email.com');
-                  this.selectedContacts.add(FormControl<bool>(value: true));
+                  contacts.add('other${contacts.length + 1}@email.com');
+                  selectedContacts.add(FormControl<bool>(value: true));
                 },
+                child: const Text('add'),
               ),
             ],
           ),
@@ -82,7 +79,7 @@ class _ArraySampleState extends State<ArraySample> {
   }
 }
 
-Map<String, dynamic> _emptyAddressee(AbstractControl control) {
+Map<String, Object> _emptyAddressee(AbstractControl<dynamic> control) {
   final emails = (control as FormArray<bool>).value;
   return emails.any((isSelected) => isSelected)
       ? null

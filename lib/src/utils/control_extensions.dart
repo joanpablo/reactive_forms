@@ -4,7 +4,7 @@ import 'package:reactive_forms/src/utils/control_utils.dart';
 /// This is an extension on [AbstractControl].
 ///
 /// Brings to [AbstractControl] methods like [isNull] and [isNotNull].
-extension ControlExtension on AbstractControl {
+extension ControlExtension on AbstractControl<dynamic> {
   /// Returns true is the value of the control is null, otherwise returns false.
   bool get isNull => Control.isNull(this);
 

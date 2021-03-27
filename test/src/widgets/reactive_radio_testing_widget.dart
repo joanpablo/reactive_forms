@@ -5,8 +5,8 @@ class ReactiveRadioTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveRadioTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
   }) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class ReactiveRadioTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveForm(
-          formGroup: this.form,
+          formGroup: form,
           child: ReactiveRadio(
             formControlName: 'radio',
             value: true,

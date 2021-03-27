@@ -10,7 +10,7 @@ void main() {
         FormControl<String>(value: ''),
         FormControl<String>(value: 'not empty'),
       ], validators: [
-        Validators.any((String value) => value?.isNotEmpty)
+        Validators.any((String? value) => value?.isNotEmpty ?? false)
       ]);
 
       // Expect: array is valid
@@ -24,7 +24,7 @@ void main() {
         FormControl<String>(value: ''),
         FormControl<String>(value: ''),
       ], validators: [
-        Validators.any((String value) => value?.isNotEmpty)
+        Validators.any((String? value) => value?.isNotEmpty ?? false)
       ]);
 
       // Expect: array is invalid and has
@@ -39,7 +39,7 @@ void main() {
         FormControl<String>(value: ''),
         FormControl<String>(value: 'not empty'),
       ], validators: [
-        Validators.any((String value) => value?.isNotEmpty)
+        Validators.any((String? value) => value?.isNotEmpty ?? false)
       ]);
 
       // Expect: array is valid
@@ -55,7 +55,7 @@ void main() {
         FormControl<String>(value: ''),
         FormControl<String>(value: null),
       ], validators: [
-        Validators.any((String value) => value?.isNotEmpty)
+        Validators.any((String? value) => value?.isNotEmpty ?? false)
       ]);
 
       // Expect: array is invalid and has
@@ -64,9 +64,11 @@ void main() {
     });
 
     test('At least one element in control\'s value is not empty (invalid)', () {
-      final control = FormControl<List<String>>(
+      final control = FormControl<List<String?>>(
         value: [null, null, ''],
-        validators: [Validators.any((String value) => value?.isNotEmpty)],
+        validators: [
+          Validators.any((String? value) => value?.isNotEmpty ?? false)
+        ],
       );
 
       // Expect: array is invalid and has
@@ -76,9 +78,11 @@ void main() {
 
     test('At least one element in control\'s value is not empty (valid)', () {
       // Given: a control that is a list of String
-      final control = FormControl<List<String>>(
+      final control = FormControl<List<String?>>(
         value: [null, null, 'not empty'],
-        validators: [Validators.any((String value) => value?.isNotEmpty)],
+        validators: [
+          Validators.any((String? value) => value?.isNotEmpty ?? false)
+        ],
       );
 
       // Expect: control is valid

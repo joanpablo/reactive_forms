@@ -23,7 +23,7 @@ void main() {
         );
 
         // When: get text widget
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
 
         // Then: the text value is equal to control default value
         expect(text.data, defaultValue);
@@ -51,7 +51,7 @@ void main() {
         await tester.pump();
 
         // Then: the text value is equal to control value
-        Text text = tester.widget(find.byType(Text));
+        final text = tester.widget<Text>(find.byType(Text));
         expect(text.data, control.value);
       },
     );
@@ -62,9 +62,7 @@ void main() {
         // Given: a ReactiveValueListenableBuilder with null formControlName
         final reactiveWidget = () => ReactiveValueListenableBuilder(
               formControlName: null,
-              builder: (context, control, child) {
-                return null;
-              },
+              builder: (context, control, child) => Container(),
             );
 
         // Expect assertion error
@@ -78,23 +76,7 @@ void main() {
         // Given: a ReactiveValueListenableBuilder with null formControlName
         final reactiveWidget = () => ReactiveValueListenableBuilder(
               formControl: null,
-              builder: (context, control, child) {
-                return null;
-              },
-            );
-
-        // Expect assertion error
-        expect(reactiveWidget, throwsAssertionError);
-      },
-    );
-
-    testWidgets(
-      'Assert error thrown if builder is null',
-      (WidgetTester tester) async {
-        // Given: a ReactiveValueListenableBuilder with null builder
-        final reactiveWidget = () => ReactiveValueListenableBuilder(
-              formControlName: 'someName',
-              builder: null,
+              builder: (context, control, child) => Container(),
             );
 
         // Expect assertion error

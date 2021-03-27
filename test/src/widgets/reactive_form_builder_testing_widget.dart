@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class ReactiveFormBuilderTestingWidget extends StatelessWidget {
+class ReactiveFormBuilderTestingWidget<T> extends StatelessWidget {
   final FormGroup form;
-  final ValidationMessagesFunction validationMessages;
+  final ValidationMessagesFunction<T>? validationMessages;
   final Map<String, String> bindings;
 
   const ReactiveFormBuilderTestingWidget({
-    Key key,
-    @required this.form,
+    Key? key,
+    required this.form,
     this.validationMessages,
     this.bindings = const {
       'textField': 'name',
@@ -20,13 +20,13 @@ class ReactiveFormBuilderTestingWidget extends StatelessWidget {
     return MaterialApp(
       home: Material(
         child: ReactiveFormBuilder(
-          form: () => this.form,
+          form: () => form,
           builder: (context, form, child) {
             return Column(
               children: <Widget>[
-                ReactiveTextField(
-                  formControlName: this.bindings['textField'],
-                  validationMessages: this.validationMessages,
+                ReactiveTextField<T>(
+                  formControlName: bindings['textField'],
+                  validationMessages: validationMessages,
                 ),
               ],
             );

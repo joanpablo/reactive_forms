@@ -6,13 +6,13 @@ class RegExpPatternEvaluator implements PatternEvaluator {
 
   /// Constructs an instance of the class.
   /// The argument [regExp] must not be null.
-  RegExpPatternEvaluator(this.regExp) : assert(regExp != null);
+  RegExpPatternEvaluator(this.regExp);
 
   @override
   bool hasMatch(String input) {
-    return this.regExp.hasMatch(input);
+    return regExp.hasMatch(input);
   }
 
   @override
-  String get pattern => this.regExp.pattern;
+  String get pattern => regExp.pattern;
 }

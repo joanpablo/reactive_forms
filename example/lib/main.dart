@@ -51,7 +51,7 @@ class ReactiveFormsApp extends StatelessWidget {
 }
 
 final customTheme = ThemeData.light().copyWith(
-  inputDecorationTheme: InputDecorationTheme(
+  inputDecorationTheme: const InputDecorationTheme(
     border: OutlineInputBorder(),
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     alignLabelWithHint: true,

@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -10,5 +10,5 @@ import 'package:reactive_forms/reactive_forms.dart';
 typedef ReactiveListenableWidgetBuilder<T> = Widget Function(
   BuildContext context,
   AbstractControl<T> control,
-  Widget child,
+  Widget? child,
 );

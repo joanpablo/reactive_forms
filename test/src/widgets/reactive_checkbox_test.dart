@@ -18,8 +18,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        final checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, false);
       },
     );
@@ -39,8 +38,7 @@ void main() {
         ));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        final checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, null);
       },
     );
@@ -57,8 +55,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // Expect: the checkbox is checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        final checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, true);
       },
     );
@@ -75,8 +72,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        final checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, false);
       },
     );
@@ -93,8 +89,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // Expect: the checkbox is not checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        var checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, false);
 
         // When: set to True the form control
@@ -119,8 +114,7 @@ void main() {
         await tester.pumpWidget(ReactiveCheckboxTestingWidget(form: form));
 
         // Expect: the checkbox is checked
-        Checkbox checkbox =
-            tester.firstWidget(find.byType(Checkbox)) as Checkbox;
+        var checkbox = tester.firstWidget<Checkbox>(find.byType(Checkbox));
         expect(checkbox.value, true);
 
         // When: set to False the form control

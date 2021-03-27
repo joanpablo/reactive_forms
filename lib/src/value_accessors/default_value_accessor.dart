@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -9,8 +9,8 @@ import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 /// at all.
 class DefaultValueAccessor<T> extends ControlValueAccessor<T, T> {
   @override
-  T viewToModelValue(T viewValue) => viewValue;
+  T? viewToModelValue(T? viewValue) => viewValue;
 
   @override
-  T modelToViewValue(T modelValue) => modelValue;
+  T? modelToViewValue(T? modelValue) => modelValue;
 }

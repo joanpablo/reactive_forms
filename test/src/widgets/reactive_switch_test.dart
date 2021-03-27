@@ -18,15 +18,15 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: gets switch value
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
 
         // Then: value equals to false
-        switches.forEach((switchWidget) {
+        for (final switchWidget in switches) {
           expect(switchWidget.value, false);
-        });
+        }
       },
     );
 
@@ -42,15 +42,15 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: gets switch value
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
 
         // Then: value equals to control value
-        switches.forEach((switchWidget) {
+        for (final switchWidget in switches) {
           expect(switchWidget.value, true);
-        });
+        }
       },
     );
 
@@ -66,15 +66,15 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // When: gets switch value
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
 
         // Then: value equals to false
-        switches.forEach((switchWidget) {
+        for (final switchWidget in switches) {
           expect(switchWidget.value, false);
-        });
+        }
       },
     );
 
@@ -94,13 +94,14 @@ void main() {
         await tester.pump();
 
         // Then: value equals to true
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
-        switches.forEach((switchWidget) {
+
+        for (final switchWidget in switches) {
           expect(switchWidget.value, true);
-        });
+        }
       },
     );
 
@@ -120,13 +121,14 @@ void main() {
         await tester.pump();
 
         // Then: value equals to false
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
-        switches.forEach((switchWidget) {
+
+        for (final switchWidget in switches) {
           expect(switchWidget.value, false);
-        });
+        }
       },
     );
 
@@ -142,13 +144,14 @@ void main() {
         await tester.pumpWidget(ReactiveSwitchTestingWidget(form: form));
 
         // Then: the switch is disabled
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
-        switches.forEach((switchWidget) {
+
+        for (final switchWidget in switches) {
           expect(switchWidget.onChanged, null);
-        });
+        }
       },
     );
 
@@ -168,13 +171,14 @@ void main() {
         await tester.pump();
 
         // Then: the switch is disabled
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
-        switches.forEach((switchWidget) {
+
+        for (final switchWidget in switches) {
           expect(switchWidget.onChanged, null);
-        });
+        }
       },
     );
 
@@ -194,13 +198,14 @@ void main() {
         await tester.pump();
 
         // Then: the switch is disabled
-        List<Switch> switches = tester
+        final switches = tester
             .widgetList(find.byType(Switch))
             .map((widget) => widget as Switch)
             .toList();
-        switches.forEach((switchWidget) {
+
+        for (final switchWidget in switches) {
           expect(switchWidget.onChanged != null, true);
-        });
+        }
       },
     );
   });

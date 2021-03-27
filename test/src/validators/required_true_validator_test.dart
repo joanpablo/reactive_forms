@@ -13,7 +13,7 @@ void main() {
       // Expect: control is invalid
       expect(control.valid, false);
       expect(control.errors, {
-        ValidationMessage.equals: {
+        ValidationMessage.requiredTrue: {
           'required': true,
           'actual': false,
         }
@@ -40,7 +40,7 @@ void main() {
       // Expect: control is invalid
       expect(control.valid, false);
       expect(control.errors, {
-        ValidationMessage.equals: {
+        ValidationMessage.requiredTrue: {
           'required': true,
           'actual': null,
         }
@@ -60,7 +60,7 @@ void main() {
       // Then: control is invalid
       expect(control.valid, false);
       expect(control.errors, {
-        ValidationMessage.equals: {
+        ValidationMessage.requiredTrue: {
           'required': true,
           'actual': false,
         }

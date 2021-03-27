@@ -1,4 +1,4 @@
-// Copyright 2020 Joan Pablo Jiménez Milian. All rights reserved.
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
@@ -13,7 +13,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Radio] class
 /// and [new Radio], the constructor.
-class ReactiveRadio<T> extends ReactiveFormField<T> {
+class ReactiveRadio<T> extends ReactiveFormField<T, T> {
   /// Creates a [ReactiveRadio] that contains a [Radio].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -29,21 +29,21 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
   /// For documentation about the various parameters, see the [Radio] class
   /// and [new Radio], the constructor.
   ReactiveRadio({
-    Key key,
-    String formControlName,
-    FormControl<T> formControl,
-    @required T value,
-    Color activeColor,
-    Color focusColor,
-    Color hoverColor,
-    MaterialTapTargetSize materialTapTargetSize,
-    VisualDensity visualDensity,
+    Key? key,
+    String? formControlName,
+    FormControl<T>? formControl,
+    required T value,
+    Color? activeColor,
+    Color? focusColor,
+    Color? hoverColor,
+    MaterialTapTargetSize? materialTapTargetSize,
+    VisualDensity? visualDensity,
     bool autofocus = false,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<T> field) {
+          builder: (ReactiveFormFieldState<T, T> field) {
             return Radio<T>(
               value: value,
               groupValue: field.value,
@@ -59,5 +59,5 @@ class ReactiveRadio<T> extends ReactiveFormField<T> {
         );
 
   @override
-  ReactiveFormFieldState<T> createState() => ReactiveFormFieldState<T>();
+  ReactiveFormFieldState<T, T> createState() => ReactiveFormFieldState<T, T>();
 }
