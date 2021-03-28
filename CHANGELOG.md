@@ -1,3 +1,8 @@
+# 10.0.3
+
+## Fix
+- Set **ReactiveTextField** maxLines as optional nulleable argument.
+
 # 10.0.2
 
 ## Enhances
