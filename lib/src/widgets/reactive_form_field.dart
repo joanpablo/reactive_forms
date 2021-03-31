@@ -58,7 +58,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   /// at the same time.
   ///
   /// The [builder] arguments are required.
-  const ReactiveFormField({
+  ReactiveFormField({
     Key? key,
     this.formControl,
     this.formControlName,
@@ -85,17 +85,17 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   late FormControl<ModelDataType> control;
   late StreamSubscription<ControlStatus> _statusChangesSubscription;
   late StreamSubscription<bool> _touchChangesSubscription;
-  late ControlValueAccessor<dynamic, dynamic> _valueAccessor;
+  late ControlValueAccessor<ModelDataType, ViewDataType> _valueAccessor;
 
   /// Gets the value of the [FormControl] given by the [valueAccessor].
-  ViewDataType? get value =>
-      valueAccessor.modelToViewValue(control.value) as ViewDataType?;
+  ViewDataType? get value => valueAccessor.modelToViewValue(control.value);
 
   /// Gets true if the widget is touched, otherwise return false.
   bool get touched => control.touched;
 
   /// Gets the widget control value accessor
-  ControlValueAccessor<dynamic, dynamic> get valueAccessor => _valueAccessor;
+  ControlValueAccessor<ModelDataType, ViewDataType> get valueAccessor =>
+      _valueAccessor;
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -143,8 +143,13 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   /// See [ControlValueAccessor].
   @protected
   @visibleForTesting
-  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    return DefaultValueAccessor<ModelDataType>();
+  ControlValueAccessor<ModelDataType, ViewDataType> selectValueAccessor() {
+    if (ModelDataType != ViewDataType) {
+      // Use assert here so this is immediately visible in debug mode
+      assert(false,
+          "Must provide a valueAccessor for field $widget as ModelDataType and ViewDataType don't match.");
+    }
+    return DefaultValueAccessor();
   }
 
   @override
@@ -232,7 +237,7 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
     setState(() {});
   }
 
-  ControlValueAccessor<dynamic, dynamic> _resolveValueAccessor() {
+  ControlValueAccessor<ModelDataType, ViewDataType> _resolveValueAccessor() {
     return widget.valueAccessor ?? selectValueAccessor();
   }
 
