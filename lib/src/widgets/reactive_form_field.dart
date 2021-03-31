@@ -144,11 +144,10 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   @protected
   @visibleForTesting
   ControlValueAccessor<ModelDataType, ViewDataType> selectValueAccessor() {
-    if (ModelDataType != ViewDataType) {
-      // Use assert here so this is immediately visible in debug mode
-      assert(false,
-          "Must provide a valueAccessor for field $widget as ModelDataType and ViewDataType don't match.");
-    }
+    assert(
+      ModelDataType == ViewDataType,
+      "Must provide a valueAccessor for field $widget as ModelDataType and ViewDataType don't match.",
+    );
     return DefaultValueAccessor();
   }
 
