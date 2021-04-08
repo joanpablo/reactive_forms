@@ -110,7 +110,7 @@ void main() {
 
         // Then: initial date is equals to last Date
         expect(datePickerState.valueAccessor,
-            isInstanceOf<DefaultValueAccessor<DateTime>>());
+            isInstanceOf<DefaultValueAccessor<DateTime, DateTime>>());
       },
     );
 

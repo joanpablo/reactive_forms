@@ -258,15 +258,15 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   }
 
   @override
-  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    if (control is FormControl<int>) {
-      return IntValueAccessor();
-    } else if (control is FormControl<double>) {
-      return DoubleValueAccessor();
-    } else if (control is FormControl<DateTime>) {
-      return DateTimeValueAccessor();
-    } else if (control is FormControl<TimeOfDay>) {
-      return TimeOfDayValueAccessor();
+  ControlValueAccessor<T, String> selectValueAccessor() {
+    if (T == int) {
+      return IntValueAccessor() as ControlValueAccessor<T, String>;
+    } else if (T == double) {
+      return DoubleValueAccessor() as ControlValueAccessor<T, String>;
+    } else if (T == DateTime) {
+      return DateTimeValueAccessor() as ControlValueAccessor<T, String>;
+    } else if (T == TimeOfDay) {
+      return TimeOfDayValueAccessor() as ControlValueAccessor<T, String>;
     }
 
     return super.selectValueAccessor();
