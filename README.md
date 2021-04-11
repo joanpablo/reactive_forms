@@ -91,8 +91,8 @@ To declare a form with the fields *name* and *email* is as simple as:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(value: 'John Doe'),
-  'email': FormControl(),
+  'name': FormControl<String>(value: 'John Doe'),
+  'email': FormControl<String>(),
 });
 ```
 
@@ -106,8 +106,8 @@ Given the **FormGroup**:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(value: 'John Doe'),
-  'email': FormControl(value: 'johndoe@email.com'),
+  'name': FormControl<String>(value: 'John Doe'),
+  'email': FormControl<String>(value: 'johndoe@email.com'),
 });
 ```
 
@@ -152,8 +152,8 @@ You can add validators to a **FormControl** as follows:
 
 ```dart
 final form = FormGroup({
-  'name': FormControl(validators: [Validators.required]),
-  'email': FormControl(validators: [
+  'name': FormControl<String>(validators: [Validators.required]),
+  'email': FormControl<String>(validators: [
     Validators.required,
     Validators.email,
   ]),
