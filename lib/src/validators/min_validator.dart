@@ -15,7 +15,7 @@ class MinValidator<T> extends Validator<dynamic> {
   MinValidator(this.min);
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {
       ValidationMessage.min: <String, dynamic>{
         'min': min,

@@ -229,7 +229,7 @@ void main() {
       final control = FormControl<String>();
 
       // When: set errors
-      control.setErrors({'someError': true});
+      control.setErrors(<String, dynamic>{'someError': true});
 
       // Then: the control is dirty
       expect(control.dirty, true);
@@ -240,7 +240,8 @@ void main() {
       final control = FormControl<String>();
 
       // When: set errors and specify markAsDirty = false
-      control.setErrors({'someError': true}, markAsDirty: false);
+      control
+          .setErrors(<String, dynamic>{'someError': true}, markAsDirty: false);
 
       // Then: the control is pristine
       expect(control.pristine, true);

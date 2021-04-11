@@ -21,10 +21,10 @@ class CompareValidator<T> extends Validator<dynamic> {
   );
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     if (control is! FormGroup) {
       // Maybe throw an exception is better
-      return {ValidationMessage.compare: true};
+      return <String, dynamic>{ValidationMessage.compare: true};
     }
 
     final mainControl = control.control(controlName);

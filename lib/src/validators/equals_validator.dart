@@ -22,10 +22,10 @@ class EqualsValidator<T> extends Validator<dynamic> {
   });
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     return control.value == value
         ? null
-        : {
+        : <String, dynamic>{
             validationMessage: <String, dynamic>{
               'required': value,
               'actual': control.value,

@@ -23,8 +23,8 @@ abstract class AbstractControl<T> {
   final List<ValidatorFunction> _validators;
   final List<AsyncValidatorFunction<AbstractControl<T>>> _asyncValidators;
 
-  StreamSubscription<Map<String, Object>?>? _asyncValidationSubscription;
-  Map<String, Object> _errors = <String, Object>{};
+  StreamSubscription<Map<String, dynamic>?>? _asyncValidationSubscription;
+  Map<String, dynamic> _errors = <String, dynamic>{};
   bool _pristine = true;
 
   T? _value;
@@ -459,7 +459,7 @@ abstract class AbstractControl<T> {
   /// as dirty.
   ///
   /// See [dirty].
-  void setErrors(Map<String, Object> errors, {bool markAsDirty = true}) {
+  void setErrors(Map<String, dynamic> errors, {bool markAsDirty = true}) {
     _errors.clear();
     _errors.addAll(errors);
 
@@ -476,7 +476,7 @@ abstract class AbstractControl<T> {
   ///
   /// See [dirty].
   void removeError(String key, {bool markAsDirty = false}) {
-    _errors.removeWhere((errorKey, value) => errorKey == key);
+    _errors.removeWhere((errorKey, dynamic value) => errorKey == key);
     _updateControlsErrors();
 
     if (markAsDirty) {
@@ -512,8 +512,8 @@ abstract class AbstractControl<T> {
     parent?._updateControlsErrors();
   }
 
-  Map<String, Object> _runValidators() {
-    final errors = <String, Object>{};
+  Map<String, dynamic> _runValidators() {
+    final errors = <String, dynamic>{};
     for (final validator in validators) {
       final error = validator(this);
       if (error != null) {
@@ -592,9 +592,9 @@ abstract class AbstractControl<T> {
         final validatorsStream = Stream.fromFutures(
             asyncValidators.map((validator) => validator(this)).toList());
 
-        final errors = <String, Object>{};
+        final errors = <String, dynamic>{};
         _asyncValidationSubscription = validatorsStream.listen(
-          (Map<String, Object>? error) {
+          (Map<String, dynamic>? error) {
             if (error != null) {
               errors.addAll(error);
             }
