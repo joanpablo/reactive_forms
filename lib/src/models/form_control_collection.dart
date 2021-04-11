@@ -62,6 +62,6 @@ abstract class FormControlCollection<T> {
       }
     });
 
-    return result as AbstractControl<Object>;
+    return result != null ? result as AbstractControl<Object> : null;
   }
 }
