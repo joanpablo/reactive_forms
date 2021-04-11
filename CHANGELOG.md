@@ -6,9 +6,6 @@
 ## Enhances
 - Better type definition in a control value accessor wihtin a ReactiveFormField
 
-## Features
--
-
 # 10.0.3
 
 ## Fix
