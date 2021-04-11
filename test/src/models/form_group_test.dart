@@ -153,9 +153,7 @@ void main() {
     });
 
     test('Throws FormControlNotFoundException if not control found', () {
-      final form = FormGroup({
-        'someControl': FormControl<String>()
-      });
+      final form = FormGroup({'someControl': FormControl<String>()});
 
       expect(() => form.control('does not exist'),
           throwsA(isInstanceOf<FormControlNotFoundException>()));
