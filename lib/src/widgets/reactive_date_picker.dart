@@ -158,10 +158,11 @@ class ReactiveDatePickerDelegate<T> {
 
 class _ReactiveDatePickerState<T> extends ReactiveFormFieldState<T, DateTime> {
   @override
-  ControlValueAccessor<dynamic, dynamic> selectValueAccessor() {
-    if (control is AbstractControl<String>) {
-      return Iso8601DateTimeValueAccessor();
-    } else if (control is AbstractControl<DateTime>) {
+  ControlValueAccessor<T, DateTime> selectValueAccessor() {
+    if (T == String) {
+      return Iso8601DateTimeValueAccessor()
+          as ControlValueAccessor<T, DateTime>;
+    } else if (T == DateTime) {
       return super.selectValueAccessor();
     }
 

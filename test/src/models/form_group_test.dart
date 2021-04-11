@@ -152,6 +152,13 @@ void main() {
           throwsA(isInstanceOf<FormControlNotFoundException>()));
     });
 
+    test('Throws FormControlNotFoundException if not control found', () {
+      final form = FormGroup({'someControl': FormControl<String>()});
+
+      expect(() => form.control('does not exist'),
+          throwsA(isInstanceOf<FormControlNotFoundException>()));
+    });
+
     test('Mark form as touched mark all controls in the form as touched', () {
       // Given: an untouched form
       final form = FormGroup({
@@ -507,6 +514,20 @@ void main() {
       expect(city is FormControl<String>, true,
           reason: '$city is not a control');
       expect(city.value, 'Sofia', reason: 'control without correct value');
+    });
+
+    test('Focused a control that does not exists', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+      });
+
+      // When: set a control focus to a control that does not exist
+      form.focus('email');
+
+      // Then: none control has focus
+      expect((form.control('name') as FormControl).hasFocus, false,
+          reason: 'control has focus');
     });
 
     test('Focused a control', () {

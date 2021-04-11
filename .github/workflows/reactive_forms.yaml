@@ -1,0 +1,59 @@
+name: reactive_forms
+
+on:
+  # Trigger the workflow on push
+  # but only for the master branch
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  test:
+    # Job name is Running Tests
+    name: Tests
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.0.3'
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter test --no-pub --coverage
+      - run: bash <(curl -s https://codecov.io/bash) -t d5f3f780-d3d4-4c7c-997b-31f1f7620eba
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.0.3'
+          channel: 'stable'
+      - run: flutter pub get
+      - name: Analyze lib
+        run: flutter analyze lib
+      - name: Analyze test
+        run: flutter analyze test
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.0.3'
+          channel: 'stable'
+      - run: flutter pub get
+      - name: Format lib
+        run: flutter format lib --set-exit-if-changed
+      - name: Format test
+        run: flutter format test --set-exit-if-changed
