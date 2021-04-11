@@ -4,7 +4,7 @@
 - Fix exception when focus a control that does not exist in a group
 
 ## Enhances
-- Better type definition in a control value accessor wihtin a ReactiveFormField
+- Better type definition in a control value accessor within a ReactiveFormField
 
 # 10.0.3
 
