@@ -229,7 +229,7 @@ void main() {
       final control = FormControl<String>();
 
       // When: set errors
-      control.setErrors({'someError': true});
+      control.setErrors(<String, dynamic>{'someError': true});
 
       // Then: the control is dirty
       expect(control.dirty, true);
@@ -240,7 +240,8 @@ void main() {
       final control = FormControl<String>();
 
       // When: set errors and specify markAsDirty = false
-      control.setErrors({'someError': true}, markAsDirty: false);
+      control
+          .setErrors(<String, dynamic>{'someError': true}, markAsDirty: false);
 
       // Then: the control is pristine
       expect(control.pristine, true);
@@ -283,6 +284,60 @@ void main() {
 
       // Then: control value is patched
       expect(control.value, patchedName);
+    });
+
+    test('FormControl call setValidators()', () {
+      // Given: a control with an invalid email value
+      final formControl = FormControl<String>(
+        value: 'hello',
+        validators: [Validators.email],
+      );
+
+      // Expect: the control is invalid
+      expect(formControl.hasError(ValidationMessage.email), true);
+
+      // When: setting new validators and update validity
+      formControl.setValidators([Validators.minLength(6)]);
+      formControl.updateValueAndValidity();
+
+      // Then: old validators are not presents, only the new ones
+      expect(formControl.validators.length, 1);
+      expect(formControl.hasError(ValidationMessage.email), false);
+      expect(formControl.hasError(ValidationMessage.minLength), true);
+    });
+
+    test('FormControl call clearValidators()', () {
+      // Given: a control with a required value
+      final formControl = FormControl<String>(
+        validators: [Validators.required],
+      );
+
+      // Expect: the control is invalid
+      expect(formControl.hasError(ValidationMessage.required), true);
+
+      // When: clear validators
+      formControl.clearValidators();
+      formControl.updateValueAndValidity();
+
+      // Then: control hasn't validators and control is valid
+      expect(formControl.validators.isEmpty, true);
+      expect(formControl.hasError(ValidationMessage.required), false);
+    });
+
+    test('FormControl call setAsyncValidators()', () {
+      // Given: a control with an invalid email value
+      final formControl = FormControl<String>();
+
+      // Expect: the control has any async validator
+      expect(formControl.asyncValidators.isEmpty, true);
+
+      // When: setting new async validators
+      final asyncValidator =
+          (AbstractControl<dynamic> control) => Future.value(null);
+      formControl.setAsyncValidators([asyncValidator]);
+
+      // Then: a new async validator is added
+      expect(formControl.asyncValidators.length, 1);
     });
   });
 }

@@ -10,10 +10,10 @@ class NumberValidator extends Validator<dynamic> {
   static final RegExp numberRegex = RegExp(r'^-?[0-9]+$');
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     return (control.value == null) ||
             !numberRegex.hasMatch(control.value.toString())
-        ? {ValidationMessage.number: true}
+        ? <String, dynamic>{ValidationMessage.number: true}
         : null;
   }
 }

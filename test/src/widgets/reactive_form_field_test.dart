@@ -36,21 +36,6 @@ void main() {
 
     group('-> ValueAccessor for non-matching generic types', () {
       testWidgets(
-        'throws AssertionError if ValueAccessor is not set',
-        (tester) async {
-          final field = ReactiveFormField<String, int>(
-            formControlName: null,
-            formControl: FormControl(),
-            builder: (_) => Container(),
-          );
-
-          await tester.pumpWidget(field);
-
-          expect(tester.takeException(), isA<AssertionError>());
-        },
-      );
-
-      testWidgets(
         'throws no error if ValueAccessor is set',
         (tester) async {
           final field = ReactiveFormField<String, int>(

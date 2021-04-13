@@ -554,5 +554,28 @@ void main() {
         expect(textField.focusNode, nameControl.focusController?.focusNode);
       },
     );
+
+    testWidgets(
+      'Bound widget with dynamic data type',
+      (WidgetTester tester) async {
+        // Given: A group with an empty field 'name' is created
+        final form = FormGroup({
+          'name': FormControl<String>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester
+            .pumpWidget(ReactiveTextFieldTestingWidget<dynamic>(form: form));
+
+        // When: set a value to field 'name'
+        final value = 'John';
+        form.control('name').value = value;
+        await tester.pump();
+
+        // Then: the reactive text field updates its value with the new name
+        final textField = tester.firstWidget<TextField>(find.byType(TextField));
+        expect(textField.controller?.text, value);
+      },
+    );
   });
 }
