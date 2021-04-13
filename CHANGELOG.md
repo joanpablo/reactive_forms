@@ -1,3 +1,14 @@
+# 10.1.0
+
+## Features
+- Add/Clear validators dynamically
+
+## Fix
+- Fix error when defining a ReactiveTextField without specifying a model data type
+
+## Enhances
+- Change the data type of ValidatorFunction to returns *Map<String, dynamic>* instead of *Map<String, Object>*
+
 # 10.0.4
 
 ## Fix
