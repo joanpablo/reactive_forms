@@ -20,8 +20,8 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction> _validators;
-  final List<AsyncValidatorFunction> _asyncValidators;
+  final List<ValidatorFunction> _validators = <ValidatorFunction>[];
+  final List<AsyncValidatorFunction> _asyncValidators = <AsyncValidatorFunction>[];
 
   StreamSubscription<Map<String, dynamic>?>? _asyncValidationSubscription;
   Map<String, dynamic> _errors = <String, dynamic>{};
@@ -50,11 +50,12 @@ abstract class AbstractControl<T> {
     bool disabled = false,
     bool touched = false,
   })  : assert(asyncValidatorsDebounceTime >= 0),
-        _validators = validators,
-        _asyncValidators = asyncValidators,
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
         _touched = touched,
-        _status = disabled ? ControlStatus.disabled : ControlStatus.valid;
+        _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
+    setValidators(validators);
+    setAsyncValidators(asyncValidators);
+  }
 
   /// A control is `dirty` if the user has changed the value in the UI.
   ///

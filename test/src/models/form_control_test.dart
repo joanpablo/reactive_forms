@@ -320,8 +320,24 @@ void main() {
       formControl.updateValueAndValidity();
 
       // Then: control hasn't validators and control is valid
-      expect(formControl.validators.length, 0);
+      expect(formControl.validators.isEmpty, true);
       expect(formControl.hasError(ValidationMessage.required), false);
+    });
+
+    test('FormControl call setAsyncValidators()', () {
+      // Given: a control with an invalid email value
+      final formControl = FormControl<String>();
+
+      // Expect: the control has any async validator
+      expect(formControl.asyncValidators.isEmpty, true);
+
+      // When: setting new async validators
+      final asyncValidator =
+          (AbstractControl<dynamic> control) => Future.value(null);
+      formControl.setAsyncValidators([asyncValidator]);
+
+      // Then: a new async validator is added
+      expect(formControl.asyncValidators.length, 1);
     });
   });
 }
