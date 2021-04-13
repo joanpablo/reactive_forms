@@ -1,3 +1,12 @@
+# 10.2.0
+
+## Fix
+- Fix error when defining a ReactiveTextField with dynamic type and bound the widget with controls
+other than String.
+
+## Enhances
+- Add the optionally extra argument *autoValidate* to the method **AbstractControl.setValidators** to recalculate the validaity of the control after set the new validators without explicitly call *updateValueAndValidity* on that control.
+
 # 10.1.0
 
 ## Features
