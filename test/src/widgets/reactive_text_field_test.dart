@@ -557,7 +557,7 @@ void main() {
 
     testWidgets(
       'Bound widget with dynamic data type',
-          (WidgetTester tester) async {
+      (WidgetTester tester) async {
         // Given: A group with an empty field 'name' is created
         final form = FormGroup({
           'name': FormControl<String>(),

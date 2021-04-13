@@ -21,7 +21,7 @@ abstract class AbstractControl<T> {
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
   final List<ValidatorFunction> _validators;
-  final List<AsyncValidatorFunction<AbstractControl<T>>> _asyncValidators;
+  final List<AsyncValidatorFunction> _asyncValidators;
 
   StreamSubscription<Map<String, dynamic>?>? _asyncValidationSubscription;
   Map<String, dynamic> _errors = <String, dynamic>{};
@@ -45,7 +45,7 @@ abstract class AbstractControl<T> {
   /// Constructor of the [AbstractControl].
   AbstractControl({
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
@@ -88,13 +88,52 @@ abstract class AbstractControl<T> {
   List<ValidatorFunction> get validators =>
       List<ValidatorFunction>.unmodifiable(_validators);
 
+  /// Sets the synchronous [validators] that are active on this control. Calling
+  /// this overwrites any existing sync validators.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// **updateValueAndValidity()**, or assign a new value to the control for
+  /// the new validation to take effect.
+  void setValidators(List<ValidatorFunction> validators) {
+    clearValidators();
+    _validators.addAll(validators);
+  }
+
+  /// Empties out the sync validator list.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// **updateValueAndValidity()**, or assign a new value to the control for
+  /// the new validation to take effect.
+  void clearValidators() {
+    _validators.clear();
+  }
+
   /// The list of async functions that determines the validity of this control.
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<AsyncValidatorFunction<AbstractControl<T>>> get asyncValidators =>
-      List<AsyncValidatorFunction<AbstractControl<T>>>.unmodifiable(
-          _asyncValidators);
+  List<AsyncValidatorFunction> get asyncValidators =>
+      List<AsyncValidatorFunction>.unmodifiable(_asyncValidators);
+
+  /// Sets the async [validators] that are active on this control. Calling this
+  /// overwrites any existing async validators.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// **updateValueAndValidity()**, or assign a new value to the control for
+  /// the new validation to take effect.
+  void setAsyncValidators(List<AsyncValidatorFunction> validators) {
+    clearAsyncValidators();
+    _asyncValidators.addAll(validators);
+  }
+
+  /// Empties out the async validator list.
+  ///
+  /// When you add or remove a validator at run time, you must call
+  /// **updateValueAndValidity()**, or assign a new value to the control for
+  /// the new validation to take effect.
+  void clearAsyncValidators() {
+    _asyncValidators.clear();
+  }
 
   /// The current value of the control.
   T? get value => _value;
@@ -712,7 +751,7 @@ class FormControl<T> extends AbstractControl<T> {
   FormControl({
     T? value,
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,
     bool disabled = false,
@@ -962,8 +1001,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   FormGroup(
     Map<String, AbstractControl<dynamic>> controls, {
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
-        asyncValidators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
   }) : super(
@@ -1446,8 +1484,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   FormArray(
     List<AbstractControl<T>> controls, {
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators =
-        const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
   }) : super(

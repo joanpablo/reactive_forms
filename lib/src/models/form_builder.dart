@@ -63,8 +63,7 @@ class FormBuilder {
   FormGroup group(
     Map<String, Object> controls, [
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<Map<String, Object?>>>>
-        asyncValidators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     final map = controls
         .map<String, AbstractControl<Object>>((String key, Object value) {
@@ -165,7 +164,7 @@ class FormBuilder {
   FormControl<T> control<T>(
     T value, [
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<T>>> asyncValidators = const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormControl<T>(
       value: value,
@@ -205,8 +204,7 @@ class FormBuilder {
   FormArray<T> array<T>(
     List<Object> value, [
     List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction<AbstractControl<List<T?>>>> asyncValidators =
-        const [],
+    List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormArray<T>(
       value.map<AbstractControl<T>>((v) {

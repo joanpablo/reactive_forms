@@ -285,5 +285,43 @@ void main() {
       // Then: control value is patched
       expect(control.value, patchedName);
     });
+
+    test('FormControl call setValidators()', () {
+      // Given: a control with an invalid email value
+      final formControl = FormControl<String>(
+        value: 'hello',
+        validators: [Validators.email],
+      );
+
+      // Expect: the control is invalid
+      expect(formControl.hasError(ValidationMessage.email), true);
+
+      // When: setting new validators and update validity
+      formControl.setValidators([Validators.minLength(6)]);
+      formControl.updateValueAndValidity();
+
+      // Then: old validators are not presents, only the new ones
+      expect(formControl.validators.length, 1);
+      expect(formControl.hasError(ValidationMessage.email), false);
+      expect(formControl.hasError(ValidationMessage.minLength), true);
+    });
+
+    test('FormControl call clearValidators()', () {
+      // Given: a control with a required value
+      final formControl = FormControl<String>(
+        validators: [Validators.required],
+      );
+
+      // Expect: the control is invalid
+      expect(formControl.hasError(ValidationMessage.required), true);
+
+      // When: clear validators
+      formControl.clearValidators();
+      formControl.updateValueAndValidity();
+
+      // Then: control hasn't validators and control is valid
+      expect(formControl.validators.length, 0);
+      expect(formControl.hasError(ValidationMessage.required), false);
+    });
   });
 }
