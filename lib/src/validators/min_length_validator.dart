@@ -15,7 +15,7 @@ class MinLengthValidator extends Validator<dynamic> {
   MinLengthValidator(this.minLength);
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     // don't validate empty values to allow optional controls
     if (control.value == null) {
       return null;
@@ -35,7 +35,7 @@ class MinLengthValidator extends Validator<dynamic> {
 
     return (collection != null && collection.length >= minLength)
         ? null
-        : {
+        : <String, dynamic>{
             ValidationMessage.minLength: {
               'requiredLength': minLength,
               'actualLength': collection != null ? collection.length : 0,

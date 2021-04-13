@@ -15,7 +15,7 @@ class MaxValidator<T> extends Validator<dynamic> {
   MaxValidator(this.max);
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {
       ValidationMessage.max: <String, dynamic>{
         'max': max,

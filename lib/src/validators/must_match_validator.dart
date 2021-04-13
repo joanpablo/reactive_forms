@@ -14,7 +14,7 @@ class MustMatchValidator extends Validator<dynamic> {
   MustMatchValidator(this.controlName, this.matchingControlName);
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.mustMatch: true};
 
     if (control is! FormGroup) {

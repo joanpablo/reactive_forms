@@ -14,9 +14,9 @@ class AnyValidator<T> extends Validator<dynamic> {
   AnyValidator(this.test);
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     if (control.value == null) {
-      return {ValidationMessage.any: true};
+      return <String, dynamic>{ValidationMessage.any: true};
     }
 
     // TODO: change the assert for an exception
@@ -24,6 +24,8 @@ class AnyValidator<T> extends Validator<dynamic> {
         '${control.value.runtimeType.toString()} $T?');
 
     final iterable = control.value as Iterable<T>;
-    return iterable.any(test) ? null : {ValidationMessage.any: true};
+    return iterable.any(test)
+        ? null
+        : <String, dynamic>{ValidationMessage.any: true};
   }
 }

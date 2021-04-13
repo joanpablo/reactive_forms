@@ -17,12 +17,12 @@ class PatternValidator extends Validator<dynamic> {
       {this.validationMessage = ValidationMessage.pattern});
 
   @override
-  Map<String, Object>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     return (control.value == null ||
             control.value.toString() == '' ||
             evaluator.hasMatch(control.value.toString()))
         ? null
-        : {
+        : <String, dynamic>{
             validationMessage: {
               'requiredPattern': evaluator.pattern,
               'actualValue': control.value as Object,
