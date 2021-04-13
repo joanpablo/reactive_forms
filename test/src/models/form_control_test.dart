@@ -306,6 +306,39 @@ void main() {
       expect(formControl.hasError(ValidationMessage.minLength), true);
     });
 
+    test('FormControl call setValidators() without auto validate', () {
+      // Given: a control without validators
+      final formControl = FormControl<String>();
+
+      // Expect: the control is valid
+      expect(formControl.hasErrors, false);
+      expect(formControl.valid, true);
+
+      // When: setting new validators without auto validate
+      formControl.setValidators([Validators.required]);
+
+      // Expect: the control is still valid
+      expect(formControl.hasErrors, false);
+      expect(formControl.valid, true);
+    });
+
+    test('FormControl call setValidators() with auto validate', () {
+      // Given: a control without validators
+      final formControl = FormControl<String>();
+
+      // Expect: the control is valid
+      expect(formControl.hasErrors, false);
+      expect(formControl.valid, true);
+
+      // When: setting new validators without auto validate
+      formControl.setValidators([Validators.required], autoValidate: true);
+
+      // Expect: the control is still valid
+      expect(formControl.hasErrors, true);
+      expect(formControl.hasError(ValidationMessage.required), true);
+      expect(formControl.valid, false);
+    });
+
     test('FormControl call clearValidators()', () {
       // Given: a control with a required value
       final formControl = FormControl<String>(

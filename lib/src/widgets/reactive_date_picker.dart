@@ -159,10 +159,10 @@ class ReactiveDatePickerDelegate<T> {
 class _ReactiveDatePickerState<T> extends ReactiveFormFieldState<T, DateTime> {
   @override
   ControlValueAccessor<T, DateTime> selectValueAccessor() {
-    if (T == String) {
+    if (control is FormControl<String>) {
       return Iso8601DateTimeValueAccessor()
           as ControlValueAccessor<T, DateTime>;
-    } else if (T == DateTime) {
+    } else if (control is FormControl<DateTime>) {
       return super.selectValueAccessor();
     }
 
