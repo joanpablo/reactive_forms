@@ -21,7 +21,8 @@ abstract class AbstractControl<T> {
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
   final List<ValidatorFunction> _validators = <ValidatorFunction>[];
-  final List<AsyncValidatorFunction> _asyncValidators = <AsyncValidatorFunction>[];
+  final List<AsyncValidatorFunction> _asyncValidators =
+      <AsyncValidatorFunction>[];
 
   StreamSubscription<Map<String, dynamic>?>? _asyncValidationSubscription;
   Map<String, dynamic> _errors = <String, dynamic>{};
