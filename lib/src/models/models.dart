@@ -93,12 +93,33 @@ abstract class AbstractControl<T> {
   /// Sets the synchronous [validators] that are active on this control. Calling
   /// this overwrites any existing sync validators.
   ///
-  /// When you add or remove a validator at run time, you must call
-  /// **updateValueAndValidity()**, or assign a new value to the control for
-  /// the new validation to take effect.
-  void setValidators(List<ValidatorFunction> validators) {
+  /// If [autoValidate] is `true` then the status of the control is recalculated
+  /// after setting the new [validators]. If [autoValidate] is `false` (default)
+  /// you must call **updateValueAndValidity()**, or assign a new value to the
+  /// control for the new validation to take effect.
+  ///
+  /// When [updateParent] is `true` or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control. This argument is only taking into account if [autoValidate] is
+  /// equals to `true`.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  /// This argument is only taking into account if [autoValidate] is equals to
+  /// `true`.
+  void setValidators(
+    List<ValidatorFunction> validators, {
+    bool autoValidate = false,
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
     clearValidators();
     _validators.addAll(validators);
+
+    if (autoValidate) {
+      updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+    }
   }
 
   /// Empties out the sync validator list.
@@ -120,12 +141,33 @@ abstract class AbstractControl<T> {
   /// Sets the async [validators] that are active on this control. Calling this
   /// overwrites any existing async validators.
   ///
-  /// When you add or remove a validator at run time, you must call
-  /// **updateValueAndValidity()**, or assign a new value to the control for
-  /// the new validation to take effect.
-  void setAsyncValidators(List<AsyncValidatorFunction> validators) {
+  /// If [autoValidate] is `true` then the status of the control is recalculated
+  /// after setting the new [validators]. If [autoValidate] is `false` (default)
+  /// you must call **updateValueAndValidity()**, or assign a new value to the
+  /// control for the new validation to take effect.
+  ///
+  /// When [updateParent] is `true` or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control. This argument is only taking into account if [autoValidate] is
+  /// equals to `true`.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  /// This argument is only taking into account if [autoValidate] is equals to
+  /// `true`.
+  void setAsyncValidators(
+    List<AsyncValidatorFunction> validators, {
+    bool autoValidate = false,
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
     clearAsyncValidators();
     _asyncValidators.addAll(validators);
+
+    if (autoValidate) {
+      updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+    }
   }
 
   /// Empties out the async validator list.
