@@ -98,5 +98,51 @@ void main() {
         expect(control.valid, false);
       },
     );
+
+    test(
+      'Validates with a control that can be an empty string',
+      () {
+        // Given: a control
+        final control = FormControl<String>(
+          value: '1234567890',
+          validators: [
+            Validators.composeOR([
+              Validators.composeOR([
+                Validators.equals(''),
+                Validators.equals(null),
+              ]),
+              Validators.compose([
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.number,
+              ]),
+            ]),
+          ],
+        );
+
+        // Expect: control is valid
+        expect(control.valid, true);
+
+        // When: set value to empty string
+        control.value = '';
+        // Expect: control is valid
+        expect(control.valid, true);
+
+        // When: set value with length < 10
+        control.value = '12345678';
+        // Then: control is invalid
+        expect(control.valid, false);
+
+        // When: set value with length > 10
+        control.value = '12345678901';
+        // Expect: control is invalid
+        expect(control.valid, false);
+
+        // When: set value to null
+        control.value = null;
+        // Expect: control is invalid
+        expect(control.valid, true);
+      },
+    );
   });
 }
