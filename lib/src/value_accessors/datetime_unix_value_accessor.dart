@@ -20,10 +20,10 @@ class DateTimeUnixValueAccessor<T> extends ControlValueAccessor<T, String> {
     }
     if (modelValue is int) {
       return dateTimeFormat
-          .format(DateTime.fromMillisecondsSinceEpoch(modelValue, isUtc: true));
+          .format(DateTime.fromMillisecondsSinceEpoch(modelValue));
     } else if (modelValue is double) {
-      return dateTimeFormat.format(
-          DateTime.fromMillisecondsSinceEpoch(modelValue.toInt(), isUtc: true));
+      return dateTimeFormat
+          .format(DateTime.fromMillisecondsSinceEpoch(modelValue.toInt()));
     }
     throw ValueAccessorException(
         'UnixDateTimeValueAccessor supports only int or double values');
@@ -33,6 +33,6 @@ class DateTimeUnixValueAccessor<T> extends ControlValueAccessor<T, String> {
   T? viewToModelValue(String? viewValue) {
     return viewValue == null || viewValue.trim().isEmpty
         ? null
-        : dateTimeFormat.parse(viewValue).toUtc().millisecondsSinceEpoch as T;
+        : dateTimeFormat.parse(viewValue).millisecondsSinceEpoch as T;
   }
 }

@@ -12,10 +12,11 @@ class UnixDateTimeValueAccessor<T> extends ControlValueAccessor<T, DateTime> {
       return null;
     }
     if (modelValue is int) {
-      return DateTime.fromMillisecondsSinceEpoch(modelValue, isUtc: true);
+      return DateTime.fromMillisecondsSinceEpoch(modelValue);
     } else if (modelValue is double) {
-      return DateTime.fromMillisecondsSinceEpoch(modelValue.toInt(),
-          isUtc: true);
+      return DateTime.fromMillisecondsSinceEpoch(
+        modelValue.toInt(),
+      );
     }
     throw ValueAccessorException(
         'UnixDateTimeValueAccessor supports only int or double values');
@@ -23,8 +24,6 @@ class UnixDateTimeValueAccessor<T> extends ControlValueAccessor<T, DateTime> {
 
   @override
   T? viewToModelValue(DateTime? viewValue) {
-    return viewValue is DateTime
-        ? viewValue.toUtc().millisecondsSinceEpoch as T
-        : null;
+    return viewValue is DateTime ? viewValue.millisecondsSinceEpoch as T : null;
   }
 }
