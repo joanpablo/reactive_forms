@@ -33,6 +33,6 @@ class DateTimeUnixValueAccessor<T> extends ControlValueAccessor<T, String> {
   T? viewToModelValue(String? viewValue) {
     return viewValue == null || viewValue.trim().isEmpty
         ? null
-        : dateTimeFormat.parse(viewValue).millisecondsSinceEpoch as T;
+        : dateTimeFormat.parse(viewValue).toUtc().millisecondsSinceEpoch as T;
   }
 }

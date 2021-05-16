@@ -23,6 +23,8 @@ class UnixDateTimeValueAccessor<T> extends ControlValueAccessor<T, DateTime> {
 
   @override
   T? viewToModelValue(DateTime? viewValue) {
-    return viewValue is DateTime ? viewValue.millisecondsSinceEpoch as T : null;
+    return viewValue is DateTime
+        ? viewValue.toUtc().millisecondsSinceEpoch as T
+        : null;
   }
 }
