@@ -32,6 +32,7 @@ export 'src/value_accessors/double_value_accessor.dart';
 export 'src/value_accessors/int_value_accessor.dart';
 export 'src/value_accessors/iso8601_datetime_value_accessor.dart';
 export 'src/value_accessors/time_of_day_value_accessor.dart';
+export 'src/value_accessors/unix_datetime_value_accessor.dart';
 export 'src/widgets/reactive_checkbox.dart';
 export 'src/widgets/reactive_checkbox_list_tile.dart';
 export 'src/widgets/reactive_date_picker.dart';
