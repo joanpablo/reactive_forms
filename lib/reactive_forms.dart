@@ -26,6 +26,7 @@ export 'src/validators/validation_message.dart';
 export 'src/validators/validator.dart';
 export 'src/validators/validators.dart';
 export 'src/value_accessors/control_value_accessor.dart';
+export 'src/value_accessors/datetime_unix_value_accessor.dart';
 export 'src/value_accessors/datetime_value_accessor.dart';
 export 'src/value_accessors/default_value_accessor.dart';
 export 'src/value_accessors/double_value_accessor.dart';
