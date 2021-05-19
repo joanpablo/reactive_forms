@@ -117,6 +117,7 @@ class ComplexSample extends StatelessWidget {
                 formControlName: 'rememberMe',
                 title: const Text('Don\'t Remember me'),
                 value: false,
+                toggleable: true,
               ),
               const SizedBox(height: 24.0),
               ReactiveValueListenableBuilder<double>(
