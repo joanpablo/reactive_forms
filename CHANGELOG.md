@@ -1,3 +1,12 @@
+# 10.3.0
+
+## Features
+- Add method in FormGroup that allows to remove a control by its name.
+
+## Enhances
+- Add missing extra properties to ReactiveRadioListTile and ReactiveRadio widgets.
+- Add a SliderIntValueAccessor that allows ReactiveSlider to bind to controls of type *int*.
+
 # 10.2.0
 
 ## Fix
