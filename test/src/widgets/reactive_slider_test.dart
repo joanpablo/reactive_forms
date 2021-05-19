@@ -108,5 +108,26 @@ void main() {
         expect(slider.onChanged != null, true);
       },
     );
+
+    testWidgets(
+      'IntValueAccessor selected when control is FormControl<int>',
+      (WidgetTester tester) async {
+        // Given: a form with an int control
+        final form = FormGroup({
+          'sliderValue': FormControl<int>(value: 10),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // When: get the state of the text field
+        final state = tester.allStates
+                .firstWhere((state) => state.widget is ReactiveSlider)
+            as ReactiveFormFieldState<num, double>;
+
+        // Then: the value accessor is IntValueAccessor
+        expect(state.valueAccessor, isInstanceOf<SliderIntValueAccessor>());
+      },
+    );
   });
 }

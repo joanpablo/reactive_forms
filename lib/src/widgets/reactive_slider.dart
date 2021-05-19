@@ -17,7 +17,7 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 ///
 /// For documentation about the various parameters, see the [Slider] class
 /// and [new Slider], the constructor.
-class ReactiveSlider extends ReactiveFormField<double, double> {
+class ReactiveSlider extends ReactiveFormField<num, double> {
   /// Creates an instance os a [ReactiveSlider].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -33,7 +33,7 @@ class ReactiveSlider extends ReactiveFormField<double, double> {
   ReactiveSlider({
     Key? key,
     String? formControlName,
-    FormControl<double>? formControl,
+    FormControl<num>? formControl,
     double min = 0.0,
     double max = 1.0,
     int? divisions,
@@ -47,7 +47,7 @@ class ReactiveSlider extends ReactiveFormField<double, double> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<double, double> field) {
+          builder: (ReactiveFormFieldState<num, double> field) {
             var value = field.value;
             if (value == null) {
               value = min;
@@ -76,6 +76,16 @@ class ReactiveSlider extends ReactiveFormField<double, double> {
         );
 
   @override
-  ReactiveFormFieldState<double, double> createState() =>
-      ReactiveFormFieldState<double, double>();
+  ReactiveFormFieldState<num, double> createState() => _ReactiveSliderState();
+}
+
+class _ReactiveSliderState extends ReactiveFormFieldState<num, double> {
+  @override
+  ControlValueAccessor<num, double> selectValueAccessor() {
+    if (control is FormControl<int>) {
+      return SliderIntValueAccessor();
+    }
+
+    return super.selectValueAccessor();
+  }
 }

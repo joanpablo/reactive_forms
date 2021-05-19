@@ -1462,6 +1462,25 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
     }
   }
 
+  /// Remove a control from this group given the [name] of the control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* emit events with the latest status
+  /// and value when the control is reset. When false, no events are emitted.
+  void removeControl(String name,
+      {bool updateParent = true, bool emitEvent = true}) {
+    if (!_controls.containsKey(name)) {
+      throw FormControlNotFoundException(controlName: name);
+    }
+
+    _controls.removeWhere((key, value) => key == name);
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+  }
+
   @override
   void _forEachChild(void Function(AbstractControl<dynamic>) callback) {
     _controls.forEach((name, control) => callback(control));

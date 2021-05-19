@@ -826,5 +826,40 @@ void main() {
       // Expect: raw value includes disabled controls
       expect(form.rawValue, {'name': 'Reactive', 'email': 'Forms'});
     });
+
+    test('Remove control from FormGroup', () {
+      // Given: a form with a two controls
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'Reactive'),
+        'email': FormControl<String>(value: 'Forms'),
+      });
+
+      // Expect: form has all controls
+      expect(form.controls.length, 2);
+      expect(form.controls.containsKey('name'), true);
+      expect(form.controls.containsKey('email'), true);
+
+      // When: remove the email control
+      form.removeControl('email');
+
+      // Then: controls does not have the email control
+      expect(form.controls.length, 1);
+      expect(form.controls.containsKey('name'), true);
+      expect(form.controls.containsKey('email'), false);
+    });
+
+    test('Remove control that does not exists throws exception', () {
+      // Given: a form with a two controls
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'Reactive'),
+        'email': FormControl<String>(value: 'Forms'),
+      });
+
+      // When: remove a control that does not exists
+      final remove = () => form.removeControl('some other control');
+
+      // Then: controls does not have the email control
+      expect(remove, throwsA(isInstanceOf<FormControlNotFoundException>()));
+    });
   });
 }
