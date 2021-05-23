@@ -21,6 +21,8 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 /// A [ReactiveForm] ancestor is required.
 ///
 class ReactiveTextField<T> extends ReactiveFormField<T, String> {
+  final FocusNode? focusNode;
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -128,7 +130,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     InputCounterWidgetBuilder? buildCounter,
     ScrollPhysics? scrollPhysics,
     VoidCallback? onSubmitted,
-    FocusNode? focusNode,
+    this.focusNode,
     Iterable<String>? autofillHints,
     MouseCursor? mouseCursor,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
@@ -145,12 +147,10 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
           valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState<T, String> field) {
+          builder: (field) {
             final state = field as _ReactiveTextFieldState<T>;
             final effectiveDecoration = decoration
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
-
-            state._setFocusNode(focusNode);
 
             return TextField(
               controller: state._textController,
@@ -221,10 +221,12 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
 
 class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   late TextEditingController _textController;
-  FocusNode? _focusNode;
   late FocusController _focusController;
 
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+  @override
+  ReactiveTextField<T> get widget => super.widget as ReactiveTextField<T>;
+
+  FocusNode get focusNode => widget.focusNode ?? _focusController.focusNode;
 
   @override
   void initState() {
@@ -233,6 +235,8 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
     final initialValue = value;
     _textController = TextEditingController(
         text: initialValue == null ? '' : initialValue.toString());
+
+    _registerFocusController(FocusController(focusNode: widget.focusNode));
   }
 
   @override
@@ -282,18 +286,5 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   void _unregisterFocusController() {
     control.unregisterFocusController(_focusController);
     _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode == focusNode) {
-      return;
-    } else if (focusNode == null && _focusNode != null) {
-      _focusNode = null;
-    } else if (focusNode != null && _focusNode == null) {
-      _focusNode = focusNode;
-    }
-
-    _unregisterFocusController();
-    _registerFocusController(FocusController(focusNode: _focusNode));
   }
 }

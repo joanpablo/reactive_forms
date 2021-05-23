@@ -1,3 +1,8 @@
+# 10.3.1
+
+## Enhances
+- simplified focus node adding for TextField
+
 # 10.3.0
 
 ## Features
