@@ -190,8 +190,7 @@ class Validators {
     String compareControlName,
     CompareOption compareOption,
   ) {
-    return CompareValidator<dynamic>(
-            controlName, compareControlName, compareOption)
+    return CompareValidator(controlName, compareControlName, compareOption)
         .validate;
   }
 

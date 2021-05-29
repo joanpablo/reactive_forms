@@ -1,3 +1,9 @@
+# 10.4.0
+
+## Fix
+- Add Flutter sdk version restriction in pubspec.yaml file.
+- Fix **Validators.compare** in release mode that has different behavior from debug mode.
+
 # 10.3.0
 
 ## Features
