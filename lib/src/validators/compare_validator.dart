@@ -5,7 +5,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Represents a [FormGroup] validator that compares two controls in the group.
-class CompareValidator<T> extends Validator<dynamic> {
+class CompareValidator extends Validator<dynamic> {
   final String controlName;
   final String compareControlName;
   final CompareOption compareOption;
@@ -37,22 +37,39 @@ class CompareValidator<T> extends Validator<dynamic> {
       }
     };
 
-    if (mainControl.value is! Comparable<T> || compareControl.value is! T) {
-      return error;
-    }
-
-    if (_meetsComparison(
-        mainControl.value as Comparable<T>, compareControl.value as T)) {
-      mainControl.removeError(ValidationMessage.compare);
-    } else {
+    if (compareOption == CompareOption.equal &&
+        mainControl.isNull &&
+        compareControl.isNull) {
+      return null;
+    } else if (mainControl.isNull || compareControl.isNull) {
       mainControl.setErrors(error);
-      mainControl.markAsTouched();
+      return null;
+    } else if (mainControl.value is! Comparable<dynamic>) {
+      throw ValidatorException(
+          'Control "$controlName" must be of type "Comparable"');
     }
 
-    return null;
+    try {
+      final meetsComparison = _meetsComparison(
+        mainControl.value as Comparable<dynamic>,
+        compareControl.value,
+      );
+
+      if (meetsComparison) {
+        mainControl.removeError(ValidationMessage.compare);
+      } else {
+        mainControl.setErrors(error);
+        mainControl.markAsTouched();
+      }
+
+      return null;
+    } on TypeError {
+      throw ValidatorException(
+          'Can\'t compare control "$controlName" of type "${mainControl.value.runtimeType}" with the control "$compareControlName" of type ${compareControl.value.runtimeType}');
+    }
   }
 
-  bool _meetsComparison(Comparable<T> value, T compareValue) {
+  bool _meetsComparison(Comparable<dynamic> value, dynamic compareValue) {
     switch (compareOption) {
       case CompareOption.lower:
         return value.compareTo(compareValue) < 0;
