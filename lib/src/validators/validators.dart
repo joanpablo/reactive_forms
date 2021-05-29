@@ -183,7 +183,7 @@ class Validators {
   /// final form = fb.group({
   ///   'amount': 20.00,
   ///   'balance': 50.00,
-  /// }, [Validators.compare('amount', 'balance', CompareOption.lower_or_equals)]);
+  /// }, [Validators.compare('amount', 'balance', CompareOption.lowerOrEquals)]);
   /// ```
   static ValidatorFunction compare(
     String controlName,
