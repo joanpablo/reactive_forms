@@ -66,7 +66,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
     this.showErrors,
     this.validationMessages,
     required ReactiveFormFieldBuilder<ModelDataType, ViewDataType> builder,
-  })   : assert(
+  })  : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
             'Must provide a formControlName or a formControl, but not both at the same time.'),
