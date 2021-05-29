@@ -193,14 +193,87 @@ void main() {
     test('Compare null DateTime values', () {
       // Given: an invalid form
       final form = fb.group({
-        'expedition': fb.control<DateTime?>(null),
-        'expiration': fb.control<DateTime?>(null),
+        'expedition': FormControl<DateTime>(),
+        'expiration': FormControl<DateTime>(),
       }, [
         Validators.compare('expedition', 'expiration', CompareOption.lower),
       ]);
 
       // Expect: form is invalid
-      expect(form.valid, false);
+      expect(form.invalid, true);
+    });
+
+    test('Compare with different data types throws exception', () {
+      // Given: an invalid form
+      final form = () => fb.group({
+            'value1': fb.control<int>(0),
+            'value2': fb.control<String>('10'),
+          }, [
+            Validators.compare('value1', 'value2', CompareOption.lowerOrEqual),
+          ]);
+
+      // Expect: form is invalid
+      expect(form, throwsA(isInstanceOf<ValidatorException>()));
+    });
+
+    test('Compare with equals null values', () {
+      // Given: a form with null values
+      final form = fb.group({
+        'value1': FormControl<int>(),
+        'value2': FormControl<int>(),
+      }, [
+        Validators.compare('value1', 'value2', CompareOption.equal),
+      ]);
+
+      // Expect: form is valid
+      expect(form.valid, true);
+    });
+
+    test('Compare with control null return invalid', () {
+      // Given: a form with null values
+      final form = fb.group({
+        'value1': FormControl<int>(),
+        'value2': FormControl<int>(value: 10),
+      }, [
+        Validators.compare('value1', 'value2', CompareOption.equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.invalid, true);
+      expect(form.control('value1').hasError(ValidationMessage.compare), true);
+    });
+
+    test('Compare with the other control null return invalid', () {
+      // Given: a form with null values
+      final form = fb.group({
+        'value1': FormControl<int>(value: 10),
+        'value2': FormControl<int>(),
+      }, [
+        Validators.compare('value1', 'value2', CompareOption.equal),
+      ]);
+
+      // Expect: form is invalid
+      expect(form.invalid, true);
+      expect(form.control('value1').hasError(ValidationMessage.compare), true);
+    });
+
+    test('Compare with not comparable data type', () {
+      // Given: a form with null values
+      final form = () => fb.group({
+            'value1': FormControl<NotComparableClass>(
+              value: NotComparableClass(),
+            ),
+            'value2': FormControl<NotComparableClass>(
+              value: NotComparableClass(),
+            ),
+          }, [
+            Validators.compare('value1', 'value2', CompareOption.equal),
+          ]);
+
+      // Expect: form is invalid
+      expect(form, throwsA(isInstanceOf<ValidatorException>()));
     });
   });
 }
+
+class NotComparableClass {}
