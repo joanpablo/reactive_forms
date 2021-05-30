@@ -285,15 +285,10 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   }
 
   void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode == focusNode) {
-      return;
-    } else if (focusNode == null && _focusNode != null) {
-      _focusNode = null;
-    } else if (focusNode != null && _focusNode == null) {
+    if (_focusNode != focusNode) {
       _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
     }
-
-    _unregisterFocusController();
-    _registerFocusController(FocusController(focusNode: _focusNode));
   }
 }
