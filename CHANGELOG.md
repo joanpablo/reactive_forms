@@ -1,3 +1,8 @@
+# 10.4.1
+
+## Enhances
+- Add minor internal changes for handling focus node in reactive text fields.
+
 # 10.4.0
 
 ## Fix
