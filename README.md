@@ -1176,12 +1176,18 @@ We are trying to keep `reactive_forms` from bloating with third party dependenci
 a separate library [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets) which is under construction yet that provides
 a variety of more advanced field widgets. To know more about how to install it please visit the library repo and read the documentation about the widgets it contains.
 
-- ReactiveDateTimePicker
-- ReactiveDropdownSearch
-- ReactiveTouchSpin
-- ReactiveSegmentedControl
-- ReactiveImagePicker
-- ReactiveDateRangePicker
+- **[ReactiveAdvancedSwitch](https://pub.dev/packages/reactive_advanced_switch)** - wrapper around [`flutter_advanced_switch`](https://pub.dev/packages/flutter_advanced_switch)
+- **[ReactiveDateRangePicker](https://pub.dev/packages/reactive_date_range_picker)** - wrapper around [`showDateRangePicker`](https://api.flutter.dev/flutter/material/showDateRangePicker.html)
+- **[ReactiveDateTimePicker](https://pub.dev/packages/reactive_date_time_picker)** - wrapper around [`showDatePicker`](https://api.flutter.dev/flutter/material/showDatePicker.html) and [`showTimePicker`](https://api.flutter.dev/flutter/material/showTimePicker.html)
+- **[ReactiveDropdownSearch](https://pub.dev/packages/reactive_dropdown_search)** - wrapper around [`dropdown_search`](https://pub.dev/packages/dropdown_search)
+- **[ReactiveFilePicker](https://pub.dev/packages/reactive_file_picker)** - wrapper around [`file_picker`](https://pub.dev/packages/file_picker)
+- **[ReactiveImagePicker](https://pub.dev/packages/reactive_image_picker)** - wrapper around [`image_picker`](https://pub.dev/packages/image_picker)
+- **[ReactiveMultiImagePicker](https://pub.dev/packages/reactive_multi_image_picker)** - wrapper around [`multi_image_picker`](https://pub.dev/packages/multi_image_picker)
+- **[ReactiveSegmentedControl](https://pub.dev/packages/reactive_segmented_control)** - wrapper around [`CupertinoSegmentedControl`](https://api.flutter.dev/flutter/cupertino/CupertinoSegmentedControl-class.html)
+- **[ReactiveSignature](https://pub.dev/packages/reactive_signature)** - wrapper around [`signature`](https://pub.dev/packages/signature)
+- **[ReactiveTouchSpin](https://pub.dev/packages/reactive_touch_spin)** - wrapper around [`flutter_touch_spin`](https://pub.dev/packages/flutter_touch_spin)
+- **[ReactiveRangeSlider](https://pub.dev/packages/reactive_range_slider)** - wrapper around [`RangeSlider`](https://api.flutter.dev/flutter/material/RangeSlider-class.html)
+- **[ReactiveRangeSlider](https://pub.dev/packages/reactive_sleek_circular_slider)** - wrapper around [`sleek_circular_slider`](https://pub.dev/packages/sleek_circular_slider)
 
 ### ReactiveTextField
 
