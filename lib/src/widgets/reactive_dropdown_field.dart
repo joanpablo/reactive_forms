@@ -48,6 +48,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     Color? dropdownColor,
     Color? focusColor,
     Widget? underline,
+    bool autofocus = false,
+    double? menuMaxHeight,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
@@ -111,6 +113,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   dropdownColor: dropdownColor,
                   focusColor: focusColor,
                   underline: underline,
+                  autofocus: autofocus,
+                  menuMaxHeight: menuMaxHeight,
                 ),
               ),
             );

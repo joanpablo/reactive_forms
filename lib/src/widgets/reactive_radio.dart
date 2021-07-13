@@ -64,6 +64,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
               visualDensity: visualDensity,
               autofocus: autofocus,
               toggleable: toggleable,
+              // focusNode: focusNode - requires more time
             );
           },
         );

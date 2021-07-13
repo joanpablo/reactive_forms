@@ -33,6 +33,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     Widget? title,
     Widget? subtitle,
     bool isThreeLine = false,
+    bool selected = false,
     bool? dense,
     Widget? secondary,
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
@@ -64,6 +65,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               selectedTileColor: selectedTileColor,
               tileColor: tileColor,
               shape: shape,
+              selected: selected,
             );
           },
         );

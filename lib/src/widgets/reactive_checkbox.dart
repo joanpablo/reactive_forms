@@ -59,6 +59,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               fillColor: fillColor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
+              // focusNode: focusNode - requires more time
             );
           },
         );
