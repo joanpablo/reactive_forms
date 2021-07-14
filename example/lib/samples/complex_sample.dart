@@ -4,7 +4,7 @@ import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
 class ComplexSample extends StatelessWidget {
-  FormGroup buildForm() => fb.group(<String, dynamic>{
+  FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
           asyncValidators: [_uniqueEmail],
@@ -124,13 +124,13 @@ class ComplexSample extends StatelessWidget {
                 formControlName: 'progress',
                 builder: (context, control, child) => Text(control.isNull
                     ? 'Progress not set'
-                    : 'Progress set to ${control.value.toStringAsFixed(2)}%'),
+                    : 'Progress set to ${control.value?.toStringAsFixed(2)}%'),
               ),
               ReactiveSlider(
                 formControlName: 'progress',
                 max: 100,
                 divisions: 100,
-                labelBuilder: (double value) => '${value?.toStringAsFixed(2)}%',
+                labelBuilder: (double value) => '${value.toStringAsFixed(2)}%',
               ),
               const SizedBox(height: 24.0),
               ReactiveTextField<double>(
@@ -192,7 +192,7 @@ const inUseEmails = ['johndoe@email.com', 'john@email.com'];
 
 /// Async validator example that simulates a request to a server
 /// to validate if the email of the user is unique.
-Future<Map<String, dynamic>> _uniqueEmail(
+Future<Map<String, dynamic>?> _uniqueEmail(
     AbstractControl<dynamic> control) async {
   final error = {'unique': false};
 

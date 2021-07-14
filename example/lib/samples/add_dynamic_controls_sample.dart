@@ -6,11 +6,11 @@ class ViewModelProvider extends InheritedWidget {
   final NewContactViewModel viewModel;
 
   ViewModelProvider({
-    @required this.viewModel,
-    @required Widget child,
+    required this.viewModel,
+    required Widget child,
   }) : super(child: child);
 
-  static NewContactViewModel of(BuildContext context) =>
+  static NewContactViewModel? of(BuildContext context) =>
       context.findAncestorWidgetOfExactType<ViewModelProvider>()?.viewModel;
 
   @override
@@ -20,7 +20,7 @@ class ViewModelProvider extends InheritedWidget {
 class NewContactViewModel {
   static const String kPhones = 'phones';
 
-  final form = fb.group(<String, dynamic>{
+  final form = fb.group(<String, Object>{
     kPhones: fb.array<String>(<String>['']),
   });
 
@@ -48,11 +48,16 @@ class AddDynamicControlsSample extends StatelessWidget {
         child: Builder(
           builder: (context) {
             final viewModel = ViewModelProvider.of(context);
+            final form = viewModel?.form;
+
+            if (form == null) {
+              return Container();
+            }
 
             return ReactiveForm(
-              formGroup: viewModel.form,
+              formGroup: form,
               child: ReactiveFormArray(
-                formArray: viewModel.phones,
+                formArray: viewModel?.phones,
                 builder: (context, array, child) {
                   return Column(
                     children: [
