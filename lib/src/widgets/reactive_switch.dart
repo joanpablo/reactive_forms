@@ -49,6 +49,11 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     Color? focusColor,
     Color? hoverColor,
     bool autofocus = false,
+    MaterialStateProperty<Color?>? thumbColor,
+    MaterialStateProperty<Color?>? trackColor,
+    MouseCursor? mouseCursor,
+    MaterialStateProperty<Color?>? overlayColor,
+    double? splashRadius,
   }) : super(
           key: key,
           formControl: formControl,
@@ -70,6 +75,12 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               focusColor: focusColor,
               hoverColor: hoverColor,
               autofocus: autofocus,
+              thumbColor: thumbColor,
+              trackColor: trackColor,
+              mouseCursor: mouseCursor,
+              overlayColor: overlayColor,
+              splashRadius: splashRadius,
+              // focusNode: focusNode - requires more time
             );
           },
         );
@@ -110,6 +121,12 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     Color? focusColor,
     Color? hoverColor,
+    bool autofocus = false,
+    MaterialStateProperty<Color?>? thumbColor,
+    MaterialStateProperty<Color?>? trackColor,
+    MaterialStateProperty<Color?>? overlayColor,
+    MouseCursor? mouseCursor,
+    double? splashRadius,
   }) : super(
           key: key,
           formControl: formControl,
@@ -130,6 +147,13 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               dragStartBehavior: dragStartBehavior,
               focusColor: focusColor,
               hoverColor: hoverColor,
+              thumbColor: thumbColor,
+              trackColor: trackColor,
+              mouseCursor: mouseCursor,
+              overlayColor: overlayColor,
+              splashRadius: splashRadius,
+              autofocus: autofocus,
+              // focusNode: focusNode - requires more time
             );
           },
         );

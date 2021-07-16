@@ -43,6 +43,8 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
     SemanticFormatterCallback? semanticFormatterCallback,
     ValueChanged<double>? onChangeEnd,
     ValueChanged<double>? onChangeStart,
+    bool autofocus = false,
+    MouseCursor? mouseCursor,
   }) : super(
           key: key,
           formControl: formControl,
@@ -71,6 +73,9 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
               semanticFormatterCallback: semanticFormatterCallback,
               onChangeEnd: onChangeEnd,
               onChangeStart: onChangeStart,
+              mouseCursor: mouseCursor,
+              autofocus: autofocus,
+              // focusNode: focusNode - requires more time
             );
           },
         );

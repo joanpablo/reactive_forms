@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
 class SimpleSample extends StatelessWidget {
-  FormGroup get form => fb.group(<String, dynamic>{
+  FormGroup get form => fb.group(<String, Object>{
         'name': ['', Validators.required],
         'sendNotifications': [false, Validators.required],
       });

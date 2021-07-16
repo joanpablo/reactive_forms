@@ -5,10 +5,8 @@ import 'package:reactive_forms_example/samples/complex_sample.dart';
 import 'package:reactive_forms_example/samples/date_picker_sample.dart';
 import 'package:reactive_forms_example/samples/disable_form_sample.dart';
 import 'package:reactive_forms_example/samples/login_sample.dart';
+import 'package:reactive_forms_example/samples/reactive_form_widgets_sample.dart';
 import 'package:reactive_forms_example/samples/simple_sample.dart';
-
-// TODO: update advance reactive widgets library to use latest version of Reactive Forms
-//import 'samples/reactive_form_widgets_sample.dart';
 
 void main() {
   runApp(ReactiveFormsApp());
@@ -45,8 +43,7 @@ class ReactiveFormsApp extends StatelessWidget {
         Routes.arraySample: (_) => ArraySample(),
         Routes.loginSample: (_) => LoginSample(),
         Routes.datePickerSample: (_) => DatePickerSample(),
-        // TODO: update advance reactive widgets library to use latest version of Reactive Forms
-        //Routes.reactiveFormWidgets: (_) => ReactiveFormWidgetsSample(),
+        Routes.reactiveFormWidgets: (_) => ReactiveFormWidgetsSample(),
       },
     );
   }

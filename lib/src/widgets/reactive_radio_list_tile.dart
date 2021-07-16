@@ -42,6 +42,8 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
     EdgeInsetsGeometry? contentPadding,
     bool toggleable = false,
     ShapeBorder? shape,
+    bool autofocus = false,
+    bool selected = false,
   }) : super(
           key: key,
           formControl: formControl,
@@ -63,6 +65,8 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
               contentPadding: contentPadding,
               toggleable: toggleable,
               shape: shape,
+              selected: selected,
+              autofocus: autofocus,
             );
           },
         );

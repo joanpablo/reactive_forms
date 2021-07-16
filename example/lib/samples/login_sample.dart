@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
 class LoginSample extends StatelessWidget {
-  FormGroup buildForm() => fb.group(<String, dynamic>{
+  FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
         ),
