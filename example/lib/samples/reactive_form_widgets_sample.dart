@@ -1,12 +1,13 @@
-// TODO: update advance reactive widgets library to use latest version of Reactive Forms
+import 'package:flutter/material.dart' hide ProgressIndicator;
+import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
+import 'package:reactive_dropdown_search/reactive_dropdown_search.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms_example/sample_screen.dart';
+import 'package:reactive_segmented_control/reactive_segmented_control.dart';
+import 'package:reactive_touch_spin/reactive_touch_spin.dart';
 
-//import 'package:flutter/material.dart' hide ProgressIndicator;
-//import 'package:reactive_forms/reactive_forms.dart';
-//import 'package:reactive_forms_example/sample_screen.dart';
-//import 'package:reactive_forms_widgets/reactive_forms_widgets.dart';
-
-/*class ReactiveFormWidgetsSample extends StatelessWidget {
-  FormGroup buildForm() => fb.group(<String, dynamic>{
+class ReactiveFormWidgetsSample extends StatelessWidget {
+  FormGroup buildForm() => fb.group(<String, Object>{
         'menu': FormControl<String>(value: 'Tunisia'),
         'bottomSheet': FormControl<String>(value: 'Brazil'),
         'touchSpin': FormControl<double>(value: 10),
@@ -32,7 +33,7 @@
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   border: OutlineInputBorder(),
                 ),
-                mode: ReactiveDropdownSearchMode.MENU,
+                mode: Mode.MENU,
                 hint: 'Select a country',
                 showSelectedItem: true,
                 items: ['Brazil', 'Italia (Disabled)', 'Tunisia', 'Canada'],
@@ -43,7 +44,7 @@
               const SizedBox(height: 8),
               ReactiveDropdownSearch<String>(
                 formControlName: 'bottomSheet',
-                mode: ReactiveDropdownSearchMode.BOTTOM_SHEET,
+                mode: Mode.BOTTOM_SHEET,
                 decoration: const InputDecoration(
                   helperText: '',
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
@@ -81,7 +82,7 @@
                 ),
               ),
               const SizedBox(height: 8),
-              ReactiveTouchSpin<double>(
+              ReactiveTouchSpin(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,
@@ -91,35 +92,6 @@
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   labelText: 'Search amount',
-                  helperText: '',
-                ),
-              ),
-              const SizedBox(height: 8),
-              ReactiveTouchSpin<double>(
-                formControlName: 'touchSpin',
-                min: 5,
-                max: 100,
-                step: 5,
-                textStyle: const TextStyle(fontSize: 18),
-                decoration: const InputDecoration(
-                  border: BoxDecorationBorder(
-                      decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0, 2),
-                        blurRadius: 7,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  )),
-                  contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-                  labelText: 'BoxDecoration border',
                   helperText: '',
                 ),
               ),
@@ -188,4 +160,3 @@
     );
   }
 }
-*/
