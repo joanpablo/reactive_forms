@@ -1,4 +1,4 @@
-# 10.4.2
+# 10.5.0
 
 ## Enhances
 - Added missing props pass through for widgets.
