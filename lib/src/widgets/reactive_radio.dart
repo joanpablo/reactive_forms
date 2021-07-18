@@ -36,9 +36,14 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
     Color? activeColor,
     Color? focusColor,
     Color? hoverColor,
+    MaterialStateProperty<Color?>? fillColor,
+    MaterialStateProperty<Color?>? overlayColor,
+    MouseCursor? mouseCursor,
     MaterialTapTargetSize? materialTapTargetSize,
     VisualDensity? visualDensity,
+    double? splashRadius,
     bool autofocus = false,
+    bool toggleable = false,
   }) : super(
           key: key,
           formControl: formControl,
@@ -51,9 +56,15 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
               activeColor: activeColor,
               focusColor: focusColor,
               hoverColor: hoverColor,
+              fillColor: fillColor,
+              overlayColor: overlayColor,
+              mouseCursor: mouseCursor,
+              splashRadius: splashRadius,
               materialTapTargetSize: materialTapTargetSize,
               visualDensity: visualDensity,
               autofocus: autofocus,
+              toggleable: toggleable,
+              // focusNode: focusNode - requires more time
             );
           },
         );

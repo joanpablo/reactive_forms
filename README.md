@@ -2,7 +2,7 @@
 
 This is a model-driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
-![Pub Version](https://img.shields.io/pub/v/reactive_forms) ![GitHub](https://img.shields.io/github/license/joanpablo/reactive_forms) ![GitHub top language](https://img.shields.io/github/languages/top/joanpablo/reactive_forms) ![flutter tests](https://github.com/joanpablo/reactive_forms/workflows/reactive_forms/badge.svg?branch=master) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a4e40d632feb41b5af624cbd36064c83)](https://www.codacy.com/manual/joanpablo/reactive_forms?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=joanpablo/reactive_forms&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/joanpablo/reactive_forms/branch/master/graph/badge.svg)](https://codecov.io/gh/joanpablo/reactive_forms)
+[![Pub Version](https://img.shields.io/pub/v/reactive_forms)](https://pub.dev/packages/reactive_forms) ![GitHub](https://img.shields.io/github/license/joanpablo/reactive_forms) ![GitHub top language](https://img.shields.io/github/languages/top/joanpablo/reactive_forms) ![flutter tests](https://github.com/joanpablo/reactive_forms/workflows/reactive_forms/badge.svg?branch=master) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a4e40d632feb41b5af624cbd36064c83)](https://www.codacy.com/manual/joanpablo/reactive_forms?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=joanpablo/reactive_forms&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/joanpablo/reactive_forms/branch/master/graph/badge.svg)](https://codecov.io/gh/joanpablo/reactive_forms)
 
 ## Table of Contents
 
@@ -61,7 +61,10 @@ samples, guidance on mobile development, and a full API reference.
 ## Minimum Requirements
 
 - Dart SDK: >=2.12.0 <3.0.0
-- Flutter: >= 1.20.0
+- Flutter: >= 2.2.0
+
+> For using **Reactive Forms** in projects below Flutter 2.2.0 please use the version <= 10.2.0 of 
+> **Reactive Forms**.
 
 > For using **Reactive Forms** in projects with Flutter 1.17.0 please use the version 7.6.3 of 
 > **Reactive Forms**.
@@ -78,7 +81,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^10.2.0
+  reactive_forms: ^10.5.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -1173,12 +1176,26 @@ We are trying to keep `reactive_forms` from bloating with third party dependenci
 a separate library [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets) which is under construction yet that provides
 a variety of more advanced field widgets. To know more about how to install it please visit the library repo and read the documentation about the widgets it contains.
 
-- ReactiveDateTimePicker
-- ReactiveDropdownSearch
-- ReactiveTouchSpin
-- ReactiveSegmentedControl
-- ReactiveImagePicker
-- ReactiveDateRangePicker
+- **[ReactiveAdvancedSwitch](https://pub.dev/packages/reactive_advanced_switch)** - wrapper around [`flutter_advanced_switch`](https://pub.dev/packages/flutter_advanced_switch)
+- **[ReactiveDateRangePicker](https://pub.dev/packages/reactive_date_range_picker)** - wrapper around [showDateRangePicker](https://api.flutter.dev/flutter/material/showDateRangePicker.html)
+- **[ReactiveDateTimePicker](https://pub.dev/packages/reactive_date_time_picker)** - wrapper around [showDatePicker](https://api.flutter.dev/flutter/material/showDatePicker.html) and [showTimePicker](https://api.flutter.dev/flutter/material/showTimePicker.html)
+- **[ReactiveDropdownSearch](https://pub.dev/packages/reactive_dropdown_search)** - wrapper around [`dropdown_search`](https://pub.dev/packages/dropdown_search)
+- **[ReactiveFilePicker](https://pub.dev/packages/reactive_file_picker)** - wrapper around [`file_picker`](https://pub.dev/packages/file_picker)
+- **[ReactiveImagePicker](https://pub.dev/packages/reactive_image_picker)** - wrapper around [`image_picker`](https://pub.dev/packages/image_picker)
+- **[ReactiveMultiImagePicker](https://pub.dev/packages/reactive_multi_image_picker)** - wrapper around [`multi_image_picker`](https://pub.dev/packages/multi_image_picker)
+- **[ReactiveSegmentedControl](https://pub.dev/packages/reactive_segmented_control)** - wrapper around [`CupertinoSegmentedControl`](https://api.flutter.dev/flutter/cupertino/CupertinoSegmentedControl-class.html)
+- **[ReactiveSignature](https://pub.dev/packages/reactive_signature)** - wrapper around [`signature`](https://pub.dev/packages/signature)
+- **[ReactiveTouchSpin](https://pub.dev/packages/reactive_touch_spin)** - wrapper around [`flutter_touch_spin`](https://pub.dev/packages/flutter_touch_spin)
+- **[ReactiveRangeSlider](https://pub.dev/packages/reactive_range_slider)** - wrapper around [`RangeSlider`](https://api.flutter.dev/flutter/material/RangeSlider-class.html)
+- **[ReactiveSleekCircularSlider](https://pub.dev/packages/reactive_sleek_circular_slider)** - wrapper around [`sleek_circular_slider`](https://pub.dev/packages/sleek_circular_slider)
+- **[ReactiveCupertinoTextField](https://pub.dev/packages/reactive_cupertino_text_field)** - wrapper around [`CupertinoTextField`](https://api.flutter.dev/flutter/cupertino/CupertinoTextField-class.html)
+- **[ReactiveRatingBar](https://pub.dev/packages/reactive_flutter_rating_bar)** - wrapper around [`flutter_rating_bar`](https://pub.dev/packages/flutter_rating_bar)
+- **[ReactiveMacosUi](https://pub.dev/packages/reactive_macos_ui)** - wrapper around [`macos_ui`](https://pub.dev/packages/macos_ui)
+- **[ReactivePinPut](https://pub.dev/packages/reactive_pinput)** - wrapper around [`pinput`](https://pub.dev/packages/pinput)
+- **[ReactiveCupertinoSwitch](https://pub.dev/packages/reactive_cupertino_switch)** - wrapper around [`CupertinoSwitch`](https://api.flutter.dev/flutter/cupertino/CupertinoSwitch-class.html)
+- **[ReactivePinCodeTextField](https://pub.dev/packages/reactive_pin_code_fields)** - wrapper around [`pin_code_fields`](https://pub.dev/packages/pin_code_fields)
+- **[ReactiveSlidingSegmentedControl](https://pub.dev/packages/reactive_sliding_segmented)** - wrapper around [`CupertinoSlidingSegmentedControl`](https://api.flutter.dev/flutter/cupertino/CupertinoSlidingSegmentedControl-class.html)
+- **[ReactiveCupertinoSlider](https://pub.dev/packages/reactive_cupertino_slider)** - wrapper around [`CupertinoSlider`](https://api.flutter.dev/flutter/cupertino/CupertinoSlider-class.html)
 
 ### ReactiveTextField
 

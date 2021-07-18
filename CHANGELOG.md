@@ -1,3 +1,28 @@
+# 10.5.0
+
+## Enhances
+- Added missing props pass through for widgets.
+
+# 10.4.1
+
+## Enhances
+- Add minor internal changes for handling focus node in reactive text fields.
+
+# 10.4.0
+
+## Fix
+- Add Flutter sdk version restriction in pubspec.yaml file.
+- Fix **Validators.compare** in release mode that has different behavior from debug mode.
+
+# 10.3.0
+
+## Features
+- Add method in FormGroup that allows to remove a control by its name.
+
+## Enhances
+- Add missing extra properties to ReactiveRadioListTile and ReactiveRadio widgets.
+- Add a SliderIntValueAccessor that allows ReactiveSlider to bind to controls of type *int*.
+
 # 10.2.0
 
 ## Fix

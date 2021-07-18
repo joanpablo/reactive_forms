@@ -116,6 +116,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     bool expands = false,
     int? maxLength,
     GestureTapCallback? onTap,
+    VoidCallback? onEditingComplete,
     List<TextInputFormatter>? inputFormatters,
     double cursorWidth = 2.0,
     double? cursorHeight,
@@ -187,6 +188,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               onChanged: field.didChange,
               onTap: onTap,
               onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
+              onEditingComplete: onEditingComplete,
               inputFormatters: inputFormatters,
               enabled: field.control.enabled,
               cursorWidth: cursorWidth,
@@ -283,15 +285,10 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   }
 
   void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode == focusNode) {
-      return;
-    } else if (focusNode == null && _focusNode != null) {
-      _focusNode = null;
-    } else if (focusNode != null && _focusNode == null) {
+    if (_focusNode != focusNode) {
       _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
     }
-
-    _unregisterFocusController();
-    _registerFocusController(FocusController(focusNode: _focusNode));
   }
 }
