@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/value_accessors/unix_datetime_value_accessor.dart';
 
 /// A builder that builds a widget responsible to decide when to show
 /// the picker dialog.
@@ -162,12 +163,19 @@ class _ReactiveDatePickerState<T> extends ReactiveFormFieldState<T, DateTime> {
     if (control is FormControl<String>) {
       return Iso8601DateTimeValueAccessor()
           as ControlValueAccessor<T, DateTime>;
+    } else if (control is FormControl<int>) {
+      return UnixDateTimeValueAccessor<int>()
+          as ControlValueAccessor<T, DateTime>;
+    } else if (control is FormControl<double>) {
+      return UnixDateTimeValueAccessor<double>()
+          as ControlValueAccessor<T, DateTime>;
     } else if (control is FormControl<DateTime>) {
       return super.selectValueAccessor();
     }
 
     throw ValueAccessorException('Invalid widget binding. ReactiveDatePicker '
         'widget must be bound to a control that inherited from '
+        'AbstractControl<int> or AbstractControl<double> '
         'AbstractControl<String> or AbstractControl<DateTime>. '
         'Control of type: ${control.runtimeType} is not valid.');
   }
