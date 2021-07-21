@@ -205,7 +205,7 @@ void main() {
 
     test('Compare with different data types throws exception', () {
       // Given: an invalid form
-      final form = () => fb.group({
+      void form() => fb.group({
             'value1': fb.control<int>(0),
             'value2': fb.control<String>('10'),
           }, [
@@ -259,7 +259,7 @@ void main() {
 
     test('Compare with not comparable data type', () {
       // Given: a form with null values
-      final form = () => fb.group({
+      void form() => fb.group({
             'value1': FormControl<NotComparableClass>(
               value: NotComparableClass(),
             ),

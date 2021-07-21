@@ -355,7 +355,7 @@ void main() {
       form.dispose();
 
       // And: try to change value of children
-      final addValue = () => form.control('name').value = 'some';
+      void addValue() => form.control('name').value = 'some';
 
       // Then: state error
       expect(addValue, throwsStateError);
@@ -856,7 +856,7 @@ void main() {
       });
 
       // When: remove a control that does not exists
-      final remove = () => form.removeControl('some other control');
+      void remove() => form.removeControl('some other control');
 
       // Then: controls does not have the email control
       expect(remove, throwsA(isInstanceOf<FormControlNotFoundException>()));

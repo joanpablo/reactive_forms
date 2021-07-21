@@ -23,7 +23,7 @@ void main() {
       final array = FormArray([]);
 
       // Whe trying to remove a control that doesn't belong to array
-      final removeControl = () => array.remove(FormControl());
+      void removeControl() => array.remove(FormControl());
 
       // Then: exception is thrown
       expect(
