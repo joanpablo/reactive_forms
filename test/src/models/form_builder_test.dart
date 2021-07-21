@@ -216,7 +216,7 @@ void main() {
 
     test('Build a group with invalid configuration throws exception', () {
       // Given: a form group builder creation
-      final createGroup = () => fb.group({
+      void createGroup() => fb.group({
             'control': [Validators.required, ''],
           });
 
@@ -228,7 +228,7 @@ void main() {
     test('Build a group with invalid validators configuration throws exception',
         () {
       // Given: a form group builder creation
-      final createGroup = () => fb.group({
+      void createGroup() => fb.group({
             'control': ['', Validators.required, ''],
           });
 

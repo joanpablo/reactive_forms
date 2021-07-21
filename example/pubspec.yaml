@@ -37,7 +37,7 @@ dependencies:
   reactive_date_time_picker: ^0.1.3
 
 dev_dependencies:
-  pedantic: ^1.11.1
+  lints: ^1.0.1
   flutter_test:
     sdk: flutter
 

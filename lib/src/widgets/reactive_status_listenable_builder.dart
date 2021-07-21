@@ -47,13 +47,11 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     var control = formControl;
     if (control == null) {
-      final form = ReactiveForm.of(context, listen: false);
+      Object? form = ReactiveForm.of(context, listen: false);
       if (form is! FormControlCollection) {
         throw FormControlParentNotFoundException(this);
       }
-
-      final collection = form as FormControlCollection;
-      control = collection.control(formControlName!);
+      control = form.control(formControlName!);
     }
 
     return StreamBuilder<ControlStatus>(

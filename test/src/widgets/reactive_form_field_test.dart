@@ -8,7 +8,7 @@ void main() {
       'Assert Error if formControlName is null and formControl is null',
       (WidgetTester tester) async {
         // Given: a ReactiveFormField with formControlName in null
-        final reactiveFormField = () => ReactiveFormField(
+        void reactiveFormField() => ReactiveFormField(
               formControlName: null,
               formControl: null,
               builder: (_) => Container(),

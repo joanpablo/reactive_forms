@@ -388,10 +388,11 @@ void main() {
         // Given: a form with custom validator
         var isControlDirty = false;
 
-        final customValidator = (AbstractControl<dynamic> control) {
+        Map<String, dynamic>? customValidator(
+            AbstractControl<dynamic> control) {
           isControlDirty = control.dirty;
           return null;
-        };
+        }
 
         final form = FormGroup({
           'name': FormControl<String>(validators: [customValidator]),

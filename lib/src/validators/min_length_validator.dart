@@ -24,7 +24,7 @@ class MinLengthValidator extends Validator<dynamic> {
     List<dynamic>? collection;
 
     if (control is FormArray<dynamic>) {
-      collection = control.value!;
+      collection = control.value;
     } else if (control is FormGroup) {
       collection = control.value.keys.toList();
     } else if (control is FormControl<Iterable<dynamic>>) {

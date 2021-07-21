@@ -93,8 +93,7 @@ class FormBuilder {
           final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators
-                  .any((validator) => !(validator is ValidatorFunction))) {
+              validators.any((validator) => validator is! ValidatorFunction)) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
@@ -104,9 +103,8 @@ class FormBuilder {
                 'Expected first value in array to be default value of the control and not a validator.');
           }
 
-          final effectiveValidators = validators
-              .map<ValidatorFunction>((v) => v as ValidatorFunction)
-              .toList();
+          final effectiveValidators =
+              validators.cast<ValidatorFunction>().toList();
           final control = _control(defaultValue, effectiveValidators);
           return MapEntry(key, control as AbstractControl<Object>);
         }

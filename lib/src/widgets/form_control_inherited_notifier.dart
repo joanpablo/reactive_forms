@@ -13,13 +13,13 @@ import 'package:reactive_forms/src/widgets/inherited_streamer.dart';
 ///
 /// The [Listenable] is provided by the [notifierDelegate].
 ///
-class FormControlInheritedStreamer extends InheritedStreamer<dynamic> {
+class FormControlInheritedStreamer extends InheritedStreamer<Object?> {
   final AbstractControl<Object> control;
 
   FormControlInheritedStreamer({
     Key? key,
     required this.control,
-    required Stream<dynamic> stream,
+    required Stream<Object?> stream,
     required Widget child,
   }) : super(stream, child, key: key);
 }

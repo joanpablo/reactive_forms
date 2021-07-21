@@ -57,8 +57,8 @@ class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
       _formArray = widget.formArray!;
     } else {
       final form =
-          ReactiveForm.of(context, listen: false) as FormControlCollection;
-      _formArray = form.control(widget.formArrayName!) as FormArray<T>;
+          ReactiveForm.of(context, listen: false) as FormControlCollection?;
+      _formArray = form!.control(widget.formArrayName!) as FormArray<T>;
     }
     super.didChangeDependencies();
   }
@@ -72,6 +72,8 @@ class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
         builder: (context) {
           return widget.builder(
             context,
+            // We know this is safe!
+            // ignore: cast_nullable_to_non_nullable
             ReactiveForm.of(context) as FormArray<T>,
             widget.child,
           );
