@@ -1,0 +1,18 @@
+import 'package:reactive_forms_core/reactive_forms_core.dart';
+
+/// Evaluates a pattern using a [RegExp].
+class RegExpPatternEvaluator implements PatternEvaluator {
+  final RegExp regExp;
+
+  /// Constructs an instance of the class.
+  /// The argument [regExp] must not be null.
+  RegExpPatternEvaluator(this.regExp);
+
+  @override
+  bool hasMatch(String input) {
+    return regExp.hasMatch(input);
+  }
+
+  @override
+  String get pattern => regExp.pattern;
+}
