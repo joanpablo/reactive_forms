@@ -89,8 +89,8 @@ void main() {
     });
 
     test('Assert error if debounce time < 0', () {
-      final formControl =
-          () => FormControl<dynamic>(asyncValidatorsDebounceTime: -1);
+      void formControl() =>
+          FormControl<dynamic>(asyncValidatorsDebounceTime: -1);
       expect(formControl, throwsAssertionError);
     });
 
@@ -365,8 +365,9 @@ void main() {
       expect(formControl.asyncValidators.isEmpty, true);
 
       // When: setting new async validators
-      final asyncValidator =
-          (AbstractControl<dynamic> control) => Future.value(null);
+      Future<Map<String, dynamic>?> asyncValidator(
+              AbstractControl<dynamic> control) =>
+          Future.value(null);
       formControl.setAsyncValidators([asyncValidator]);
 
       // Then: a new async validator is added

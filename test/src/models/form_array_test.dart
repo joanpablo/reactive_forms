@@ -445,7 +445,7 @@ void main() {
       array.dispose();
 
       // And: try to change value of children
-      final addValue = () => array.control('0').value = 'some';
+      void addValue() => array.control('0').value = 'some';
 
       // Then: state error
       expect(addValue, throwsStateError);

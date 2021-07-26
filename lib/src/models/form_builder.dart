@@ -93,8 +93,7 @@ class FormBuilder {
           final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators
-                  .any((validator) => !(validator is ValidatorFunction))) {
+              validators.any((validator) => validator is! ValidatorFunction)) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
@@ -105,6 +104,8 @@ class FormBuilder {
           }
 
           final effectiveValidators = validators
+              // TODO handling should be optimized
+              // ignore: cast_nullable_to_non_nullable
               .map<ValidatorFunction>((v) => v as ValidatorFunction)
               .toList();
           final control = _control(defaultValue, effectiveValidators);
