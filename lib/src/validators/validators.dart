@@ -167,9 +167,64 @@ class Validators {
   /// [matchingControlName] have the same values.
   ///
   /// The arguments [controlName] and [matchingControlName] must not be null.
+  ///
+  /// If [markAsDirty] is true or not set (default) then the
+  /// [matchingControlName] will be marked as `dirty` if validator marks
+  /// it as invalid.
+  ///
+  /// By default, when the user changes the value of the [controlName] and
+  /// it is different from the value of the [matchingControlName] then this
+  /// last one is marked as INVALID, TOUCHED, and DIRTY, and the error will
+  /// be visible in the UI. You can change this behavior if you set
+  /// [markAsDirty] as `false`; then the [matchingControlName] will be marked
+  /// just as INVALID and TOUCHED.
+  ///
+  /// ## Example:
+  /// Shows validation error as soon as the user interacts with `password` or
+  /// `passwordConfirmation` widgets:
+  /// ```dart
+  /// final form = fb.group({
+  ///    'password': FormControl<String>(),
+  ///    'passwordConfirmation': FormControl<String>(),
+  /// }, [
+  ///    Validators.mustMatch('password', 'passwordConfirmation')
+  /// ]);
+  /// ```
+  /// ```dart
+  /// ...
+  /// ReactiveTextField(formControlName: 'password'),
+  /// ReactiveTextField(formControlName: 'passwordConfirmation'),
+  /// ...
+  /// ```
+  ///
+  /// ## Example:
+  /// Shows validation error only when the user interacts with the
+  /// `passwordConfirmation` widget:
+  /// ```dart
+  /// final form = fb.group({
+  ///    'password': FormControl<String>(),
+  ///    'passwordConfirmation': FormControl<String>(),
+  /// }, [
+  ///    Validators.mustMatch('password', 'passwordConfirmation', markAsDirty: false)
+  /// ]);
+  /// ```
+  /// ```dart
+  /// ...
+  /// ReactiveTextField(
+  ///    formControlName: 'password'
+  /// ),
+  /// ReactiveTextField(
+  ///    formControlName: 'passwordConfirmation',
+  ///    // show errors only if user interacts directly with the invalid control
+  ///    showErrors: (control) => control.invalid && control.dirty,
+  /// ),
+  /// ...
+  /// ```
   static ValidatorFunction mustMatch(
-      String controlName, String matchingControlName) {
-    return MustMatchValidator(controlName, matchingControlName).validate;
+      String controlName, String matchingControlName,
+      {bool markAsDirty = true}) {
+    return MustMatchValidator(controlName, matchingControlName, markAsDirty)
+        .validate;
   }
 
   /// Gets a [FormGroup] validator that compares two controls in the group.

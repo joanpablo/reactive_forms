@@ -32,5 +32,42 @@ void main() {
       expect(form.valid, true);
       expect(form.hasErrors, false);
     });
+
+    test('Must Match validator does not marks child as dirty', () {
+      // Given: a form definition
+      final form = FormGroup({
+        'password': FormControl<String>(),
+        'passwordConfirmation': FormControl<String>(),
+      }, validators: [
+        Validators.mustMatch('password', 'passwordConfirmation',
+            markAsDirty: false),
+      ]);
+
+      // When: set a value to the password control
+      final passwordConfirmation = form.control('passwordConfirmation');
+      passwordConfirmation.value = '1234';
+
+      // Then: passwordConfirmation control is not dirty
+      expect(form.control('passwordConfirmation').dirty, false,
+          reason: 'passwordConfirmation is dirty');
+    });
+
+    test('Must Match validator marks child as dirty by default', () {
+      // Given: a form definition
+      final form = FormGroup({
+        'password': FormControl<String>(),
+        'passwordConfirmation': FormControl<String>(),
+      }, validators: [
+        Validators.mustMatch('password', 'passwordConfirmation'),
+      ]);
+
+      // When: set a value to the password control
+      final passwordConfirmation = form.control('passwordConfirmation');
+      passwordConfirmation.value = '1234';
+
+      // Then: passwordConfirmation control is dirty
+      expect(form.control('passwordConfirmation').dirty, true,
+          reason: 'passwordConfirmation is not dirty');
+    });
   });
 }
