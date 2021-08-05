@@ -9,9 +9,11 @@ import 'package:reactive_forms/reactive_forms.dart';
 class MustMatchValidator extends Validator<dynamic> {
   final String controlName;
   final String matchingControlName;
+  final bool markAsDirty;
 
   /// Constructs an instance of [MustMatchValidator]
-  MustMatchValidator(this.controlName, this.matchingControlName);
+  MustMatchValidator(
+      this.controlName, this.matchingControlName, this.markAsDirty);
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
@@ -25,7 +27,7 @@ class MustMatchValidator extends Validator<dynamic> {
     final matchingFormControl = control.control(matchingControlName);
 
     if (formControl.value != matchingFormControl.value) {
-      matchingFormControl.setErrors(error);
+      matchingFormControl.setErrors(error, markAsDirty: markAsDirty);
       matchingFormControl.markAsTouched();
     } else {
       matchingFormControl.removeError(ValidationMessage.mustMatch);
