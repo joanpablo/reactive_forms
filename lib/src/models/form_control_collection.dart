@@ -48,7 +48,7 @@ abstract class FormControlCollection<T> {
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl<Object>? findControl(List<String> path) {
+  AbstractControl<Object>? findControlInCollection(List<String> path) {
     if (path.isEmpty) {
       return null;
     }
