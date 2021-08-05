@@ -5,6 +5,8 @@
 - Added optional argument to **Validators.mustMatch** that allows to define if we want to mark
   the _matchingControlName_ control as **DIRTY** when the control is invalid.
   See related [issue](https://github.com/joanpablo/reactive_forms/issues/199).
+  
+- Minor changes in model classes that allows to create custom AbstractControl implementations
 
 # 10.5.0
 
