@@ -276,9 +276,9 @@ void main() {
 
         // And: a onChanged callback
         var callbackCalled = false;
-        final onChanged = (String? value) {
+        void onChanged(String? value) {
           callbackCalled = true;
-        };
+        }
 
         // And: a widget that is bind to the form
         final items = ['true', 'false'];

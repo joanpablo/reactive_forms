@@ -30,7 +30,7 @@ void main() {
       final valueAccessor = DummyValueAccessor();
 
       // When: call updateModel before register a control
-      final updateModel = () => valueAccessor.updateModel(null);
+      void updateModel() => valueAccessor.updateModel(null);
 
       // Then: value accessor hold the instance of the control
       expect(updateModel, throwsA(isInstanceOf<ValueAccessorException>()));

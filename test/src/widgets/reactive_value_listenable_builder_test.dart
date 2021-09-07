@@ -60,7 +60,7 @@ void main() {
       'Assert error thrown if formControlName is null',
       (WidgetTester tester) async {
         // Given: a ReactiveValueListenableBuilder with null formControlName
-        final reactiveWidget = () => ReactiveValueListenableBuilder(
+        void reactiveWidget() => ReactiveValueListenableBuilder(
               formControlName: null,
               builder: (context, control, child) => Container(),
             );
@@ -74,7 +74,7 @@ void main() {
       'Assert error thrown if formControl is null',
       (WidgetTester tester) async {
         // Given: a ReactiveValueListenableBuilder with null formControlName
-        final reactiveWidget = () => ReactiveValueListenableBuilder(
+        void reactiveWidget() => ReactiveValueListenableBuilder(
               formControl: null,
               builder: (context, control, child) => Container(),
             );

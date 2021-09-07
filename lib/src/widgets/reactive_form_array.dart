@@ -57,6 +57,8 @@ class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
       _formArray = widget.formArray!;
     } else {
       final form =
+          // TODO handling should be optimized
+          // ignore: cast_nullable_to_non_nullable
           ReactiveForm.of(context, listen: false) as FormControlCollection;
       _formArray = form.control(widget.formArrayName!) as FormArray<T>;
     }
@@ -72,6 +74,9 @@ class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
         builder: (context) {
           return widget.builder(
             context,
+            // ReactiveForm.of(context) can not be null here
+            // so we can suppress the lint warning.
+            // ignore: cast_nullable_to_non_nullable
             ReactiveForm.of(context) as FormArray<T>,
             widget.child,
           );
