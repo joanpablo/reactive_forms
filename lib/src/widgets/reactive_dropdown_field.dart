@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
-class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
+class ReactiveDropdownField<T, V> extends ReactiveFormField<T, V> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -26,7 +26,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
-    required List<DropdownMenuItem<T>> items,
+    ControlValueAccessor<T, V>? valueAccessor,
+    required List<DropdownMenuItem<V>> items,
     ValidationMessagesFunction<T>? validationMessages,
     ShowErrorsFunction? showErrors,
     DropdownButtonBuilder? selectedItemBuilder,
@@ -44,7 +45,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     bool isExpanded = false,
     bool readOnly = false,
     double? itemHeight,
-    ValueChanged<T?>? onChanged,
     Color? dropdownColor,
     Color? focusColor,
     Widget? underline,
@@ -55,10 +55,11 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
-          builder: (ReactiveFormFieldState<T, T> field) {
-            final state = field as _ReactiveDropdownFieldState<T>;
+          builder: (field) {
+            final state = field as _ReactiveDropdownFieldState<T, V>;
 
             final effectiveDecoration = decoration.applyDefaults(
               Theme.of(field.context).inputDecorationTheme,
@@ -90,14 +91,12 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
               ),
               isEmpty: effectiveValue == null,
               child: DropdownButtonHideUnderline(
-                child: DropdownButton<T>(
+                child: DropdownButton<V>(
                   value: effectiveValue,
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: isDisabled
-                      ? null
-                      : (T? value) => state._onChanged(value, onChanged),
+                  onChanged: isDisabled ? null : field.didChange,
                   onTap: onTap,
                   disabledHint: effectiveDisabledHint,
                   elevation: elevation,
@@ -122,11 +121,11 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
         );
 
   @override
-  ReactiveFormFieldState<T, T> createState() =>
-      _ReactiveDropdownFieldState<T>();
+  ReactiveFormFieldState<T, V> createState() =>
+      _ReactiveDropdownFieldState<T, V>();
 }
 
-class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
+class _ReactiveDropdownFieldState<T, V> extends ReactiveFormFieldState<T, V> {
   final _focusController = FocusController();
 
   @override
@@ -140,12 +139,5 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
     control.unregisterFocusController(_focusController);
     _focusController.dispose();
     super.dispose();
-  }
-
-  void _onChanged(T? value, ValueChanged<T?>? callBack) {
-    didChange(value);
-    if (callBack != null) {
-      callBack(value);
-    }
   }
 }

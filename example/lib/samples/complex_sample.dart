@@ -3,6 +3,21 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
+class BoolValueAccessor extends ControlValueAccessor<bool, String> {
+  @override
+  String modelToViewValue(bool? modelValue) {
+    return (modelValue ?? false) ? 'Yes' : 'No';
+  }
+
+  @override
+  bool? viewToModelValue(String? viewValue) {
+    if (viewValue == 'Yes') {
+      return true;
+    }
+    return false;
+  }
+}
+
 class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
@@ -98,14 +113,15 @@ class ComplexSample extends StatelessWidget {
                   ReactiveCheckbox(formControlName: 'rememberMe'),
                 ],
               ),
-              ReactiveDropdownField<bool>(
+              ReactiveDropdownField<bool, String>(
                 formControlName: 'rememberMe',
                 decoration: const InputDecoration(
                   labelText: 'Want to stay logged in?',
                 ),
+                valueAccessor: BoolValueAccessor(),
                 items: [
-                  const DropdownMenuItem(value: true, child: Text('Yes')),
-                  const DropdownMenuItem(value: false, child: Text('No')),
+                  const DropdownMenuItem(value: 'Yes', child: Text('Yes')),
+                  const DropdownMenuItem(value: 'No', child: Text('No')),
                 ],
               ),
               ReactiveRadioListTile(

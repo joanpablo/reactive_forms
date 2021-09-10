@@ -267,41 +267,6 @@ void main() {
     );
 
     testWidgets(
-      'Set Dropdown on Changed callback',
-      (WidgetTester tester) async {
-        // Given: a form
-        final form = FormGroup({
-          'dropdown': FormControl<String>(),
-        });
-
-        // And: a onChanged callback
-        var callbackCalled = false;
-        void onChanged(String? value) {
-          callbackCalled = true;
-        }
-
-        // And: a widget that is bind to the form
-        final items = ['true', 'false'];
-        await tester.pumpWidget(ReactiveDropdownTestingWidget(
-          form: form,
-          items: items,
-          onChanged: onChanged,
-        ));
-
-        // When: callback on changed in widget
-        final dropdownType =
-            DropdownButton<String>(items: null, onChanged: null).runtimeType;
-        final dropdown = tester
-            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
-        dropdown.onChanged!('true');
-        await tester.pump();
-
-        // Then: callback is called
-        expect(callbackCalled, true);
-      },
-    );
-
-    testWidgets(
       'A disabled Dropdown uses selectedItemBuilder to show selected item',
       (WidgetTester tester) async {
         // Given: a form with disabled control
@@ -333,6 +298,35 @@ void main() {
 
         // Then: callback is called
         expect(dropdown.disabledHint, selectedItemBuilderList.elementAt(0));
+      },
+    );
+
+    testWidgets(
+      'A disabled Dropdown uses item child to show selected item',
+      (WidgetTester tester) async {
+        // Given: a form with disabled control
+        final items = ['true', 'false'];
+        final form = FormGroup({
+          'dropdown': FormControl<String>(
+            value: items.elementAt(0),
+            disabled: true,
+          ),
+        });
+
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: ['true', 'false'],
+        ));
+
+        // Then: dropdown disabledHint value is equals to selectedItemBuilder
+        // equivalent item
+        final dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
+
+        expect(dropdown.disabledHint.runtimeType.toString(), 'Text');
+        expect((dropdown.disabledHint as Text?)?.data, 'true');
       },
     );
   });
