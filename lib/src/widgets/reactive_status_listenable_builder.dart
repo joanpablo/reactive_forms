@@ -48,11 +48,10 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
     var control = formControl;
     if (control == null) {
       final form = ReactiveForm.of(context, listen: false);
-      if (form is! FormControlCollection) {
+      if (form == null || form is! FormControlCollection) {
         throw FormControlParentNotFoundException(this);
       }
-      // TODO handling should be optimized
-      // ignore: cast_nullable_to_non_nullable
+
       final collection = form as FormControlCollection;
       control = collection.control(formControlName!);
     }
