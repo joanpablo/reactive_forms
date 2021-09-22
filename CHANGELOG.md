@@ -1,3 +1,10 @@
+# 10.6.1
+
+## Enhances
+
+- Update the lint code analysis to use the las package **lints**.
+- Minor internal code checks and improvements.
+
 # 10.6.0
 
 ## Enhances
