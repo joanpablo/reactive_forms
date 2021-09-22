@@ -1,3 +1,9 @@
+# 10.6.2
+
+## Enhances
+
+- Converted **ReactiveForm** widget from Stateful to Stateless widget.
+
 # 10.6.1
 
 ## Enhances

@@ -13,7 +13,7 @@ import '../widgets/form_control_inherited_notifier.dart';
 ///
 /// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
-class ReactiveForm extends StatefulWidget {
+class ReactiveForm extends StatelessWidget {
   final Widget child;
   final FormGroup formGroup;
 
@@ -62,19 +62,13 @@ class ReactiveForm extends StatefulWidget {
   }
 
   @override
-  _ReactiveFormState createState() => _ReactiveFormState();
-}
-
-/// Represents the state of the [ReactiveForm] stateful widget.
-class _ReactiveFormState extends State<ReactiveForm> {
-  @override
   Widget build(BuildContext context) {
     return FormControlInheritedStreamer(
-      control: widget.formGroup,
-      stream: widget.formGroup.statusChanged,
+      control: formGroup,
+      stream: formGroup.statusChanged,
       child: WillPopScope(
-        onWillPop: widget.onWillPop,
-        child: widget.child,
+        onWillPop: onWillPop,
+        child: child,
       ),
     );
   }
