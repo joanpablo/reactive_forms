@@ -1,3 +1,11 @@
+# 10.6.3
+
+## Enhances
+- Add documentation of new advanced reactive widgets.
+
+## Fix
+- Minor documentation fix.
+
 # 10.6.2
 
 ## Enhances
