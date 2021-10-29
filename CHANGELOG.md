@@ -1,3 +1,8 @@
+# 10.6.4
+
+## Fix
+- Minor documentation fix.
+
 # 10.6.3
 
 ## Enhances
