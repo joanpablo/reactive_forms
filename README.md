@@ -479,7 +479,7 @@ final form = fb.group({
     'phoneNumber': ['', Validators.required],
     'countryIso': ['', Validators.required],
   }),
-  'address': FormGroup({
+  'address': fb.group({
     'street': ['', Validators.required],
     'city': ['', Validators.required],
     'zip': ['', Validators.required],
