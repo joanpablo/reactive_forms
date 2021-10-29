@@ -1196,6 +1196,17 @@ a variety of more advanced field widgets. To know more about how to install it p
 - **[ReactivePinCodeTextField](https://pub.dev/packages/reactive_pin_code_fields)** - wrapper around [`pin_code_fields`](https://pub.dev/packages/pin_code_fields)
 - **[ReactiveSlidingSegmentedControl](https://pub.dev/packages/reactive_sliding_segmented)** - wrapper around [`CupertinoSlidingSegmentedControl`](https://api.flutter.dev/flutter/cupertino/CupertinoSlidingSegmentedControl-class.html)
 - **[ReactiveCupertinoSlider](https://pub.dev/packages/reactive_cupertino_slider)** - wrapper around [`CupertinoSlider`](https://api.flutter.dev/flutter/cupertino/CupertinoSlider-class.html)
+- **[ReactiveColorPicker](https://pub.dev/packages/reactive_color_picker)** - wrapper around [`flutter_colorpicker`](https://pub.dev/packages/flutter_colorpicker)
+- **[ReactiveMonthPickerDialog](https://pub.dev/packages/reactive_month_picker_dialog)** - wrapper around [`month_picker_dialog`](https://pub.dev/packages/month_picker_dialog)
+- **[ReactiveRawAutocomplete](https://pub.dev/packages/reactive_raw_autocomplete)** - wrapper around [`RawAutocomplete`](https://api.flutter.dev/flutter/widgets/RawAutocomplete-class.html)
+- **[ReactiveFlutterTypeahead](https://pub.dev/packages/reactive_flutter_typeahead)** - wrapper around [`flutter_typeahead`](https://pub.dev/packages/flutter_typeahead)
+- **[ReactivePinInputTextField](https://pub.dev/packages/reactive_pin_input_text_field)** - wrapper around [`pin_input_text_field`](https://pub.dev/packages/pin_input_text_field)
+- **[ReactiveDirectSelect](https://pub.dev/packages/reactive_direct_select)** - wrapper around [`direct_select`](https://pub.dev/packages/direct_select)
+- **[ReactiveMarkdownEditableTextInput](https://pub.dev/packages/reactive_md_editable_textinput)** - wrapper around [`markdown_editable_textinput`](https://pub.dev/packages/markdown_editable_textinput)
+- **[ReactiveCodeTextField](https://pub.dev/packages/reactive_code_text_field)** - wrapper around [`code_text_field`](https://pub.dev/packages/code_text_field)
+- **[ReactivePhoneFormField](https://pub.dev/packages/reactive_phone_form_field)** - wrapper around [`phone_form_field`](https://pub.dev/packages/phone_form_field)
+- **[ReactiveExtendedTextField](https://pub.dev/packages/reactive_extended_text_field)** - wrapper around [`extended_text_field`](https://pub.dev/packages/extended_text_field)
+- **[ReactiveCupertinoSlidingSegmentedControl](https://pub.dev/packages/reactive_cup_slide_segmented)** - wrapper around [`CupertinoSlidingSegmentedControl`](https://api.flutter.dev/flutter/cupertino/CupertinoSlidingSegmentedControl-class.html)
 
 ### ReactiveTextField
 
