@@ -21,6 +21,10 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 /// A [ReactiveForm] ancestor is required.
 ///
 class ReactiveTextField<T> extends ReactiveFormField<T, String> {
+
+  /// If true, when gaining focus all text will be selected.
+  final bool selectAllOnFocus;
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -101,6 +105,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextAlign textAlign = TextAlign.start,
     TextAlignVertical? textAlignVertical,
     bool autofocus = false,
+    this.selectAllOnFocus = false,
     bool readOnly = false,
     ToolbarOptions? toolbarOptions,
     bool? showCursor,
@@ -274,13 +279,27 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
     return super.selectValueAccessor();
   }
 
+  void _focusListener() {
+    final widget = this.widget;
+    if (mounted &&
+        widget is ReactiveTextField &&
+        (widget as ReactiveTextField).selectAllOnFocus) {
+      _textController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: _textController.text.length,
+      );
+    }
+  }
+
   void _registerFocusController(FocusController focusController) {
     _focusController = focusController;
     control.registerFocusController(focusController);
+    _focusController.addListener(_focusListener);
   }
 
   void _unregisterFocusController() {
     control.unregisterFocusController(_focusController);
+    _focusController.removeListener(_focusListener);
     _focusController.dispose();
   }
 
