@@ -1,3 +1,9 @@
+# 10.6.5
+
+## Enhances
+- Add an example of deleting item from a **FormArray** in the example folder project.
+- Make public the previously private class **InheritedStreamer**
+
 # 10.6.4
 
 ## Fix
