@@ -26,9 +26,22 @@ class _ArraySampleState extends State<ArraySample> {
   }
 
   Widget _buildEmailListItem(String contact) {
-    return ReactiveCheckboxListTile(
-      formControlName: contacts.indexOf(contact).toString(),
-      title: Text(contact),
+    return Row(
+      children: [
+        Expanded(
+          child: ReactiveCheckboxListTile(
+            formControlName: contacts.indexOf(contact).toString(),
+            title: Text(contact),
+          ),
+        ),
+        IconButton(
+            onPressed: () {
+              final index = contacts.indexOf(contact);
+              contacts.removeAt(index);
+              selectedContacts.removeAt(index);
+            },
+            icon: const Icon(Icons.delete)),
+      ],
     );
   }
 
