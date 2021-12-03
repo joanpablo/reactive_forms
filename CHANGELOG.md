@@ -1,3 +1,9 @@
+# 10.6.6
+
+## Enhances
+- Improve the Array example in the demo application
+- Better exception handler when creating FormGroups with controls that contains character '.' in the name of the control.
+
 # 10.6.5
 
 ## Enhances
