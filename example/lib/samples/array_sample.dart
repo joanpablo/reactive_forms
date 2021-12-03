@@ -16,6 +16,9 @@ class _ArraySampleState extends State<ArraySample> {
   FormArray<bool> get selectedContacts =>
       form.control('selectedContacts') as FormArray<bool>;
 
+  FormControl<bool> selectedContactsItem(int i) =>
+      form.control('selectedContacts.$i') as FormControl<bool>;
+
   @override
   void initState() {
     selectedContacts.addAll(
@@ -76,6 +79,34 @@ class _ArraySampleState extends State<ArraySample> {
                           }
                         : null,
                     child: const Text('Send Email'),
+                  );
+                },
+              ),
+              ReactiveFormConsumer(
+                builder: (context, form, child) {
+                  return ElevatedButton(
+                    onPressed: () => selectedContacts.reset(),
+                    child: const Text('reset'),
+                  );
+                },
+              ),
+              ReactiveFormConsumer(
+                builder: (context, form, child) {
+                  return ElevatedButton(
+                    onPressed: () => selectedContacts.updateValue(
+                        selectedContacts.value
+                            ?.map((e) => !(e ?? false))
+                            .toList()),
+                    child: const Text('toggle all'),
+                  );
+                },
+              ),
+              ReactiveFormConsumer(
+                builder: (context, form, child) {
+                  return ElevatedButton(
+                    onPressed: () => selectedContactsItem(0)
+                        .updateValue(!(selectedContactsItem(0).value ?? false)),
+                    child: const Text('toggle first item'),
                   );
                 },
               ),
