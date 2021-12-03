@@ -577,8 +577,41 @@ void main() {
       // Then: any control has focus
       expect((form.control('name') as FormControl).hasFocus, false,
           reason: 'control is focused');
+      expect((form.control('name') as FormControl).touched, false,
+          reason: 'control is not touched');
       expect((form.control('email') as FormControl).hasFocus, false,
           reason: 'control is focused');
+      expect((form.control('email') as FormControl).touched, false,
+          reason: 'control is not touched');
+    });
+
+    test('Remove Focus and mark untouched to all control', () {
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+      });
+
+      // And: all control with focus
+      form.focus('name');
+      form.focus('email');
+
+      form.markAllAsTouched();
+
+      // Then: any control has focus
+      expect((form.control('name') as FormControl).hasFocus, true);
+      expect((form.control('name') as FormControl).touched, true);
+      expect((form.control('email') as FormControl).hasFocus, true);
+      expect((form.control('email') as FormControl).touched, true);
+
+      // When: remove focus to a control
+      form.unfocus(touched: false);
+
+      // Then: any control has focus
+      expect((form.control('name') as FormControl).hasFocus, false);
+      expect((form.control('name') as FormControl).touched, false);
+      expect((form.control('email') as FormControl).hasFocus, false);
+      expect((form.control('email') as FormControl).touched, false);
     });
 
     test('Add controls to the FormGroup', () {
@@ -700,6 +733,16 @@ void main() {
             validators: [Validators.min(10.0)],
           ),
         }),
+        'emailList': FormArray<String>([
+          FormControl<String>(
+            value: 'test@gmail.com',
+            validators: [Validators.email],
+          ),
+          FormControl<String>(
+            value: 'test',
+            validators: [Validators.email],
+          ),
+        ])
       });
 
       // When: get `min` validator error
@@ -707,6 +750,13 @@ void main() {
 
       // Then: the error is not null
       expect(error, {'min': 10.0, 'actual': 5.0});
+
+      // When: get `email` validator error
+      final emailListError =
+          form.controls['emailList']?.getError(ValidationMessage.email, '1');
+
+      // Then: the error is not null
+      expect(emailListError, 'test');
     });
 
     test('Initialize disabled form', () {
@@ -860,6 +910,17 @@ void main() {
 
       // Then: controls does not have the email control
       expect(remove, throwsA(isInstanceOf<FormControlNotFoundException>()));
+    });
+
+    test('Throws assertion error on name containing dot(.)', () {
+      // Given: a form with a two controls
+      void form() => FormGroup({
+            'na.me': FormControl<String>(value: 'Reactive'),
+            'email': FormControl<String>(value: 'Forms'),
+          });
+
+      // Expect: an assertion error
+      expect(form, throwsAssertionError);
     });
   });
 }
