@@ -9,7 +9,8 @@ class BooleanObject {
   BooleanObject(this.name);
 
   @override
-  bool operator ==(Object other) => other is BooleanObject && name == other.name;
+  bool operator ==(Object other) =>
+      other is BooleanObject && name == other.name;
 
   @override
   int get hashCode => hashValues(name, name);
@@ -30,7 +31,8 @@ class ComplexSample extends StatelessWidget {
         'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
-        'booleanObject': FormControl<BooleanObject>(value: BooleanObject('Yes')),
+        'booleanObject':
+            FormControl<BooleanObject>(value: BooleanObject('Yes')),
       }, [
         Validators.mustMatch('password', 'passwordConfirmation')
       ]);
@@ -145,7 +147,8 @@ class ComplexSample extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => form.control('booleanObject').value = yes,
+                      onPressed: () =>
+                          form.control('booleanObject').value = yes,
                       child: const Text('Yes'),
                     ),
                   ),
