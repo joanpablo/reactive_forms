@@ -3,6 +3,21 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
+class Complex {
+  final String name;
+
+  Complex(this.name);
+
+  @override
+  bool operator ==(Object other) => other is Complex && name == other.name;
+
+  @override
+  int get hashCode => hashValues(name, name);
+}
+
+final yes = Complex('Yes');
+final no = Complex('No');
+
 class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
@@ -15,6 +30,7 @@ class ComplexSample extends StatelessWidget {
         'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
+        'complex': FormControl<Complex>(value: Complex('Yes')),
       }, [
         Validators.mustMatch('password', 'passwordConfirmation')
       ]);
@@ -98,6 +114,51 @@ class ComplexSample extends StatelessWidget {
                   ReactiveCheckbox(formControlName: 'rememberMe'),
                 ],
               ),
+              ReactiveDropdownField<bool>(
+                formControlName: 'rememberMe',
+                decoration: const InputDecoration(
+                  labelText: 'Want to stay logged in?',
+                ),
+                items: [
+                  const DropdownMenuItem(value: true, child: Text('Yes')),
+                  const DropdownMenuItem(value: false, child: Text('No')),
+                ],
+              ),
+              const SizedBox(height: 24.0),
+              ReactiveDropdownField<Complex?>(
+                formControlName: 'complex',
+                decoration: const InputDecoration(
+                  labelText: 'Is this example complex?',
+                ),
+                items: [
+                  DropdownMenuItem(
+                    value: yes,
+                    child: const Text('Yes'),
+                  ),
+                  DropdownMenuItem(
+                    value: no,
+                    child: const Text('No'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => form.control('complex').updateValue(yes),
+                      child: const Text('Yes'),
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => form.control('complex').updateValue(no),
+                      child: const Text('No'),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 24.0),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
                 decoration: const InputDecoration(
