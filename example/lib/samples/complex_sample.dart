@@ -3,20 +3,21 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
-class Complex {
+class BooleanObject {
   final String name;
 
-  Complex(this.name);
+  BooleanObject(this.name);
 
   @override
-  bool operator ==(Object other) => other is Complex && name == other.name;
+  bool operator ==(Object other) =>
+      other is BooleanObject && name == other.name;
 
   @override
   int get hashCode => hashValues(name, name);
 }
 
-final yes = Complex('Yes');
-final no = Complex('No');
+final yes = BooleanObject('Yes');
+final no = BooleanObject('No');
 
 class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
@@ -30,7 +31,8 @@ class ComplexSample extends StatelessWidget {
         'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
-        'complex': FormControl<Complex>(value: Complex('Yes')),
+        'booleanObject':
+            FormControl<BooleanObject>(value: BooleanObject('Yes')),
       }, [
         Validators.mustMatch('password', 'passwordConfirmation')
       ]);
@@ -125,10 +127,10 @@ class ComplexSample extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24.0),
-              ReactiveDropdownField<Complex?>(
-                formControlName: 'complex',
+              ReactiveDropdownField<BooleanObject>(
+                formControlName: 'booleanObject',
                 decoration: const InputDecoration(
-                  labelText: 'Is this example complex?',
+                  labelText: 'Is this example BooleanObject?',
                 ),
                 items: [
                   DropdownMenuItem(
@@ -145,14 +147,15 @@ class ComplexSample extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => form.control('complex').updateValue(yes),
+                      onPressed: () =>
+                          form.control('booleanObject').value = yes,
                       child: const Text('Yes'),
                     ),
                   ),
                   const SizedBox(width: 8.0),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => form.control('complex').updateValue(no),
+                      onPressed: () => form.control('booleanObject').value = no,
                       child: const Text('No'),
                     ),
                   )

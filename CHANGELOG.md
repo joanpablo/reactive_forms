@@ -1,3 +1,8 @@
+# 10.6.7
+
+## Enhances
+- Improve Complex example in the demo application
+
 # 10.6.6
 
 ## Enhances
