@@ -13,6 +13,9 @@ import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 import 'package:reactive_forms/src/value_accessors/double_value_accessor.dart';
 import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 
+typedef ControllerInitCallback = void Function(
+    TextEditingController controller);
+
 /// A [ReactiveTextField] that contains a [TextField].
 ///
 /// This is a convenience widget that wraps a [TextField] widget in a
@@ -21,6 +24,8 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 /// A [ReactiveForm] ancestor is required.
 ///
 class ReactiveTextField<T> extends ReactiveFormField<T, String> {
+  final ControllerInitCallback? onControllerInit;
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -138,6 +143,9 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextSelectionControls? selectionControls,
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
     ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
+    this.onControllerInit,
+    Clip clipBehavior = Clip.hardEdge,
+    bool enableIMEPersonalizedLearning = true,
   }) : super(
           key: key,
           formControl: formControl,
@@ -210,6 +218,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               selectionControls: selectionControls,
               selectionHeightStyle: selectionHeightStyle,
               selectionWidthStyle: selectionWidthStyle,
+              clipBehavior: clipBehavior,
+              enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
             );
           },
         );
@@ -233,6 +243,8 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
     final initialValue = value;
     _textController = TextEditingController(
         text: initialValue == null ? '' : initialValue.toString());
+
+    (widget as ReactiveTextField<T>).onControllerInit?.call(_textController);
   }
 
   @override
@@ -244,6 +256,7 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   @override
   void unsubscribeControl() {
     _unregisterFocusController();
+    _textController.dispose();
     super.unsubscribeControl();
   }
 
