@@ -1,3 +1,8 @@
+# 10.6.8
+
+## Fix
+- Fix Async Validators that overrides validations errors from Sync Validators
+
 # 10.6.7
 
 ## Enhances
