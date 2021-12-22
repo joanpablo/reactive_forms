@@ -679,15 +679,19 @@ abstract class AbstractControl<T> {
         final validatorsStream = Stream.fromFutures(
             asyncValidators.map((validator) => validator(this)).toList());
 
-        final errors = <String, dynamic>{};
+        final asyncValidationErrors = <String, dynamic>{};
         _asyncValidationSubscription = validatorsStream.listen(
           (Map<String, dynamic>? error) {
             if (error != null) {
-              errors.addAll(error);
+              asyncValidationErrors.addAll(error);
             }
           },
           onDone: () {
-            setErrors(errors, markAsDirty: false);
+            final allErrors = <String, dynamic>{};
+            allErrors.addAll(errors);
+            allErrors.addAll(asyncValidationErrors);
+
+            setErrors(allErrors, markAsDirty: false);
           },
         );
       },
