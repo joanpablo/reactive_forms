@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+const reactiveSliderTestingName = 'sliderValue';
+
 class ReactiveSliderTestingWidget extends StatelessWidget {
   final FormGroup form;
+  final FocusNode? focusNode;
 
   const ReactiveSliderTestingWidget({
     Key? key,
     required this.form,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -18,8 +22,9 @@ class ReactiveSliderTestingWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ReactiveSlider(
-                formControlName: 'sliderValue',
+                formControlName: reactiveSliderTestingName,
                 max: 100,
+                focusNode: focusNode,
               ),
             ],
           ),

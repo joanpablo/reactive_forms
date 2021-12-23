@@ -46,11 +46,16 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
     ValueChanged<double>? onChangeStart,
     bool autofocus = false,
     MouseCursor? mouseCursor,
+    FocusNode? focusNode,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<num, double> field) {
+          builder: (field) {
+            final state = field as _ReactiveSliderState;
+
+            state._setFocusNode(focusNode);
+
             var value = field.value;
             if (value == null) {
               value = min;
@@ -77,6 +82,7 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
               onChangeStart: onChangeStart,
               mouseCursor: mouseCursor,
               autofocus: autofocus,
+              focusNode: state.focusNode,
             );
           },
         );
@@ -86,6 +92,41 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
 }
 
 class _ReactiveSliderState extends ReactiveFormFieldState<num, double> {
+  FocusNode? _focusNode;
+  late FocusController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+
+  @override
+  void subscribeControl() {
+    _registerFocusController(FocusController());
+    super.subscribeControl();
+  }
+
+  @override
+  void unsubscribeControl() {
+    _unregisterFocusController();
+    super.unsubscribeControl();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode? focusNode) {
+    if (_focusNode != focusNode) {
+      _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
+    }
+  }
+
   @override
   ControlValueAccessor<num, double> selectValueAccessor() {
     if (control is FormControl<int>) {
