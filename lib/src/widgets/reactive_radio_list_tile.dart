@@ -12,7 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// to a [FormControl].
 ///
 /// For documentation about the various parameters, see the [RadioListTile]
-/// class and [new RadioListTile], the constructor.
+/// class and [RadioListTile], the constructor.
 class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
   /// Create an instance of a [ReactiveRadioListTile].
   ///

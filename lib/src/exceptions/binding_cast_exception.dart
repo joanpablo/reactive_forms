@@ -1,5 +1,4 @@
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/exceptions/reactive_forms_exception.dart';
 
 /// Represents an exception that is thrown when trying to bound a widget that is
 /// expecting a specific data type, to a control with a different data type.

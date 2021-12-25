@@ -4,8 +4,8 @@ version: 10.6.8
 homepage: "https://github.com/joanpablo/reactive_forms"
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.2.0"
+  sdk: ">=2.15.0 <3.0.0"
+  flutter: ">=2.8.0"
 
 dependencies:
   flutter:

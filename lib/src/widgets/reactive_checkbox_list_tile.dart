@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [CheckboxListTile]
-/// class and [new CheckboxListTile], the constructor.
+/// class and [CheckboxListTile], the constructor.
 class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///

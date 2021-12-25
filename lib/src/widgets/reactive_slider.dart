@@ -16,7 +16,7 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 /// to a [FormControl].
 ///
 /// For documentation about the various parameters, see the [Slider] class
-/// and [new Slider], the constructor.
+/// and [Slider], the constructor.
 class ReactiveSlider extends ReactiveFormField<num, double> {
   /// Creates an instance os a [ReactiveSlider].
   ///

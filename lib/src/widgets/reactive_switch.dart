@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [Switch] class
-/// and [new Switch], the constructor.
+/// and [Switch], the constructor.
 class ReactiveSwitch extends ReactiveFormField<bool, bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
@@ -31,7 +31,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
   /// but not both at the same time.
   ///
   /// For documentation about the various parameters, see the [Switch] class
-  /// and [new Switch], the constructor.
+  /// and [Switch], the constructor.
   ReactiveSwitch({
     Key? key,
     String? formControlName,
