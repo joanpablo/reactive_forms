@@ -80,7 +80,6 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               mouseCursor: mouseCursor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              // focusNode: focusNode - requires more time
             );
           },
         );

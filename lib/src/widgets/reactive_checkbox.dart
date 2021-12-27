@@ -39,6 +39,8 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? fillColor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
+    OutlinedBorder? shape,
+    BorderSide? side,
   }) : super(
           key: key,
           formControl: formControl,
@@ -59,7 +61,8 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               fillColor: fillColor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              // focusNode: focusNode - requires more time
+              shape: shape,
+              side: side,
             );
           },
         );

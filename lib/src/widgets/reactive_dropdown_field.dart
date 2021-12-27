@@ -50,6 +50,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     Widget? underline,
     bool autofocus = false,
     double? menuMaxHeight,
+    bool? enableFeedback,
+    AlignmentGeometry alignment = AlignmentDirectional.centerStart,
+    BorderRadius? borderRadius,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
@@ -115,6 +118,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   underline: underline,
                   autofocus: autofocus,
                   menuMaxHeight: menuMaxHeight,
+                  enableFeedback: enableFeedback,
+                  alignment: alignment,
+                  borderRadius: borderRadius,
                 ),
               ),
             );
