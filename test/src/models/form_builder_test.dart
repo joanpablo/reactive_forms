@@ -11,8 +11,6 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form is FormGroup, true,
-          reason: 'form is not instance of FormGroup');
       expect(form.control('name') is FormControl<String>, true,
           reason:
               '${form.control('name').runtimeType} is not instance of FormControl<String>');
@@ -312,8 +310,6 @@ void main() {
       final state = fb.state(value: 'name', disabled: true);
 
       // Expect the state is created
-      expect(state is ControlState<String>, true,
-          reason: 'state is not instance of ControlState<String>');
       expect(state.value, 'name', reason: 'state value not set');
       expect(state.disabled, true, reason: 'state disabled not set');
     });
@@ -323,8 +319,6 @@ void main() {
       final array = fb.array<String>(['john', 'little john']);
 
       // Expect: the array is created
-      expect(array is FormArray, true,
-          reason: '${array.runtimeType} is not instance of FormArray<String>');
       expect(array.control('0').value, 'john');
       expect(array.value, ['john', 'little john']);
     });
@@ -334,9 +328,6 @@ void main() {
       final control = fb.control('john');
 
       // Expect: the array is created
-      expect(control is FormControl<String>, true,
-          reason:
-              '${control.runtimeType} is not instance of FormControl<String>');
       expect(control.value, 'john');
     });
 
