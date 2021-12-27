@@ -1,3 +1,10 @@
+# 10.7.0
+
+## Features
+
+- Expose **TextEditingController** as a property of the **ReactiveTextField** for text selection
+purposes only.
+
 # 10.6.8
 
 ## Fix
