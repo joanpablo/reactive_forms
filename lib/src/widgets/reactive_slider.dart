@@ -40,6 +40,7 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
     ReactiveSliderLabelBuilder? labelBuilder,
     Color? activeColor,
     Color? inactiveColor,
+    Color? thumbColor,
     SemanticFormatterCallback? semanticFormatterCallback,
     ValueChanged<double>? onChangeEnd,
     ValueChanged<double>? onChangeStart,
@@ -70,12 +71,12 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
                   : null,
               activeColor: activeColor,
               inactiveColor: inactiveColor,
+              thumbColor: thumbColor,
               semanticFormatterCallback: semanticFormatterCallback,
               onChangeEnd: onChangeEnd,
               onChangeStart: onChangeStart,
               mouseCursor: mouseCursor,
               autofocus: autofocus,
-              // focusNode: focusNode - requires more time
             );
           },
         );

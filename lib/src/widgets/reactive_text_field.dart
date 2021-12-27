@@ -6,12 +6,8 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
-import 'package:reactive_forms/src/value_accessors/double_value_accessor.dart';
-import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 
 /// A [ReactiveTextField] that contains a [TextField].
 ///
@@ -141,6 +137,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
     ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
     TextEditingController? controller,
+    Clip clipBehavior = Clip.hardEdge,
+    bool enableIMEPersonalizedLearning = true,
   })  : _textController = controller,
         super(
           key: key,
@@ -214,6 +212,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               selectionControls: selectionControls,
               selectionHeightStyle: selectionHeightStyle,
               selectionWidthStyle: selectionWidthStyle,
+              clipBehavior: clipBehavior,
+              enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
             );
           },
         );

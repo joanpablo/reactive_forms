@@ -43,6 +43,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     Color? selectedTileColor,
     Color? tileColor,
     ShapeBorder? shape,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
   }) : super(
           key: key,
           formControl: formControl,
@@ -66,6 +68,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               tileColor: tileColor,
               shape: shape,
               selected: selected,
+              enableFeedback: enableFeedback,
+              visualDensity: visualDensity,
             );
           },
         );

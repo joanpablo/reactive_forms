@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
@@ -50,6 +49,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     Widget? underline,
     bool autofocus = false,
     double? menuMaxHeight,
+    bool? enableFeedback,
+    AlignmentGeometry alignment = AlignmentDirectional.centerStart,
+    BorderRadius? borderRadius,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
@@ -115,6 +117,9 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   underline: underline,
                   autofocus: autofocus,
                   menuMaxHeight: menuMaxHeight,
+                  enableFeedback: enableFeedback,
+                  alignment: alignment,
+                  borderRadius: borderRadius,
                 ),
               ),
             );

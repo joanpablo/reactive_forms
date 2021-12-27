@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// This is a convenience widget that wraps a [Checkbox] widget in a
@@ -39,6 +38,8 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? fillColor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
+    OutlinedBorder? shape,
+    BorderSide? side,
   }) : super(
           key: key,
           formControl: formControl,
@@ -59,7 +60,8 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               fillColor: fillColor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              // focusNode: focusNode - requires more time
+              shape: shape,
+              side: side,
             );
           },
         );

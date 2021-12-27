@@ -1,3 +1,13 @@
+# 11.0.0
+
+## Breaking Changes
+
+- Reactive Forms is now migrated to Flutter 2.8.0.
+
+## Enhances
+
+- Update reactive widgets with extra properties presents in Flutter 2.8.0.
+
 # 10.7.0
 
 ## Features

@@ -44,6 +44,8 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
     ShapeBorder? shape,
     bool autofocus = false,
     bool selected = false,
+    bool? enableFeedback,
+    VisualDensity? visualDensity,
   }) : super(
           key: key,
           formControl: formControl,
@@ -67,6 +69,8 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
               shape: shape,
               selected: selected,
               autofocus: autofocus,
+              enableFeedback: enableFeedback,
+              visualDensity: visualDensity,
             );
           },
         );
