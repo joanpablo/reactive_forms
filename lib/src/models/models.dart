@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/exceptions/control_cast_exception.dart';
 
 const _controlNameDelimiter = '.';
 
@@ -1118,15 +1119,24 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// form.control('person.name');
   /// ```
   @override
-  AbstractControl<dynamic> control(String name) {
+  F control<F extends AbstractControl<dynamic>>(String name) {
     final namePath = name.split(_controlNameDelimiter);
     if (namePath.length > 1) {
       final control = findControlInCollection(namePath);
       if (control != null) {
-        return control;
+        if (control is! F) {
+          throw ControlCastException<F>(control);
+        }
+
+        return control as F;
       }
     } else if (contains(name)) {
-      return _controls[name]!;
+      final control = _controls[name];
+      if (control is! F) {
+        throw ControlCastException<F>(control!);
+      }
+
+      return control;
     }
 
     throw FormControlNotFoundException(controlName: name);
@@ -1883,19 +1893,28 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// form.control('address.0.city');
   /// ```
   @override
-  AbstractControl<dynamic> control(String name) {
+  F control<F extends AbstractControl<dynamic>>(String name) {
     final namePath = name.split(_controlNameDelimiter);
     if (namePath.length > 1) {
       final control = findControlInCollection(namePath);
       if (control != null) {
-        return control;
+        if (control is! F) {
+          throw ControlCastException<F>(control);
+        }
+
+        return control as F;
       }
     } else {
       final index = int.tryParse(name);
       if (index == null) {
         throw FormArrayInvalidIndexException(name);
       } else if (index < _controls.length) {
-        return _controls[index];
+        final control = _controls[index];
+        if (control is! F) {
+          throw ControlCastException<F>(control);
+        }
+
+        return control as F;
       }
     }
 

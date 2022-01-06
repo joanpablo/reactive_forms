@@ -21,7 +21,7 @@ abstract class FormControlCollection<T> {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
-  AbstractControl<dynamic> control(String name);
+  F control<F extends AbstractControl<dynamic>>(String name);
 
   /// Checks if collection contains a control by a given [name].
   ///

@@ -14,10 +14,10 @@ class _ArraySampleState extends State<ArraySample> {
   });
 
   FormArray<bool> get selectedContacts =>
-      form.control('selectedContacts') as FormArray<bool>;
+      form.control<FormArray<bool>>('selectedContacts');
 
   FormControl<bool> selectedContactsItem(int i) =>
-      form.control('selectedContacts.$i') as FormControl<bool>;
+      form.control<FormControl<bool>>('selectedContacts.$i');
 
   @override
   void initState() {
