@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/exceptions/control_cast_exception.dart';
 
 /// The base class form [FormGroup] and [FormArray].
 /// Its provides methods for get a control by name and a [Listenable]
@@ -21,6 +22,9 @@ abstract class FormControlCollection<T> {
   ///
   /// Throws [FormControlNotFoundException] if no control founded with
   /// the specified [name]/path.
+  ///
+  /// Throws [ControlCastException] if the type of the control [name] does not
+  /// match [F]
   F control<F extends AbstractControl<dynamic>>(String name);
 
   /// Checks if collection contains a control by a given [name].

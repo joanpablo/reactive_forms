@@ -46,7 +46,7 @@ class ReactiveForm extends StatelessWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static F? of<F extends AbstractControl<dynamic>>(BuildContext context,
+  static F? of<F extends AbstractControl<Object>>(BuildContext context,
       {bool listen = true}) {
     if (listen) {
       final control = context
@@ -56,7 +56,7 @@ class ReactiveForm extends StatelessWidget {
         throw ControlCastException<F>(control);
       }
 
-      return control as F?;
+      return control;
     }
 
     final element = context.getElementForInheritedWidgetOfExactType<
@@ -69,7 +69,7 @@ class ReactiveForm extends StatelessWidget {
       throw ControlCastException<F>(control);
     }
 
-    return control as F?;
+    return control;
   }
 
   @override
