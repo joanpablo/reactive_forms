@@ -294,5 +294,83 @@ void main() {
         expect(actualInitialDate, lastDate);
       },
     );
+
+    testWidgets(
+      'The initialDate is equal to firstDate if argument before firstDate',
+          (WidgetTester tester) async {
+        // Given: first date definition
+        final firstDate = DateUtils.dateOnly(
+            DateTime.now().subtract(const Duration(days: 365)));
+
+        // And: an initialDate before firstDate
+        final initialDateArgument =
+        DateUtils.dateOnly(firstDate.subtract(const Duration(days: 365)));
+
+        // And: a control with null value
+        final form = FormGroup({
+          'birthday': FormControl<DateTime>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(
+          ReactiveDatePickerTestingWidget<DateTime>(
+            form: form,
+            firstDate: firstDate,
+            initialDate: initialDateArgument,
+          ),
+        );
+
+        // When: open picker
+        await tester.tap(find.byType(TextButton));
+        await tester.pump();
+
+        // And: get initial date of the date picker
+        final datePicker = tester.widget(find.byType(CalendarDatePicker))
+        as CalendarDatePicker;
+        final actualInitialDate = datePicker.initialDate;
+
+        // Then: initial date is equals to firstDate
+        expect(actualInitialDate, firstDate);
+      },
+    );
+
+    testWidgets(
+      'The initialDate is equal to lastDate if argument after lastDate',
+          (WidgetTester tester) async {
+        // Given: last date definition
+        final lastDate = DateUtils.dateOnly(
+            DateTime.now().add(const Duration(days: 365)));
+
+        // And: an initialDate after the lastDate
+        final initialDateArgument =
+        DateUtils.dateOnly(lastDate.add(const Duration(days: 365)));
+
+        // And: a control with null value
+        final form = FormGroup({
+          'birthday': FormControl<DateTime>(),
+        });
+
+        // And: a widget bound to the form
+        await tester.pumpWidget(
+          ReactiveDatePickerTestingWidget<DateTime>(
+            form: form,
+            lastDate: lastDate,
+            initialDate: initialDateArgument,
+          ),
+        );
+
+        // When: open picker
+        await tester.tap(find.byType(TextButton));
+        await tester.pump();
+
+        // And: get initial date of the date picker
+        final datePicker = tester.widget(find.byType(CalendarDatePicker))
+        as CalendarDatePicker;
+        final actualInitialDate = datePicker.initialDate;
+
+        // Then: initial date is equals to lastDate
+        expect(actualInitialDate, lastDate);
+      },
+    );
   });
 }
