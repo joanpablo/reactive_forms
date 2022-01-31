@@ -10,9 +10,12 @@ void main() {
       'Initial date of picker is default value of control',
       (WidgetTester tester) async {
         // Given: a form and a date time field with default value
+        final defaultValue = DateUtils.dateOnly(
+            DateTime.now().subtract(const Duration(days: 1)));
+
         final form = FormGroup({
           'birthday': FormControl<DateTime>(
-            value: DateTime(2020),
+            value: defaultValue,
           ),
         });
 
@@ -38,7 +41,8 @@ void main() {
       'Set date in date picker sets value to form control',
       (WidgetTester tester) async {
         // Given: a form and a date time field with default value
-        final defaultValue = DateTime(2020);
+        final defaultValue = DateUtils.dateOnly(
+            DateTime.now().subtract(const Duration(days: 1)));
         final form = FormGroup({
           'birthday': FormControl<DateTime>(
             value: defaultValue,
@@ -59,35 +63,6 @@ void main() {
 
         // Then: initial date id the default value of the control
         expect(form.control('birthday').value, defaultValue);
-      },
-    );
-
-    testWidgets(
-      'Date picker initialize date with lastDate if control value is null',
-      (WidgetTester tester) async {
-        // Given: a form and a date time field
-        final form = FormGroup({
-          'birthday': FormControl<DateTime>(),
-        });
-
-        // And: a widget bound to the form
-        final lastDate = DateTime(DateTime.now().year - 18);
-        await tester.pumpWidget(ReactiveDatePickerTestingWidget<DateTime>(
-          form: form,
-          lastDate: lastDate,
-        ));
-
-        // When: open picker
-        await tester.tap(find.byType(TextButton));
-        await tester.pump();
-
-        // And: get initial date of the date picker
-        final datePicker = tester.widget(find.byType(CalendarDatePicker))
-            as CalendarDatePicker;
-        final initialDate = datePicker.initialDate;
-
-        // Then: initial date is equals to last Date
-        expect(initialDate, lastDate);
       },
     );
 
