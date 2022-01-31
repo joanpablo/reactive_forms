@@ -78,6 +78,7 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
     String? fieldLabelText,
     Widget? child,
     DateTime? currentDate,
+    DateTime? initialDate,
   }) : super(
           key: key,
           formControl: formControl,
@@ -89,7 +90,8 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
                 field,
                 (field) => showDatePicker(
                   context: field.context,
-                  initialDate: _getInitialDate(field.value, lastDate),
+                  initialDate: _getInitialDate(firstDate, lastDate,
+                      initialDate ?? field.value ?? DateTime.now()),
                   firstDate: firstDate,
                   lastDate: lastDate,
                   initialEntryMode: initialEntryMode,
@@ -119,13 +121,17 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
           },
         );
 
-  static DateTime _getInitialDate(DateTime? fieldValue, DateTime lastDate) {
-    if (fieldValue != null) {
-      return fieldValue;
+  static DateTime _getInitialDate(
+      DateTime firstDate, DateTime lastDate, DateTime defaultInitDate) {
+    var initialDate = defaultInitDate;
+
+    if (initialDate.isBefore(firstDate)) {
+      initialDate = firstDate;
+    } else if (initialDate.isAfter(lastDate)) {
+      initialDate = lastDate;
     }
 
-    final now = DateTime.now();
-    return now.compareTo(lastDate) > 0 ? lastDate : now;
+    return initialDate;
   }
 
   @override
