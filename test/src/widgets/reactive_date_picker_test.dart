@@ -260,14 +260,14 @@ void main() {
 
     testWidgets(
       'The initialDate is equal to lastDate if control value after lastDate',
-          (WidgetTester tester) async {
+      (WidgetTester tester) async {
         // Given: first date definition
-        final lastDate = DateUtils.dateOnly(
-            DateTime.now().add(const Duration(days: 365)));
+        final lastDate =
+            DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
 
         // And: a control with a value before the firstDate value
         final controlValue =
-        DateUtils.dateOnly(lastDate.add(const Duration(days: 365)));
+            DateUtils.dateOnly(lastDate.add(const Duration(days: 365)));
 
         final form = FormGroup({
           'birthday': FormControl<DateTime>(value: controlValue),
@@ -287,7 +287,7 @@ void main() {
 
         // And: get initial date of the date picker
         final datePicker = tester.widget(find.byType(CalendarDatePicker))
-        as CalendarDatePicker;
+            as CalendarDatePicker;
         final actualInitialDate = datePicker.initialDate;
 
         // Then: initial date is equals to lastDate
@@ -297,14 +297,14 @@ void main() {
 
     testWidgets(
       'The initialDate is equal to firstDate if argument before firstDate',
-          (WidgetTester tester) async {
+      (WidgetTester tester) async {
         // Given: first date definition
         final firstDate = DateUtils.dateOnly(
             DateTime.now().subtract(const Duration(days: 365)));
 
         // And: an initialDate before firstDate
         final initialDateArgument =
-        DateUtils.dateOnly(firstDate.subtract(const Duration(days: 365)));
+            DateUtils.dateOnly(firstDate.subtract(const Duration(days: 365)));
 
         // And: a control with null value
         final form = FormGroup({
@@ -326,7 +326,7 @@ void main() {
 
         // And: get initial date of the date picker
         final datePicker = tester.widget(find.byType(CalendarDatePicker))
-        as CalendarDatePicker;
+            as CalendarDatePicker;
         final actualInitialDate = datePicker.initialDate;
 
         // Then: initial date is equals to firstDate
@@ -336,14 +336,14 @@ void main() {
 
     testWidgets(
       'The initialDate is equal to lastDate if argument after lastDate',
-          (WidgetTester tester) async {
+      (WidgetTester tester) async {
         // Given: last date definition
-        final lastDate = DateUtils.dateOnly(
-            DateTime.now().add(const Duration(days: 365)));
+        final lastDate =
+            DateUtils.dateOnly(DateTime.now().add(const Duration(days: 365)));
 
         // And: an initialDate after the lastDate
         final initialDateArgument =
-        DateUtils.dateOnly(lastDate.add(const Duration(days: 365)));
+            DateUtils.dateOnly(lastDate.add(const Duration(days: 365)));
 
         // And: a control with null value
         final form = FormGroup({
@@ -365,7 +365,7 @@ void main() {
 
         // And: get initial date of the date picker
         final datePicker = tester.widget(find.byType(CalendarDatePicker))
-        as CalendarDatePicker;
+            as CalendarDatePicker;
         final actualInitialDate = datePicker.initialDate;
 
         // Then: initial date is equals to lastDate
