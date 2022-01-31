@@ -1,3 +1,11 @@
+# 11.0.1
+
+## Fix
+- Fix issues in **ReactiveDatePicker** when control value was before or after the range of **firstDate** and **lastDate**
+
+## Enhances
+- Add optional argument **initialDate** to the **ReactiveDatePicker**.
+
 # 11.0.0
 
 ## Breaking Changes
