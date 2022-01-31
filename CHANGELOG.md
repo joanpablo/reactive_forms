@@ -1,3 +1,8 @@
+# 11.0.2
+
+## Fix
+- Small fix in the *array_sample* example application.
+
 # 11.0.1
 
 ## Fix
