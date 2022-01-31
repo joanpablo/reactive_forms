@@ -33,6 +33,8 @@ class _ArraySampleState extends State<ArraySample> {
       children: [
         Expanded(
           child: ReactiveCheckboxListTile(
+            // the use of a Key here, is extremely important
+            key: ValueKey(contact),
             formControlName: contacts.indexOf(contact).toString(),
             title: Text(contact),
           ),
