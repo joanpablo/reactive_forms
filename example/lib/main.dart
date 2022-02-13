@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_example/samples/add_dynamic_controls_sample.dart';
+import 'package:reactive_forms_example/samples/ann_form_set_sample.dart';
 import 'package:reactive_forms_example/samples/array_sample.dart';
 import 'package:reactive_forms_example/samples/complex_sample.dart';
 import 'package:reactive_forms_example/samples/date_picker_sample.dart';
@@ -28,6 +29,8 @@ class Routes {
   static const reactiveFormWidgets = '/reactive-form-widgets';
 
   static const loginSample = '/login-sample';
+
+  static const formSetSample = '/set-sample';
 }
 
 class ReactiveFormsApp extends StatelessWidget {
@@ -44,6 +47,7 @@ class ReactiveFormsApp extends StatelessWidget {
         Routes.loginSample: (_) => LoginSample(),
         Routes.datePickerSample: (_) => DatePickerSample(),
         Routes.reactiveFormWidgets: (_) => ReactiveFormWidgetsSample(),
+        Routes.formSetSample: (_) => AnnFormSetSample(),
       },
     );
   }

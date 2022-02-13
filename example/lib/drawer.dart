@@ -45,6 +45,12 @@ class AppDrawer extends StatelessWidget {
                 Routes.reactiveFormWidgets,
               ),
             ),
+            ListTile(
+              title: const Text('Reactive forms Set'),
+              onTap: () => Navigator.of(context).pushReplacementNamed(
+                Routes.formSetSample,
+              ),
+            ),
             // ListTile(
             //   title: Text('Disable form sample'),
             //   onTap: () => Navigator.of(context).pushReplacementNamed(
