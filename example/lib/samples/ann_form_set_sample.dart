@@ -14,6 +14,7 @@ class _AnnFormSetSampleState extends State<AnnFormSetSample> {
     "name": [''],
     "name2": [''],
     "date": [''],
+    "age": [27],
   });
 
   @override
@@ -50,6 +51,18 @@ class _AnnFormSetSampleState extends State<AnnFormSetSample> {
                   )
                 ],
               )),
+          ReactiveForm(
+              formGroup: _formGroup,
+              child: Column(
+                children: [
+                  ReactiveTextField<int>(
+                    formControlName: "age",
+                    decoration: InputDecoration(
+                      labelText: '年龄'
+                    ),
+                  )
+                ],
+              )),
           ElevatedButton(onPressed: (){
             _formGroup.control("name").value = "100";
           }, child: Text("设置Name值 control方式")),
@@ -57,7 +70,17 @@ class _AnnFormSetSampleState extends State<AnnFormSetSample> {
             _formGroup.value = {
               "name2":"name2 set"
             };
-          }, child: Text("设置Name值 value方式"))
+          }, child: Text("设置Name值 value方式")),
+          ElevatedButton(onPressed: (){
+            _formGroup.control("age").value = 102;
+          }, child: Text("设置Age值 类型")),
+          ElevatedButton(onPressed: (){
+            print(_formGroup.value);
+            print(_formGroup.value['age'].runtimeType);
+            print(_formGroup.value['age'].runtimeType.toString() == 'int');
+            print(_formGroup.value['age2'].runtimeType);
+            print(_formGroup.value['age2'].runtimeType.runtimeType);
+          }, child: Text("获取表单值"))
         ],
       ),
     );
