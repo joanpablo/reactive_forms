@@ -110,6 +110,8 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   }
 
   bool _showErrors() {
+    if (control.isSuppressErrors) return false;
+
     if (widget.showErrors != null) {
       return widget.showErrors!(control);
     }

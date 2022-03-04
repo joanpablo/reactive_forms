@@ -45,6 +45,8 @@ abstract class AbstractControl<T> {
 
   bool _touched;
 
+  bool _suppressErrors;
+
   /// Constructor of the [AbstractControl].
   AbstractControl({
     List<ValidatorFunction> validators = const [],
@@ -52,9 +54,11 @@ abstract class AbstractControl<T> {
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
+    bool suppressErrors = false,
   })  : assert(asyncValidatorsDebounceTime >= 0),
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
         _touched = touched,
+        _suppressErrors = suppressErrors,
         _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
     setValidators(validators);
     setAsyncValidators(asyncValidators);
@@ -84,6 +88,11 @@ abstract class AbstractControl<T> {
   /// and then remove focus or completes the text edition. Validation messages
   /// will begin to show up when the FormControl is touched.
   bool get touched => _touched;
+
+  /// Gets if the errors are being suppressed or not.
+  ///
+  /// When this is TRUE, the errors will not be showned.
+  bool get isSuppressErrors => _suppressErrors;
 
   /// The list of functions that determines the validity of this control.
   ///
@@ -179,6 +188,22 @@ abstract class AbstractControl<T> {
   /// the new validation to take effect.
   void clearAsyncValidators() {
     _asyncValidators.clear();
+  }
+
+  /// Add the suppress errors constraint
+  ///
+  /// The errors will not be shown.
+  void suppressErrors() {
+    _suppressErrors = true;
+    markAsUntouched(updateParent: false);
+  }
+
+  /// Remove the suppress errors constraint
+  ///
+  /// Suppress errors constraint is removed.
+  void reinstateErrors() {
+    _suppressErrors = false;
+    markAsUntouched(updateParent: false);
   }
 
   /// The current value of the control.
@@ -519,6 +544,7 @@ abstract class AbstractControl<T> {
     bool updateParent = true,
     bool emitEvent = true,
     bool removeFocus = false,
+    bool suppressErrors = false,
     bool? disabled,
   }) {
     markAsPristine(updateParent: updateParent);
@@ -534,6 +560,10 @@ abstract class AbstractControl<T> {
 
     if (removeFocus) {
       unfocus(touched: false);
+    }
+
+    if (suppressErrors) {
+      this.suppressErrors();
     }
   }
 
@@ -813,12 +843,14 @@ class FormControl<T> extends AbstractControl<T> {
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,
     bool disabled = false,
+    bool suppressErrors = false,
   }) : super(
           validators: validators,
           asyncValidators: asyncValidators,
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
           touched: touched,
+          suppressErrors: suppressErrors,
         ) {
     if (value != null) {
       this.value = value;
@@ -1249,6 +1281,22 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
     emitsCollectionChanged(_controls.values.toList());
   }
 
+  @override
+  void suppressErrors() {
+    forEachChild((control) {
+      control.suppressErrors();
+    });
+    super.suppressErrors();
+  }
+
+  @override
+  void reinstateErrors() {
+    forEachChild((control) {
+      control.reinstateErrors();
+    });
+    super.reinstateErrors();
+  }
+
   /// Disposes the group.
   @override
   void dispose() {
@@ -1425,15 +1473,19 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// print(form.control('first').disabled);  // output: true
   /// ```
   void resetState(Map<String, ControlState<Object>> state,
-      {bool removeFocus = false}) {
+      {bool removeFocus = false, bool suppressErrors = false}) {
     if (state.isEmpty) {
-      reset(removeFocus: removeFocus);
+      reset(
+        removeFocus: removeFocus,
+        suppressErrors: suppressErrors,
+      );
     } else {
       _controls.forEach((name, control) {
         control.reset(
           value: state[name]?.value,
           disabled: state[name]?.disabled,
           removeFocus: removeFocus,
+          suppressErrors: suppressErrors,
           updateParent: false,
         );
       });
