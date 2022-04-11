@@ -11,7 +11,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'sliderValue': FormControl<double>(value: 50.0),
+          reactiveSliderTestingName: FormControl<double>(value: 50.0),
         });
 
         // And: a widget that is bind to the form
@@ -22,7 +22,7 @@ void main() {
         final sliderValue = slider.value;
 
         // Then: value equals to control value
-        expect(sliderValue, form.control('sliderValue').value);
+        expect(sliderValue, form.control(reactiveSliderTestingName).value);
       },
     );
 
@@ -31,14 +31,14 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with and control with default value
         final form = FormGroup({
-          'sliderValue': FormControl<double>(value: 0.0),
+          reactiveSliderTestingName: FormControl<double>(value: 0.0),
         });
 
         // And: a widget that is bind to the form
         await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
 
         // When: updates control value
-        form.control('sliderValue').value = 100.0;
+        form.control(reactiveSliderTestingName).value = 100.0;
 
         // And: gets slider value
         await tester.pump();
@@ -46,7 +46,7 @@ void main() {
         final sliderValue = slider.value;
 
         // Then: value equals to control value
-        expect(sliderValue, form.control('sliderValue').value);
+        expect(sliderValue, form.control(reactiveSliderTestingName).value);
       },
     );
 
@@ -55,7 +55,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with disabled control
         final form = FormGroup({
-          'sliderValue': FormControl<double>(disabled: true),
+          reactiveSliderTestingName: FormControl<double>(disabled: true),
         });
 
         // And: a widget that is bind to the form
@@ -72,7 +72,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with disabled control
         final form = FormGroup({
-          'sliderValue': FormControl<double>(),
+          reactiveSliderTestingName: FormControl<double>(),
         });
 
         // And: a widget that is bind to the form
@@ -93,7 +93,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with disabled control
         final form = FormGroup({
-          'sliderValue': FormControl<double>(disabled: true),
+          reactiveSliderTestingName: FormControl<double>(disabled: true),
         });
 
         // And: a widget that is bind to the form
@@ -114,7 +114,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with an int control
         final form = FormGroup({
-          'sliderValue': FormControl<int>(value: 10),
+          reactiveSliderTestingName: FormControl<int>(value: 10),
         });
 
         // And: a widget that is bind to the form
@@ -127,6 +127,152 @@ void main() {
 
         // Then: the value accessor is IntValueAccessor
         expect(state.valueAccessor, isInstanceOf<SliderIntValueAccessor>());
+      },
+    );
+
+    testWidgets(
+      'Call FormControl.focus() request focus on field',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<int>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // Expect: that the field has no focus
+        var sliderField = tester.firstWidget<Slider>(find.byType(Slider));
+        expect(sliderField.focusNode?.hasFocus, false);
+
+        // When: call FormControl.focus()
+        (form.control(reactiveSliderTestingName) as FormControl).focus();
+        await tester.pump();
+
+        // Then: the reactive field is focused
+        sliderField = tester.firstWidget<Slider>(find.byType(Slider));
+        expect(sliderField.focusNode?.hasFocus, true);
+      },
+    );
+
+    testWidgets(
+      'Call FormControl.unfocus() remove focus on field',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<int>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // And: the field has focused
+        var sliderField = tester.firstWidget<Slider>(find.byType(Slider));
+        sliderField.focusNode?.requestFocus();
+        await tester.pump();
+        expect(sliderField.focusNode?.hasFocus, true);
+
+        // When: call FormControl.unfocus()
+        (form.control(reactiveSliderTestingName) as FormControl).unfocus();
+        await tester.pump();
+
+        // Then: the reactive field is unfocused
+        sliderField = tester.firstWidget<Slider>(find.byType(Slider));
+        expect(sliderField.focusNode?.hasFocus, false);
+      },
+    );
+
+    testWidgets(
+      'Remove focus on an invalid control show error messages',
+      (WidgetTester tester) async {
+        // Given: A group with an invalid control
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<int>(),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // And: the field has focused
+        var sliderField = tester.firstWidget<Slider>(find.byType(Slider));
+        sliderField.focusNode?.requestFocus();
+        await tester.pump();
+        expect(sliderField.focusNode?.hasFocus, true);
+
+        // When: call FormControl.unfocus()
+        (form.control(reactiveSliderTestingName) as FormControl).unfocus();
+        await tester.pump();
+      },
+    );
+
+    testWidgets(
+      'Remove focus, and mark a control as untouched does not show error messages',
+      (WidgetTester tester) async {
+        // Given: A group with an invalid control
+        final form = FormGroup({
+          reactiveSliderTestingName:
+              FormControl<int>(validators: [Validators.required]),
+        });
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(form: form));
+
+        // And: the field has focused
+        var textField = tester.firstWidget<Slider>(find.byType(Slider));
+        textField.focusNode?.requestFocus();
+        await tester.pump();
+        expect(textField.focusNode?.hasFocus, true);
+
+        // When: call FormControl.unfocus(touched: false)
+        form.control(reactiveSliderTestingName).unfocus(touched: false);
+        await tester.pump();
+      },
+    );
+
+    testWidgets(
+      'Provide a FocusNode to ReactiveSlider',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<int>(),
+        });
+
+        // And: a focus node
+        final focusNode = FocusNode();
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(
+          form: form,
+          focusNode: focusNode,
+        ));
+
+        // Expect: field has the provided focus node
+        final textField = tester.firstWidget<Slider>(find.byType(Slider));
+        expect(textField.focusNode, focusNode);
+      },
+    );
+
+    testWidgets(
+      'Provide a FocusNode to ReactiveSlider and access it through focus controller',
+      (WidgetTester tester) async {
+        // Given: A group with a field
+        final nameControl = FormControl<int>();
+        final form = FormGroup({
+          reactiveSliderTestingName: nameControl,
+        });
+
+        // And: a focus node
+        final focusNode = FocusNode();
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(ReactiveSliderTestingWidget(
+          form: form,
+          focusNode: focusNode,
+        ));
+
+        // Expect: field has the provided focus node and is the same of the focus controller
+        final textField = tester.firstWidget<Slider>(find.byType(Slider));
+        expect(textField.focusNode, nameControl.focusController?.focusNode);
       },
     );
   });
