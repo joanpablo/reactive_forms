@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+const reactiveRadioListTileTestingName = 'radio';
+
 class ReactiveRadioListTileTestingWidget extends StatelessWidget {
   final FormGroup form;
+  final FocusNode? focusNode;
 
   const ReactiveRadioListTileTestingWidget({
     Key? key,
     required this.form,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -16,8 +20,9 @@ class ReactiveRadioListTileTestingWidget extends StatelessWidget {
         child: ReactiveForm(
           formGroup: form,
           child: ReactiveRadioListTile(
-            formControlName: 'radio',
+            formControlName: reactiveRadioListTileTestingName,
             value: true,
+            focusNode: focusNode,
           ),
         ),
       ),
