@@ -1,3 +1,9 @@
+# 12.0.0
+
+## Fix
+- Update project to new Android wrappers in order to be able to run the example
+using latest Android SDK changes.
+
 # 11.1.0
 
 ## Enhances
