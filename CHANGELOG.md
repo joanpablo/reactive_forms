@@ -1,3 +1,15 @@
+# 11.1.0
+
+## Enhances
+- Add Focus handling for several reactive widgets:
+    - ReactiveSlider
+    - ReactiveSwitch
+    - ReactiveRadio
+    - ReactiveRadioListTile
+    - ReactiveCheckbox
+    - ReactiveCheckboxListTile
+
+
 # 11.0.2
 
 ## Fix
