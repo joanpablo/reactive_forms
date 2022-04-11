@@ -38,13 +38,18 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? fillColor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
+    FocusNode? focusNode,
     OutlinedBorder? shape,
     BorderSide? side,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool, bool> field) {
+          builder: (field) {
+            final state = field as _ReactiveCheckboxState<bool, bool>;
+
+            state._setFocusNode(focusNode);
+
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
@@ -60,6 +65,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               fillColor: fillColor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
+              focusNode: state.focusNode,
               shape: shape,
               side: side,
             );
@@ -68,5 +74,42 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
 
   @override
   ReactiveFormFieldState<bool, bool> createState() =>
-      ReactiveFormFieldState<bool, bool>();
+      _ReactiveCheckboxState<bool, bool>();
+}
+
+class _ReactiveCheckboxState<T, V> extends ReactiveFormFieldState<T, V> {
+  FocusNode? _focusNode;
+  late FocusController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+
+  @override
+  void subscribeControl() {
+    _registerFocusController(FocusController());
+    super.subscribeControl();
+  }
+
+  @override
+  void unsubscribeControl() {
+    _unregisterFocusController();
+    super.unsubscribeControl();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode? focusNode) {
+    if (_focusNode != focusNode) {
+      _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
+    }
+  }
 }
