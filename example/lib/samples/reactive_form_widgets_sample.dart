@@ -82,7 +82,7 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              ReactiveTouchSpin<double>(
+              ReactiveTouchSpin(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,

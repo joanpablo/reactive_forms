@@ -1,7 +1,6 @@
 include: package:lints/recommended.yaml
 
 analyzer:
-  exclude: [example/**/*.gform.dart]
   language:
     strict-inference: true
     strict-raw-types: true

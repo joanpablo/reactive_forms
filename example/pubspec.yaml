@@ -32,15 +32,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
   reactive_dropdown_search: ^0.2.0
-  reactive_touch_spin: ^0.2.0-nullsafety.2
+  reactive_touch_spin: ^0.1.2-nullsafety.1
   reactive_segmented_control: ^0.1.2
   reactive_date_time_picker: ^0.1.3
-  reactive_forms_annotations: ^0.2.0-beta
-
 
 dev_dependencies:
-  reactive_forms_generator: ^0.5.0-beta
-  build_runner: ^2.1.1
   lints: ^1.0.1
   flutter_test:
     sdk: flutter
@@ -48,7 +44,7 @@ dev_dependencies:
 dependency_overrides:
   reactive_forms:
     path: ../
-  path: 1.8.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

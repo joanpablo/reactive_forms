@@ -28,8 +28,6 @@ class Routes {
   static const reactiveFormWidgets = '/reactive-form-widgets';
 
   static const loginSample = '/login-sample';
-
-  static const codeGeneration = '/code-generation';
 }
 
 class ReactiveFormsApp extends StatelessWidget {
@@ -46,7 +44,6 @@ class ReactiveFormsApp extends StatelessWidget {
         Routes.loginSample: (_) => LoginSample(),
         Routes.datePickerSample: (_) => DatePickerSample(),
         Routes.reactiveFormWidgets: (_) => ReactiveFormWidgetsSample(),
-        Routes.codeGeneration: (_) => ReactiveFormWidgetsSample(),
       },
     );
   }
