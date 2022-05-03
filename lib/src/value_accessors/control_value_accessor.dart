@@ -7,6 +7,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+typedef _ModelToViewValueCallback<ModelDataType, ViewDataType> = ViewDataType?
+    Function(ModelDataType? modelValue);
+
+typedef _ViewToModelValueCallback<ModelDataType, ViewDataType> = ModelDataType?
+    Function(ViewDataType? modelValue);
+
 /// Type of the function to be called when the control emits a value changes
 /// event.
 typedef ChangeFunction<K> = dynamic Function(K? value);
@@ -14,6 +20,17 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 /// Defines an interface that acts as a bridge between [FormControl] and a
 /// reactive native widget.
 abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
+  /// Create simple [ControlValueAccessor] that maps the [FormControl] value to String
+  static ControlValueAccessor<ModelDataType, String>
+      stringAccessor<ModelDataType>({
+    _ModelToViewValueCallback<ModelDataType, String>? modelToString,
+    _ViewToModelValueCallback<ModelDataType, String>? stringToModel,
+  }) =>
+          _StringValueAccessor<ModelDataType>(
+            modelToString: modelToString,
+            stringToModel: stringToModel,
+          );
+
   FormControl<ModelDataType>? _control;
   ChangeFunction<ViewDataType>? _onChange;
   bool _viewToModelChange = false;
@@ -89,5 +106,33 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
     if (_onChange != null) {
       _onChange!(viewValue);
     }
+  }
+}
+
+class _StringValueAccessor<ModelDataType>
+    extends ControlValueAccessor<ModelDataType, String> {
+  final _ModelToViewValueCallback<ModelDataType, String>? _modelToString;
+  final _ViewToModelValueCallback<ModelDataType, String>? _stringToModel;
+
+  _StringValueAccessor({
+    _ModelToViewValueCallback<ModelDataType, String>? modelToString,
+    _ViewToModelValueCallback<ModelDataType, String>? stringToModel,
+  })  : _modelToString = modelToString,
+        _stringToModel = stringToModel;
+
+  @override
+  String? modelToViewValue(ModelDataType? modelValue) {
+    if (_modelToString != null && modelValue != null) {
+      return _modelToString!.call(modelValue);
+    }
+    return modelValue?.toString();
+  }
+
+  @override
+  ModelDataType? viewToModelValue(String? viewValue) {
+    if (_stringToModel != null) {
+      return _stringToModel?.call(viewValue);
+    }
+    return control?.value;
   }
 }
