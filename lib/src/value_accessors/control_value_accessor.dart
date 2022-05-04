@@ -21,15 +21,14 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 /// reactive native widget.
 abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
   /// Create simple [ControlValueAccessor] that maps the [FormControl] value to String
-  static ControlValueAccessor<ModelDataType, ViewDataType>
-      create<ModelDataType, ViewDataType>({
+  factory ControlValueAccessor.create({
     _ModelToViewValueCallback<ModelDataType, ViewDataType>? modelToView,
     _ViewToModelValueCallback<ModelDataType, ViewDataType>? valueToModel,
   }) =>
-          _WrapperValueAccessor<ModelDataType, ViewDataType>(
-            modelToViewValue: modelToView,
-            valueToModelValue: valueToModel,
-          );
+      _WrapperValueAccessor<ModelDataType, ViewDataType>(
+        modelToViewValue: modelToView,
+        valueToModelValue: valueToModel,
+      );
 
   FormControl<ModelDataType>? _control;
   ChangeFunction<ViewDataType>? _onChange;
