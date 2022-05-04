@@ -21,14 +21,14 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 /// reactive native widget.
 abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
   /// Create simple [ControlValueAccessor] that maps the [FormControl] value to String
-  static ControlValueAccessor<ModelDataType, String>
-      stringAccessor<ModelDataType>({
-    _ModelToViewValueCallback<ModelDataType, String>? modelToString,
-    _ViewToModelValueCallback<ModelDataType, String>? stringToModel,
+  static ControlValueAccessor<ModelDataType, ViewDataType>
+      create<ModelDataType, ViewDataType>({
+    _ModelToViewValueCallback<ModelDataType, ViewDataType>? modelToView,
+    _ViewToModelValueCallback<ModelDataType, ViewDataType>? valueToModel,
   }) =>
-          _StringValueAccessor<ModelDataType>(
-            modelToString: modelToString,
-            stringToModel: stringToModel,
+          _WrapperValueAccessor<ModelDataType, ViewDataType>(
+            modelToViewValue: modelToView,
+            valueToModelValue: valueToModel,
           );
 
   FormControl<ModelDataType>? _control;
@@ -109,29 +109,31 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
   }
 }
 
-class _StringValueAccessor<ModelDataType>
-    extends ControlValueAccessor<ModelDataType, String> {
-  final _ModelToViewValueCallback<ModelDataType, String>? _modelToString;
-  final _ViewToModelValueCallback<ModelDataType, String>? _stringToModel;
+class _WrapperValueAccessor<ModelDataType, ViewDataType>
+    extends ControlValueAccessor<ModelDataType, ViewDataType> {
+  final _ModelToViewValueCallback<ModelDataType, ViewDataType>?
+      _modelToViewValue;
+  final _ViewToModelValueCallback<ModelDataType, ViewDataType>?
+      _valueToModelValue;
 
-  _StringValueAccessor({
-    _ModelToViewValueCallback<ModelDataType, String>? modelToString,
-    _ViewToModelValueCallback<ModelDataType, String>? stringToModel,
-  })  : _modelToString = modelToString,
-        _stringToModel = stringToModel;
+  _WrapperValueAccessor({
+    _ModelToViewValueCallback<ModelDataType, ViewDataType>? modelToViewValue,
+    _ViewToModelValueCallback<ModelDataType, ViewDataType>? valueToModelValue,
+  })  : _modelToViewValue = modelToViewValue,
+        _valueToModelValue = valueToModelValue;
 
   @override
-  String? modelToViewValue(ModelDataType? modelValue) {
-    if (_modelToString != null && modelValue != null) {
-      return _modelToString!.call(modelValue);
+  ViewDataType? modelToViewValue(ModelDataType? modelValue) {
+    if (_modelToViewValue != null && modelValue != null) {
+      return _modelToViewValue!.call(modelValue);
     }
-    return modelValue?.toString();
+    return null;
   }
 
   @override
-  ModelDataType? viewToModelValue(String? viewValue) {
-    if (_stringToModel != null) {
-      return _stringToModel?.call(viewValue);
+  ModelDataType? viewToModelValue(ViewDataType? viewValue) {
+    if (_valueToModelValue != null) {
+      return _valueToModelValue?.call(viewValue);
     }
     return control?.value;
   }
