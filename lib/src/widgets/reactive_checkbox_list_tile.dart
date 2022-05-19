@@ -46,6 +46,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     VisualDensity? visualDensity,
     FocusNode? focusNode,
     bool? enableFeedback,
+    OutlinedBorder? checkboxShape,
+    BorderSide? side,
   }) : super(
           key: key,
           formControl: formControl,
@@ -76,6 +78,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               visualDensity: visualDensity,
               focusNode: state.focusNode,
               enableFeedback: enableFeedback,
+              checkboxShape: checkboxShape,
+              side: side,
             );
           },
         );
