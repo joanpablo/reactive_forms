@@ -12,7 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// to a [FormControl].
 ///
 /// For documentation about the various parameters, see the [Radio] class
-/// and [new Radio], the constructor.
+/// and [Radio], the constructor.
 class ReactiveRadio<T> extends ReactiveFormField<T, T> {
   /// Creates a [ReactiveRadio] that contains a [Radio].
   ///
@@ -27,7 +27,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
   /// The [value] arguments is required. See [Radio] constructor.
   ///
   /// For documentation about the various parameters, see the [Radio] class
-  /// and [new Radio], the constructor.
+  /// and [Radio], the constructor.
   ReactiveRadio({
     Key? key,
     String? formControlName,

@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [CheckboxListTile]
-/// class and [new CheckboxListTile], the constructor.
+/// class and [CheckboxListTile], the constructor.
 class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
@@ -46,6 +46,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     VisualDensity? visualDensity,
     FocusNode? focusNode,
     bool? enableFeedback,
+    OutlinedBorder? checkboxShape,
+    BorderSide? side,
   }) : super(
           key: key,
           formControl: formControl,
@@ -76,6 +78,8 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               visualDensity: visualDensity,
               focusNode: state.focusNode,
               enableFeedback: enableFeedback,
+              checkboxShape: checkboxShape,
+              side: side,
             );
           },
         );
