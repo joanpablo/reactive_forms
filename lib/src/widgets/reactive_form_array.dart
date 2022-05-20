@@ -76,7 +76,7 @@ class ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
         builder: (context) {
           return widget.builder(
             context,
-            ReactiveForm.of<FormArray<T>>(context)!,
+            ReactiveForm.of(context)! as FormArray<T>,
             widget.child,
           );
         },

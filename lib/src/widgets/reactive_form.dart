@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/exceptions/control_cast_exception.dart';
 
 import '../widgets/form_control_inherited_notifier.dart';
 
@@ -46,30 +45,19 @@ class ReactiveForm extends StatelessWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes:
-  static F? of<F extends AbstractControl<Object>>(BuildContext context,
+  static AbstractControl<Object>? of(BuildContext context,
       {bool listen = true}) {
     if (listen) {
-      final control = context
+      return context
           .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()
           ?.control;
-      if (control is! F?) {
-        throw ControlCastException<F>(control);
-      }
-
-      return control;
     }
 
     final element = context.getElementForInheritedWidgetOfExactType<
         FormControlInheritedStreamer>();
-    final control = element == null
+    return element == null
         ? null
         : (element.widget as FormControlInheritedStreamer).control;
-
-    if (control is! F?) {
-      throw ControlCastException<F>(control);
-    }
-
-    return control;
   }
 
   @override

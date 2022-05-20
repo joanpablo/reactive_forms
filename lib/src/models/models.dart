@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/exceptions/control_cast_exception.dart';
 
 const _controlNameDelimiter = '.';
 
@@ -1119,24 +1118,15 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// form.control('person.name');
   /// ```
   @override
-  F control<F extends AbstractControl<dynamic>>(String name) {
+  AbstractControl<dynamic> control(String name) {
     final namePath = name.split(_controlNameDelimiter);
     if (namePath.length > 1) {
       final control = findControlInCollection(namePath);
       if (control != null) {
-        if (control is! F) {
-          throw ControlCastException<F>(control);
-        }
-
-        return control as F;
+        return control;
       }
     } else if (contains(name)) {
-      final control = _controls[name];
-      if (control is! F) {
-        throw ControlCastException<F>(control!);
-      }
-
-      return control;
+      return _controls[name]!;
     }
 
     throw FormControlNotFoundException(controlName: name);
@@ -1893,28 +1883,19 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// form.control('address.0.city');
   /// ```
   @override
-  F control<F extends AbstractControl<dynamic>>(String name) {
+  AbstractControl<dynamic> control(String name) {
     final namePath = name.split(_controlNameDelimiter);
     if (namePath.length > 1) {
       final control = findControlInCollection(namePath);
       if (control != null) {
-        if (control is! F) {
-          throw ControlCastException<F>(control);
-        }
-
-        return control as F;
+        return control;
       }
     } else {
       final index = int.tryParse(name);
       if (index == null) {
         throw FormArrayInvalidIndexException(name);
       } else if (index < _controls.length) {
-        final control = _controls[index];
-        if (control is! F) {
-          throw ControlCastException<F>(control);
-        }
-
-        return control as F;
+        return _controls[index];
       }
     }
 

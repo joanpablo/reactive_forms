@@ -848,7 +848,7 @@ void main() {
       });
 
       // When: add control to nested group
-      final address = form.control<FormGroup>('address');
+      final address = form.control('address') as FormGroup;
       address.addAll({
         'city': FormControl<String>(value: 'Sofia'),
       });
