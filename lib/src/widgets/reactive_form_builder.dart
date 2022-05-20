@@ -59,10 +59,10 @@ class ReactiveFormBuilder extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ReactiveFormBuilderState createState() => _ReactiveFormBuilderState();
+  ReactiveFormBuilderState createState() => ReactiveFormBuilderState();
 }
 
-class _ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
+class ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
   late FormGroup _form;
 
   @override

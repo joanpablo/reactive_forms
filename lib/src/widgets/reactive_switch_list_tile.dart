@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [SwitchListTile]
-/// class and [new SwitchListTile], the constructor.
+/// class and [SwitchListTile], the constructor.
 class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
