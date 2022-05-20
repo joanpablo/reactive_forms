@@ -569,7 +569,7 @@ print(form.value);
 Let's dynamically add another control:
 
 ```dart
-final array = form.control('emails') as FormArray<String>;
+final array = form.control<FormArray<String>>('emails');
 
 // adding another email
 array.add(
@@ -618,7 +618,7 @@ final form = FormGroup({
 });
 
 // get the array of controls
-final formArray = form.control('selectedEmails') as FormArray<bool>;
+final formArray = form.control<FormArray<bool>>('selectedEmails');
 
 // populates the array of controls.
 // for each contact add a boolean form control to the array.
