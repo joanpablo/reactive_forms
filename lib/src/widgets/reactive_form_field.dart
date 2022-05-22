@@ -119,7 +119,10 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
 
   Map<String, String> _getValidationMessages(FormControl<dynamic> control) {
     return widget.validationMessages != null
-        ? widget.validationMessages!(this.control)
+        ? {
+            ...control.defaultMessages,
+            ...widget.validationMessages!(this.control),
+          }
         : <String, String>{};
   }
 

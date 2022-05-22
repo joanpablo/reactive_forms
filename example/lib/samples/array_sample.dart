@@ -10,7 +10,7 @@ class ArraySample extends StatefulWidget {
 class _ArraySampleState extends State<ArraySample> {
   final contacts = ['john@email.com', 'susan@email.com', 'caroline@email.com'];
   final form = FormGroup({
-    'selectedContacts': FormArray<bool>([], validators: [_emptyAddressee]),
+    'selectedContacts': FormArray<bool>([], validators: []),
   });
 
   FormArray<bool> get selectedContacts =>

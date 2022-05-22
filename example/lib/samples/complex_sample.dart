@@ -22,19 +22,19 @@ final no = BooleanObject('No');
 class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
-          validators: [Validators.required, Validators.email],
+          // validators: [Validators.required, Validators.email],
           asyncValidators: [_uniqueEmail],
         ),
-        'password': ['', Validators.required, Validators.minLength(8)],
+        'password': [''],
         'passwordConfirmation': '',
         'rememberMe': false,
-        'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
+        'progress': fb.control<double>(50.0, []),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
         'booleanObject':
             FormControl<BooleanObject>(value: BooleanObject('Yes')),
       }, [
-        Validators.mustMatch('password', 'passwordConfirmation')
+        // Validators.mustMatch('password', 'passwordConfirmation')
       ]);
 
   @override

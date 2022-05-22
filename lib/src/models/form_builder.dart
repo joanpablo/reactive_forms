@@ -61,7 +61,7 @@ class FormBuilder {
   /// ```
   FormGroup group(
     Map<String, Object> controls, [
-    List<ValidatorFunction> validators = const [],
+    List<Validator<Map<String, Object>>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     final map = controls
@@ -80,9 +80,9 @@ class FormBuilder {
         return MapEntry(key, FormControl<TimeOfDay>(value: value));
       } else if (value is AbstractControl<Object>) {
         return MapEntry(key, value);
-      } else if (value is ValidatorFunction) {
+      } else if (value is Validator<Object>) {
         return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction>) {
+      } else if (value is List<Validator<Object>>) {
         return MapEntry(key, FormControl(validators: value));
       } else if (value is List<Object?>) {
         if (value.isEmpty) {
@@ -92,12 +92,12 @@ class FormBuilder {
           final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators.any((validator) => validator is! ValidatorFunction)) {
+              validators.any((validator) => validator is! Validator)) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
 
-          if (defaultValue is ValidatorFunction) {
+          if (defaultValue is Validator) {
             throw FormBuilderInvalidInitializationException(
                 'Expected first value in array to be default value of the control and not a validator.');
           }
@@ -105,7 +105,7 @@ class FormBuilder {
           final effectiveValidators = validators
               // TODO handling should be optimized
               // ignore: cast_nullable_to_non_nullable
-              .map<ValidatorFunction>((v) => v as ValidatorFunction)
+              .map<Validator<dynamic>>((v) => v as Validator<dynamic>)
               .toList();
           final control = _control(defaultValue, effectiveValidators);
           return MapEntry(key, control as AbstractControl<Object>);
@@ -117,7 +117,7 @@ class FormBuilder {
 
     return FormGroup(
       map,
-      validators: validators,
+      validators: validators as List<Validator<Map<String, Object>>>,
       asyncValidators: asyncValidators,
     );
   }
@@ -163,7 +163,7 @@ class FormBuilder {
   /// ```
   FormControl<T> control<T>(
     T value, [
-    List<ValidatorFunction> validators = const [],
+    List<Validator<T>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormControl<T>(
@@ -203,7 +203,7 @@ class FormBuilder {
   ///
   FormArray<T> array<T>(
     List<Object> value, [
-    List<ValidatorFunction> validators = const [],
+    List<Validator<List<T?>>> validators = const [],
     List<AsyncValidatorFunction> asyncValidators = const [],
   ]) {
     return FormArray<T>(
@@ -223,27 +223,34 @@ class FormBuilder {
   }
 
   FormControl<dynamic> _control(
-      dynamic value, List<ValidatorFunction> validators) {
+      dynamic value, List<Validator<dynamic>> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
           'Default value of control must not be an AbstractControl.');
     }
 
     if (value is String) {
-      return FormControl<String>(value: value, validators: validators);
+      return FormControl<String>(
+        value: value,
+        validators: validators.map((e) => e as Validator<String>).toList(),
+      );
     } else if (value is int) {
-      return FormControl<int>(value: value, validators: validators);
+      return FormControl<int>(
+          value: value, validators: validators as List<Validator<int>>);
     } else if (value is bool) {
-      return FormControl<bool>(value: value, validators: validators);
+      return FormControl<bool>(
+          value: value, validators: validators as List<Validator<bool>>);
     } else if (value is double) {
-      return FormControl<double>(value: value, validators: validators);
+      return FormControl<double>(
+          value: value, validators: validators as List<Validator<double>>);
     } else if (value is DateTime) {
       return FormControl<DateTime>(value: value);
     } else if (value is TimeOfDay) {
       return FormControl<TimeOfDay>(value: value);
     }
 
-    return FormControl<Object>(value: value, validators: validators);
+    return FormControl<Object>(
+        value: value, validators: validators as List<Validator<Object>>);
   }
 }
 

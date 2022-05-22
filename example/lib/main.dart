@@ -36,7 +36,7 @@ class ReactiveFormsApp extends StatelessWidget {
     return MaterialApp(
       theme: customTheme,
       routes: <String, WidgetBuilder>{
-        Routes.complex: (_) => ComplexSample(),
+        Routes.complex: (_) => LoginSample(),
         Routes.simple: (_) => SimpleSample(),
         Routes.addDynamicControls: (_) => AddDynamicControlsSample(),
         Routes.disableFormSample: (_) => DisableFormSample(),

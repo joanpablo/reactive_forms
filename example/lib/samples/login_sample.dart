@@ -5,9 +5,17 @@ import 'package:reactive_forms_example/sample_screen.dart';
 class LoginSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
-          validators: [Validators.required, Validators.email],
+          validators: [
+            const RequiredValidator('Default required message'),
+          ],
         ),
-        'password': ['', Validators.required, Validators.minLength(8)],
+        'password': FormControl<String>(
+          validators: [
+            const RequiredValidator(
+              'This message will be overridden at control level',
+            ),
+          ],
+        ),
         'rememberMe': false,
       });
 
@@ -22,11 +30,14 @@ class LoginSample extends StatelessWidget {
             children: [
               ReactiveTextField<String>(
                 formControlName: 'email',
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The email must not be empty',
-                  ValidationMessage.email:
-                      'The email value must be a valid email',
-                  'unique': 'This email is already in use',
+                validationMessages: (control) {
+                  return {};
+                  return {
+                    ValidationMessage.required: 'The email must not be empty',
+                    ValidationMessage.email:
+                        'The email value must be a valid email',
+                    'unique': 'This email is already in use',
+                  };
                 },
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
@@ -41,9 +52,7 @@ class LoginSample extends StatelessWidget {
                 formControlName: 'password',
                 obscureText: true,
                 validationMessages: (control) => {
-                  ValidationMessage.required: 'The password must not be empty',
-                  ValidationMessage.minLength:
-                      'The password must be at least 8 characters',
+                  RequiredValidator.messageKey1: 'Local validation message',
                 },
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
