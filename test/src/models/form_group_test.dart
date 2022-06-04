@@ -899,50 +899,119 @@ void main() {
     });
 
     test('Test allControlsTouched', () {
-      // Given: a form with a two controls
       final form = FormGroup({
-        'name': FormControl<String>(value: 'Reactive'),
-        'email': FormControl<String>(value: 'Forms'),
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+        'address': FormGroup({
+          'city': FormControl<String>(),
+          'street': FormControl<String>(),
+        })
       });
 
       expect(form.allControlsTouched(), false);
 
       form.controls['name']?.markAsTouched();
+
       expect(form.allControlsTouched(), false);
 
       form.controls['email']?.markAsTouched();
-      expect(form.allControlsTouched(), true);
 
-      // form.markAllAsUnTouched();
-      // expect(form.allControlsTouched(), false);
-      //
-      // form.markAllAsTouched();
-      // expect(form.allControlsTouched(), true);
+      expect(form.allControlsTouched(), false);
+
+      form.control('address.city').markAsTouched();
+
+      expect(form.allControlsTouched(), false);
+
+      form.control('address.street').markAsTouched();
+
+      expect(form.allControlsTouched(), true);
     });
 
     test('Test allControlsDirty', () {
-      // Given: a form with a two controls
       final form = FormGroup({
-        'name': FormControl<String>(value: 'Reactive'),
-        'email': FormControl<String>(value: 'Forms'),
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+        'address': FormGroup({
+          'city': FormControl<String>(),
+          'street': FormControl<String>(),
+        })
       });
 
       expect(form.allControlsDirty(), false);
 
-      form.controls['name']?.markAsDirty();
+      form.control('name').markAsDirty();
+
       expect(form.allControlsDirty(), false);
 
-      form.controls['email']?.markAsDirty();
-      expect(form.allControlsDirty(), true);
+      form.control('email').markAsDirty();
 
-      // form.markAllAsPristine();
-      // expect(form.allControlsDirty(), false);
-      //
-      // // =====
-      // form.markAllAsTouched();
-      // // =====
-      // form.markAllAsDirty();
-      // expect(form.allControlsDirty(), true);
+      expect(form.allControlsDirty(), false);
+
+      form.control('address.city').markAsDirty();
+
+      expect(form.allControlsDirty(), false);
+
+      form.control('address.street').markAsDirty();
+
+      expect(form.allControlsDirty(), true);
+    });
+
+    test('Test allControlsPristine', () {
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+        'address': FormGroup({
+          'city': FormControl<String>(),
+          'street': FormControl<String>(),
+        })
+      });
+
+      expect(form.allControlsPristine(), true);
+
+      form.control('name').markAsDirty();
+
+      expect(form.allControlsPristine(), false);
+
+      form.control('email').markAsDirty();
+
+      expect(form.allControlsPristine(), false);
+
+      form.control('address.city').markAsDirty();
+
+      expect(form.allControlsPristine(), false);
+
+      form.control('address.street').markAsDirty();
+
+      expect(form.allControlsPristine(), false);
+    });
+
+    test('Test allControlsDisabled', () {
+      final form = FormGroup({
+        'name': FormControl<String>(),
+        'email': FormControl<String>(),
+        'address': FormGroup({
+          'city': FormControl<String>(),
+          'street': FormControl<String>(),
+        })
+      });
+
+      expect(form.allControlsDisabled(), false);
+
+      form.control('name').markAsDisabled();
+
+      expect(form.allControlsDisabled(), false);
+
+      form.control('email').markAsDisabled();
+
+      expect(form.allControlsDisabled(), false);
+
+      form.control('address.city').markAsDisabled();
+
+      expect(form.allControlsDisabled(), false);
+
+      form.control('address.street').markAsDisabled();
+
+      expect(form.allControlsDisabled(), true);
     });
 
     test('Remove control that does not exists throws exception', () {

@@ -514,6 +514,93 @@ void main() {
         reason: 'control is not focused');
   });
 
+  test('Test allControlsTouched', () {
+    final form = FormGroup({
+      'name': FormControl<String>(),
+      'email': FormControl<String>(),
+      'address': FormArray<int>([
+        FormControl(value: 1),
+        FormControl(value: 2),
+      ]),
+    });
+
+    expect(form.allControlsTouched(), false);
+
+    form.control('name').markAsTouched();
+
+    expect(form.allControlsTouched(), false);
+
+    form.control('email').markAsTouched();
+
+    expect(form.allControlsTouched(), false);
+
+    form.control('address.0').markAsTouched();
+
+    expect(form.allControlsTouched(), false);
+
+    form.control('address.1').markAsTouched();
+
+    expect(form.allControlsTouched(), true);
+  });
+
+  test('Test allControlsDirty', () {
+    final form = FormGroup({
+      'name': FormControl<String>(),
+      'email': FormControl<String>(),
+      'address': FormArray<int>([
+        FormControl(value: 1),
+        FormControl(value: 2),
+      ]),
+    });
+
+    expect(form.allControlsDirty(), false);
+
+    form.control('name').markAsDirty();
+
+    expect(form.allControlsDirty(), false);
+
+    form.control('email').markAsDirty();
+
+    expect(form.allControlsDirty(), false);
+
+    form.control('address.0').markAsDirty();
+
+    expect(form.allControlsDirty(), false);
+
+    form.control('address.1').markAsDirty();
+
+    expect(form.allControlsDirty(), true);
+  });
+
+  test('Test allControlsPristine', () {
+    final form = FormGroup({
+      'name': FormControl<String>(),
+      'email': FormControl<String>(),
+      'address': FormArray<int>([
+        FormControl(value: 1),
+        FormControl(value: 2),
+      ]),
+    });
+
+    expect(form.allControlsPristine(), true);
+
+    form.control('name').markAsDirty();
+
+    expect(form.allControlsPristine(), false);
+
+    form.control('email').markAsDirty();
+
+    expect(form.allControlsPristine(), false);
+
+    form.control('address.0').markAsDirty();
+
+    expect(form.allControlsPristine(), false);
+
+    form.control('address.1').markAsDirty();
+
+    expect(form.allControlsPristine(), false);
+  });
+
   test('Focused a nested control', () {
     // Given: array
     final addressArray = FormArray([
