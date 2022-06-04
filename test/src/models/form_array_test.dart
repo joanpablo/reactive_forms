@@ -119,6 +119,25 @@ void main() {
       expect(array.control('2').value, null);
     });
 
+    test(
+        'Reset array restores default value of all items to null when calling resetState with empty array',
+        () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]);
+
+      // And: reset array
+      array.resetState([]);
+
+      //Then: items has initial default values
+      expect(array.control('0').value, null);
+      expect(array.control('1').value, null);
+      expect(array.control('2').value, null);
+    });
+
     test('Reset array with initial values', () {
       // Given: an array with items with default values
       final array = FormArray<int>([
@@ -512,6 +531,25 @@ void main() {
     // Then: control is focused
     expect((array.control('0') as FormControl).hasFocus, true,
         reason: 'control is not focused');
+  });
+
+  test('Focused first control if no argument specified', () {
+    // Given: an array
+    final array = FormArray<int>([
+      FormControl(value: 1),
+      FormControl(value: 2),
+      FormControl(value: 3),
+    ]);
+
+    // When: set a control focus
+    array.focus();
+
+    // Then: control is focused
+    expect(
+      (array.control('0') as FormControl).hasFocus,
+      true,
+      reason: 'control is not focused',
+    );
   });
 
   test('Focused a nested control', () {
