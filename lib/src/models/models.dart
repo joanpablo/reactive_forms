@@ -302,6 +302,22 @@ abstract class AbstractControl<T> {
     }
   }
 
+  /// Marks the control and all its descendant controls as `dirty`.
+  ///
+  /// A control becomes dirty when the control's value is changed through
+  /// the UI.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), the
+  /// *statusChanges* emit event with the latest status when the control is
+  /// mark dirty. When false, no events are emitted.
+  void markAllAsDirty({bool updateParent = true, bool emitEvent = true}) {
+    markAsDirty(updateParent: updateParent, emitEvent: emitEvent);
+    forEachChild((control) => control.markAllAsDirty(updateParent: false));
+  }
+
   /// Marks the control as `pristine`.
   ///
   /// If the control has any children, marks all children as `pristine`, and
@@ -317,6 +333,18 @@ abstract class AbstractControl<T> {
     if (updateParent) {
       parent?.updatePristine(updateParent: updateParent);
     }
+  }
+
+  /// Marks the control and all its descendant controls as `pristine`.
+  ///
+  /// If the control has any children, marks all children as `pristine`, and
+  /// recalculates the `pristine` status of all parent controls.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  void markAllAsPristine({bool updateParent = true}) {
+    markAsPristine(updateParent: updateParent);
+    forEachChild((control) => control.markAllAsPristine(updateParent: false));
   }
 
   /// Marks the control as touched.
@@ -351,6 +379,19 @@ abstract class AbstractControl<T> {
   void markAllAsTouched({bool updateParent = true, bool emitEvent = true}) {
     markAsTouched(updateParent: updateParent, emitEvent: emitEvent);
     forEachChild((control) => control.markAllAsTouched(updateParent: false));
+  }
+
+  /// Marks the control and all its descendant controls as not touched.
+  ///
+  /// When [updateParent] is false, mark only this control and descendants.
+  /// When true or not supplied, marks also all direct ancestors.
+  /// Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
+  void markAllAsUnTouched({bool updateParent = true, bool emitEvent = true}) {
+    markAsUntouched(updateParent: updateParent, emitEvent: emitEvent);
+    forEachChild((control) => control.markAllAsUnTouched(updateParent: false));
   }
 
   /// Marks the control as untouched.
@@ -569,9 +610,21 @@ abstract class AbstractControl<T> {
     }
   }
 
-  /// Returns true if all children disabled, otherwise returns false.
+  /// Returns true if all children are disabled, otherwise returns false.
   @protected
   bool allControlsDisabled() => disabled;
+
+  /// Returns true if all children are touched, otherwise returns false.
+  @protected
+  bool allControlsTouched() => touched;
+
+  /// Returns true if all children are dirty, otherwise returns false.
+  @protected
+  bool allControlsDirty() => dirty;
+
+  /// Returns true if all children are pristing, otherwise returns false.
+  @protected
+  bool allControlsPristine() => pristine;
 
   /// Returns true if all children has the specified [status], otherwise
   /// returns false.
@@ -1271,6 +1324,39 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
     return _controls.values.every((control) => control.disabled);
   }
 
+  /// Returns true if all children are touched, otherwise returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool allControlsTouched() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.values.every((control) => control.touched);
+  }
+
+  /// Returns true if all children are dirty, otherwise returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool allControlsDirty() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.values.every((control) => control.dirty);
+  }
+
+  /// Returns true if all children are pristine, otherwise returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool allControlsPristine() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.values.every((control) => control.pristine);
+  }
+
   /// Returns true if all children has the specified [status], otherwise
   /// returns false.
   ///
@@ -1913,7 +1999,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
     super.dispose();
   }
 
-  /// Returns true if all children disabled, otherwise returns false.
+  /// Returns true if all children are disabled, otherwise returns false.
   ///
   /// This is for internal use only.
   @override
@@ -1922,6 +2008,39 @@ class FormArray<T> extends AbstractControl<List<T?>>
       return false;
     }
     return _controls.every((control) => control.disabled);
+  }
+
+  /// Returns true if all children are touched, otherwise returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool allControlsTouched() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.every((control) => control.touched);
+  }
+
+  /// Returns true if all children are dirty, otherwise returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool allControlsDirty() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.every((control) => control.dirty);
+  }
+
+  /// Returns true if all children are pristine, otherwise returns false.
+  ///
+  /// This is for internal use only.
+  @override
+  bool allControlsPristine() {
+    if (_controls.isEmpty) {
+      return false;
+    }
+    return _controls.every((control) => control.pristine);
   }
 
   /// Returns true if all children has the specified [status], otherwise
