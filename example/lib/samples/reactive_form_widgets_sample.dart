@@ -26,63 +26,67 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
         builder: (context, form, child) {
           return Column(
             children: [
-              ReactiveDropdownSearch(
+              ReactiveDropdownSearch<String, String>(
                 formControlName: 'menu',
                 decoration: const InputDecoration(
+                  labelText: 'Menu mode *',
+                  hintText: 'Select a country',
                   helperText: '',
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
                   border: OutlineInputBorder(),
                 ),
-                mode: Mode.MENU,
-                hint: 'Select a country',
-                showSelectedItem: true,
+                popupProps: PopupProps.menu(
+                  disabledItemFn: (String s) => s.startsWith('I'),
+                ),
                 items: ['Brazil', 'Italia (Disabled)', 'Tunisia', 'Canada'],
-                label: 'Menu mode *',
                 showClearButton: true,
-                popupItemDisabled: (String s) => s.startsWith('I'),
               ),
               const SizedBox(height: 8),
-              ReactiveDropdownSearch<String>(
+              ReactiveDropdownSearch<String, String>(
                 formControlName: 'bottomSheet',
-                mode: Mode.BOTTOM_SHEET,
-                decoration: const InputDecoration(
-                  helperText: '',
-                  contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-                  border: OutlineInputBorder(),
-                ),
-                maxHeight: 300,
-                items: ['Brazil', 'Italia', 'Tunisia', 'Canada'],
-                label: 'Custom BottomSheet mode',
-                showSearchBox: true,
-                popupTitle: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColorDark,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                popupProps: PopupProps.bottomSheet(
+                  disabledItemFn: (String s) => s.startsWith('I'),
+                  title: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColorDark,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Country',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Center(
-                    child: Text(
-                      'Country',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                  showSearchBox: true,
+                  bottomSheetProps: BottomSheetProps(
+                    constraints: const BoxConstraints(maxHeight: 300),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24),
                       ),
                     ),
                   ),
                 ),
-                popupShape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  ),
+                decoration: const InputDecoration(
+                  labelText: 'Custom BottomSheet mode',
+                  helperText: '',
+                  contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+                  border: OutlineInputBorder(),
                 ),
+                items: ['Brazil', 'Italia', 'Tunisia', 'Canada'],
               ),
               const SizedBox(height: 8),
-              ReactiveTouchSpin(
+              ReactiveTouchSpin<double>(
                 formControlName: 'touchSpin',
                 min: 5,
                 max: 100,
