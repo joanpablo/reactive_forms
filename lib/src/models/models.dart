@@ -302,6 +302,19 @@ abstract class AbstractControl<T> {
     }
   }
 
+  /// Marks the control and all its descendant controls as dirty.
+  ///
+  /// When [updateParent] is false, mark only this control and descendants.
+  /// When true or not supplied, marks also all direct ancestors.
+  /// Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
+  void markAllAsDirty({bool updateParent = true, bool emitEvent = true}) {
+    markAsDirty(updateParent: updateParent, emitEvent: emitEvent);
+    forEachChild((control) => control.markAllAsDirty(updateParent: false));
+  }
+
   /// Marks the control as `pristine`.
   ///
   /// If the control has any children, marks all children as `pristine`, and

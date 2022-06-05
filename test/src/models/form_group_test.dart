@@ -689,6 +689,38 @@ void main() {
       expect(form.pristine, true, reason: 'form is not pristine');
     });
 
+    test('Marking all controls as dirty', () {
+      final form = FormGroup({
+        'email': FormControl<String>(),
+        'name': FormControl<String>(),
+        'address': FormGroup({
+          'zipCode': FormControl<int>(),
+          'city': FormControl<String>(),
+        }),
+      });
+
+      form.markAsDirty();
+
+      final email = form.control('email');
+      final name = form.control('name');
+      final city = form.control('address.city');
+      final zipCode = form.control('address.zipCode');
+
+      expect(form.dirty, true);
+      expect(email.dirty, false);
+      expect(name.dirty, false);
+      expect(city.dirty, false);
+      expect(zipCode.dirty, false);
+
+      form.markAllAsDirty();
+
+      expect(form.dirty, true);
+      expect(email.dirty, true);
+      expect(name.dirty, true);
+      expect(city.dirty, true);
+      expect(zipCode.dirty, true);
+    });
+
     test('Mark a control as untouched also marks the parent as untouched', () {
       // Given: a group with touched control
       final form = FormGroup({
