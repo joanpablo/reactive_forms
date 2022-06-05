@@ -159,7 +159,46 @@ void main() {
           throwsA(isInstanceOf<FormControlNotFoundException>()));
     });
 
-    test('Mark form as touched mark all controls in the form as touched', () {
+    test('Marking all controls as untouched', () {
+      final form = FormGroup({
+        'email': FormControl<String>(),
+        'name': FormControl<String>(),
+        'address': FormGroup({
+          'zipCode': FormControl<int>(),
+          'city': FormControl<String>(),
+        }),
+      });
+
+      final email = form.control('email');
+      final name = form.control('name');
+      final city = form.control('address.city');
+      final zipCode = form.control('address.zipCode');
+
+      expect(form.touched, false);
+      expect(email.touched, false);
+      expect(name.touched, false);
+      expect(city.touched, false);
+      expect(zipCode.touched, false);
+
+      form.markAllAsTouched();
+
+      expect(form.touched, true);
+      expect(email.touched, true);
+      expect(name.touched, true);
+      expect(city.touched, true);
+      expect(zipCode.touched, true);
+
+      form.markAllAsUntouched();
+
+      expect(form.touched, false);
+      expect(email.touched, false);
+      expect(name.touched, false);
+      expect(city.touched, false);
+      expect(zipCode.touched, false);
+    });
+
+    test('Mark form as untouched mark all controls in the form as untouched',
+        () {
       // Given: an untouched form
       final form = FormGroup({
         'name': FormControl<String>(),

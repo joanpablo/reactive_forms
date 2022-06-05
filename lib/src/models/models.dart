@@ -388,6 +388,19 @@ abstract class AbstractControl<T> {
     }
   }
 
+  /// Marks the control and all its descendant controls as untouched.
+  ///
+  /// When [updateParent] is false, mark only this control and descendants.
+  /// When true or not supplied, marks also all direct ancestors.
+  /// Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a notification
+  /// event is emitted.
+  void markAllAsUntouched({bool updateParent = true, bool emitEvent = true}) {
+    markAsUntouched(updateParent: updateParent, emitEvent: emitEvent);
+    forEachChild((control) => control.markAllAsUntouched(updateParent: false));
+  }
+
   /// Enables the control. This means the control is included in validation
   /// checks and the aggregate value of its parent. Its status recalculates
   /// based on its value and its validators.
