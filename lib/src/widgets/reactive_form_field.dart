@@ -147,6 +147,16 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   @override
   void didUpdateWidget(
       ReactiveFormField<ModelDataType, ViewDataType> oldWidget) {
+    if (widget.formControlName != oldWidget.formControlName ||
+        !identical(widget.formControl, oldWidget.formControl)) {
+      final newControl = _resolveFormControl();
+      if (control != newControl) {
+        unsubscribeControl();
+        control = newControl;
+        subscribeControl();
+      }
+    }
+
     if (widget.valueAccessor != null && widget.valueAccessor != valueAccessor) {
       valueAccessor.dispose();
       _valueAccessor = widget.valueAccessor!;
