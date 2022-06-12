@@ -215,8 +215,8 @@ void main() {
         // And: a widget that is bind to the form with the custom message
         await tester.pumpWidget(ReactiveTextFieldTestingWidget<String>(
           form: form,
-          validationMessages: (control) => {
-            ValidationMessage.required: customMessage,
+          validationMessages: {
+            ValidationMessage.required: (_) => customMessage,
           },
         ));
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
 
+/// FormGroup builder function definition of the [ReactiveFormBuilder].
 typedef ReactiveFormBuilderCreator = FormGroup Function();
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
@@ -14,8 +15,13 @@ typedef ReactiveFormBuilderCreator = FormGroup Function();
 /// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
 class ReactiveFormBuilder extends StatefulWidget {
+  /// Called to obtain the child widget.
   final ReactiveFormConsumerBuilder builder;
+
+  /// Called to create the FormGroup that will be bind to this widget.
   final ReactiveFormBuilderCreator form;
+
+  /// The widget below this widget in the tree.
   final Widget? child;
 
   /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
@@ -54,8 +60,8 @@ class ReactiveFormBuilder extends StatefulWidget {
     Key? key,
     this.child,
     this.onWillPop,
-    required this.builder,
     required this.form,
+    required this.builder,
   }) : super(key: key);
 
   @override
