@@ -4,7 +4,7 @@ import 'package:reactive_forms_example/sample_screen.dart';
 
 class ArraySample extends StatefulWidget {
   @override
-  _ArraySampleState createState() => _ArraySampleState();
+  State<ArraySample> createState() => _ArraySampleState();
 }
 
 class _ArraySampleState extends State<ArraySample> {

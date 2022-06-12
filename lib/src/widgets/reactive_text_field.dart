@@ -86,7 +86,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
-    ValidationMessagesFunction<T>? validationMessages,
+    Map<String, ValidationMessageFunction>? validationMessages,
     ControlValueAccessor<T, String>? valueAccessor,
     ShowErrorsFunction? showErrors,
     InputDecoration decoration = const InputDecoration(),

@@ -28,7 +28,10 @@ class ComplexSample extends StatelessWidget {
         'password': ['', Validators.required, Validators.minLength(8)],
         'passwordConfirmation': '',
         'rememberMe': false,
-        'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
+        'progress': fb.control<double>(50.0, [
+          Validators.min(50.0),
+          Validators.max(90.0),
+        ]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
         'booleanObject':
@@ -48,11 +51,12 @@ class ComplexSample extends StatelessWidget {
             children: [
               ReactiveTextField<String>(
                 formControlName: 'email',
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The email must not be empty',
-                  ValidationMessage.email:
+                validationMessages: {
+                  ValidationMessage.required: (_) =>
+                      'The email must not be empty',
+                  ValidationMessage.email: (_) =>
                       'The email value must be a valid email',
-                  'unique': 'This email is already in use',
+                  'unique': (_) => 'This email is already in use',
                 },
                 onSubmitted: () => form.focus('password'),
                 textInputAction: TextInputAction.next,
@@ -71,10 +75,11 @@ class ComplexSample extends StatelessWidget {
               ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The password must not be empty',
-                  ValidationMessage.minLength:
-                      'The password must be at least 8 characters',
+                validationMessages: {
+                  ValidationMessage.required: (_) =>
+                      'The password must not be empty',
+                  ValidationMessage.minLength: (error) =>
+                      'The password must be at least ${(error as Map)['requiredLength']} characters long',
                 },
                 onSubmitted: () => form.focus('passwordConfirmation'),
                 textInputAction: TextInputAction.next,
@@ -86,8 +91,8 @@ class ComplexSample extends StatelessWidget {
                 decoration:
                     const InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
-                validationMessages: (control) => {
-                  ValidationMessage.mustMatch:
+                validationMessages: {
+                  ValidationMessage.mustMatch: (_) =>
                       'Password confirmation must match',
                 },
                 onSubmitted: () => form.focus('rememberMe'),
@@ -201,9 +206,11 @@ class ComplexSample extends StatelessWidget {
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
                 showErrors: (control) => control.invalid,
-                validationMessages: (control) => {
-                  ValidationMessage.min:
-                      'A value lower than 50.00 is not accepted',
+                validationMessages: {
+                  ValidationMessage.max: (error) =>
+                      'A value greater than ${(error as Map)['max']} is not accepted',
+                  ValidationMessage.min: (error) =>
+                      'A value lower than ${(error as Map)['min']} is not accepted',
                 },
               ),
               const SizedBox(height: 24.0),

@@ -4,8 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-
-import '../widgets/form_control_inherited_notifier.dart';
+import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
@@ -13,7 +12,10 @@ import '../widgets/form_control_inherited_notifier.dart';
 /// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
 class ReactiveForm extends StatelessWidget {
+  /// The widget below this widget in the tree.
   final Widget child;
+
+  /// The form group control that is bound to this widget.
   final FormGroup formGroup;
 
   /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
@@ -38,13 +40,13 @@ class ReactiveForm extends StatelessWidget {
     this.onWillPop,
   }) : super(key: key);
 
-  /// Returns the nearest model up its widget tree
+  /// Returns the nearest model up its widget tree.
   ///
   /// If [listen] is `true` (default value), all the dependents widgets
   /// will rebuild each time the model change.
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
-  /// [context] when model changes:
+  /// [context] when model changes.
   static AbstractControl<Object>? of(BuildContext context,
       {bool listen = true}) {
     if (listen) {

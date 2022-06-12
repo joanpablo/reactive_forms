@@ -30,6 +30,9 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
   - [Control state](#control-state)
 - [Reactive Form Widgets](#reactive-form-widgets)
 - [How to customize error messages?](#how-to-customize-error-messages)
+  - [Reactive Widget level](#1-reactive-widget-level)
+  - [Global/Application level](#2-globalapplication-level)
+  - [Parameterized validation messages](#parameterized-validation-messages)
 - [When does Validation Messages begin to show up?](#when-does-validation-messages-begin-to-show-up)
   - [Touching a control](#touching-a-control)
   - [Overriding Reactive Widgets show errors behavior](#overriding-reactive-widgets-show-errors-behavior)
@@ -787,6 +790,17 @@ Widget build(BuildContext context) {
 
 ## How to customize error messages?
 
+Validation messages can be defined at two different levels:
+1. Reactive Widget level.
+2. Global/Application level.
+
+### 1. Reactive Widget level.
+
+Each reactive widget like `ReactiveTextField`, `ReactiveDropdownField`, and all others have the
+property `validationMessages` as an argument of their constructors. In order to define custom
+validation messages at widget level, just provide the property `validationMessages` with the
+corresponding text values for each error as shown below:
+
 ```dart
 @override
 Widget build(BuildContext context) {
@@ -796,23 +810,23 @@ Widget build(BuildContext context) {
       children: <Widget>[
         ReactiveTextField(
           formControlName: 'name',
-          validationMessages: (control) => {
-            'required': 'The name must not be empty'
+          validationMessages: {
+            'required': (error) => 'The name must not be empty'
           },
         ),
         ReactiveTextField(
           formControlName: 'email',
-          validationMessages: (control) => {
-            'required': 'The email must not be empty',
-            'email': 'The email value must be a valid email'
+          validationMessages: {
+            'required': (error) => 'The email must not be empty',
+            'email': (error) => 'The email value must be a valid email'
           },
         ),
         ReactiveTextField(
           formControlName: 'password',
           obscureText: true,
-          validationMessages: (control) => {
-            'required': 'The password must not be empty',
-            'minLenght': 'The password must have at least 8 characters'
+          validationMessages: {
+            'required': (error) => 'The password must not be empty',
+            'minLength': (error) => 'The password must have at least 8 characters'
           },
         ),
       ],
@@ -827,13 +841,78 @@ Widget build(BuildContext context) {
 > ```dart
 > return ReactiveTextField(
 >    formControlName: 'email',
->    validationMessages: (control) => {
->      ValidationMessage.required: 'The email must not be empty',
->      ValidationMessage.email: 'The email value must be a valid email',
+>    validationMessages: {
+>      ValidationMessage.required: (error) => 'The email must not be empty',
+>      ValidationMessage.email: (error) => 'The email value must be a valid email',
 >    },
 > ),
 > ````
 > nice isn't it? ;)
+
+### 2. Global/Application level.
+
+You can also define custom validation messages at a higher level, for example, at the application
+level. When a reactive widget looks for an error message text, it first looks at widget level
+definition, if it doesn't find any config at widget level then it looks at the global config
+definition.
+
+The global definition of validation messages allows you to define error messages in a centralized
+way and relieves you to define validation messages on each reactive widget of your application.  
+
+In order to define these configs at a higher level use the widget **ReactiveFormConfig** and
+define the `validationMessages`. 
+
+Here is an example of the global definition for custom validation messages:
+
+### Validation messages with error arguments:
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveFormConfig(
+      validationMessages: {
+        ValidationMessage.required: (error) => 'Field must not be empty',
+        ValidationMessage.email: (error) => 'Must enter a valid email',
+      },
+      child: MaterialApp(
+        home: Scaffold(
+          body: const Center(
+            child: Text('Hello Flutter Reactive Forms!'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Parameterized validation messages
+
+You can enrich the validation messages using parameters of the error instance. In the next example
+we are giving a more complete validation error to the user:
+
+```dart
+final form = FormGroup({
+  'password': FormControl<String>(
+    validators: [Validators.minLegth(8)],
+  ),
+});
+```
+
+```dart
+ReactiveTextField(
+  formControlName: 'password',
+  validationMessage: {
+    ValidationMessages.minLength: (error) => 
+    'The password must be at least ${(error as Map)['requiredLength']} characters long' 
+  },
+)
+```
+
+This will show the message: `The password must be at least 8 characters long`
 
 ## When does Validation Messages begin to show up?
 

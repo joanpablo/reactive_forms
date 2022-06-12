@@ -18,8 +18,7 @@ typedef ShowErrorsFunction = bool Function(AbstractControl<dynamic> control);
 
 /// Signature of the function that returns the [Map] that store custom
 /// validation messages for each error.
-typedef ValidationMessagesFunction<T> = Map<String, String> Function(
-    FormControl<T> control);
+typedef ValidationMessageFunction = String Function(Object error);
 
 /// A single reactive form field.
 ///
@@ -39,9 +38,9 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   /// The control that is bound to this widget.
   final FormControl<ModelDataType>? formControl;
 
-  /// A function that returns the [Map] that store custom validation messages
+  /// A function that returns the [Map] that stores custom validation messages
   /// for each error.
-  final ValidationMessagesFunction<ModelDataType>? validationMessages;
+  final Map<String, ValidationMessageFunction>? validationMessages;
 
   /// Gets the widget control value accessor
   final ControlValueAccessor<ModelDataType, ViewDataType>? valueAccessor;
@@ -99,11 +98,13 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   /// If the control has several errors, then the first error is selected
   /// for visualizing in UI.
   String? get errorText {
-    if (_showErrors()) {
-      final validationMessages = _getValidationMessages(control);
-      return validationMessages.containsKey(control.errors.keys.first)
-          ? validationMessages[control.errors.keys.first]
-          : control.errors.keys.first;
+    if (control.hasErrors && _showErrors()) {
+      final errorKey = control.errors.keys.first;
+      final validationMessage = _findValidationMessage(errorKey);
+
+      return validationMessage != null
+          ? validationMessage(control.getError(errorKey)!)
+          : errorKey;
     }
 
     return null;
@@ -115,12 +116,6 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
     }
 
     return control.invalid && touched;
-  }
-
-  Map<String, String> _getValidationMessages(FormControl<dynamic> control) {
-    return widget.validationMessages != null
-        ? widget.validationMessages!(this.control)
-        : <String, String>{};
   }
 
   @override
@@ -255,5 +250,15 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   @override
   Widget build(BuildContext context) {
     return widget._builder(this);
+  }
+
+  ValidationMessageFunction? _findValidationMessage(String errorKey) {
+    if (widget.validationMessages != null &&
+        widget.validationMessages!.containsKey(errorKey)) {
+      return widget.validationMessages![errorKey];
+    } else {
+      final formConfig = ReactiveFormConfig.of(context);
+      return formConfig?.validationMessages[errorKey];
+    }
   }
 }

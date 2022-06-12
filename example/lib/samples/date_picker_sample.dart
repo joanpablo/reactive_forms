@@ -5,7 +5,7 @@ import 'package:reactive_forms_example/sample_screen.dart';
 
 class DatePickerSample extends StatefulWidget {
   @override
-  _DatePickerSampleState createState() => _DatePickerSampleState();
+  State<DatePickerSample> createState() => _DatePickerSampleState();
 }
 
 class _DatePickerSampleState extends State<DatePickerSample> {

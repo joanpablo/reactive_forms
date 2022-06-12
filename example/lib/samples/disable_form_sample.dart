@@ -3,7 +3,7 @@ import 'package:reactive_forms_example/sample_screen.dart';
 
 class DisableFormSample extends StatefulWidget {
   @override
-  _DisableFormSampleState createState() => _DisableFormSampleState();
+  State<DisableFormSample> createState() => _DisableFormSampleState();
 }
 
 class _DisableFormSampleState extends State<DisableFormSample> {
