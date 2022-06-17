@@ -79,6 +79,8 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
     Widget? child,
     DateTime? currentDate,
     DateTime? initialDate,
+    TextInputType? keyboardType,
+    Offset? anchorPoint,
   }) : super(
           key: key,
           formControl: formControl,
@@ -110,6 +112,8 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
                   fieldHintText: fieldHintText,
                   fieldLabelText: fieldLabelText,
                   currentDate: currentDate,
+                  keyboardType: keyboardType,
+                  anchorPoint: anchorPoint,
                 ).then((value) {
                   if (value != null) {
                     field.didChange(value);

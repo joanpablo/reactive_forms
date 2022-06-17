@@ -45,10 +45,10 @@ class ReactiveFormArray<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  _ReactiveFormArrayState<T> createState() => _ReactiveFormArrayState<T>();
+  ReactiveFormArrayState<T> createState() => ReactiveFormArrayState<T>();
 }
 
-class _ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
+class ReactiveFormArrayState<T> extends State<ReactiveFormArray<T>> {
   late FormArray<T> _formArray;
 
   @override

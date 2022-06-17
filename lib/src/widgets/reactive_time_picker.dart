@@ -76,6 +76,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay, TimeOfDay> {
     String? minuteLabelText,
     TimePickerEntryMode initialEntryMode = TimePickerEntryMode.dial,
     EntryModeChangeCallback? onEntryModeChanged,
+    Offset? anchorPoint,
   }) : super(
           key: key,
           formControl: formControl,
@@ -99,6 +100,7 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay, TimeOfDay> {
                   minuteLabelText: minuteLabelText,
                   routeSettings: routeSettings,
                   onEntryModeChanged: onEntryModeChanged,
+                  anchorPoint: anchorPoint,
                 ).then((value) {
                   if (value != null) {
                     field.didChange(value);

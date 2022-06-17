@@ -1,3 +1,15 @@
+# 13.0.1
+
+## Enhances
+- Upgrade example folder project to Flutter 3.0.0.
+- Increase code coverage in FormArray.
+
+# 13.0.0
+
+## Breaking Changes
+
+- Reactive Forms is now migrated to Flutter 3.0.0.
+
 # 12.0.0
 
 ## Fix

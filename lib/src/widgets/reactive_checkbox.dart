@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [Checkbox] class
-/// and [new Checkbox], the constructor.
+/// and [Checkbox], the constructor.
 class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
