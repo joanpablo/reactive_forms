@@ -7,10 +7,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-typedef _ModelToViewValueCallback<ModelDataType, ViewDataType> = ViewDataType?
+typedef ModelToViewCallback<ModelDataType, ViewDataType> = ViewDataType?
     Function(ModelDataType? modelValue);
 
-typedef _ViewToModelValueCallback<ModelDataType, ViewDataType> = ModelDataType?
+typedef ViewToModelCallback<ModelDataType, ViewDataType> = ModelDataType?
     Function(ViewDataType? modelValue);
 
 /// Type of the function to be called when the control emits a value changes
@@ -24,8 +24,8 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
 
   /// Create simple [ControlValueAccessor] that maps the [FormControl] value
   factory ControlValueAccessor.create({
-    _ModelToViewValueCallback<ModelDataType, ViewDataType>? modelToView,
-    _ViewToModelValueCallback<ModelDataType, ViewDataType>? valueToModel,
+    required ModelToViewCallback<ModelDataType, ViewDataType> modelToView,
+    required ViewToModelCallback<ModelDataType, ViewDataType> valueToModel,
   }) =>
       _WrapperValueAccessor<ModelDataType, ViewDataType>(
         modelToViewValue: modelToView,
@@ -112,30 +112,20 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
 
 class _WrapperValueAccessor<ModelDataType, ViewDataType>
     extends ControlValueAccessor<ModelDataType, ViewDataType> {
-  final _ModelToViewValueCallback<ModelDataType, ViewDataType>?
-      _modelToViewValue;
-  final _ViewToModelValueCallback<ModelDataType, ViewDataType>?
-      _valueToModelValue;
+  final ModelToViewCallback<ModelDataType, ViewDataType> _modelToViewValue;
+  final ViewToModelCallback<ModelDataType, ViewDataType> _valueToModelValue;
 
   _WrapperValueAccessor({
-    _ModelToViewValueCallback<ModelDataType, ViewDataType>? modelToViewValue,
-    _ViewToModelValueCallback<ModelDataType, ViewDataType>? valueToModelValue,
+    required ModelToViewCallback<ModelDataType, ViewDataType> modelToViewValue,
+    required ViewToModelCallback<ModelDataType, ViewDataType> valueToModelValue,
   })  : _modelToViewValue = modelToViewValue,
         _valueToModelValue = valueToModelValue;
 
   @override
-  ViewDataType? modelToViewValue(ModelDataType? modelValue) {
-    if (_modelToViewValue != null && modelValue != null) {
-      return _modelToViewValue!.call(modelValue);
-    }
-    return null;
-  }
+  ViewDataType? modelToViewValue(ModelDataType? modelValue) =>
+      _modelToViewValue(modelValue);
 
   @override
-  ModelDataType? viewToModelValue(ViewDataType? viewValue) {
-    if (_valueToModelValue != null) {
-      return _valueToModelValue?.call(viewValue);
-    }
-    return control?.value;
-  }
+  ModelDataType? viewToModelValue(ViewDataType? viewValue) =>
+      _valueToModelValue(viewValue);
 }
