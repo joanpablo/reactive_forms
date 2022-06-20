@@ -62,6 +62,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
     this.valueAccessor,
     this.showErrors,
     this.validationMessages,
+    this.stringify,
     required ReactiveFormFieldBuilder<ModelDataType, ViewDataType> builder,
   })  : assert(
             (formControlName != null && formControl == null) ||
@@ -69,6 +70,8 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
             'Must provide a formControlName or a formControl, but not both at the same time.'),
         _builder = builder,
         super(key: key);
+  // Function to stringify the [ViewDataType] value
+  final String Function(ViewDataType value)? stringify;
 
   @override
   ReactiveFormFieldState<ModelDataType, ViewDataType> createState() =>
