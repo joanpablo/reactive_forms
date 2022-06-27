@@ -33,6 +33,12 @@ class ComplexSample extends StatelessWidget {
         'time': TimeOfDay.now(),
         'booleanObject':
             FormControl<BooleanObject>(value: BooleanObject('Yes')),
+        'embedded': EmbeddedFormControl<MapEntry<String, String>>(
+          toEmbedded: (value) => {
+            'embeddedKey': value?.key,
+            'embeddedValue': value?.value,
+          },
+        ),
       }, [
         Validators.mustMatch('password', 'passwordConfirmation')
       ]);
@@ -161,6 +167,22 @@ class ComplexSample extends StatelessWidget {
                   )
                 ],
               ),
+              ReactiveDropdownField<MapEntry<String, String>>(
+                formControlName: 'embedded',
+                decoration: const InputDecoration(
+                  labelText: 'EmbeddedFormControl',
+                ),
+                items: [
+                  const DropdownMenuItem(
+                    value: MapEntry('key0', 'value0'),
+                    child: Text('key0 -> value0'),
+                  ),
+                  const DropdownMenuItem(
+                    value: MapEntry('key1', 'value1'),
+                    child: Text('key1 -> value1'),
+                  ),
+                ],
+              ),
               const SizedBox(height: 24.0),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
@@ -243,6 +265,16 @@ class ComplexSample extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (form.valid) {
+                    print(form.value);
+                  } else {
+                    form.markAllAsTouched();
+                  }
+                },
+                child: const Text('Submit'),
+              ),
             ],
           );
         },

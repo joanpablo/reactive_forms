@@ -1010,6 +1010,21 @@ class FormControl<T> extends AbstractControl<T> {
   AbstractControl<dynamic> findControl(String path) => this;
 }
 
+class EmbeddedFormControl<T> extends FormControl<T> {
+  EmbeddedFormControl({
+    required this.toEmbedded,
+    super.value,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
+    super.touched,
+    super.disabled,
+  });
+  final Map<String, Object?> Function(T? value) toEmbedded;
+
+  Map<String, Object?> get embeddedValue => toEmbedded(value);
+}
+
 /// Tracks the value and validity state of a group of FormControl instances.
 ///
 /// A FormGroup aggregates the values of each child FormControl into one object,
@@ -1162,7 +1177,11 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
     final map = <String, Object?>{};
     _controls.forEach((key, control) {
       if (control.enabled || disabled) {
-        map[key] = control.value;
+        if (control is EmbeddedFormControl) {
+          map.addAll(control.embeddedValue);
+        } else {
+          map[key] = control.value;
+        }
       }
     });
 
