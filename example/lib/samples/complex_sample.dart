@@ -33,10 +33,10 @@ class ComplexSample extends StatelessWidget {
         'time': TimeOfDay.now(),
         'booleanObject':
             FormControl<BooleanObject>(value: BooleanObject('Yes')),
-        'embedded': EmbeddedFormControl<MapEntry<String, String>>(
+        'position': EmbeddedFormControl<MapEntry<double, double>>(
           toEmbedded: (value) => {
-            'embeddedKey': value?.key,
-            'embeddedValue': value?.value,
+            'lat': value?.key,
+            'lng': value?.value,
           },
         ),
       }, [
@@ -167,19 +167,23 @@ class ComplexSample extends StatelessWidget {
                   )
                 ],
               ),
-              ReactiveDropdownField<MapEntry<String, String>>(
-                formControlName: 'embedded',
+              ReactiveDropdownField<MapEntry<double, double>>(
+                formControlName: 'position',
                 decoration: const InputDecoration(
-                  labelText: 'EmbeddedFormControl',
+                  labelText: 'Select a position',
                 ),
                 items: [
                   const DropdownMenuItem(
-                    value: MapEntry('key0', 'value0'),
-                    child: Text('key0 -> value0'),
+                    value: MapEntry(0, 0),
+                    child: Text('Zero'),
                   ),
                   const DropdownMenuItem(
-                    value: MapEntry('key1', 'value1'),
-                    child: Text('key1 -> value1'),
+                    value: MapEntry(50.4016974, 30.2518314),
+                    child: Text('Kyiv'),
+                  ),
+                  const DropdownMenuItem(
+                    value: MapEntry(33.2844758, 129.8587307),
+                    child: Text('Saga'),
                   ),
                 ],
               ),
