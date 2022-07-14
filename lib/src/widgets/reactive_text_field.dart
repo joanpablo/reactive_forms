@@ -138,6 +138,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextSelectionControls? selectionControls,
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
     ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
+    void Function(TextEditingController)? onControllerCreated,
   }) : super(
           key: key,
           formControl: formControl,
@@ -151,7 +152,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
             state._setFocusNode(focusNode);
-
+            onControllerCreated?.call(state._textController);
             return TextField(
               controller: state._textController,
               focusNode: state.focusNode,
