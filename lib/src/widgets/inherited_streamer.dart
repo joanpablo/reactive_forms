@@ -18,12 +18,12 @@ abstract class InheritedStreamer<T> extends InheritedWidget {
   }
 
   @override
-  _InheritedNotifierElement<T> createElement() =>
-      _InheritedNotifierElement<T>(this);
+  InheritedNotifierElement<T> createElement() =>
+      InheritedNotifierElement<T>(this);
 }
 
-class _InheritedNotifierElement<T> extends InheritedElement {
-  _InheritedNotifierElement(InheritedStreamer<T> widget) : super(widget) {
+class InheritedNotifierElement<T> extends InheritedElement {
+  InheritedNotifierElement(InheritedStreamer<T> widget) : super(widget) {
     _subscription = widget.stream.listen(_handleUpdate);
   }
 

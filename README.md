@@ -47,6 +47,7 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
 - [ReactiveValueListenableBuilder to listen when value changes in a FormControl](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
 - [ReactiveForm vs ReactiveFormBuilder which one?](#reactiveform-vs-reactiveformbuilder-which-one)
 - [Reactive Forms + Provider plugin](#reactive-forms--provider-plugin-muscle)
+- [Reactive Forms + code generation plugin](#reactive-forms--code-generation-)
 - [How create a custom Reactive Widget?](#how-create-a-custom-reactive-widget)
 - [What is not Reactive Forms](#what-is-not-reactive-forms)
 - [What is Reactive Forms](#what-is-reactive-forms)
@@ -60,8 +61,11 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Minimum Requirements
 
-- Dart SDK: >=2.12.0 <3.0.0
-- Flutter: >= 2.2.0
+- Dart SDK: >= 2.17.0 <3.0.0
+- Flutter: >= 3.0.0
+
+> For using **Reactive Forms** in projects below Flutter 2.8.0 please use the version <= 10.7.0 of
+> **Reactive Forms**.
 
 > For using **Reactive Forms** in projects below Flutter 2.2.0 please use the version <= 10.2.0 of 
 > **Reactive Forms**.
@@ -81,7 +85,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^10.6.5
+  reactive_forms: ^13.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -1402,6 +1406,12 @@ But the final decision is really up to you, you can use any of them in any situa
 Although **Reactive Forms** can be used with any state management library or even without any one at all, **Reactive Forms** gets its maximum potential when is used in combination with a state management library like the [Provider](https://pub.dev/packages/provider) plugin.
 
 This way you can separate UI logic from business logic and you can define the **FormGroup** inside a business logic class and then exposes that class to widgets with mechanism like the one [Provider](https://pub.dev/packages/provider) plugin brings.
+
+## Reactive Forms + [code generation](https://pub.dev/packages/reactive_forms_generator) 🤖
+
+[ReactiveFormsGenerator](https://pub.dev/packages/reactive_forms_generator) is the code generator for reactive_forms which will save you tons of time and make your forms type safe.
+
+There is no reason write code manually! Let the code generation work for you.
 
 ## How create a custom Reactive Widget?
 

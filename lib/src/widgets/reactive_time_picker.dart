@@ -68,6 +68,15 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay, TimeOfDay> {
     bool useRootNavigator = true,
     RouteSettings? routeSettings,
     Widget? child,
+    String? cancelText,
+    String? confirmText,
+    String? helpText,
+    String? errorInvalidText,
+    String? hourLabelText,
+    String? minuteLabelText,
+    TimePickerEntryMode initialEntryMode = TimePickerEntryMode.dial,
+    EntryModeChangeCallback? onEntryModeChanged,
+    Offset? anchorPoint,
   }) : super(
           key: key,
           formControl: formControl,
@@ -82,7 +91,16 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay, TimeOfDay> {
                   initialTime: field.value ?? TimeOfDay.now(),
                   builder: transitionBuilder,
                   useRootNavigator: useRootNavigator,
+                  initialEntryMode: initialEntryMode,
+                  cancelText: cancelText,
+                  confirmText: confirmText,
+                  helpText: helpText,
+                  errorInvalidText: errorInvalidText,
+                  hourLabelText: hourLabelText,
+                  minuteLabelText: minuteLabelText,
                   routeSettings: routeSettings,
+                  onEntryModeChanged: onEntryModeChanged,
+                  anchorPoint: anchorPoint,
                 ).then((value) {
                   if (value != null) {
                     field.didChange(value);

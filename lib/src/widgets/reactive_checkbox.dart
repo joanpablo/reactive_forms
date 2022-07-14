@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// This is a convenience widget that wraps a [Checkbox] widget in a
@@ -18,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [Checkbox] class
-/// and [new Checkbox], the constructor.
+/// and [Checkbox], the constructor.
 class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
@@ -39,11 +38,18 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? fillColor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
+    FocusNode? focusNode,
+    OutlinedBorder? shape,
+    BorderSide? side,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool, bool> field) {
+          builder: (field) {
+            final state = field as _ReactiveCheckboxState<bool, bool>;
+
+            state._setFocusNode(focusNode);
+
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
@@ -59,12 +65,51 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               fillColor: fillColor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              // focusNode: focusNode - requires more time
+              focusNode: state.focusNode,
+              shape: shape,
+              side: side,
             );
           },
         );
 
   @override
   ReactiveFormFieldState<bool, bool> createState() =>
-      ReactiveFormFieldState<bool, bool>();
+      _ReactiveCheckboxState<bool, bool>();
+}
+
+class _ReactiveCheckboxState<T, V> extends ReactiveFormFieldState<T, V> {
+  FocusNode? _focusNode;
+  late FocusController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+
+  @override
+  void subscribeControl() {
+    _registerFocusController(FocusController());
+    super.subscribeControl();
+  }
+
+  @override
+  void unsubscribeControl() {
+    _unregisterFocusController();
+    super.unsubscribeControl();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode? focusNode) {
+    if (_focusNode != focusNode) {
+      _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
+    }
+  }
 }

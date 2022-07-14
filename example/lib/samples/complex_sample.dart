@@ -3,6 +3,22 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
 
+class BooleanObject {
+  final String name;
+
+  BooleanObject(this.name);
+
+  @override
+  bool operator ==(Object other) =>
+      other is BooleanObject && name == other.name;
+
+  @override
+  int get hashCode => hashValues(name, name);
+}
+
+final yes = BooleanObject('Yes');
+final no = BooleanObject('No');
+
 class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
@@ -15,6 +31,8 @@ class ComplexSample extends StatelessWidget {
         'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
+        'booleanObject':
+            FormControl<BooleanObject>(value: BooleanObject('Yes')),
       }, [
         Validators.mustMatch('password', 'passwordConfirmation')
       ]);
@@ -98,6 +116,52 @@ class ComplexSample extends StatelessWidget {
                   ReactiveCheckbox(formControlName: 'rememberMe'),
                 ],
               ),
+              ReactiveDropdownField<bool>(
+                formControlName: 'rememberMe',
+                decoration: const InputDecoration(
+                  labelText: 'Want to stay logged in?',
+                ),
+                items: [
+                  const DropdownMenuItem(value: true, child: Text('Yes')),
+                  const DropdownMenuItem(value: false, child: Text('No')),
+                ],
+              ),
+              const SizedBox(height: 24.0),
+              ReactiveDropdownField<BooleanObject>(
+                formControlName: 'booleanObject',
+                decoration: const InputDecoration(
+                  labelText: 'Is this example BooleanObject?',
+                ),
+                items: [
+                  DropdownMenuItem(
+                    value: yes,
+                    child: const Text('Yes'),
+                  ),
+                  DropdownMenuItem(
+                    value: no,
+                    child: const Text('No'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          form.control('booleanObject').value = yes,
+                      child: const Text('Yes'),
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => form.control('booleanObject').value = no,
+                      child: const Text('No'),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 24.0),
               ReactiveDropdownField<bool>(
                 formControlName: 'rememberMe',
                 decoration: const InputDecoration(

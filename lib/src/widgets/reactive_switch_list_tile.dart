@@ -17,7 +17,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [SwitchListTile]
-/// class and [new SwitchListTile], the constructor.
+/// class and [SwitchListTile], the constructor.
 class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
@@ -33,6 +33,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
     Color? activeTrackColor,
     Color? inactiveThumbColor,
     Color? inactiveTrackColor,
+    Color? hoverColor,
     ImageProvider? activeThumbImage,
     ImageProvider? inactiveThumbImage,
     Widget? title,
@@ -46,6 +47,8 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
     ShapeBorder? shape,
     Color? selectedTileColor,
+    VisualDensity? visualDensity,
+    bool? enableFeedback,
   }) : super(
           key: key,
           formControl: formControl,
@@ -58,6 +61,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
               inactiveTrackColor: inactiveTrackColor,
+              hoverColor: hoverColor,
               activeThumbImage: activeThumbImage,
               title: title,
               subtitle: subtitle,
@@ -72,6 +76,8 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               controlAffinity: controlAffinity,
               shape: shape,
               selectedTileColor: selectedTileColor,
+              visualDensity: visualDensity,
+              enableFeedback: enableFeedback,
             );
           },
         );

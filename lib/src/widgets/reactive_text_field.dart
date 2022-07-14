@@ -6,12 +6,8 @@ import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
-import 'package:reactive_forms/src/value_accessors/double_value_accessor.dart';
-import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 
 /// A [ReactiveTextField] that contains a [TextField].
 ///
@@ -21,6 +17,8 @@ import 'package:reactive_forms/src/value_accessors/int_value_accessor.dart';
 /// A [ReactiveForm] ancestor is required.
 ///
 class ReactiveTextField<T> extends ReactiveFormField<T, String> {
+  final TextEditingController? _textController;
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -83,7 +81,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   /// ```
   ///
   /// For documentation about the various parameters, see the [TextField] class
-  /// and [new TextField], the constructor.
+  /// and [TextField], the constructor.
   ReactiveTextField({
     Key? key,
     String? formControlName,
@@ -138,8 +136,17 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextSelectionControls? selectionControls,
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
     ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
+
     void Function(TextEditingController)? onControllerCreated,
   }) : super(
+
+    TextEditingController? controller,
+    Clip clipBehavior = Clip.hardEdge,
+    bool enableIMEPersonalizedLearning = true,
+    bool scribbleEnabled = true,
+  })  : _textController = controller,
+        super(
+
           key: key,
           formControl: formControl,
           formControlName: formControlName,
@@ -211,6 +218,9 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               selectionControls: selectionControls,
               selectionHeightStyle: selectionHeightStyle,
               selectionWidthStyle: selectionWidthStyle,
+              clipBehavior: clipBehavior,
+              enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+              scribbleEnabled: scribbleEnabled,
             );
           },
         );
@@ -222,18 +232,15 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
 
 class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
   late TextEditingController _textController;
-  FocusNode? _focusNode;
   late FocusController _focusController;
+  FocusNode? _focusNode;
 
   FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
 
   @override
   void initState() {
     super.initState();
-
-    final initialValue = value;
-    _textController = TextEditingController(
-        text: initialValue == null ? '' : initialValue.toString());
+    _initializeTextController();
   }
 
   @override
@@ -291,5 +298,14 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
       _unregisterFocusController();
       _registerFocusController(FocusController(focusNode: _focusNode));
     }
+  }
+
+  void _initializeTextController() {
+    final initialValue = value;
+    final currentWidget = widget as ReactiveTextField<T>;
+    _textController = (currentWidget._textController != null)
+        ? currentWidget._textController!
+        : TextEditingController();
+    _textController.text = initialValue == null ? '' : initialValue.toString();
   }
 }

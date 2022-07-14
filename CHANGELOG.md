@@ -1,3 +1,79 @@
+# 13.0.1
+
+## Enhances
+- Upgrade example folder project to Flutter 3.0.0.
+- Increase code coverage in FormArray.
+
+# 13.0.0
+
+## Breaking Changes
+
+- Reactive Forms is now migrated to Flutter 3.0.0.
+
+# 12.0.0
+
+## Fix
+- Update project to new Android wrappers in order to be able to run the example
+using latest Android SDK changes.
+
+# 11.1.0
+
+## Enhances
+- Add Focus handling for several reactive widgets:
+    - ReactiveSlider
+    - ReactiveSwitch
+    - ReactiveRadio
+    - ReactiveRadioListTile
+    - ReactiveCheckbox
+    - ReactiveCheckboxListTile
+
+
+# 11.0.2
+
+## Fix
+- Small fix in the *array_sample* example application.
+
+# 11.0.1
+
+## Fix
+- Fix issues in **ReactiveDatePicker** when control value was before or after the range of **firstDate** and **lastDate**
+
+## Enhances
+- Add optional argument **initialDate** to the **ReactiveDatePicker**.
+
+# 11.0.0
+
+## Breaking Changes
+
+- Reactive Forms is now migrated to Flutter 2.8.0.
+
+## Enhances
+
+- Update reactive widgets with extra properties presents in Flutter 2.8.0.
+
+# 10.7.0
+
+## Features
+
+- Expose **TextEditingController** as a property of the **ReactiveTextField** for text selection
+purposes only.
+
+# 10.6.8
+
+## Fix
+- Fix Async Validators that overrides validations errors from Sync Validators
+
+# 10.6.7
+
+## Enhances
+- Improve Complex example in the demo application
+
+# 10.6.6
+
+## Enhances
+- Improve the Array example in the demo application
+- Better exception handler when creating FormGroups with controls that contains character '.' in the name of the control.
+
 # 10.6.5
 
 ## Enhances

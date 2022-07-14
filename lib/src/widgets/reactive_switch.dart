@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// but not both at the same time.
 ///
 /// For documentation about the various parameters, see the [Switch] class
-/// and [new Switch], the constructor.
+/// and [Switch], the constructor.
 class ReactiveSwitch extends ReactiveFormField<bool, bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
@@ -31,7 +31,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
   /// but not both at the same time.
   ///
   /// For documentation about the various parameters, see the [Switch] class
-  /// and [new Switch], the constructor.
+  /// and [Switch], the constructor.
   ReactiveSwitch({
     Key? key,
     String? formControlName,
@@ -54,11 +54,16 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     MouseCursor? mouseCursor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
+    FocusNode? focusNode,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool, bool> field) {
+          builder: (field) {
+            final state = field as _ReactiveSwitchState<bool, bool>;
+
+            state._setFocusNode(focusNode);
+
             return Switch(
               value: field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -80,7 +85,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               mouseCursor: mouseCursor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              // focusNode: focusNode - requires more time
+              focusNode: state.focusNode,
             );
           },
         );
@@ -127,11 +132,16 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? overlayColor,
     MouseCursor? mouseCursor,
     double? splashRadius,
+    FocusNode? focusNode,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool, bool> field) {
+          builder: (field) {
+            final state = field as _ReactiveSwitchState<bool, bool>;
+
+            state._setFocusNode(focusNode);
+
             return Switch.adaptive(
               value: field.value ?? false,
               onChanged: field.control.enabled ? field.didChange : null,
@@ -153,12 +163,49 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               overlayColor: overlayColor,
               splashRadius: splashRadius,
               autofocus: autofocus,
-              // focusNode: focusNode - requires more time
+              focusNode: state.focusNode,
             );
           },
         );
 
   @override
   ReactiveFormFieldState<bool, bool> createState() =>
-      ReactiveFormFieldState<bool, bool>();
+      _ReactiveSwitchState<bool, bool>();
+}
+
+class _ReactiveSwitchState<T, V> extends ReactiveFormFieldState<T, V> {
+  FocusNode? _focusNode;
+  late FocusController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+
+  @override
+  void subscribeControl() {
+    _registerFocusController(FocusController());
+    super.subscribeControl();
+  }
+
+  @override
+  void unsubscribeControl() {
+    _unregisterFocusController();
+    super.unsubscribeControl();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode? focusNode) {
+    if (_focusNode != focusNode) {
+      _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
+    }
+  }
 }

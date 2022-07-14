@@ -7,6 +7,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+const _controlNameDelimiter = '.';
+
 /// This is the base class for [FormGroup], [FormArray] and [FormControl].
 ///
 /// It provides some of the shared behavior that all controls and groups have,
@@ -677,15 +679,19 @@ abstract class AbstractControl<T> {
         final validatorsStream = Stream.fromFutures(
             asyncValidators.map((validator) => validator(this)).toList());
 
-        final errors = <String, dynamic>{};
+        final asyncValidationErrors = <String, dynamic>{};
         _asyncValidationSubscription = validatorsStream.listen(
           (Map<String, dynamic>? error) {
             if (error != null) {
-              errors.addAll(error);
+              asyncValidationErrors.addAll(error);
             }
           },
           onDone: () {
-            setErrors(errors, markAsDirty: false);
+            final allErrors = <String, dynamic>{};
+            allErrors.addAll(errors);
+            allErrors.addAll(asyncValidationErrors);
+
+            setErrors(allErrors, markAsDirty: false);
           },
         );
       },
@@ -1056,7 +1062,10 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
     List<AsyncValidatorFunction> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
-  }) : super(
+  })  : assert(
+            !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
+            'Control name should not contain dot($_controlNameDelimiter)'),
+        super(
           validators: validators,
           asyncValidators: asyncValidators,
           asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
@@ -1110,7 +1119,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// ```
   @override
   AbstractControl<dynamic> control(String name) {
-    final namePath = name.split('.');
+    final namePath = name.split(_controlNameDelimiter);
     if (namePath.length > 1) {
       final control = findControlInCollection(namePath);
       if (control != null) {
@@ -1461,7 +1470,8 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   @override
   void focus([String name = '']) {
     if (name.isNotEmpty) {
-      final control = findControlInCollection(name.split('.'));
+      final control =
+          findControlInCollection(name.split(_controlNameDelimiter));
       if (control != null) {
         control.focus();
       }
@@ -1502,7 +1512,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
 
   @override
   AbstractControl<dynamic>? findControl(String path) =>
-      findControlInCollection(path.split('.'));
+      findControlInCollection(path.split(_controlNameDelimiter));
 }
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -1874,7 +1884,7 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// ```
   @override
   AbstractControl<dynamic> control(String name) {
-    final namePath = name.split('.');
+    final namePath = name.split(_controlNameDelimiter);
     if (namePath.length > 1) {
       final control = findControlInCollection(namePath);
       if (control != null) {
@@ -2148,7 +2158,8 @@ class FormArray<T> extends AbstractControl<List<T?>>
   @override
   void focus([String name = '']) {
     if (name.isNotEmpty) {
-      final control = findControlInCollection(name.split('.'));
+      final control =
+          findControlInCollection(name.split(_controlNameDelimiter));
       if (control != null) {
         control.focus();
       }
@@ -2168,5 +2179,5 @@ class FormArray<T> extends AbstractControl<List<T?>>
 
   @override
   AbstractControl<dynamic>? findControl(String path) =>
-      findControlInCollection(path.split('.'));
+      findControlInCollection(path.split(_controlNameDelimiter));
 }

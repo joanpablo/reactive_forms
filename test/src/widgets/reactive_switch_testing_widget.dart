@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/widgets/reactive_switch.dart';
+
+final reactiveSwitchTestingName = 'switch';
 
 class ReactiveSwitchTestingWidget extends StatelessWidget {
   final FormGroup form;
+  final FocusNode? focusNode;
 
   const ReactiveSwitchTestingWidget({
     Key? key,
     required this.form,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -19,10 +22,12 @@ class ReactiveSwitchTestingWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ReactiveSwitch(
-                formControlName: 'switch',
+                formControlName: reactiveSwitchTestingName,
+                focusNode: focusNode,
               ),
               ReactiveSwitch.adaptive(
-                formControlName: 'switch',
+                formControlName: reactiveSwitchTestingName,
+                focusNode: focusNode,
               ),
             ],
           ),

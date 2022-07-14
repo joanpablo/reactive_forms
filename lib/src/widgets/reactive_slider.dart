@@ -16,7 +16,7 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 /// to a [FormControl].
 ///
 /// For documentation about the various parameters, see the [Slider] class
-/// and [new Slider], the constructor.
+/// and [Slider], the constructor.
 class ReactiveSlider extends ReactiveFormField<num, double> {
   /// Creates an instance os a [ReactiveSlider].
   ///
@@ -40,16 +40,22 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
     ReactiveSliderLabelBuilder? labelBuilder,
     Color? activeColor,
     Color? inactiveColor,
+    Color? thumbColor,
     SemanticFormatterCallback? semanticFormatterCallback,
     ValueChanged<double>? onChangeEnd,
     ValueChanged<double>? onChangeStart,
     bool autofocus = false,
     MouseCursor? mouseCursor,
+    FocusNode? focusNode,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<num, double> field) {
+          builder: (field) {
+            final state = field as _ReactiveSliderState;
+
+            state._setFocusNode(focusNode);
+
             var value = field.value;
             if (value == null) {
               value = min;
@@ -70,12 +76,13 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
                   : null,
               activeColor: activeColor,
               inactiveColor: inactiveColor,
+              thumbColor: thumbColor,
               semanticFormatterCallback: semanticFormatterCallback,
               onChangeEnd: onChangeEnd,
               onChangeStart: onChangeStart,
               mouseCursor: mouseCursor,
               autofocus: autofocus,
-              // focusNode: focusNode - requires more time
+              focusNode: state.focusNode,
             );
           },
         );
@@ -85,6 +92,41 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
 }
 
 class _ReactiveSliderState extends ReactiveFormFieldState<num, double> {
+  FocusNode? _focusNode;
+  late FocusController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+
+  @override
+  void subscribeControl() {
+    _registerFocusController(FocusController());
+    super.subscribeControl();
+  }
+
+  @override
+  void unsubscribeControl() {
+    _unregisterFocusController();
+    super.unsubscribeControl();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode? focusNode) {
+    if (_focusNode != focusNode) {
+      _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
+    }
+  }
+
   @override
   ControlValueAccessor<num, double> selectValueAccessor() {
     if (control is FormControl<int>) {
