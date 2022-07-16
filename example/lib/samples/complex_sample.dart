@@ -33,8 +33,9 @@ class ComplexSample extends StatelessWidget {
         'time': TimeOfDay.now(),
         'booleanObject':
             FormControl<BooleanObject>(value: BooleanObject('Yes')),
-        'position': EmbeddedFormControl<MapEntry<double, double>>(
-          toEmbedded: (value) => {
+        'position': FormControl<MapEntry<double, double>>(
+          embedJsonToFormGroup: true,
+          toJson: (value) => {
             'lat': value?.key,
             'lng': value?.value,
           },
@@ -272,7 +273,8 @@ class ComplexSample extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (form.valid) {
-                    print(form.value);
+                    print('value: ${form.value}');
+                    print('jsonValue: ${form.jsonValue}');
                   } else {
                     form.markAllAsTouched();
                   }
