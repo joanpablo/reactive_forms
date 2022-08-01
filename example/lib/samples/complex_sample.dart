@@ -200,7 +200,6 @@ class ComplexSample extends StatelessWidget {
                 max: 100,
                 divisions: 100,
                 labelBuilder: (double value) => '${value.toStringAsFixed(2)}%',
-                onChangeStart: (control) => print('start at ${control.value}'),
               ),
               const SizedBox(height: 24.0),
               ReactiveTextField<double>(
