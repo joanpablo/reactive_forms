@@ -1,3 +1,13 @@
+# 14.0.0
+
+## Breaking Changes
+- The definition of validation messages is now more consistent.
+
+## Features
+- Add widget **ReactiveFormConfig** to globally define validation messages
+at Flutter application level. This reliefs the need to define validation
+messages in each reactive widget.
+
 # 13.0.1
 
 ## Enhances

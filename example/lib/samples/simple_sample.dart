@@ -22,8 +22,8 @@ class SimpleSample extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: 'Name',
                 ),
-                validationMessages: (errors) => {
-                  ValidationMessage.required: 'Name must not be empty',
+                validationMessages: {
+                  ValidationMessage.required: (_) => 'Name must not be empty',
                 },
               ),
               ReactiveRadioListTile(

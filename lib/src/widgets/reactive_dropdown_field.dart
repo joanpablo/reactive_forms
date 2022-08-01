@@ -26,7 +26,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     String? formControlName,
     FormControl<T>? formControl,
     required List<DropdownMenuItem<T>> items,
-    ValidationMessagesFunction<T>? validationMessages,
+    Map<String, ValidationMessageFunction>? validationMessages,
     ShowErrorsFunction? showErrors,
     DropdownButtonBuilder? selectedItemBuilder,
     Widget? hint,

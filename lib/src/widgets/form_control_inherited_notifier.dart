@@ -12,6 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// The [Listenable] is provided by the [notifierDelegate].
 ///
 class FormControlInheritedStreamer extends InheritedStreamer<dynamic> {
+  /// The control that this widget will be listening to.
   final AbstractControl<Object> control;
 
   FormControlInheritedStreamer({

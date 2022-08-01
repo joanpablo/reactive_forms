@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_dropdown_search/reactive_dropdown_search.dart';
@@ -67,9 +68,9 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
                     ),
                   ),
                   showSearchBox: true,
-                  bottomSheetProps: BottomSheetProps(
-                    constraints: const BoxConstraints(maxHeight: 300),
-                    shape: const RoundedRectangleBorder(
+                  bottomSheetProps: const BottomSheetProps(
+                    constraints: BoxConstraints(maxHeight: 300),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(24),
                         topRight: Radius.circular(24),
@@ -164,3 +165,4 @@ class ReactiveFormWidgetsSample extends StatelessWidget {
     );
   }
 }
+*/
