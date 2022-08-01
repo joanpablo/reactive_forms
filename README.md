@@ -42,15 +42,15 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
 - [Focus/UnFocus a FormControl](#focusunfocus-a-formcontrol)
 - [Focus flow between Text Fields](#focus-flow-between-text-fields)
 - [Enable/Disable a widget](#how-enabledisable-a-widget)
-- [How does ReactiveTextField differs from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfield-or-textfield)
+- [How does ReactiveTextField differs from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfieldhttpsapiflutterdevfluttermaterialtextformfield-classhtml-or-textfieldhttpsapiflutterdevfluttermaterialtextfield-classhtml)
 - [Reactive Form Field Widgets](#supported-reactive-form-field-widgets)
 - [Bonus Field Widgets](#bonus-field-widgets)
 - [Other Reactive Forms Widgets](#other-reactive-forms-widgets)
 - [Advanced Reactive Field Widgets](#advanced-reactive-field-widgets)
 - [ReactiveValueListenableBuilder to listen when value changes in a FormControl](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
 - [ReactiveForm vs ReactiveFormBuilder which one?](#reactiveform-vs-reactiveformbuilder-which-one)
-- [Reactive Forms + Provider plugin](#reactive-forms--provider-plugin-muscle)
-- [Reactive Forms + code generation plugin](#reactive-forms--code-generation-)
+- [Reactive Forms + Provider plugin](#reactive-forms--providerhttpspubdevpackagesprovider-plugin-muscle)
+- [Reactive Forms + code generation plugin](#reactive-forms--code-generationhttpspubdevpackagesreactive_forms_generator-)
 - [How create a custom Reactive Widget?](#how-create-a-custom-reactive-widget)
 - [What is not Reactive Forms](#what-is-not-reactive-forms)
 - [What is Reactive Forms](#what-is-reactive-forms)
@@ -1225,7 +1225,13 @@ Widget build(BuildContext context) {
 }
 ```
 
-> Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl** the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*, *onChanged*, *onEditingComplete*, *onFieldSubmitted*, the **FormControl** is responsible for handling validation as well as changes notifications.
+> Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl**
+> the widget **don't** include properties as *controller*, *validator*, *autovalidate*, *onSaved*,
+> the **FormControl** is responsible for handling validation as well as changes
+> notifications.
+> 
+> It does include some events like **onChanged**, **onTab**, **onEditingComplete**,
+> and **onSubmitted**.
 
 ## Supported Reactive Form Field Widgets
 
