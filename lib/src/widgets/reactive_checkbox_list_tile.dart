@@ -48,6 +48,7 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     bool? enableFeedback,
     OutlinedBorder? checkboxShape,
     BorderSide? side,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -59,7 +60,6 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
 
             return CheckboxListTile(
               value: tristate ? field.value : field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               checkColor: checkColor,
               title: title,
@@ -80,6 +80,12 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               enableFeedback: enableFeedback,
               checkboxShape: checkboxShape,
               side: side,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );

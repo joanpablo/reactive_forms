@@ -49,6 +49,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
     Color? selectedTileColor,
     VisualDensity? visualDensity,
     bool? enableFeedback,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -56,7 +57,6 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
           builder: (ReactiveFormFieldState<bool, bool> field) {
             return SwitchListTile(
               value: field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
@@ -78,6 +78,12 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               selectedTileColor: selectedTileColor,
               visualDensity: visualDensity,
               enableFeedback: enableFeedback,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );

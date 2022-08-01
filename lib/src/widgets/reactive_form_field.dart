@@ -20,6 +20,10 @@ typedef ShowErrorsFunction = bool Function(AbstractControl<dynamic> control);
 /// validation messages for each error.
 typedef ValidationMessageFunction = String Function(Object error);
 
+/// Signature of a callback that provides the control as argument.
+typedef ReactiveFormFieldCallback<T> = void Function(
+    AbstractControl<T> control);
+
 /// A single reactive form field.
 ///
 /// This widget maintains the current state of the reactive form field,

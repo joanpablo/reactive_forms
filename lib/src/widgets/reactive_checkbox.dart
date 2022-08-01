@@ -41,6 +41,7 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     FocusNode? focusNode,
     OutlinedBorder? shape,
     BorderSide? side,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -53,7 +54,6 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
-              onChanged: field.control.enabled ? field.didChange : null,
               mouseCursor: mouseCursor,
               activeColor: activeColor,
               checkColor: checkColor,
@@ -68,6 +68,12 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               focusNode: state.focusNode,
               shape: shape,
               side: side,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );
