@@ -897,7 +897,7 @@ we are giving a more complete validation error to the user:
 ```dart
 final form = FormGroup({
   'password': FormControl<String>(
-    validators: [Validators.minLegth(8)],
+    validators: [Validators.minLength(8)],
   ),
 });
 ```
