@@ -2,6 +2,12 @@
 
 ## Breaking Changes
 - The definition of validation messages is now more consistent.
+- Methods like `onTab` in `ReactiveTextField` and `onChanged` in
+`ReactiveDropdownField` now provides the control as argument of
+the callback.
+
+## Enhances
+- Add events like `onChanged`, `onEditingComplete` to reactive widgets.
 
 ## Features
 - Add widget **ReactiveFormConfig** to globally define validation messages
