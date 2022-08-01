@@ -58,7 +58,7 @@ class ComplexSample extends StatelessWidget {
                       'The email value must be a valid email',
                   'unique': (_) => 'This email is already in use',
                 },
-                onSubmitted: () => form.focus('password'),
+                onSubmitted: (_) => form.focus('password'),
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -81,7 +81,7 @@ class ComplexSample extends StatelessWidget {
                   ValidationMessage.minLength: (error) =>
                       'The password must be at least ${(error as Map)['requiredLength']} characters long',
                 },
-                onSubmitted: () => form.focus('passwordConfirmation'),
+                onSubmitted: (_) => form.focus('passwordConfirmation'),
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(labelText: 'Password'),
               ),
@@ -95,7 +95,7 @@ class ComplexSample extends StatelessWidget {
                   ValidationMessage.mustMatch: (_) =>
                       'Password confirmation must match',
                 },
-                onSubmitted: () => form.focus('rememberMe'),
+                onSubmitted: (_) => form.focus('rememberMe'),
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 24.0),

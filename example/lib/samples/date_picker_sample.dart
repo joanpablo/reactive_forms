@@ -68,7 +68,7 @@ class _DatePickerSampleState extends State<DatePickerSample> {
                   }
 
                   return ReactiveTextField(
-                    onTap: () {
+                    onTap: (_) {
                       if (_focusNode.canRequestFocus) {
                         _focusNode.unfocus();
                         picker.showPicker();

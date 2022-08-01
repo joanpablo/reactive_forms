@@ -276,7 +276,7 @@ void main() {
 
         // And: a onChanged callback
         var callbackCalled = false;
-        void onChanged(String? value) {
+        void onChanged(AbstractControl<String> control) {
           callbackCalled = true;
         }
 

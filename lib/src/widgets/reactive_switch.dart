@@ -55,6 +55,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
     FocusNode? focusNode,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -66,7 +67,6 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
 
             return Switch(
               value: field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
@@ -86,6 +86,12 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               overlayColor: overlayColor,
               splashRadius: splashRadius,
               focusNode: state.focusNode,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );
