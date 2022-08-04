@@ -86,9 +86,9 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
-    ValidationMessagesFunction<T>? validationMessages,
+    Map<String, ValidationMessageFunction>? validationMessages,
     ControlValueAccessor<T, String>? valueAccessor,
-    ShowErrorsFunction? showErrors,
+    ShowErrorsFunction<T>? showErrors,
     InputDecoration decoration = const InputDecoration(),
     TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -113,8 +113,6 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     int? minLines,
     bool expands = false,
     int? maxLength,
-    GestureTapCallback? onTap,
-    VoidCallback? onEditingComplete,
     List<TextInputFormatter>? inputFormatters,
     double cursorWidth = 2.0,
     double? cursorHeight,
@@ -125,7 +123,6 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     bool enableInteractiveSelection = true,
     InputCounterWidgetBuilder? buildCounter,
     ScrollPhysics? scrollPhysics,
-    VoidCallback? onSubmitted,
     FocusNode? focusNode,
     Iterable<String>? autofillHints,
     MouseCursor? mouseCursor,
@@ -140,6 +137,10 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     Clip clipBehavior = Clip.hardEdge,
     bool enableIMEPersonalizedLearning = true,
     bool scribbleEnabled = true,
+    ReactiveFormFieldCallback<T>? onTap,
+    ReactiveFormFieldCallback<T>? onEditingComplete,
+    ReactiveFormFieldCallback<T>? onSubmitted,
+    ReactiveFormFieldCallback<T>? onChanged,
   })  : _textController = controller,
         super(
           key: key,
@@ -188,10 +189,6 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               minLines: minLines,
               expands: expands,
               maxLength: maxLength,
-              onChanged: field.didChange,
-              onTap: onTap,
-              onSubmitted: onSubmitted != null ? (_) => onSubmitted() : null,
-              onEditingComplete: onEditingComplete,
               inputFormatters: inputFormatters,
               enabled: field.control.enabled,
               cursorWidth: cursorWidth,
@@ -216,6 +213,17 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               clipBehavior: clipBehavior,
               enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
               scribbleEnabled: scribbleEnabled,
+              onTap: onTap != null ? () => onTap(field.control) : null,
+              onSubmitted: onSubmitted != null
+                  ? (_) => onSubmitted(field.control)
+                  : null,
+              onEditingComplete: onEditingComplete != null
+                  ? () => onEditingComplete.call(field.control)
+                  : null,
+              onChanged: (value) {
+                field.didChange(value);
+                onChanged?.call(field.control);
+              },
             );
           },
         );

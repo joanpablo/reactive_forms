@@ -47,6 +47,7 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
     VisualDensity? visualDensity,
     FocusNode? focusNode,
     bool? enableFeedback,
+    ReactiveFormFieldCallback<T>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -59,7 +60,6 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
             return RadioListTile<T>(
               value: value,
               groupValue: field.value,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               selectedTileColor: selectedTileColor,
               tileColor: tileColor,
@@ -77,6 +77,12 @@ class ReactiveRadioListTile<T> extends ReactiveFormField<T, T> {
               visualDensity: visualDensity,
               focusNode: state.focusNode,
               enableFeedback: enableFeedback,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );

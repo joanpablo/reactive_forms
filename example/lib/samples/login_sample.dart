@@ -22,11 +22,12 @@ class LoginSample extends StatelessWidget {
             children: [
               ReactiveTextField<String>(
                 formControlName: 'email',
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The email must not be empty',
-                  ValidationMessage.email:
+                validationMessages: {
+                  ValidationMessage.required: (_) =>
+                      'The email must not be empty',
+                  ValidationMessage.email: (_) =>
                       'The email value must be a valid email',
-                  'unique': 'This email is already in use',
+                  'unique': (_) => 'This email is already in use',
                 },
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
@@ -40,9 +41,10 @@ class LoginSample extends StatelessWidget {
               ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The password must not be empty',
-                  ValidationMessage.minLength:
+                validationMessages: {
+                  ValidationMessage.required: (_) =>
+                      'The password must not be empty',
+                  ValidationMessage.minLength: (_) =>
                       'The password must be at least 8 characters',
                 },
                 textInputAction: TextInputAction.done,

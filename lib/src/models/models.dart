@@ -907,7 +907,6 @@ class FormControl<T> extends AbstractControl<T> {
     }
   }
 
-  // TODO: there is something wrong with this method, it need an evaluation
   /// Removes the provided [focusController] from the control.
   void unregisterFocusController(FocusController focusController) {
     if (_focusController != null && _focusController == focusController) {

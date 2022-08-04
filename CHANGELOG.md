@@ -1,3 +1,19 @@
+# 14.0.0
+
+## Breaking Changes
+- The definition of validation messages is now more consistent.
+- Methods like `onTab` in `ReactiveTextField` and `onChanged` in
+`ReactiveDropdownField` now provides the control as argument of
+the callback.
+
+## Enhances
+- Add events like `onChanged`, `onEditingComplete` to reactive widgets.
+
+## Features
+- Add widget **ReactiveFormConfig** to globally define validation messages
+at Flutter application level. This reliefs the need to define validation
+messages in each reactive widget.
+
 # 13.0.1
 
 ## Enhances

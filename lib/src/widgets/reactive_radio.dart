@@ -45,6 +45,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
     bool autofocus = false,
     bool toggleable = false,
     FocusNode? focusNode,
+    ReactiveFormFieldCallback<T>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -57,7 +58,6 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
             return Radio<T>(
               value: value,
               groupValue: field.value,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               focusColor: focusColor,
               hoverColor: hoverColor,
@@ -70,6 +70,12 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
               autofocus: autofocus,
               toggleable: toggleable,
               focusNode: state.focusNode,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );

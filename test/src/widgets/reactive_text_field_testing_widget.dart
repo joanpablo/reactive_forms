@@ -3,9 +3,9 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
   final FormGroup form;
-  final ValidationMessagesFunction<T>? validationMessages;
+  final Map<String, ValidationMessageFunction>? validationMessages;
   final Map<String, String> bindings;
-  final ShowErrorsFunction? showErrors;
+  final ShowErrorsFunction<T>? showErrors;
   final FocusNode? focusNode;
 
   const ReactiveTextFieldTestingWidget({

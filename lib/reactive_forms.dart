@@ -43,6 +43,7 @@ export 'src/widgets/reactive_dropdown_field.dart';
 export 'src/widgets/reactive_form.dart';
 export 'src/widgets/reactive_form_array.dart';
 export 'src/widgets/reactive_form_builder.dart';
+export 'src/widgets/reactive_form_config.dart';
 export 'src/widgets/reactive_form_consumer.dart';
 export 'src/widgets/reactive_form_field.dart';
 export 'src/widgets/reactive_radio.dart';

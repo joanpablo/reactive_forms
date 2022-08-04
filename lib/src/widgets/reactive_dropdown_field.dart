@@ -26,11 +26,10 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     String? formControlName,
     FormControl<T>? formControl,
     required List<DropdownMenuItem<T>> items,
-    ValidationMessagesFunction<T>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    Map<String, ValidationMessageFunction>? validationMessages,
+    ShowErrorsFunction<T>? showErrors,
     DropdownButtonBuilder? selectedItemBuilder,
     Widget? hint,
-    VoidCallback? onTap,
     InputDecoration decoration = const InputDecoration(),
     Widget? disabledHint,
     int elevation = 8,
@@ -43,7 +42,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     bool isExpanded = false,
     bool readOnly = false,
     double? itemHeight,
-    ValueChanged<T?>? onChanged,
     Color? dropdownColor,
     Color? focusColor,
     Widget? underline,
@@ -52,6 +50,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     bool? enableFeedback,
     AlignmentGeometry alignment = AlignmentDirectional.centerStart,
     BorderRadius? borderRadius,
+    ReactiveFormFieldCallback<T>? onTap,
+    ReactiveFormFieldCallback<T>? onChanged,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
@@ -97,10 +97,6 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,
                   hint: hint,
-                  onChanged: isDisabled
-                      ? null
-                      : (T? value) => state._onChanged(value, onChanged),
-                  onTap: onTap,
                   disabledHint: effectiveDisabledHint,
                   elevation: elevation,
                   style: style,
@@ -120,6 +116,13 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   enableFeedback: enableFeedback,
                   alignment: alignment,
                   borderRadius: borderRadius,
+                  onTap: onTap != null ? () => onTap(field.control) : null,
+                  onChanged: isDisabled
+                      ? null
+                      : (value) {
+                          field.didChange(value);
+                          onChanged?.call(field.control);
+                        },
                 ),
               ),
             );
@@ -145,12 +148,5 @@ class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
     control.unregisterFocusController(_focusController);
     _focusController.dispose();
     super.dispose();
-  }
-
-  void _onChanged(T? value, ValueChanged<T?>? callBack) {
-    didChange(value);
-    if (callBack != null) {
-      callBack(value);
-    }
   }
 }
