@@ -14,15 +14,14 @@ typedef ReactiveFormFieldBuilder<T, K> = Widget Function(
     ReactiveFormFieldState<T, K> field);
 
 /// Signature for customize when to show errors in a widget.
-typedef ShowErrorsFunction = bool Function(AbstractControl<dynamic> control);
+typedef ShowErrorsFunction = bool Function(FormControl<dynamic> control);
 
 /// Signature of the function that returns the [Map] that store custom
 /// validation messages for each error.
 typedef ValidationMessageFunction = String Function(Object error);
 
 /// Signature of a callback that provides the control as argument.
-typedef ReactiveFormFieldCallback<T> = void Function(
-    AbstractControl<T> control);
+typedef ReactiveFormFieldCallback<T> = void Function(FormControl<T> control);
 
 /// A single reactive form field.
 ///
