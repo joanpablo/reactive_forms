@@ -103,9 +103,7 @@ class FormBuilder {
           }
 
           final effectiveValidators = validators
-              // TODO handling should be optimized
-              // ignore: cast_nullable_to_non_nullable
-              .map<ValidatorFunction>((v) => v as ValidatorFunction)
+              .map<ValidatorFunction>((v) => v! as ValidatorFunction)
               .toList();
           final control = _control(defaultValue, effectiveValidators);
           return MapEntry(key, control as AbstractControl<Object>);

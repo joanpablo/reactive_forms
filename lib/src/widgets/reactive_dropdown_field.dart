@@ -27,7 +27,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     FormControl<T>? formControl,
     required List<DropdownMenuItem<T>> items,
     Map<String, ValidationMessageFunction>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    ShowErrorsFunction<T>? showErrors,
     DropdownButtonBuilder? selectedItemBuilder,
     Widget? hint,
     InputDecoration decoration = const InputDecoration(),
