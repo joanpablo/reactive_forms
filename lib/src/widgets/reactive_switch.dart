@@ -139,6 +139,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     MouseCursor? mouseCursor,
     double? splashRadius,
     FocusNode? focusNode,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
@@ -150,7 +151,6 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
 
             return Switch.adaptive(
               value: field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
@@ -170,6 +170,12 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               splashRadius: splashRadius,
               autofocus: autofocus,
               focusNode: state.focusNode,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );

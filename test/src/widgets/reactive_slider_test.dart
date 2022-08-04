@@ -27,6 +27,101 @@ void main() {
     );
 
     testWidgets(
+      'Slider with label builder',
+      (WidgetTester tester) async {
+        // Given: a form with and control with default value
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<double>(value: 50.0),
+        });
+
+        // And: a widget that is bind to the form with a label builder
+        await tester.pumpWidget(
+          ReactiveSliderTestingWidget(
+            form: form,
+            labelBuilder: (value) => value.toStringAsPrecision(2),
+          ),
+        );
+
+        // When: gets slider label
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
+        final sliderLabel = slider.label;
+        final expectedLabel =
+            (form.control(reactiveSliderTestingName) as FormControl<double>)
+                .value!
+                .toStringAsPrecision(2);
+
+        // Then: slider label equals to expected label
+        expect(sliderLabel, expectedLabel);
+      },
+    );
+
+    testWidgets(
+      'Slider notify onChanged callback',
+      (WidgetTester tester) async {
+        // Given: a form with and control with default value
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<double>(value: 50.0),
+        });
+
+        var callbackCalled = false;
+        FormControl<num>? callbackArgument;
+
+        // And: a widget that is bind to the form with a label builder
+        await tester.pumpWidget(
+          ReactiveSliderTestingWidget(
+            form: form,
+            labelBuilder: (value) => value.toStringAsPrecision(2),
+            onChanged: (control) {
+              callbackCalled = true;
+              callbackArgument = control;
+            },
+          ),
+        );
+
+        // When: change the value of the slider
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
+        slider.onChanged!(20.0);
+        await tester.pump();
+
+        // Then: the slider notify the on changed event
+        expect(callbackCalled, true, reason: 'Slider onChanged not called');
+
+        // And: the argument of the callback is the control
+        expect(
+          callbackArgument,
+          form.control(reactiveSliderTestingName),
+          reason: 'Slider onChanged not called',
+        );
+      },
+    );
+
+    testWidgets(
+      'Slider with label builder and min value',
+      (WidgetTester tester) async {
+        // Given: a form with and control with no default value
+        final form = FormGroup({
+          reactiveSliderTestingName: FormControl<double>(),
+        });
+
+        // And: a widget that is bind to the form with a label builder
+        await tester.pumpWidget(
+          ReactiveSliderTestingWidget(
+            form: form,
+            labelBuilder: (value) => value.toStringAsPrecision(2),
+          ),
+        );
+
+        // When: gets slider label
+        final slider = tester.firstWidget<Slider>(find.byType(Slider));
+        final sliderLabel = slider.label;
+        final expectedLabel = slider.min.toStringAsPrecision(2);
+
+        // Then: slider label equals to min value from label builder
+        expect(sliderLabel, expectedLabel);
+      },
+    );
+
+    testWidgets(
       'Change Control value updates slider value',
       (WidgetTester tester) async {
         // Given: a form with and control with default value

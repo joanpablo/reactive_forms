@@ -6,11 +6,19 @@ const reactiveSliderTestingName = 'sliderValue';
 class ReactiveSliderTestingWidget extends StatelessWidget {
   final FormGroup form;
   final FocusNode? focusNode;
+  final ReactiveSliderLabelBuilder? labelBuilder;
+  final ReactiveFormFieldCallback<num>? onChangeEnd;
+  final ReactiveFormFieldCallback<num>? onChangeStart;
+  final ReactiveFormFieldCallback<num>? onChanged;
 
   const ReactiveSliderTestingWidget({
     Key? key,
     required this.form,
     this.focusNode,
+    this.labelBuilder,
+    this.onChanged,
+    this.onChangeStart,
+    this.onChangeEnd,
   }) : super(key: key);
 
   @override
@@ -25,6 +33,10 @@ class ReactiveSliderTestingWidget extends StatelessWidget {
                 formControlName: reactiveSliderTestingName,
                 max: 100,
                 focusNode: focusNode,
+                labelBuilder: labelBuilder,
+                onChanged: onChanged,
+                onChangeStart: onChangeStart,
+                onChangeEnd: onChangeEnd,
               ),
             ],
           ),

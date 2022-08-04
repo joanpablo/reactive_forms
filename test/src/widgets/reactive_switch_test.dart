@@ -374,9 +374,92 @@ void main() {
         focusNode: focusNode,
       ));
 
-      // Expect: field has the provided focus node and is the same of the focus controller
+      // Expect: field has the provided focus node and is the same of the
+      // focus controller
       final textField = tester.firstWidget<Switch>(find.byType(Switch));
       expect(textField.focusNode, nameControl.focusController?.focusNode);
+    },
+  );
+
+  testWidgets(
+    'Switch onChanged callback is called',
+    (WidgetTester tester) async {
+      // Given: a form with and control with default value
+      final form = FormGroup({
+        reactiveSwitchTestingName: FormControl<bool>(value: false),
+      });
+
+      var callbackCalled = false;
+      FormControl<bool>? callbackArg;
+
+      // And: a widget that is bind to the form
+      await tester.pumpWidget(
+        ReactiveSwitchTestingWidget(
+          form: form,
+          onChanged: (control) {
+            callbackCalled = true;
+            callbackArg = control;
+          },
+        ),
+      );
+
+      // When: user change switch value
+      final switchWidget = tester
+          .widgetList<Switch>(find.byType(Switch))
+          .map((widget) => widget)
+          .toList()
+          .first;
+      switchWidget.onChanged!(true);
+
+      // Then: onChanged callback is called
+      expect(callbackCalled, true);
+
+      // And: callback argument is the control
+      expect(callbackArg, form.control(reactiveSwitchTestingName));
+
+      // And: control has the right value
+      expect(form.control(reactiveSwitchTestingName).value, true);
+    },
+  );
+
+  testWidgets(
+    'Adaptative Switch onChanged callback is called',
+    (WidgetTester tester) async {
+      // Given: a form with and control with default value
+      final form = FormGroup({
+        reactiveSwitchTestingName: FormControl<bool>(value: false),
+      });
+
+      var callbackCalled = false;
+      FormControl<bool>? callbackArg;
+
+      // And: a widget that is bind to the form
+      await tester.pumpWidget(
+        ReactiveSwitchTestingWidget(
+          form: form,
+          adaptativeOnChanged: (control) {
+            callbackCalled = true;
+            callbackArg = control;
+          },
+        ),
+      );
+
+      // When: user change switch value
+      final adaptativeSwitchWidget = tester
+          .widgetList<Switch>(find.byType(Switch))
+          .map((widget) => widget)
+          .toList()
+          .elementAt(1);
+      adaptativeSwitchWidget.onChanged!(true);
+
+      // Then: onChanged callback is called
+      expect(callbackCalled, true);
+
+      // And: callback argument is the control
+      expect(callbackArg, form.control(reactiveSwitchTestingName));
+
+      // And: control has the right value
+      expect(form.control(reactiveSwitchTestingName).value, true);
     },
   );
 }

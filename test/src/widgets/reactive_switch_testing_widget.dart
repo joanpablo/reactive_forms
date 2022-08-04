@@ -6,11 +6,15 @@ final reactiveSwitchTestingName = 'switch';
 class ReactiveSwitchTestingWidget extends StatelessWidget {
   final FormGroup form;
   final FocusNode? focusNode;
+  final ReactiveFormFieldCallback<bool>? onChanged;
+  final ReactiveFormFieldCallback<bool>? adaptativeOnChanged;
 
   const ReactiveSwitchTestingWidget({
     Key? key,
     required this.form,
     this.focusNode,
+    this.onChanged,
+    this.adaptativeOnChanged,
   }) : super(key: key);
 
   @override
@@ -24,10 +28,12 @@ class ReactiveSwitchTestingWidget extends StatelessWidget {
               ReactiveSwitch(
                 formControlName: reactiveSwitchTestingName,
                 focusNode: focusNode,
+                onChanged: onChanged,
               ),
               ReactiveSwitch.adaptive(
                 formControlName: reactiveSwitchTestingName,
                 focusNode: focusNode,
+                onChanged: adaptativeOnChanged,
               ),
             ],
           ),

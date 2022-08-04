@@ -88,6 +88,87 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
           },
         );
 
+  /// Creates a [ReactiveSwitchListTile] that wraps a Material [ListTile] with
+  /// an adaptive [Switch], following Material design's
+  /// [Cross-platform guidelines](https://material.io/design/platform-guidance/cross-platform-adaptation.html).
+  ///
+  /// This widget uses [Switch.adaptive] to change the graphics of the switch
+  /// component based on the ambient [ThemeData.platform]. On iOS and macOS, a
+  /// [CupertinoSwitch] will be used. On other platforms a Material design
+  /// [Switch] will be used.
+  ///
+  /// If a [CupertinoSwitch] is created, the following parameters are
+  /// ignored: [activeTrackColor], [inactiveThumbColor], [inactiveTrackColor],
+  /// [activeThumbImage], [inactiveThumbImage].
+  ///
+  /// For documentation about the various parameters, see the
+  /// [SwitchListTile.adaptive] constructor.
+  ReactiveSwitchListTile.adaptative({
+    Key? key,
+    String? formControlName,
+    FormControl<bool>? formControl,
+    Color? activeColor,
+    ImageProvider? activeThumbImage,
+    Color? activeTrackColor,
+    bool autofocus = false,
+    EdgeInsetsGeometry? contentPadding,
+    ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
+    bool? dense,
+    bool? enableFeedback,
+    FocusNode? focusNode,
+    Color? hoverColor,
+    Color? inactiveThumbColor,
+    ImageProvider? inactiveThumbImage,
+    Color? inactiveTrackColor,
+    bool isThreeLine = false,
+    Widget? secondary,
+    bool selected = false,
+    Color? selectedTileColor,
+    ShapeBorder? shape,
+    Widget? subtitle,
+    Color? tileColor,
+    Widget? title,
+    VisualDensity? visualDensity,
+    ReactiveFormFieldCallback<bool>? onChanged,
+  }) : super(
+          key: key,
+          formControl: formControl,
+          formControlName: formControlName,
+          builder: (field) {
+            return SwitchListTile.adaptive(
+              value: field.value ?? false,
+              activeColor: activeColor,
+              activeThumbImage: activeThumbImage,
+              activeTrackColor: activeTrackColor,
+              autofocus: autofocus,
+              contentPadding: contentPadding,
+              controlAffinity: controlAffinity,
+              dense: dense,
+              enableFeedback: enableFeedback,
+              focusNode: focusNode,
+              hoverColor: hoverColor,
+              inactiveThumbColor: inactiveThumbColor,
+              inactiveThumbImage: inactiveThumbImage,
+              inactiveTrackColor: inactiveTrackColor,
+              isThreeLine: isThreeLine,
+              secondary: secondary,
+              selected: selected,
+              selectedTileColor: selectedTileColor,
+              shape: shape,
+              subtitle: subtitle,
+              tileColor: tileColor,
+              title: title,
+              visualDensity: visualDensity,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
+            );
+          },
+        );
+
   @override
   ReactiveFormFieldState<bool, bool> createState() =>
       ReactiveFormFieldState<bool, bool>();
