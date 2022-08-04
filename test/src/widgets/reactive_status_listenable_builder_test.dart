@@ -186,7 +186,7 @@ void main() {
         // When: get text widget
         final text = tester.widget<Text>(find.byType(Text));
 
-        // Then: the text is displaying status invalid
+        // Then: the text is displaying status valid
         expect(text.data, 'valid');
       },
     );
@@ -205,7 +205,5 @@ void main() {
         expect(statusListenable, throwsAssertionError);
       },
     );
-
-    // TODO: test that widget change when control status change
   });
 }

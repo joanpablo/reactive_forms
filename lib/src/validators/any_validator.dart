@@ -1,3 +1,7 @@
+// Copyright 2020 Joan Pablo Jimenez Milian. All rights reserved.
+// Use of this source code is governed by the MIT license that can be
+// found in the LICENSE file.
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Represents the [AnyValidator] test function definition.
@@ -19,9 +23,9 @@ class AnyValidator<T> extends Validator<dynamic> {
       return <String, dynamic>{ValidationMessage.any: true};
     }
 
-    // TODO: change the assert for an exception
     assert(control.value is Iterable<T>,
-        '${control.value.runtimeType.toString()} $T?');
+        '''Expected the control value to be of type ${(Iterable<T>).runtimeType}
+        but found type ${control.value.runtimeType.toString()}.''');
 
     final iterable = control.value as Iterable<T>;
     return iterable.any(test)
