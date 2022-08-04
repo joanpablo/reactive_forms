@@ -14,7 +14,7 @@ typedef ReactiveFormFieldBuilder<T, K> = Widget Function(
     ReactiveFormFieldState<T, K> field);
 
 /// Signature for customize when to show errors in a widget.
-typedef ShowErrorsFunction = bool Function(FormControl<dynamic> control);
+typedef ShowErrorsFunction<T> = bool Function(FormControl<T> control);
 
 /// Signature of the function that returns the [Map] that store custom
 /// validation messages for each error.
@@ -49,7 +49,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   final ControlValueAccessor<ModelDataType, ViewDataType>? valueAccessor;
 
   /// Gets the callback that define when to show errors in UI.
-  final ShowErrorsFunction? showErrors;
+  final ShowErrorsFunction<ModelDataType>? showErrors;
 
   /// Creates an instance of the [ReactiveFormField].
   ///
@@ -101,7 +101,7 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   /// If the control has several errors, then the first error is selected
   /// for visualizing in UI.
   String? get errorText {
-    if (control.hasErrors && _showErrors()) {
+    if (control.hasErrors && _showErrors) {
       final errorKey = control.errors.keys.first;
       final validationMessage = _findValidationMessage(errorKey);
 
@@ -113,7 +113,7 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
     return null;
   }
 
-  bool _showErrors() {
+  bool get _showErrors {
     if (widget.showErrors != null) {
       return widget.showErrors!(control);
     }
