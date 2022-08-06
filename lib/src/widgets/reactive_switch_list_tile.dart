@@ -49,12 +49,16 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
     Color? selectedTileColor,
     VisualDensity? visualDensity,
     bool? enableFeedback,
+    FocusNode? focusNode,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
-          builder: (ReactiveFormFieldState<bool, bool> field) {
+          builder: (field) {
+            final state = field as _ReactiveSwitchListTileState<bool, bool>;
+            state._setFocusNode(focusNode);
+
             return SwitchListTile(
               value: field.value ?? false,
               activeColor: activeColor,
@@ -78,6 +82,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               selectedTileColor: selectedTileColor,
               visualDensity: visualDensity,
               enableFeedback: enableFeedback,
+              focusNode: state.focusNode,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);
@@ -135,6 +140,9 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
           formControl: formControl,
           formControlName: formControlName,
           builder: (field) {
+            final state = field as _ReactiveSwitchListTileState<bool, bool>;
+            state._setFocusNode(focusNode);
+
             return SwitchListTile.adaptive(
               value: field.value ?? false,
               activeColor: activeColor,
@@ -145,7 +153,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               controlAffinity: controlAffinity,
               dense: dense,
               enableFeedback: enableFeedback,
-              focusNode: focusNode,
+              focusNode: state.focusNode,
               hoverColor: hoverColor,
               inactiveThumbColor: inactiveThumbColor,
               inactiveThumbImage: inactiveThumbImage,
@@ -171,5 +179,42 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
 
   @override
   ReactiveFormFieldState<bool, bool> createState() =>
-      ReactiveFormFieldState<bool, bool>();
+      _ReactiveSwitchListTileState<bool, bool>();
+}
+
+class _ReactiveSwitchListTileState<T, V> extends ReactiveFormFieldState<T, V> {
+  FocusNode? _focusNode;
+  late FocusController _focusController;
+
+  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
+
+  @override
+  void subscribeControl() {
+    _registerFocusController(FocusController());
+    super.subscribeControl();
+  }
+
+  @override
+  void unsubscribeControl() {
+    _unregisterFocusController();
+    super.unsubscribeControl();
+  }
+
+  void _registerFocusController(FocusController focusController) {
+    _focusController = focusController;
+    control.registerFocusController(focusController);
+  }
+
+  void _unregisterFocusController() {
+    control.unregisterFocusController(_focusController);
+    _focusController.dispose();
+  }
+
+  void _setFocusNode(FocusNode? focusNode) {
+    if (_focusNode != focusNode) {
+      _focusNode = focusNode;
+      _unregisterFocusController();
+      _registerFocusController(FocusController(focusNode: _focusNode));
+    }
+  }
 }

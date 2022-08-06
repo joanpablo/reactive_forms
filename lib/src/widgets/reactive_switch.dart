@@ -62,7 +62,6 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
           formControlName: formControlName,
           builder: (field) {
             final state = field as _ReactiveSwitchState<bool, bool>;
-
             state._setFocusNode(focusNode);
 
             return Switch(
@@ -146,7 +145,6 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
           formControlName: formControlName,
           builder: (field) {
             final state = field as _ReactiveSwitchState<bool, bool>;
-
             state._setFocusNode(focusNode);
 
             return Switch.adaptive(

@@ -7,10 +7,16 @@ class ReactiveSwitchListTileTestingWidget extends StatelessWidget {
   final FormGroup form;
   final ReactiveFormFieldCallback<bool>? onChanged;
   final ReactiveFormFieldCallback<bool>? adaptativeOnChanged;
+  final FocusNode? focusNode;
+  final FocusNode? adaptativeFocusNode;
+  final bool renderAdaptative;
 
   const ReactiveSwitchListTileTestingWidget({
     Key? key,
     required this.form,
+    this.renderAdaptative = true,
+    this.focusNode,
+    this.adaptativeFocusNode,
     this.onChanged,
     this.adaptativeOnChanged,
   }) : super(key: key);
@@ -26,11 +32,14 @@ class ReactiveSwitchListTileTestingWidget extends StatelessWidget {
               ReactiveSwitchListTile(
                 formControlName: switchListTileControl,
                 onChanged: onChanged,
+                focusNode: focusNode,
               ),
-              ReactiveSwitchListTile.adaptative(
-                formControlName: switchListTileControl,
-                onChanged: adaptativeOnChanged,
-              ),
+              if (renderAdaptative)
+                ReactiveSwitchListTile.adaptative(
+                  formControlName: switchListTileControl,
+                  onChanged: adaptativeOnChanged,
+                  focusNode: adaptativeFocusNode,
+                ),
             ],
           ),
         ),

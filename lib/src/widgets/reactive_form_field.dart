@@ -250,11 +250,6 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
     return control;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return widget._builder(this);
-  }
-
   ValidationMessageFunction? _findValidationMessage(String errorKey) {
     if (widget.validationMessages != null &&
         widget.validationMessages!.containsKey(errorKey)) {
@@ -263,5 +258,10 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
       final formConfig = ReactiveFormConfig.of(context);
       return formConfig?.validationMessages[errorKey];
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget._builder(this);
   }
 }
