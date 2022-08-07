@@ -276,8 +276,11 @@ void main() {
 
         // And: a onChanged callback
         var callbackCalled = false;
-        void onChanged(AbstractControl<String> control) {
+        FormControl<String>? callbackArg;
+
+        void onChanged(FormControl<String> control) {
           callbackCalled = true;
+          callbackArg = control;
         }
 
         // And: a widget that is bind to the form
@@ -298,6 +301,50 @@ void main() {
 
         // Then: callback is called
         expect(callbackCalled, true);
+
+        // And: with the control as argument
+        expect(callbackArg, form.control('dropdown'));
+      },
+    );
+
+    testWidgets(
+      'Set Dropdown onTab callback',
+      (WidgetTester tester) async {
+        // Given: a form
+        final form = FormGroup({
+          'dropdown': FormControl<String>(),
+        });
+
+        // And: a onTap callback
+        var callbackCalled = false;
+        FormControl<String>? callbackArg;
+
+        void onTap(FormControl<String> control) {
+          callbackCalled = true;
+          callbackArg = control;
+        }
+
+        // And: a widget that is bind to the form
+        final items = ['true', 'false'];
+        await tester.pumpWidget(ReactiveDropdownTestingWidget(
+          form: form,
+          items: items,
+          onTap: onTap,
+        ));
+
+        // When: callback on tap in widget
+        final dropdownType =
+            DropdownButton<String>(items: null, onChanged: null).runtimeType;
+        final dropdown = tester
+            .firstWidget<DropdownButton<String>>(find.byType(dropdownType));
+        dropdown.onTap!();
+        await tester.pump();
+
+        // Then: callback is called
+        expect(callbackCalled, true);
+
+        // And: with the control as argument
+        expect(callbackArg, form.control('dropdown'));
       },
     );
 
