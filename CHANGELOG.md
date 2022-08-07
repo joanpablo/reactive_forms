@@ -1,22 +1,32 @@
+# 14.1.0
+
+## Enhances
+
+- Create new widget **ReactiveFocusableFormField** as a parent widget for all other widgets that requires to do focus management.
+
 # 14.0.0
 
 ## Breaking Changes
+
 - The definition of validation messages is now more consistent.
 - Methods like `onTab` in `ReactiveTextField` and `onChanged` in
-`ReactiveDropdownField` now provides the control as argument of
-the callback.
+  `ReactiveDropdownField` now provides the control as argument of
+  the callback.
 
 ## Enhances
+
 - Add events like `onChanged`, `onEditingComplete` to reactive widgets.
 
 ## Features
+
 - Add widget **ReactiveFormConfig** to globally define validation messages
-at Flutter application level. This reliefs the need to define validation
-messages in each reactive widget.
+  at Flutter application level. This reliefs the need to define validation
+  messages in each reactive widget.
 
 # 13.0.1
 
 ## Enhances
+
 - Upgrade example folder project to Flutter 3.0.0.
 - Increase code coverage in FormArray.
 
@@ -29,32 +39,36 @@ messages in each reactive widget.
 # 12.0.0
 
 ## Fix
+
 - Update project to new Android wrappers in order to be able to run the example
-using latest Android SDK changes.
+  using latest Android SDK changes.
 
 # 11.1.0
 
 ## Enhances
-- Add Focus handling for several reactive widgets:
-    - ReactiveSlider
-    - ReactiveSwitch
-    - ReactiveRadio
-    - ReactiveRadioListTile
-    - ReactiveCheckbox
-    - ReactiveCheckboxListTile
 
+- Add Focus handling for several reactive widgets:
+  - ReactiveSlider
+  - ReactiveSwitch
+  - ReactiveRadio
+  - ReactiveRadioListTile
+  - ReactiveCheckbox
+  - ReactiveCheckboxListTile
 
 # 11.0.2
 
 ## Fix
-- Small fix in the *array_sample* example application.
+
+- Small fix in the _array_sample_ example application.
 
 # 11.0.1
 
 ## Fix
+
 - Fix issues in **ReactiveDatePicker** when control value was before or after the range of **firstDate** and **lastDate**
 
 ## Enhances
+
 - Add optional argument **initialDate** to the **ReactiveDatePicker**.
 
 # 11.0.0
@@ -72,41 +86,48 @@ using latest Android SDK changes.
 ## Features
 
 - Expose **TextEditingController** as a property of the **ReactiveTextField** for text selection
-purposes only.
+  purposes only.
 
 # 10.6.8
 
 ## Fix
+
 - Fix Async Validators that overrides validations errors from Sync Validators
 
 # 10.6.7
 
 ## Enhances
+
 - Improve Complex example in the demo application
 
 # 10.6.6
 
 ## Enhances
+
 - Improve the Array example in the demo application
 - Better exception handler when creating FormGroups with controls that contains character '.' in the name of the control.
 
 # 10.6.5
 
 ## Enhances
+
 - Add an example of deleting item from a **FormArray** in the example folder project.
 - Make public the previously private class **InheritedStreamer**
 
 # 10.6.4
 
 ## Fix
+
 - Minor documentation fix.
 
 # 10.6.3
 
 ## Enhances
+
 - Add documentation of new advanced reactive widgets.
 
 ## Fix
+
 - Minor documentation fix.
 
 # 10.6.2
@@ -129,7 +150,6 @@ purposes only.
 - Added optional argument to **Validators.mustMatch** that allows to define if we want to mark
   the _matchingControlName_ control as **DIRTY** when the control is invalid.
   See related [issue](https://github.com/joanpablo/reactive_forms/issues/199).
-  
 - Minor changes in model classes that allows to create custom AbstractControl implementations
 
 # 10.5.0
