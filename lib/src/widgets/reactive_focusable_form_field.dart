@@ -5,7 +5,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// TODO: add documentation
+/// Represents the base class for all reactive widgets that requires to
+/// manage focus througth the [control].
+///
+/// All reactive widgets that can get/remove focus from the UI like
+/// [ReactiveTextField], [ReactiveRadio], [ReactiveCheckbox], and many others
+/// inherit from this widget.
 class ReactiveFocusableFormField<T, V> extends ReactiveFormField<T, V> {
   ReactiveFocusableFormField({
     super.key,
@@ -23,7 +28,14 @@ class ReactiveFocusableFormField<T, V> extends ReactiveFormField<T, V> {
       ReactiveFocusableFormFieldState<T, V>();
 }
 
-/// TODO: add documentation
+/// Represents the state for a [ReactiveFocusableFormField].
+///
+/// This state is responsible to register focus subscriptions in order to
+/// establish a relationship between a [control] and a widget for focus
+/// management.
+///
+/// All states of reactive widgets that require managing focus through the
+/// [control] should inherit from this class.
 class ReactiveFocusableFormFieldState<T, V>
     extends ReactiveFormFieldState<T, V> {
   FocusNode? _focusNode;
