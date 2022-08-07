@@ -7,6 +7,7 @@ on:
     branches:
       - master
       - develop
+      - "feature/**"
   pull_request:
     branches:
       - master
@@ -22,8 +23,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.0.0'
-          channel: 'stable'
+          flutter-version: "3.0.0"
+          channel: "stable"
       - run: flutter pub get
       - run: flutter test --no-pub --coverage
       - run: bash <(curl -s https://codecov.io/bash) -t d5f3f780-d3d4-4c7c-997b-31f1f7620eba
@@ -35,8 +36,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.0.0'
-          channel: 'stable'
+          flutter-version: "3.0.0"
+          channel: "stable"
       - run: flutter pub get
       - name: Analyze lib
         run: flutter analyze lib
@@ -50,8 +51,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '3.0.0'
-          channel: 'stable'
+          flutter-version: "3.0.0"
+          channel: "stable"
       - run: flutter pub get
       - name: Format lib
         run: flutter format lib --set-exit-if-changed
