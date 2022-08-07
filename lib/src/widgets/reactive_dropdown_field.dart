@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
-class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
+class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -25,6 +25,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
+    FocusNode? focusNode,
     required List<DropdownMenuItem<T>> items,
     Map<String, ValidationMessageFunction>? validationMessages,
     ShowErrorsFunction<T>? showErrors,
@@ -59,9 +60,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
           formControlName: formControlName,
           validationMessages: validationMessages,
           showErrors: showErrors,
+          focusNode: focusNode,
           builder: (ReactiveFormFieldState<T, T> field) {
-            final state = field as _ReactiveDropdownFieldState<T>;
-
             final effectiveDecoration = decoration.applyDefaults(
               Theme.of(field.context).inputDecorationTheme,
             );
@@ -107,7 +107,7 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
                   isDense: isDense,
                   isExpanded: isExpanded,
                   itemHeight: itemHeight,
-                  focusNode: state._focusController.focusNode,
+                  focusNode: field.focusNode,
                   dropdownColor: dropdownColor,
                   focusColor: focusColor,
                   underline: underline,
@@ -128,25 +128,4 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<T, T> createState() =>
-      _ReactiveDropdownFieldState<T>();
-}
-
-class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
-  final _focusController = FocusController();
-
-  @override
-  void subscribeControl() {
-    control.registerFocusController(_focusController);
-    super.subscribeControl();
-  }
-
-  @override
-  void dispose() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-    super.dispose();
-  }
 }

@@ -51,6 +51,9 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   /// Gets the callback that define when to show errors in UI.
   final ShowErrorsFunction<ModelDataType>? showErrors;
 
+  /// TODO: add documentation
+  final FocusNode? focusNode;
+
   /// Creates an instance of the [ReactiveFormField].
   ///
   /// Must provide a [forControlName] or a [formControl] but not both
@@ -64,6 +67,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
     this.valueAccessor,
     this.showErrors,
     this.validationMessages,
+    this.focusNode,
     required ReactiveFormFieldBuilder<ModelDataType, ViewDataType> builder,
   })  : assert(
             (formControlName != null && formControl == null) ||
@@ -95,6 +99,9 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   /// Gets the widget control value accessor
   ControlValueAccessor<ModelDataType, ViewDataType> get valueAccessor =>
       _valueAccessor;
+
+  /// TODO: add documentation
+  FocusNode? get focusNode => widget.focusNode;
 
   /// Gets the error text calculated from validators of the control.
   ///
@@ -250,11 +257,6 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
     return control;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return widget._builder(this);
-  }
-
   ValidationMessageFunction? _findValidationMessage(String errorKey) {
     if (widget.validationMessages != null &&
         widget.validationMessages!.containsKey(errorKey)) {
@@ -263,5 +265,10 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
       final formConfig = ReactiveFormConfig.of(context);
       return formConfig?.validationMessages[errorKey];
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget._builder(this);
   }
 }

@@ -310,7 +310,8 @@ void main() {
     );
 
     testWidgets(
-      'Provide a FocusNode to ReactiveListTile and access it through focus controller',
+      '''Provide a FocusNode to ReactiveRadioListTile and access it through
+      focus controller''',
       (WidgetTester tester) async {
         // Given: A group with a field
         final nameControl = FormControl<bool>();
@@ -330,6 +331,47 @@ void main() {
         // Expect: field has the provided focus node and is the same of the focus controller
         final textField = tester.firstWidget<ListTile>(find.byType(ListTile));
         expect(textField.focusNode, nameControl.focusController?.focusNode);
+      },
+    );
+
+    testWidgets(
+      'ReactiveRadioListTile onChanged callback is called',
+      (WidgetTester tester) async {
+        // Given: a form with and control with default value
+        final form = FormGroup({
+          reactiveRadioListTileTestingName: FormControl<bool>(value: false),
+        });
+
+        var callbackCalled = false;
+        FormControl<bool>? callbackArg;
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(
+          ReactiveRadioListTileTestingWidget(
+            form: form,
+            onChanged: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // When: user change switch value
+        final widget = tester
+            .widgetList<Radio<bool>>(find.byType(Radio<bool>))
+            .map((widget) => widget)
+            .toList()
+            .first;
+        widget.onChanged!(true);
+
+        // Then: onChanged callback is called
+        expect(callbackCalled, true);
+
+        // And: callback argument is the control
+        expect(callbackArg, form.control(reactiveRadioListTileTestingName));
+
+        // And: control has the right value
+        expect(form.control(reactiveRadioListTileTestingName).value, true);
       },
     );
   });
