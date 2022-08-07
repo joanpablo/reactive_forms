@@ -134,5 +134,23 @@ void main() {
         reason: 'The error text is not equals to ValidationMessage.required',
       );
     });
+
+    testWidgets('Config should notify update', (WidgetTester tester) async {
+      // Given: an old ReactiveFormConfig.
+      final oldConfig = ReactiveFormConfig(
+        validationMessages: {},
+        child: Container(),
+      );
+
+      // And: a new ReactiveFormConfig.
+      final newConfig = ReactiveFormConfig(
+        validationMessages: {},
+        child: Container(),
+      );
+
+      // Expect: new config shoud notify update
+      final shouldNotify = newConfig.updateShouldNotify(oldConfig);
+      expect(shouldNotify, true);
+    });
   });
 }

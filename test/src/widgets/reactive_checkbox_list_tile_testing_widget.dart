@@ -7,12 +7,14 @@ class ReactiveCheckboxListTileTestingWidget extends StatelessWidget {
   final FormGroup form;
   final bool tristate;
   final FocusNode? focusNode;
+  final ReactiveFormFieldCallback<bool>? onChanged;
 
   const ReactiveCheckboxListTileTestingWidget({
     Key? key,
     required this.form,
     this.tristate = false,
     this.focusNode,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class ReactiveCheckboxListTileTestingWidget extends StatelessWidget {
                 formControlName: reactiveCheckboxListTileTestingName,
                 tristate: tristate,
                 focusNode: focusNode,
+                onChanged: onChanged,
               ),
             ],
           ),

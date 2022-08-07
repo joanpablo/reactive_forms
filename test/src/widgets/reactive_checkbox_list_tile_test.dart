@@ -350,5 +350,60 @@ void main() {
         expect(textField.focusNode, nameControl.focusController?.focusNode);
       },
     );
+
+    testWidgets(
+      'ReactiveCheckboxListTile onChanged callback is called',
+      (WidgetTester tester) async {
+        // Given: a form with and control with default value
+        final form = FormGroup({
+          reactiveCheckboxListTileTestingName: FormControl<bool>(value: false),
+        });
+
+        var callbackCalled = false;
+        FormControl<bool>? callbackArg;
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(
+          ReactiveCheckboxListTileTestingWidget(
+            form: form,
+            onChanged: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // When: user change switch value
+        final widget = tester
+            .widgetList<Checkbox>(find.byType(Checkbox))
+            .map((widget) => widget)
+            .toList()
+            .first;
+        widget.onChanged!(true);
+
+        // Then: onChanged callback is called
+        expect(
+          callbackCalled,
+          true,
+          reason: 'ReactiveCheckboxListTile onChanged callback not called',
+        );
+
+        // And: callback argument is the control
+        expect(
+          callbackArg,
+          form.control(reactiveCheckboxListTileTestingName),
+          reason: '''ReactiveCheckboxListTile onChanged callback does not
+          provide control as argument''',
+        );
+
+        // And: control has the right value
+        expect(
+          form.control(reactiveCheckboxListTileTestingName).value,
+          true,
+          reason: '''ReactiveCheckboxListTile onChanged callback does not change
+          control value''',
+        );
+      },
+    );
   });
 }
