@@ -13,7 +13,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Radio] class
 /// and [Radio], the constructor.
-class ReactiveRadio<T> extends ReactiveFormField<T, T> {
+class ReactiveRadio<T> extends ReactiveFocusableFormField<T, T> {
   /// Creates a [ReactiveRadio] that contains a [Radio].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -50,11 +50,8 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveRadioState<T, T>;
-
-            state._setFocusNode(focusNode);
-
             return Radio<T>(
               value: value,
               groupValue: field.value,
@@ -69,7 +66,7 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
               visualDensity: visualDensity,
               autofocus: autofocus,
               toggleable: toggleable,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);
@@ -79,44 +76,4 @@ class ReactiveRadio<T> extends ReactiveFormField<T, T> {
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<T, T> createState() => _ReactiveRadioState<T, T>();
-}
-
-class _ReactiveRadioState<T, V> extends ReactiveFormFieldState<T, V> {
-  FocusNode? _focusNode;
-  late FocusController _focusController;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
-  }
 }

@@ -89,6 +89,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     Map<String, ValidationMessageFunction>? validationMessages,
     ControlValueAccessor<T, String>? valueAccessor,
     ShowErrorsFunction<T>? showErrors,
+    FocusNode? focusNode,
     InputDecoration decoration = const InputDecoration(),
     TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -123,7 +124,6 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     bool enableInteractiveSelection = true,
     InputCounterWidgetBuilder? buildCounter,
     ScrollPhysics? scrollPhysics,
-    FocusNode? focusNode,
     Iterable<String>? autofillHints,
     MouseCursor? mouseCursor,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
@@ -149,12 +149,11 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
           valueAccessor: valueAccessor,
           validationMessages: validationMessages,
           showErrors: showErrors,
+          focusNode: focusNode,
           builder: (ReactiveFormFieldState<T, String> field) {
             final state = field as _ReactiveTextFieldState<T>;
             final effectiveDecoration = decoration
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
-
-            state._setFocusNode(focusNode);
 
             return TextField(
               controller: state._textController,
@@ -233,29 +232,14 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
       _ReactiveTextFieldState<T>();
 }
 
-class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
+class _ReactiveTextFieldState<T>
+    extends ReactiveFocusableFormFieldState<T, String> {
   late TextEditingController _textController;
-  late FocusController _focusController;
-  FocusNode? _focusNode;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
 
   @override
   void initState() {
     super.initState();
     _initializeTextController();
-  }
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
   }
 
   @override
@@ -283,24 +267,6 @@ class _ReactiveTextFieldState<T> extends ReactiveFormFieldState<T, String> {
     }
 
     return super.selectValueAccessor();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
   }
 
   void _initializeTextController() {

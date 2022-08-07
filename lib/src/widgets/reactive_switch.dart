@@ -19,7 +19,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Switch] class
 /// and [Switch], the constructor.
-class ReactiveSwitch extends ReactiveFormField<bool, bool> {
+class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
   /// Creates a [ReactiveSwitch] that wraps a material design switch.
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -36,6 +36,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     Key? key,
     String? formControlName,
     FormControl<bool>? formControl,
+    FocusNode? focusNode,
     Color? activeColor,
     Color? activeTrackColor,
     Color? inactiveThumbColor,
@@ -54,16 +55,13 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     MouseCursor? mouseCursor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
-    FocusNode? focusNode,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveSwitchState<bool, bool>;
-            state._setFocusNode(focusNode);
-
             return Switch(
               value: field.value ?? false,
               activeColor: activeColor,
@@ -84,7 +82,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               mouseCursor: mouseCursor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);
@@ -119,6 +117,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     Key? key,
     String? formControlName,
     FormControl<bool>? formControl,
+    FocusNode? focusNode,
     Color? activeColor,
     Color? activeTrackColor,
     Color? inactiveThumbColor,
@@ -137,16 +136,13 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
     MaterialStateProperty<Color?>? overlayColor,
     MouseCursor? mouseCursor,
     double? splashRadius,
-    FocusNode? focusNode,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveSwitchState<bool, bool>;
-            state._setFocusNode(focusNode);
-
             return Switch.adaptive(
               value: field.value ?? false,
               activeColor: activeColor,
@@ -167,7 +163,7 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
               overlayColor: overlayColor,
               splashRadius: splashRadius,
               autofocus: autofocus,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);
@@ -177,45 +173,4 @@ class ReactiveSwitch extends ReactiveFormField<bool, bool> {
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<bool, bool> createState() =>
-      _ReactiveSwitchState<bool, bool>();
-}
-
-class _ReactiveSwitchState<T, V> extends ReactiveFormFieldState<T, V> {
-  FocusNode? _focusNode;
-  late FocusController _focusController;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
-  }
 }

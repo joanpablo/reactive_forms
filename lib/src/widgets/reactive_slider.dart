@@ -17,7 +17,7 @@ typedef ReactiveSliderLabelBuilder = String Function(double);
 ///
 /// For documentation about the various parameters, see the [Slider] class
 /// and [Slider], the constructor.
-class ReactiveSlider extends ReactiveFormField<num, double> {
+class ReactiveSlider extends ReactiveFocusableFormField<num, double> {
   /// Creates an instance os a [ReactiveSlider].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -52,11 +52,8 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveSliderState;
-
-            state._setFocusNode(focusNode);
-
             var value = field.value;
             if (value == null) {
               value = min;
@@ -80,7 +77,7 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
               semanticFormatterCallback: semanticFormatterCallback,
               mouseCursor: mouseCursor,
               autofocus: autofocus,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               onChangeEnd: onChangeEnd != null
                   ? (_) => onChangeEnd(field.control)
                   : null,
@@ -101,42 +98,8 @@ class ReactiveSlider extends ReactiveFormField<num, double> {
   ReactiveFormFieldState<num, double> createState() => _ReactiveSliderState();
 }
 
-class _ReactiveSliderState extends ReactiveFormFieldState<num, double> {
-  FocusNode? _focusNode;
-  late FocusController _focusController;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
-  }
-
+class _ReactiveSliderState
+    extends ReactiveFocusableFormFieldState<num, double> {
   @override
   ControlValueAccessor<num, double> selectValueAccessor() {
     if (control is FormControl<int>) {

@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [SwitchListTile]
 /// class and [SwitchListTile], the constructor.
-class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
+class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
@@ -55,10 +55,8 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveSwitchListTileState<bool, bool>;
-            state._setFocusNode(focusNode);
-
             return SwitchListTile(
               value: field.value ?? false,
               activeColor: activeColor,
@@ -82,7 +80,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               selectedTileColor: selectedTileColor,
               visualDensity: visualDensity,
               enableFeedback: enableFeedback,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);
@@ -139,10 +137,8 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveSwitchListTileState<bool, bool>;
-            state._setFocusNode(focusNode);
-
             return SwitchListTile.adaptive(
               value: field.value ?? false,
               activeColor: activeColor,
@@ -153,7 +149,7 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
               controlAffinity: controlAffinity,
               dense: dense,
               enableFeedback: enableFeedback,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               hoverColor: hoverColor,
               inactiveThumbColor: inactiveThumbColor,
               inactiveThumbImage: inactiveThumbImage,
@@ -176,45 +172,4 @@ class ReactiveSwitchListTile extends ReactiveFormField<bool, bool> {
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<bool, bool> createState() =>
-      _ReactiveSwitchListTileState<bool, bool>();
-}
-
-class _ReactiveSwitchListTileState<T, V> extends ReactiveFormFieldState<T, V> {
-  FocusNode? _focusNode;
-  late FocusController _focusController;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
-  }
 }
