@@ -366,10 +366,52 @@ void main() {
           onChanged: null,
         ).runtimeType;
 
-        // Expect: field has the provided focus node and is the same of the focus controller
+        // Expect: field has the provided focus node and is the same of the
+        // focus controller
         final textField =
             tester.firstWidget<Radio<bool>>(find.byType(radioType));
         expect(textField.focusNode, nameControl.focusController?.focusNode);
+      },
+    );
+
+    testWidgets(
+      'ReactiveRadio onChanged callback is called',
+      (WidgetTester tester) async {
+        // Given: a form with and control with default value
+        final form = FormGroup({
+          reactiveRadioTestingName: FormControl<bool>(value: false),
+        });
+
+        var callbackCalled = false;
+        FormControl<bool>? callbackArg;
+
+        // And: a widget that is bind to the form
+        await tester.pumpWidget(
+          ReactiveRadioTestingWidget(
+            form: form,
+            onChanged: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // When: user change switch value
+        final widget = tester
+            .widgetList<Radio<bool>>(find.byType(Radio<bool>))
+            .map((widget) => widget)
+            .toList()
+            .first;
+        widget.onChanged!(true);
+
+        // Then: onChanged callback is called
+        expect(callbackCalled, true);
+
+        // And: callback argument is the control
+        expect(callbackArg, form.control(reactiveRadioTestingName));
+
+        // And: control has the right value
+        expect(form.control(reactiveRadioTestingName).value, true);
       },
     );
   });
