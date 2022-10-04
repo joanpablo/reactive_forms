@@ -53,15 +53,17 @@ abstract class FormControlCollection<T> {
       return null;
     }
 
-    final result = path.fold(this as AbstractControl<Object>, (control, name) {
+    final result = path.fold(this as AbstractControl<Object>?, (control, name) {
       if (control is FormControlCollection<dynamic>) {
-        final collection = control;
-        return collection.contains(name) ? collection.control(name) : null;
+        if (control == null) {
+        } else {
+          return contains(name) ? control : null;
+        }
       } else {
         return null;
       }
     });
 
-    return result != null ? result as AbstractControl<Object> : null;
+    return result;
   }
 }
