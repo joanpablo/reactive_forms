@@ -45,7 +45,6 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
     double? itemHeight,
     Color? dropdownColor,
     Color? focusColor,
-    Widget? underline,
     bool autofocus = false,
     double? menuMaxHeight,
     bool? enableFeedback,
@@ -71,7 +70,6 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
                 !items.any((item) => item.value == effectiveValue)) {
               effectiveValue = null;
             }
-
 
             final isDisabled = readOnly || field.control.disabled;
             var effectiveDisabledHint = disabledHint;
