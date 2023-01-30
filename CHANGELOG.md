@@ -1,6 +1,6 @@
 # 14.2.0
 
-- Update intl to latest version 0.18.0 0.18.0.
+- Update intl to latest version 0.18.0.
 
 # 14.1.0
 
