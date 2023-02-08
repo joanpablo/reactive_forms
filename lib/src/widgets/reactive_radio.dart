@@ -30,6 +30,7 @@ class ReactiveRadio<T> extends ReactiveFocusableFormField<T, T> {
   /// and [Radio], the constructor.
   ReactiveRadio({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<T>? formControl,
     required T value,
@@ -53,6 +54,7 @@ class ReactiveRadio<T> extends ReactiveFocusableFormField<T, T> {
           focusNode: focusNode,
           builder: (field) {
             return Radio<T>(
+              key: widgetKey,
               value: value,
               groupValue: field.value,
               activeColor: activeColor,

@@ -24,6 +24,7 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
   /// The [formControlName] arguments must not be null.
   ReactiveCheckbox({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<bool>? formControl,
     bool tristate = false,
@@ -49,6 +50,7 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
           focusNode: focusNode,
           builder: (field) {
             return Checkbox(
+              key: widgetKey,
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
               mouseCursor: mouseCursor,

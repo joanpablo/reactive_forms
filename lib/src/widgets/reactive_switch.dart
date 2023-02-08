@@ -34,6 +34,7 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
   /// and [Switch], the constructor.
   ReactiveSwitch({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<bool>? formControl,
     FocusNode? focusNode,
@@ -63,6 +64,7 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
           focusNode: focusNode,
           builder: (field) {
             return Switch(
+              key: widgetKey,
               value: field.value ?? false,
               activeColor: activeColor,
               activeTrackColor: activeTrackColor,

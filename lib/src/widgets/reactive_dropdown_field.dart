@@ -23,6 +23,7 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// The [DropdownButton] [items] parameters must not be null.
   ReactiveDropdownField({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<T>? formControl,
     FocusNode? focusNode,
@@ -93,6 +94,7 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
               isEmpty: effectiveValue == null,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<T>(
+                  key: widgetKey,
                   value: effectiveValue,
                   items: items,
                   selectedItemBuilder: selectedItemBuilder,

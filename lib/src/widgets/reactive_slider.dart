@@ -32,6 +32,7 @@ class ReactiveSlider extends ReactiveFocusableFormField<num, double> {
   /// so you can supply a label to the Slider.
   ReactiveSlider({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<num>? formControl,
     double min = 0.0,
@@ -64,6 +65,7 @@ class ReactiveSlider extends ReactiveFocusableFormField<num, double> {
             }
 
             return Slider(
+              key: widgetKey,
               value: value,
               min: min,
               max: max,

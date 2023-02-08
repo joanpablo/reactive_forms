@@ -84,6 +84,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   /// and [TextField], the constructor.
   ReactiveTextField({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<T>? formControl,
     Map<String, ValidationMessageFunction>? validationMessages,
@@ -156,6 +157,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
                 .applyDefaults(Theme.of(state.context).inputDecorationTheme);
 
             return TextField(
+              key: widgetKey,
               controller: state._textController,
               focusNode: state.focusNode,
               decoration:

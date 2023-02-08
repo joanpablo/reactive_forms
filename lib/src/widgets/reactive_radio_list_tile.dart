@@ -27,6 +27,7 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
   /// See also [RadioListTile]
   ReactiveRadioListTile({
     Key? key,
+    Key? widgetKey,
     String? formControlName,
     FormControl<T>? formControl,
     required T value,
@@ -55,6 +56,7 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
           focusNode: focusNode,
           builder: (field) {
             return RadioListTile<T>(
+              key: widgetKey,
               value: value,
               groupValue: field.value,
               activeColor: activeColor,
