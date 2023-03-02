@@ -38,7 +38,6 @@ export 'src/widgets/inherited_streamer.dart';
 export 'src/widgets/reactive_checkbox.dart';
 export 'src/widgets/reactive_checkbox_list_tile.dart';
 export 'src/widgets/reactive_date_picker.dart';
-export 'src/widgets/reactive_date_picker.dart';
 export 'src/widgets/reactive_dropdown_field.dart';
 export 'src/widgets/reactive_focusable_form_field.dart';
 export 'src/widgets/reactive_form.dart';
