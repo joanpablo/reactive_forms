@@ -1,3 +1,8 @@
+# 14.3.0
+
+- Fix the inkwell ripple effect in the **ReactiveDropdownField**.
+- Add some other minor fixes.
+
 # 14.2.0
 
 - Update intl to latest version 0.18.0.
