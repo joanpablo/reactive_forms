@@ -12,7 +12,7 @@ class MustMatchValidator extends Validator<dynamic> {
   final bool markAsDirty;
 
   /// Constructs an instance of [MustMatchValidator]
-  MustMatchValidator(
+  const MustMatchValidator(
       this.controlName, this.matchingControlName, this.markAsDirty);
 
   @override

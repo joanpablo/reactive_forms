@@ -13,7 +13,7 @@ class PatternValidator extends Validator<dynamic> {
   /// Constructs an instance of [PatternValidator].
   ///
   /// The [evaluator] argument must not be null.
-  PatternValidator(this.evaluator,
+  const PatternValidator(this.evaluator,
       {this.validationMessage = ValidationMessage.pattern});
 
   @override

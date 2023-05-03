@@ -12,7 +12,7 @@ class MaxLengthValidator extends Validator<dynamic> {
   /// Constructs a [MaxLengthValidator].
   ///
   /// The argument [maxLength] must not be null.
-  MaxLengthValidator(this.maxLength);
+  const MaxLengthValidator(this.maxLength);
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

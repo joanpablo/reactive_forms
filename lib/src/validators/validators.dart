@@ -58,34 +58,33 @@ class Validators {
   /// argument [value].
   ///
   /// The argument [value] must not be null.
-  static ValidatorFunction equals<T>(T value) =>
-      EqualsValidator<T>(value).validate;
+  static ValidatorFunction equals<T>(T value) => EqualsValidator<T>(value);
 
   /// Gets a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
-  static ValidatorFunction min<T>(T min) => MinValidator<T>(min).validate;
+  static ValidatorFunction min<T>(T min) => MinValidator<T>(min);
 
   /// Gets a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
-  static ValidatorFunction max<T>(T max) => MaxValidator<T>(max).validate;
+  static ValidatorFunction max<T>(T max) => MaxValidator<T>(max);
 
   /// Gets a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
   ///
   /// The argument [minLength] argument must not be null.
   static ValidatorFunction minLength(int minLength) =>
-      MinLengthValidator(minLength).validate;
+      MinLengthValidator(minLength);
 
   /// Gets a validator that requires the length of the control's value to be
   /// less than or equal to the provided [maxLength].
   ///
   /// The argument [maxLength] must not be null.
   static ValidatorFunction maxLength(int maxLength) =>
-      MaxLengthValidator(maxLength).validate;
+      MaxLengthValidator(maxLength);
 
   /// Gets a validator that requires the control's value to match a
   /// regex [pattern].
@@ -158,8 +157,7 @@ class Validators {
       evaluator = DefaultPatternEvaluator(pattern);
     }
 
-    return PatternValidator(evaluator, validationMessage: validationMessage)
-        .validate;
+    return PatternValidator(evaluator, validationMessage: validationMessage);
   }
 
   /// Gets a [FormGroup] validator that checks the controls [controlName] and
@@ -220,10 +218,11 @@ class Validators {
   /// ...
   /// ```
   static ValidatorFunction mustMatch(
-      String controlName, String matchingControlName,
-      {bool markAsDirty = true}) {
-    return MustMatchValidator(controlName, matchingControlName, markAsDirty)
-        .validate;
+    String controlName,
+    String matchingControlName, {
+    bool markAsDirty = true,
+  }) {
+    return MustMatchValidator(controlName, matchingControlName, markAsDirty);
   }
 
   /// Gets a [FormGroup] validator that compares two controls in the group.

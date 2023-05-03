@@ -15,7 +15,7 @@ class ComposeValidator extends Validator<dynamic> {
   /// Constructs an instance of the validator.
   ///
   /// The argument [validators] must not be null.
-  ComposeValidator(this.validators);
+  const ComposeValidator(this.validators);
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

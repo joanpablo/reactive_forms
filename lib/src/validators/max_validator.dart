@@ -12,7 +12,7 @@ class MaxValidator<T> extends Validator<dynamic> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [max] must not be null.
-  MaxValidator(this.max);
+  const MaxValidator(this.max);
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
