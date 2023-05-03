@@ -45,7 +45,7 @@ class Validators {
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
-  static ValidatorFunction get email => EmailValidator().validate;
+  static const email = EmailValidator();
 
   /// Gets a validator that validates if control's value is a numeric value.
   static ValidatorFunction get number => NumberValidator().validate;
