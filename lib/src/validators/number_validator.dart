@@ -6,6 +6,9 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that validates if control's value is a numeric value.
 class NumberValidator extends Validator<dynamic> {
+  const NumberValidator();
+  
+
   /// The regex expression of a numeric string value.
   static final RegExp numberRegex = RegExp(r'^-?[0-9]+$');
 
