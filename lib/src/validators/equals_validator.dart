@@ -16,7 +16,7 @@ class EqualsValidator<T> extends Validator<dynamic> {
   /// The argument [validationMessage] is optional and specify the key text for
   /// the validation error. I none value is supplied then the default value is
   /// [ValidationMessage.equals].
-  EqualsValidator(
+  const EqualsValidator(
     this.value, {
     this.validationMessage = ValidationMessage.equals,
   });

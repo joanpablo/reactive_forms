@@ -40,9 +40,8 @@ class Validators {
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static ValidatorFunction get requiredTrue => EqualsValidator<bool>(true,
-          validationMessage: ValidationMessage.requiredTrue)
-      .validate;
+  static const requiredTrue = EqualsValidator<bool>(true,
+      validationMessage: ValidationMessage.requiredTrue);
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
