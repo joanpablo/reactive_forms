@@ -9,6 +9,7 @@ abstract class Validator<T> {
   const Validator();
 
   Map<String, dynamic>? validate(AbstractControl<T> control);
+
   Map<String, dynamic>? call(AbstractControl<T> control) {
     return validate(control);
   }

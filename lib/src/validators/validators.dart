@@ -36,7 +36,7 @@ typedef AsyncValidatorFunction = Future<Map<String, dynamic>?> Function(
 /// Provides a set of built-in validators that can be used by form controls.
 class Validators {
   /// Gets a validator that requires the control have a non-empty value.
-  static ValidatorFunction get required => RequiredValidator().validate;
+  static const required = RequiredValidator();
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
