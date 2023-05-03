@@ -109,7 +109,7 @@ void main() {
       // Expect a form group created
       expect(form.control('control') is FormControl<Object>, true,
           reason: 'control is not instance of FormControl<dynamic>');
-      expect(form.control('control').validators.first, validator,
+      expect(form.control('control').validators.first, validator.call,
           reason: 'validator not set');
     });
 
@@ -127,9 +127,9 @@ void main() {
           reason: 'control is not instance of FormControl<dynamic>');
       expect(form.control('control').validators.length, 2,
           reason: 'not set validators');
-      expect(form.control('control').validators[0], requiredValidator,
+      expect(form.control('control').validators[0], requiredValidator.call,
           reason: 'not set required validator');
-      expect(form.control('control').validators[1], emailValidator,
+      expect(form.control('control').validators[1], emailValidator.call,
           reason: 'not set email validator');
     });
 
@@ -181,7 +181,7 @@ void main() {
           reason: 'control is not instance of FormControl<String>');
       expect(form.control('control').value, '',
           reason: 'control default value not set');
-      expect(form.control('control').validators[0], requiredValidator,
+      expect(form.control('control').validators[0], requiredValidator.call,
           reason: 'not set required validator');
     });
 

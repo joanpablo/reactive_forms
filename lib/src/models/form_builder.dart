@@ -82,8 +82,13 @@ class FormBuilder {
         return MapEntry(key, value);
       } else if (value is ValidatorFunction) {
         return MapEntry(key, FormControl(validators: [value]));
+      } else if (value is Validator) {
+        return MapEntry(key, FormControl(validators: [value]));
       } else if (value is List<ValidatorFunction>) {
         return MapEntry(key, FormControl(validators: value));
+      } else if (value is List<Validator>) {
+        return MapEntry(
+            key, FormControl(validators: value.map((e) => e.call).toList()));
       } else if (value is List<Object?>) {
         if (value.isEmpty) {
           return MapEntry(key, FormControl());
@@ -92,12 +97,13 @@ class FormBuilder {
           final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators.any((validator) => validator is! ValidatorFunction)) {
+              validators.any((validator) => (validator is! ValidatorFunction &&
+                  validator is! Validator))) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
 
-          if (defaultValue is ValidatorFunction) {
+          if (defaultValue is ValidatorFunction || defaultValue is Validator) {
             throw FormBuilderInvalidInitializationException(
                 'Expected first value in array to be default value of the control and not a validator.');
           }
