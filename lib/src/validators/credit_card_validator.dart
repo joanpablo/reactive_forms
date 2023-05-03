@@ -8,6 +8,8 @@ import 'package:reactive_forms/src/validators/number_validator.dart';
 /// A credit card validator that validates that the control's value is a valid
 /// credit card.
 class CreditCardValidator extends Validator<dynamic> {
+  const CreditCardValidator();
+
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = <String, dynamic>{ValidationMessage.creditCard: true};

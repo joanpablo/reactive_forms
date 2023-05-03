@@ -52,7 +52,7 @@ class Validators {
 
   /// Gets a validator that validates if the control's value is a valid
   /// credit card number.
-  static ValidatorFunction get creditCard => CreditCardValidator().validate;
+  static const creditCard = CreditCardValidator();
 
   /// Gets a validator that requires the control's value to be equals to
   /// argument [value].
