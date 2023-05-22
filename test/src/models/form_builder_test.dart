@@ -107,7 +107,7 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form.control('control') is FormControl<Object>, true,
+      expect(form.control('control') is FormControl<dynamic>, true,
           reason: 'control is not instance of FormControl<dynamic>');
       expect(form.control('control').validators.first, validator,
           reason: 'validator not set');

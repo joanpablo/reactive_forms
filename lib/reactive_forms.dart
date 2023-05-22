@@ -22,6 +22,7 @@ export 'src/models/form_control_collection.dart';
 export 'src/models/models.dart';
 export 'src/utils/control_extensions.dart';
 export 'src/utils/control_utils.dart';
+export 'src/validators/async_validator.dart';
 export 'src/validators/compare_option.dart';
 export 'src/validators/validation_message.dart';
 export 'src/validators/validator.dart';

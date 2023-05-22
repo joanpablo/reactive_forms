@@ -13,7 +13,7 @@ class BooleanObject {
       other is BooleanObject && name == other.name;
 
   @override
-  int get hashCode => hashValues(name, name);
+  int get hashCode => Object.hash(name, name);
 }
 
 final yes = BooleanObject('Yes');
@@ -23,7 +23,7 @@ class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
-          asyncValidators: [_uniqueEmail],
+          asyncValidators: [Validators.delegateAsync(_uniqueEmail)],
         ),
         'password': ['', Validators.required, Validators.minLength(8)],
         'passwordConfirmation': '',

@@ -4,13 +4,12 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// An interface implemented by classes that perform synchronous validation.
-abstract class Validator<T> {
-  const Validator();
+abstract class AsyncValidator<T> {
+  const AsyncValidator();
 
-  Map<String, dynamic>? validate(AbstractControl<T> control);
+  Future<Map<String, dynamic>?> validate(AbstractControl<T> control);
 
-  Map<String, dynamic>? call(AbstractControl<T> control) {
+  Future<Map<String, dynamic>?> call(AbstractControl<T> control) {
     return validate(control);
   }
 }

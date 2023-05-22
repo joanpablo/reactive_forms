@@ -1,3 +1,10 @@
+# 15.0.0
+
+## Breaking Changes
+
+- All validators have been changed to classes.
+- A new validator `DelegateValidator` has been introduced to be used with a custom validation function.
+
 # 14.3.0
 
 - Fix the inkwell ripple effect in the **ReactiveDropdownField**.

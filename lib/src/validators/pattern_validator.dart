@@ -13,8 +13,8 @@ class PatternValidator extends Validator<dynamic> {
   /// Constructs an instance of [PatternValidator].
   ///
   /// The [evaluator] argument must not be null.
-  PatternValidator(this.evaluator,
-      {this.validationMessage = ValidationMessage.pattern});
+  const PatternValidator(this.evaluator,
+      {this.validationMessage = ValidationMessage.pattern}) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
