@@ -4,7 +4,6 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/validators/any_validator.dart';
-import 'package:reactive_forms/src/validators/async_validator.dart';
 import 'package:reactive_forms/src/validators/compare_validator.dart';
 import 'package:reactive_forms/src/validators/compose_or_validator.dart';
 import 'package:reactive_forms/src/validators/compose_validator.dart';
@@ -37,7 +36,8 @@ class Validators {
   /// Gets a validator that delegates the validation to the external
   /// asynchronous [validator] function.
   static AsyncValidator<dynamic> delegateAsync(
-      AsyncValidatorFunction validator) => DelegateAsyncValidator(validator);
+          AsyncValidatorFunction validator) =>
+      DelegateAsyncValidator(validator);
 
   /// Gets a validator that requires the control have a non-empty value.
   static Validator<dynamic> get required => const RequiredValidator();

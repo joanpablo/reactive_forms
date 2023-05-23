@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
+import 'package:reactive_forms_example/samples/validators/unique_email_async_validator.dart';
 
 class BooleanObject {
   final String name;
@@ -23,7 +24,7 @@ class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
-          asyncValidators: [Validators.delegateAsync(_uniqueEmail)],
+          asyncValidators: [UniqueEmailAsyncValidator()],
         ),
         'password': ['', Validators.required, Validators.minLength(8)],
         'passwordConfirmation': '',
@@ -256,26 +257,4 @@ class ComplexSample extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Async validator in use emails example
-const inUseEmails = ['johndoe@email.com', 'john@email.com'];
-
-/// Async validator example that simulates a request to a server
-/// to validate if the email of the user is unique.
-Future<Map<String, dynamic>?> _uniqueEmail(
-    AbstractControl<dynamic> control) async {
-  final error = {'unique': false};
-
-  final emailAlreadyInUse = await Future.delayed(
-    const Duration(seconds: 5), // delay to simulate a time consuming operation
-    () => inUseEmails.contains(control.value.toString()),
-  );
-
-  if (emailAlreadyInUse) {
-    control.markAsTouched();
-    return error;
-  }
-
-  return null;
 }
