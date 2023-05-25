@@ -162,7 +162,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: a form with a field and async validator
         final asyncValidator =
-        Validators.delegateAsync((control) => Future.value(null));
+            Validators.delegateAsync((control) => Future.value(null));
 
         final form = FormGroup({
           'control': FormControl<String>(

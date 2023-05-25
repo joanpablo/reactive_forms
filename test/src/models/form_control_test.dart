@@ -366,8 +366,7 @@ void main() {
 
       // When: setting new async validators
       formControl.setAsyncValidators(
-        [Validators.delegateAsync((control) => Future.value(null))]
-      );
+          [Validators.delegateAsync((control) => Future.value(null))]);
 
       // Then: a new async validator is added
       expect(formControl.asyncValidators.length, 1);
