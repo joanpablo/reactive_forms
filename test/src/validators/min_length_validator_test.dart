@@ -15,6 +15,18 @@ void main() {
       expect(control.hasError(ValidationMessage.minLength), true);
     });
 
+    test('FormControl invalid if minLength invalid', () {
+      // Given: a invalid control
+      final control = FormControl<List<String>>(
+        value: ['Hello'],
+        validators: [Validators.minLength(6)],
+      );
+
+      // Expect: control is invalid
+      expect(control.invalid, true);
+      expect(control.hasError(ValidationMessage.minLength), true);
+    });
+
     test('FormControl valid if minLength valid', () {
       // Given: a valid control
       final control = FormControl(
