@@ -14,11 +14,11 @@ class CompareValidator extends Validator<dynamic> {
   ///
   /// The arguments [controlName], [compareControlName] and [compareOption]
   /// must not be null.
-  CompareValidator(
+  const CompareValidator(
     this.controlName,
     this.compareControlName,
     this.compareOption,
-  );
+  ) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

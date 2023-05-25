@@ -135,7 +135,7 @@ void main() {
         final form = FormGroup({
           'control': FormControl<String>(
             validators: [Validators.required],
-            asyncValidators: [failedAsyncValidator],
+            asyncValidators: [Validators.delegateAsync(failedAsyncValidator)],
             asyncValidatorsDebounceTime: 0,
           ),
         });
@@ -157,15 +157,13 @@ void main() {
       },
     );
 
-    Future<Map<String, dynamic>?> asyncValidator(
-        AbstractControl<dynamic> control) async {
-      return Future.value(null);
-    }
-
     testWidgets(
       'Async Validator change status to valid',
       (WidgetTester tester) async {
         // Given: a form with a field and async validator
+        final asyncValidator =
+            Validators.delegateAsync((control) => Future.value(null));
+
         final form = FormGroup({
           'control': FormControl<String>(
             validators: [Validators.required],

@@ -365,10 +365,8 @@ void main() {
       expect(formControl.asyncValidators.isEmpty, true);
 
       // When: setting new async validators
-      Future<Map<String, dynamic>?> asyncValidator(
-              AbstractControl<dynamic> control) =>
-          Future.value(null);
-      formControl.setAsyncValidators([asyncValidator]);
+      formControl.setAsyncValidators(
+          [Validators.delegateAsync((control) => Future.value(null))]);
 
       // Then: a new async validator is added
       expect(formControl.asyncValidators.length, 1);

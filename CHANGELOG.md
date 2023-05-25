@@ -1,3 +1,17 @@
+# 15.0.0
+
+## Breaking Changes
+
+- All validators have been changed to classes with `const` constructors.
+- The Asynchronous Validator is now a class from where any custom async validator can inherit.
+
+## Features
+
+- A new validator `Validators.delegate(...)` has been introduced to be used with a custom
+  validation function.
+- A new validator `Validators.delegateAsync(...)` has been introduced to be used with a custom
+  async validation functions.
+
 # 14.3.0
 
 - Fix the inkwell ripple effect in the **ReactiveDropdownField**.

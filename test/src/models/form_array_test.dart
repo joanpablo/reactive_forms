@@ -16,7 +16,7 @@ void main() {
         'selectedEmails': FormArray<bool>(
           [], // an empty array of controls
           validators: [
-            _emptyAddressee
+            Validators.delegate(_emptyAddressee),
           ], // validates that at least one email is selected
         ),
       });
@@ -50,7 +50,7 @@ void main() {
         'selectedEmails': FormArray<bool>(
           [], // an empty array of controls
           validators: [
-            _emptyAddressee
+            Validators.delegate(_emptyAddressee),
           ], // validates that at least one email is selected
         ),
       });
