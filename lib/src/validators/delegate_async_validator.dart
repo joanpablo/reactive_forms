@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/async_validator.dart';
 
 /// Signature of a function that receives a control and returns a Future
 /// that emits validation errors if present, otherwise null.
