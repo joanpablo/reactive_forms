@@ -12,7 +12,7 @@ class MinValidator<T> extends Validator<dynamic> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [min] must not be null.
-  MinValidator(this.min);
+  const MinValidator(this.min) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

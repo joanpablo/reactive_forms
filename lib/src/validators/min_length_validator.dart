@@ -12,7 +12,7 @@ class MinLengthValidator extends Validator<dynamic> {
   /// Constructs a [MinLengthValidator].
   ///
   /// The argument [minLength] argument must not be null.
-  MinLengthValidator(this.minLength);
+  const MinLengthValidator(this.minLength) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

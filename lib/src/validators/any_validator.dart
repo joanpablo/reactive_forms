@@ -15,7 +15,7 @@ class AnyValidator<T> extends Validator<dynamic> {
   /// Constructs an instance of the validator.
   ///
   /// The argument [test] must not be null.
-  AnyValidator(this.test);
+  const AnyValidator(this.test) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

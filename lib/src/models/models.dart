@@ -22,9 +22,9 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction> _validators = <ValidatorFunction>[];
-  final List<AsyncValidatorFunction> _asyncValidators =
-      <AsyncValidatorFunction>[];
+  final List<Validator<dynamic>> _validators = <Validator<dynamic>>[];
+  final List<AsyncValidator<dynamic>> _asyncValidators =
+      <AsyncValidator<dynamic>>[];
 
   StreamSubscription<Map<String, dynamic>?>? _asyncValidationSubscription;
   Map<String, dynamic> _errors = <String, dynamic>{};
@@ -47,8 +47,8 @@ abstract class AbstractControl<T> {
 
   /// Constructor of the [AbstractControl].
   AbstractControl({
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
@@ -89,8 +89,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<ValidatorFunction> get validators =>
-      List<ValidatorFunction>.unmodifiable(_validators);
+  List<Validator<dynamic>> get validators =>
+      List<Validator<dynamic>>.unmodifiable(_validators);
 
   /// Sets the synchronous [validators] that are active on this control. Calling
   /// this overwrites any existing sync validators.
@@ -111,7 +111,7 @@ abstract class AbstractControl<T> {
   /// This argument is only taking into account if [autoValidate] is equals to
   /// `true`.
   void setValidators(
-    List<ValidatorFunction> validators, {
+    List<Validator<dynamic>> validators, {
     bool autoValidate = false,
     bool updateParent = true,
     bool emitEvent = true,
@@ -137,8 +137,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<AsyncValidatorFunction> get asyncValidators =>
-      List<AsyncValidatorFunction>.unmodifiable(_asyncValidators);
+  List<AsyncValidator<dynamic>> get asyncValidators =>
+      List<AsyncValidator<dynamic>>.unmodifiable(_asyncValidators);
 
   /// Sets the async [validators] that are active on this control. Calling this
   /// overwrites any existing async validators.
@@ -159,7 +159,7 @@ abstract class AbstractControl<T> {
   /// This argument is only taking into account if [autoValidate] is equals to
   /// `true`.
   void setAsyncValidators(
-    List<AsyncValidatorFunction> validators, {
+    List<AsyncValidator<dynamic>> validators, {
     bool autoValidate = false,
     bool updateParent = true,
     bool emitEvent = true,
@@ -602,7 +602,7 @@ abstract class AbstractControl<T> {
   Map<String, dynamic> _runValidators() {
     final errors = <String, dynamic>{};
     for (final validator in validators) {
-      final error = validator(this);
+      final error = validator.validate(this);
       if (error != null) {
         errors.addAll(error);
       }
@@ -676,8 +676,9 @@ abstract class AbstractControl<T> {
     _debounceTimer = Timer(
       Duration(milliseconds: _asyncValidatorsDebounceTime),
       () {
-        final validatorsStream = Stream.fromFutures(
-            asyncValidators.map((validator) => validator(this)).toList());
+        final validatorsStream = Stream.fromFutures(asyncValidators
+            .map((validator) => validator.validate(this))
+            .toList());
 
         final asyncValidationErrors = <String, dynamic>{};
         _asyncValidationSubscription = validatorsStream.listen(
@@ -808,8 +809,8 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T? value,
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool touched = false,
     bool disabled = false,
@@ -1057,8 +1058,8 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// See also [AbstractControl.validators]
   FormGroup(
     Map<String, AbstractControl<dynamic>> controls, {
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
   })  : assert(
@@ -1563,8 +1564,8 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
   }) : super(

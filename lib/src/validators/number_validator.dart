@@ -9,6 +9,8 @@ class NumberValidator extends Validator<dynamic> {
   /// The regex expression of a numeric string value.
   static final RegExp numberRegex = RegExp(r'^-?[0-9]+$');
 
+  const NumberValidator() : super();
+
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     return (control.value == null) ||
