@@ -88,7 +88,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^14.3.0
+  reactive_forms: ^15.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -1030,7 +1030,7 @@ set name(String newName) {
 > form.markAllAsTouched();
 > ```
 
-### Overriding Reactive Widgets _show errors_ behavior
+### Overriding Reactive Widgets show errors behavior
 
 The second way to customize when to show error messages is to override the method **showErrors** in reactive widgets.
 
