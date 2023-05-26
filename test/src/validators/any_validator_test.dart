@@ -3,6 +3,17 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 void main() {
   group('Any Validator tests', () {
+    test('Control value is null', () {
+      final array = FormControl<List<String>>(
+        value: null,
+        validators: [
+          Validators.any<List<String>?>((value) => value?.isNotEmpty ?? false)
+        ],
+      );
+
+      expect(array.valid, false);
+    });
+
     test('At least one control in array has no empty value', () {
       // Given: an array of String with one not empty control and a validator
       final array = FormArray<String>([

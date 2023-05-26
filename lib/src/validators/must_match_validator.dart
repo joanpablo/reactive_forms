@@ -12,8 +12,9 @@ class MustMatchValidator extends Validator<dynamic> {
   final bool markAsDirty;
 
   /// Constructs an instance of [MustMatchValidator]
-  MustMatchValidator(
-      this.controlName, this.matchingControlName, this.markAsDirty);
+  const MustMatchValidator(
+      this.controlName, this.matchingControlName, this.markAsDirty)
+      : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
