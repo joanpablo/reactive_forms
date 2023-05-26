@@ -65,6 +65,7 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
               focusNode: field.focusNode,
               shape: shape,
               side: side,
+              isError: !field.control.valid,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);
