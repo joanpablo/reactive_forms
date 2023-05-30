@@ -4,14 +4,14 @@
 
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// An abstract class extended by classes that perform synchronous validation.
-abstract class Validator<T> {
-  const Validator();
+/// An abstract class extended by classes that perform asynchronous validation.
+abstract class AsyncValidator<T> {
+  const AsyncValidator();
 
   /// Validates the [control].
-  Map<String, dynamic>? validate(AbstractControl<T> control);
+  Future<Map<String, dynamic>?> validate(AbstractControl<T> control);
 
-  Map<String, dynamic>? call(AbstractControl<T> control) {
+  Future<Map<String, dynamic>?> call(AbstractControl<T> control) {
     return validate(control);
   }
 }

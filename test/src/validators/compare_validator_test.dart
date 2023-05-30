@@ -3,6 +3,20 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 void main() {
   group('Compare Validator Tests', () {
+    test('Lower compare in non FormGroup control', () {
+      final control = FormControl<String>(
+        value: null,
+        validators: [
+          Validators.compare('amount', 'balance', CompareOption.lower),
+        ],
+      );
+
+      expect(control.valid, false);
+      expect(control.errors, {
+        ValidationMessage.compare: true,
+      });
+    });
+
     test('Lower compare', () {
       // Given: a valid form
       final form = fb.group({

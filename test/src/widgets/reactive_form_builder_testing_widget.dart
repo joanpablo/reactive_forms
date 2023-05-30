@@ -3,7 +3,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveFormBuilderTestingWidget<T> extends StatelessWidget {
   final FormGroup form;
-  final ValidationMessagesFunction<T>? validationMessages;
+  final Map<String, ValidationMessageFunction>? validationMessages;
   final Map<String, String> bindings;
 
   const ReactiveFormBuilderTestingWidget({

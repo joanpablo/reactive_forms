@@ -6,11 +6,13 @@ const reactiveRadioListTileTestingName = 'radio';
 class ReactiveRadioListTileTestingWidget extends StatelessWidget {
   final FormGroup form;
   final FocusNode? focusNode;
+  final ReactiveFormFieldCallback<bool>? onChanged;
 
   const ReactiveRadioListTileTestingWidget({
     Key? key,
     required this.form,
     this.focusNode,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -19,10 +21,11 @@ class ReactiveRadioListTileTestingWidget extends StatelessWidget {
       home: Material(
         child: ReactiveForm(
           formGroup: form,
-          child: ReactiveRadioListTile(
+          child: ReactiveRadioListTile<bool>(
             formControlName: reactiveRadioListTileTestingName,
             value: true,
             focusNode: focusNode,
+            onChanged: onChanged,
           ),
         ),
       ),

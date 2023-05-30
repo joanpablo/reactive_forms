@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownButton].
-class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
+class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -25,12 +25,12 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     Key? key,
     String? formControlName,
     FormControl<T>? formControl,
+    FocusNode? focusNode,
     required List<DropdownMenuItem<T>> items,
-    ValidationMessagesFunction<T>? validationMessages,
-    ShowErrorsFunction? showErrors,
+    Map<String, ValidationMessageFunction>? validationMessages,
+    ShowErrorsFunction<T>? showErrors,
     DropdownButtonBuilder? selectedItemBuilder,
     Widget? hint,
-    VoidCallback? onTap,
     InputDecoration decoration = const InputDecoration(),
     Widget? disabledHint,
     int elevation = 8,
@@ -43,15 +43,15 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
     bool isExpanded = false,
     bool readOnly = false,
     double? itemHeight,
-    ValueChanged<T?>? onChanged,
     Color? dropdownColor,
     Color? focusColor,
-    Widget? underline,
     bool autofocus = false,
     double? menuMaxHeight,
     bool? enableFeedback,
     AlignmentGeometry alignment = AlignmentDirectional.centerStart,
     BorderRadius? borderRadius,
+    ReactiveFormFieldCallback<T>? onTap,
+    ReactiveFormFieldCallback<T>? onChanged,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
           key: key,
@@ -59,9 +59,8 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
           formControlName: formControlName,
           validationMessages: validationMessages,
           showErrors: showErrors,
+          focusNode: focusNode,
           builder: (ReactiveFormFieldState<T, T> field) {
-            final state = field as _ReactiveDropdownFieldState<T>;
-
             final effectiveDecoration = decoration.applyDefaults(
               Theme.of(field.context).inputDecorationTheme,
             );
@@ -85,72 +84,41 @@ class ReactiveDropdownField<T> extends ReactiveFormField<T, T> {
               }
             }
 
-            return InputDecorator(
+            return DropdownButtonFormField<T>(
+              value: effectiveValue,
               decoration: effectiveDecoration.copyWith(
                 errorText: field.errorText,
                 enabled: !isDisabled,
               ),
-              isEmpty: effectiveValue == null,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<T>(
-                  value: effectiveValue,
-                  items: items,
-                  selectedItemBuilder: selectedItemBuilder,
-                  hint: hint,
-                  onChanged: isDisabled
-                      ? null
-                      : (T? value) => state._onChanged(value, onChanged),
-                  onTap: onTap,
-                  disabledHint: effectiveDisabledHint,
-                  elevation: elevation,
-                  style: style,
-                  icon: icon,
-                  iconDisabledColor: iconDisabledColor,
-                  iconEnabledColor: iconEnabledColor,
-                  iconSize: iconSize,
-                  isDense: isDense,
-                  isExpanded: isExpanded,
-                  itemHeight: itemHeight,
-                  focusNode: state._focusController.focusNode,
-                  dropdownColor: dropdownColor,
-                  focusColor: focusColor,
-                  underline: underline,
-                  autofocus: autofocus,
-                  menuMaxHeight: menuMaxHeight,
-                  enableFeedback: enableFeedback,
-                  alignment: alignment,
-                  borderRadius: borderRadius,
-                ),
-              ),
+              items: items,
+              selectedItemBuilder: selectedItemBuilder,
+              hint: hint,
+              disabledHint: effectiveDisabledHint,
+              elevation: elevation,
+              style: style,
+              icon: icon,
+              iconDisabledColor: iconDisabledColor,
+              iconEnabledColor: iconEnabledColor,
+              iconSize: iconSize,
+              isDense: isDense,
+              isExpanded: isExpanded,
+              itemHeight: itemHeight,
+              focusNode: field.focusNode,
+              dropdownColor: dropdownColor,
+              focusColor: focusColor,
+              autofocus: autofocus,
+              menuMaxHeight: menuMaxHeight,
+              enableFeedback: enableFeedback,
+              alignment: alignment,
+              borderRadius: borderRadius,
+              onTap: onTap != null ? () => onTap(field.control) : null,
+              onChanged: isDisabled
+                  ? null
+                  : (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    },
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<T, T> createState() =>
-      _ReactiveDropdownFieldState<T>();
-}
-
-class _ReactiveDropdownFieldState<T> extends ReactiveFormFieldState<T, T> {
-  final _focusController = FocusController();
-
-  @override
-  void subscribeControl() {
-    control.registerFocusController(_focusController);
-    super.subscribeControl();
-  }
-
-  @override
-  void dispose() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-    super.dispose();
-  }
-
-  void _onChanged(T? value, ValueChanged<T?>? callBack) {
-    didChange(value);
-    if (callBack != null) {
-      callBack(value);
-    }
-  }
 }

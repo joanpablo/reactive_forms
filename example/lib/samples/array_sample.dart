@@ -4,13 +4,18 @@ import 'package:reactive_forms_example/sample_screen.dart';
 
 class ArraySample extends StatefulWidget {
   @override
-  _ArraySampleState createState() => _ArraySampleState();
+  State<ArraySample> createState() => _ArraySampleState();
 }
 
 class _ArraySampleState extends State<ArraySample> {
   final contacts = ['john@email.com', 'susan@email.com', 'caroline@email.com'];
   final form = FormGroup({
-    'selectedContacts': FormArray<bool>([], validators: [_emptyAddressee]),
+    'selectedContacts': FormArray<bool>(
+      [],
+      validators: [
+        Validators.delegate(_emptyAddressee),
+      ],
+    ),
   });
 
   FormArray<bool> get selectedContacts =>

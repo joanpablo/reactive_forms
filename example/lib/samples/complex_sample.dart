@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_example/progress_indicator.dart';
 import 'package:reactive_forms_example/sample_screen.dart';
+import 'package:reactive_forms_example/samples/validators/unique_email_async_validator.dart';
 
 class BooleanObject {
   final String name;
@@ -13,7 +14,7 @@ class BooleanObject {
       other is BooleanObject && name == other.name;
 
   @override
-  int get hashCode => hashValues(name, name);
+  int get hashCode => Object.hash(name, name);
 }
 
 final yes = BooleanObject('Yes');
@@ -23,12 +24,15 @@ class ComplexSample extends StatelessWidget {
   FormGroup buildForm() => fb.group(<String, Object>{
         'email': FormControl<String>(
           validators: [Validators.required, Validators.email],
-          asyncValidators: [_uniqueEmail],
+          asyncValidators: [UniqueEmailAsyncValidator()],
         ),
         'password': ['', Validators.required, Validators.minLength(8)],
         'passwordConfirmation': '',
         'rememberMe': false,
-        'progress': fb.control<double>(50.0, [Validators.min(50.0)]),
+        'progress': fb.control<double>(50.0, [
+          Validators.min(50.0),
+          Validators.max(90.0),
+        ]),
         'dateTime': DateTime.now(),
         'time': TimeOfDay.now(),
         'booleanObject':
@@ -48,13 +52,14 @@ class ComplexSample extends StatelessWidget {
             children: [
               ReactiveTextField<String>(
                 formControlName: 'email',
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The email must not be empty',
-                  ValidationMessage.email:
+                validationMessages: {
+                  ValidationMessage.required: (_) =>
+                      'The email must not be empty',
+                  ValidationMessage.email: (_) =>
                       'The email value must be a valid email',
-                  'unique': 'This email is already in use',
+                  'unique': (_) => 'This email is already in use',
                 },
-                onSubmitted: () => form.focus('password'),
+                onSubmitted: (_) => form.focus('password'),
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -71,12 +76,13 @@ class ComplexSample extends StatelessWidget {
               ReactiveTextField<String>(
                 formControlName: 'password',
                 obscureText: true,
-                validationMessages: (control) => {
-                  ValidationMessage.required: 'The password must not be empty',
-                  ValidationMessage.minLength:
-                      'The password must be at least 8 characters',
+                validationMessages: {
+                  ValidationMessage.required: (_) =>
+                      'The password must not be empty',
+                  ValidationMessage.minLength: (error) =>
+                      'The password must be at least ${(error as Map)['requiredLength']} characters long',
                 },
-                onSubmitted: () => form.focus('passwordConfirmation'),
+                onSubmitted: (_) => form.focus('passwordConfirmation'),
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(labelText: 'Password'),
               ),
@@ -86,11 +92,11 @@ class ComplexSample extends StatelessWidget {
                 decoration:
                     const InputDecoration(labelText: 'Confirm Password'),
                 obscureText: true,
-                validationMessages: (control) => {
-                  ValidationMessage.mustMatch:
+                validationMessages: {
+                  ValidationMessage.mustMatch: (_) =>
                       'Password confirmation must match',
                 },
-                onSubmitted: () => form.focus('rememberMe'),
+                onSubmitted: (_) => form.focus('rememberMe'),
                 textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 24.0),
@@ -201,9 +207,11 @@ class ComplexSample extends StatelessWidget {
                 formControlName: 'progress',
                 keyboardType: TextInputType.number,
                 showErrors: (control) => control.invalid,
-                validationMessages: (control) => {
-                  ValidationMessage.min:
-                      'A value lower than 50.00 is not accepted',
+                validationMessages: {
+                  ValidationMessage.max: (error) =>
+                      'A value greater than ${(error as Map)['max']} is not accepted',
+                  ValidationMessage.min: (error) =>
+                      'A value lower than ${(error as Map)['min']} is not accepted',
                 },
               ),
               const SizedBox(height: 24.0),
@@ -249,26 +257,4 @@ class ComplexSample extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Async validator in use emails example
-const inUseEmails = ['johndoe@email.com', 'john@email.com'];
-
-/// Async validator example that simulates a request to a server
-/// to validate if the email of the user is unique.
-Future<Map<String, dynamic>?> _uniqueEmail(
-    AbstractControl<dynamic> control) async {
-  final error = {'unique': false};
-
-  final emailAlreadyInUse = await Future.delayed(
-    const Duration(seconds: 5), // delay to simulate a time consuming operation
-    () => inUseEmails.contains(control.value.toString()),
-  );
-
-  if (emailAlreadyInUse) {
-    control.markAsTouched();
-    return error;
-  }
-
-  return null;
 }

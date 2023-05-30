@@ -4,7 +4,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveDropdownTestingWidget extends StatelessWidget {
   final FormGroup form;
   final List<String> items;
-  final ValueChanged<String?>? onChanged;
+  final ReactiveFormFieldCallback<String>? onChanged;
+  final ReactiveFormFieldCallback<String>? onTap;
   final bool readOnly;
   final Widget? disabledHint;
   final DropdownButtonBuilder? selectedItemBuilder;
@@ -14,6 +15,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
     required this.form,
     required this.items,
     this.onChanged,
+    this.onTap,
     this.readOnly = false,
     this.disabledHint,
     this.selectedItemBuilder,
@@ -28,6 +30,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
           child: ReactiveDropdownField<String>(
             formControlName: 'dropdown',
             onChanged: onChanged,
+            onTap: onTap,
             readOnly: readOnly,
             disabledHint: disabledHint,
             selectedItemBuilder: selectedItemBuilder,

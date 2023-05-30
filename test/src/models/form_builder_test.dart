@@ -107,7 +107,7 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form.control('control') is FormControl<Object>, true,
+      expect(form.control('control') is FormControl<dynamic>, true,
           reason: 'control is not instance of FormControl<dynamic>');
       expect(form.control('control').validators.first, validator,
           reason: 'validator not set');
@@ -131,6 +131,20 @@ void main() {
           reason: 'not set required validator');
       expect(form.control('control').validators[1], emailValidator,
           reason: 'not set email validator');
+    });
+
+    test('Build a group with multiple validators and null validator', () {
+      // Given: a form group builder creation with multiple validators
+      // and last validator as null
+      void createGroup() => fb.group({
+            'control': [Validators.required, Validators.email, null],
+          });
+
+      // Expect: an invalid initialization is thrown
+      expect(
+        createGroup,
+        throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()),
+      );
     });
 
     test('Build a group with multiple validators and implicit type', () {
@@ -218,7 +232,7 @@ void main() {
             'control': [Validators.required, ''],
           });
 
-      // Expect an exception
+      // Expect: an exception
       expect(createGroup,
           throwsA(isInstanceOf<FormBuilderInvalidInitializationException>()));
     });

@@ -11,7 +11,7 @@ class ContainsValidator<T> extends Validator<dynamic> {
   /// Constructs the instance of the validator.
   ///
   /// The argument [values] must not be null.
-  ContainsValidator(this.values);
+  const ContainsValidator(this.values) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

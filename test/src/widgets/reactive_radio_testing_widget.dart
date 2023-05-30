@@ -6,11 +6,13 @@ const reactiveRadioTestingName = 'radio';
 class ReactiveRadioTestingWidget extends StatelessWidget {
   final FormGroup form;
   final FocusNode? focusNode;
+  final ReactiveFormFieldCallback<bool>? onChanged;
 
   const ReactiveRadioTestingWidget({
     Key? key,
     required this.form,
     this.focusNode,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class ReactiveRadioTestingWidget extends StatelessWidget {
             formControlName: reactiveRadioTestingName,
             value: true,
             focusNode: focusNode,
+            onChanged: onChanged,
           ),
         ),
       ),

@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [Checkbox] class
 /// and [Checkbox], the constructor.
-class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
+class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
@@ -41,19 +41,16 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
     FocusNode? focusNode,
     OutlinedBorder? shape,
     BorderSide? side,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveCheckboxState<bool, bool>;
-
-            state._setFocusNode(focusNode);
-
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
               tristate: tristate,
-              onChanged: field.control.enabled ? field.didChange : null,
               mouseCursor: mouseCursor,
               activeColor: activeColor,
               checkColor: checkColor,
@@ -65,51 +62,16 @@ class ReactiveCheckbox extends ReactiveFormField<bool, bool> {
               fillColor: fillColor,
               overlayColor: overlayColor,
               splashRadius: splashRadius,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               shape: shape,
               side: side,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<bool, bool> createState() =>
-      _ReactiveCheckboxState<bool, bool>();
-}
-
-class _ReactiveCheckboxState<T, V> extends ReactiveFormFieldState<T, V> {
-  FocusNode? _focusNode;
-  late FocusController _focusController;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
-  }
 }

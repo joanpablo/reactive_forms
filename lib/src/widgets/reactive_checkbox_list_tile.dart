@@ -18,7 +18,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// For documentation about the various parameters, see the [CheckboxListTile]
 /// class and [CheckboxListTile], the constructor.
-class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
+class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
   /// The [formControlName] arguments must not be null.
@@ -48,18 +48,15 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
     bool? enableFeedback,
     OutlinedBorder? checkboxShape,
     BorderSide? side,
+    ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
+          focusNode: focusNode,
           builder: (field) {
-            final state = field as _ReactiveCheckboxListTileState<bool, bool>;
-
-            state._setFocusNode(focusNode);
-
             return CheckboxListTile(
               value: tristate ? field.value : field.value ?? false,
-              onChanged: field.control.enabled ? field.didChange : null,
               activeColor: activeColor,
               checkColor: checkColor,
               title: title,
@@ -76,53 +73,17 @@ class ReactiveCheckboxListTile extends ReactiveFormField<bool, bool> {
               shape: shape,
               selected: selected,
               visualDensity: visualDensity,
-              focusNode: state.focusNode,
+              focusNode: field.focusNode,
               enableFeedback: enableFeedback,
               checkboxShape: checkboxShape,
               side: side,
+              onChanged: field.control.enabled
+                  ? (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    }
+                  : null,
             );
           },
         );
-
-  @override
-  ReactiveFormFieldState<bool, bool> createState() =>
-      _ReactiveCheckboxListTileState<bool, bool>();
-}
-
-class _ReactiveCheckboxListTileState<T, V>
-    extends ReactiveFormFieldState<T, V> {
-  FocusNode? _focusNode;
-  late FocusController _focusController;
-
-  FocusNode get focusNode => _focusNode ?? _focusController.focusNode;
-
-  @override
-  void subscribeControl() {
-    _registerFocusController(FocusController());
-    super.subscribeControl();
-  }
-
-  @override
-  void unsubscribeControl() {
-    _unregisterFocusController();
-    super.unsubscribeControl();
-  }
-
-  void _registerFocusController(FocusController focusController) {
-    _focusController = focusController;
-    control.registerFocusController(focusController);
-  }
-
-  void _unregisterFocusController() {
-    control.unregisterFocusController(_focusController);
-    _focusController.dispose();
-  }
-
-  void _setFocusNode(FocusNode? focusNode) {
-    if (_focusNode != focusNode) {
-      _focusNode = focusNode;
-      _unregisterFocusController();
-      _registerFocusController(FocusController(focusNode: _focusNode));
-    }
-  }
 }

@@ -215,8 +215,8 @@ void main() {
         // And: a widget that is bind to the form with the custom message
         await tester.pumpWidget(ReactiveTextFieldTestingWidget<String>(
           form: form,
-          validationMessages: (control) => {
-            ValidationMessage.required: customMessage,
+          validationMessages: {
+            ValidationMessage.required: (_) => customMessage,
           },
         ));
 
@@ -388,14 +388,15 @@ void main() {
         // Given: a form with custom validator
         var isControlDirty = false;
 
-        Map<String, dynamic>? customValidator(
-            AbstractControl<dynamic> control) {
+        Map<String, dynamic>? validator(AbstractControl<dynamic> control) {
           isControlDirty = control.dirty;
           return null;
         }
 
         final form = FormGroup({
-          'name': FormControl<String>(validators: [customValidator]),
+          'name': FormControl<String>(
+            validators: [Validators.delegate(validator)],
+          ),
         });
 
         // And: a widget that is bind to the form
@@ -599,6 +600,168 @@ void main() {
         // Then: the reactive text field updates its value with the new name
         final textField = tester.firstWidget<TextField>(find.byType(TextField));
         expect(textField.controller?.text, '35');
+      },
+    );
+
+    testWidgets(
+      'When FormControl value changes onChanged callback is executed',
+      (WidgetTester tester) async {
+        // Given: A group with an empty field 'name' is created
+        final form = FormGroup({
+          'name': FormControl<String>(),
+        });
+
+        // And: a widget that is bind to the form
+        var callbackCalled = false;
+        FormControl<String>? callbackArg;
+
+        await tester.pumpWidget(
+          ReactiveTextFieldTestingWidget<String>(
+            form: form,
+            onChanged: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // Expect: onChanged is not called
+        expect(callbackCalled, false);
+
+        // When: change the user change the value of the text field
+        final textValue = 'John';
+        final textField = tester.firstWidget<TextField>(find.byType(TextField));
+        textField.onChanged!(textValue);
+        await tester.pump();
+
+        // Then: callback on changed called
+        expect(callbackCalled, true);
+
+        // And: callback argument is the control
+        expect(callbackArg, form.control('name'));
+
+        // And: control has the right value
+        expect(form.control('name').value, textValue);
+      },
+    );
+
+    testWidgets(
+      'Test the onTab callback is called',
+      (WidgetTester tester) async {
+        // Given: A group with an empty field 'name' is created
+        final form = FormGroup({'name': FormControl<String>()});
+
+        // And: a widget that is bind to the form
+        var callbackCalled = false;
+        FormControl<String>? callbackArg;
+
+        await tester.pumpWidget(
+          ReactiveTextFieldTestingWidget<String>(
+            form: form,
+            onTap: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // Expect: onTap is not called
+        expect(callbackCalled, false);
+
+        // When: the user execute on tab
+        final textField = tester.firstWidget<TextField>(find.byType(TextField));
+        textField.onTap!();
+        await tester.pump();
+
+        // Then: on tab callback called
+        expect(callbackCalled, true);
+
+        // And: callback argument is the control
+        expect(
+          callbackArg,
+          form.control('name'),
+          reason: 'onTap callback not called',
+        );
+      },
+    );
+
+    testWidgets(
+      'Test the onSubmitted callback is called',
+      (WidgetTester tester) async {
+        // Given: A group with an empty field 'name' is created
+        final form = FormGroup({'name': FormControl<String>()});
+
+        // And: a widget that is bind to the form
+        var callbackCalled = false;
+        FormControl<String>? callbackArg;
+
+        await tester.pumpWidget(
+          ReactiveTextFieldTestingWidget<String>(
+            form: form,
+            onSubmitted: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // Expect: onSubmitted is not called
+        expect(callbackCalled, false);
+
+        // When: the user execute on onSubmitted
+        final textField = tester.firstWidget<TextField>(find.byType(TextField));
+        textField.onSubmitted!('some value');
+        await tester.pump();
+
+        // Then: onSubmitted callback called
+        expect(callbackCalled, true);
+
+        // And: callback argument is the control
+        expect(
+          callbackArg,
+          form.control('name'),
+          reason: 'onSubmitted callback not called',
+        );
+      },
+    );
+
+    testWidgets(
+      'Test the onEditingComplete callback is called',
+      (WidgetTester tester) async {
+        // Given: A group with an empty field 'name' is created
+        final form = FormGroup({'name': FormControl<String>()});
+
+        // And: a widget that is bind to the form
+        var callbackCalled = false;
+        FormControl<String>? callbackArg;
+
+        await tester.pumpWidget(
+          ReactiveTextFieldTestingWidget<String>(
+            form: form,
+            onEditingComplete: (control) {
+              callbackCalled = true;
+              callbackArg = control;
+            },
+          ),
+        );
+
+        // Expect: onEditingComplete is not called
+        expect(callbackCalled, false);
+
+        // When: the user execute on onEditingComplete
+        final textField = tester.firstWidget<TextField>(find.byType(TextField));
+        textField.onEditingComplete!();
+        await tester.pump();
+
+        // Then: onEditingComplete callback called
+        expect(callbackCalled, true);
+
+        // And: callback argument is the control
+        expect(
+          callbackArg,
+          form.control('name'),
+          reason: 'onEditingComplete callback not called',
+        );
       },
     );
   });
