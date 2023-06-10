@@ -23,6 +23,7 @@ import 'package:reactive_forms/src/validators/pattern/default_pattern_evaluator.
 import 'package:reactive_forms/src/validators/pattern/pattern_evaluator.dart';
 import 'package:reactive_forms/src/validators/pattern/regex_pattern_evaluator.dart';
 import 'package:reactive_forms/src/validators/pattern_validator.dart';
+import 'package:reactive_forms/src/validators/required_non_empty_validator.dart';
 import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Provides a set of built-in validators that can be used by form controls,
@@ -39,8 +40,15 @@ class Validators {
           AsyncValidatorFunction validator) =>
       DelegateAsyncValidator(validator);
 
-  /// Gets a validator that requires the control have a non-empty value.
+  /// Gets a validator that requires the control's value to not be null or
+  /// blank string.
   static Validator<dynamic> get required => const RequiredValidator();
+
+  /// Gets a validator that requires the control's value be non-empty.
+  /// This validator is commonly used for fields that are both required and
+  /// should have a non-empty value.
+  static Validator<dynamic> get requiredNonEmpty =>
+      const RequiredNonEmptyValidator();
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.

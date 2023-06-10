@@ -20,6 +20,9 @@ class ValidationMessage {
   /// Key text for required validation message.
   static const String required = 'required';
 
+  /// Key text for `requiredNonEmpty` validation message.
+  static const String requiredNonEmpty = 'requiredNonEmpty';
+
   /// Key text for pattern validation message.
   static const String pattern = 'pattern';
 

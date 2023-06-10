@@ -180,6 +180,7 @@ There are common predefined validators, but you can implement custom validators 
 #### FormControl
 
 - Validators.required
+- Validators.requiredNonEmpty
 - Validators.requiredTrue
 - Validators.email
 - Validators.number
