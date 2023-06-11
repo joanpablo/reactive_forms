@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's value to be greater than or equal
 /// to a provided value.
-class MinValidator<T> extends Validator<dynamic> {
+class MinValidator<T> extends Validator<T> {
   final T min;
 
   /// Constructs the instance of the validator.
@@ -15,22 +15,25 @@ class MinValidator<T> extends Validator<dynamic> {
   const MinValidator(this.min) : super();
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<T> control) {
+    final value = control.value;
+
     final error = {
       ValidationMessage.min: <String, dynamic>{
         'min': min,
-        'actual': control.value,
+        'actual': value,
       },
     };
 
-    if (control.value == null) {
+    if (value == null) {
       return error;
     }
 
-    assert(control.value is Comparable<dynamic>,
+    assert(value is Comparable<dynamic>,
         'The MinValidator validator is expecting a control of type `Comparable` but received a control of type ${control.value.runtimeType}');
 
-    final comparableValue = control.value as Comparable<dynamic>;
+    final comparableValue = value as Comparable<dynamic>;
+
     return comparableValue.compareTo(min) >= 0 ? null : error;
   }
 }

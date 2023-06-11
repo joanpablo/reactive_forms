@@ -9,7 +9,7 @@ typedef AnyValidatorFunctionTest<T> = bool Function(T value);
 
 /// Represents a validator that requires any element of the control's iterable
 /// value satisfies [test].
-class AnyValidator<T> extends Validator<dynamic> {
+class AnyValidator<T> extends Validator<Iterable<T>> {
   final AnyValidatorFunctionTest<T> test;
 
   /// Constructs an instance of the validator.
@@ -18,17 +18,13 @@ class AnyValidator<T> extends Validator<dynamic> {
   const AnyValidator(this.test) : super();
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    if (control.value == null) {
+  Map<String, dynamic>? validate(AbstractControl<Iterable<T>> control) {
+    final value = control.value;
+    if (value == null) {
       return <String, dynamic>{ValidationMessage.any: true};
     }
 
-    assert(control.value is Iterable<T>,
-        '''Expected the control value to be of type ${(Iterable<T>).runtimeType}
-        but found type ${control.value.runtimeType.toString()}.''');
-
-    final iterable = control.value as Iterable<T>;
-    return iterable.any(test)
+    return value.any(test)
         ? null
         : <String, dynamic>{ValidationMessage.any: true};
   }

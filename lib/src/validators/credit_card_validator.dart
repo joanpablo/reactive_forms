@@ -3,15 +3,14 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/number_validator.dart';
 
 /// A credit card validator that validates that the control's value is a valid
 /// credit card.
-class CreditCardValidator extends Validator<dynamic> {
+class CreditCardValidator<T> extends Validator<T> {
   const CreditCardValidator() : super();
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<T> control) {
     final error = <String, dynamic>{ValidationMessage.creditCard: true};
     // error if value is not a String
     if (control.value != null && control.value is! String) {

@@ -5,7 +5,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's array contains all provided values.
-class ContainsValidator<T> extends Validator<dynamic> {
+class ContainsValidator<T> extends Validator<Iterable<T>> {
   final List<T> values;
 
   /// Constructs the instance of the validator.
@@ -14,15 +14,11 @@ class ContainsValidator<T> extends Validator<dynamic> {
   const ContainsValidator(this.values) : super();
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    assert(
-        control is AbstractControl<Iterable<T>> ||
-            control is AbstractControl<Iterable<T?>>,
-        'Expected a control of type AbstractControl<Iterable<$T>> or AbstractControl<Iterable<$T?>>');
+  Map<String, dynamic>? validate(AbstractControl<Iterable<T>> control) {
+    final value = control.value;
 
-    final iterableControl = control as AbstractControl<Iterable<dynamic>>;
-    return iterableControl.value != null &&
-            values.every(iterableControl.value!.contains)
+    return value != null &&
+            values.every(value.contains)
         ? null
         : <String, dynamic>{ValidationMessage.contains: true};
   }

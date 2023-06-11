@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that validates whether the value meets a minimum length
 /// requirement.
-class MinLengthValidator extends Validator<dynamic> {
+class MinLengthValidator<T> extends Validator<T> {
   final int minLength;
 
   /// Constructs a [MinLengthValidator].

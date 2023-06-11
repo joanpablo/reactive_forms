@@ -7,7 +7,7 @@ void main() {
       final array = FormControl<List<String>>(
         value: null,
         validators: [
-          Validators.any<List<String>?>((value) => value?.isNotEmpty ?? false)
+          Validators.any<String?>((value) => value?.isNotEmpty ?? false)
         ],
       );
 

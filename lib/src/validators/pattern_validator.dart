@@ -3,10 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/pattern/pattern_evaluator.dart';
 
 /// Validator that requires the control's value to match a regex pattern.
-class PatternValidator extends Validator<dynamic> {
+class PatternValidator<T> extends Validator<T> {
   final PatternEvaluator evaluator;
   final String validationMessage;
 

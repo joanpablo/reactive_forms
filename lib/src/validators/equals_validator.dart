@@ -5,7 +5,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Validator that requires the control's value to be equals to provided [value].
-class EqualsValidator<T> extends Validator<dynamic> {
+class EqualsValidator<T> extends Validator<T> {
   final T value;
   final String validationMessage;
 
@@ -22,7 +22,7 @@ class EqualsValidator<T> extends Validator<dynamic> {
   }) : super();
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+  Map<String, dynamic>? validate(AbstractControl<T> control) {
     return control.value == value
         ? null
         : <String, dynamic>{
