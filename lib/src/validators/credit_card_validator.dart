@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/number_validator.dart';
 
 /// A credit card validator that validates that the control's value is a valid
 /// credit card.

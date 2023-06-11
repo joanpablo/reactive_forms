@@ -3,27 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/any_validator.dart';
-import 'package:reactive_forms/src/validators/compare_validator.dart';
-import 'package:reactive_forms/src/validators/compose_or_validator.dart';
-import 'package:reactive_forms/src/validators/compose_validator.dart';
-import 'package:reactive_forms/src/validators/contains_validator.dart';
-import 'package:reactive_forms/src/validators/credit_card_validator.dart';
-import 'package:reactive_forms/src/validators/delegate_async_validator.dart';
-import 'package:reactive_forms/src/validators/delegate_validator.dart';
-import 'package:reactive_forms/src/validators/email_validator.dart';
-import 'package:reactive_forms/src/validators/equals_validator.dart';
-import 'package:reactive_forms/src/validators/max_length_validator.dart';
-import 'package:reactive_forms/src/validators/max_validator.dart';
-import 'package:reactive_forms/src/validators/min_length_validator.dart';
-import 'package:reactive_forms/src/validators/min_validator.dart';
-import 'package:reactive_forms/src/validators/must_match_validator.dart';
-import 'package:reactive_forms/src/validators/number_validator.dart';
-import 'package:reactive_forms/src/validators/pattern/default_pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern/pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern/regex_pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern_validator.dart';
-import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Provides a set of built-in validators that can be used by form controls,
 /// form groups, and form arrays.
@@ -40,25 +19,25 @@ class Validators {
       DelegateAsyncValidator(validator);
 
   /// Gets a validator that requires the control have a non-empty value.
-  static Validator<dynamic> get required => const RequiredValidator();
+  static const Validator<dynamic> required = RequiredValidator();
 
   /// Gets a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
-  static Validator<dynamic> get requiredTrue => const EqualsValidator<bool>(
-        true,
-        validationMessage: ValidationMessage.requiredTrue,
-      );
+  static const Validator<dynamic> requiredTrue = EqualsValidator<bool>(
+    true,
+    validationMessage: ValidationMessage.requiredTrue,
+  );
 
   /// Gets a validator that requires the control's value pass an email
   /// validation test.
-  static Validator<dynamic> get email => const EmailValidator();
+  static const Validator<dynamic> email = EmailValidator();
 
   /// Gets a validator that validates if control's value is a numeric value.
-  static Validator<dynamic> get number => const NumberValidator();
+  static const Validator<dynamic> number = NumberValidator();
 
   /// Gets a validator that validates if the control's value is a valid
   /// credit card number.
-  static Validator<dynamic> get creditCard => const CreditCardValidator();
+  static const Validator<dynamic> creditCard = CreditCardValidator();
 
   /// Gets a validator that requires the control's value to be equals to
   /// argument [value].
