@@ -324,9 +324,9 @@ There are special validators that can be attached to **FormGroup**. In the next 
 
 ## What about Password and Password Confirmation?
 
-There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with email and emailConfirmation or password and passwordConfirmation.
+There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with _email_ and _emailConfirmation_ or _password_ and _passwordConfirmation_.
 
-For those cases we could implement a custom validator as a class and attach it to the FormGroup. Let's see an example:
+For those cases we could implement a custom validator as a class and attach it to the **FormGroup**. Let's see an example:
 
 ```dart
 final form = FormGroup({
@@ -342,11 +342,11 @@ final form = FormGroup({
 ]);
 ```
 
-> Notice the use of `Validators.minLength(8)`
+> Notice the use of \*Validators.**minLength(8)\***
 
-In the previous code we have added two more fields to the form: password and passwordConfirmation, both fields are required and the password must be at least 8 characters length.
+In the previous code we have added two more fields to the form: _password_ and _passwordConfirmation_, both fields are required and the password must be at least 8 characters length.
 
-However the most important thing here is that we have attached a validator to the FormGroup. This validator is a custom validator and the implementation follows as:
+However the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator and the implementation follows as:
 
 ```dart
 class MustMatchValidator extends Validator<dynamic> {
