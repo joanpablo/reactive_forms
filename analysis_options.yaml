@@ -2,11 +2,9 @@ include: package:lints/recommended.yaml
 
 analyzer:
   language:
+    strict-casts: true
     strict-inference: true
     strict-raw-types: true
-  strong-mode:
-    implicit-dynamic: false
-    implicit-casts: false
 linter:
   rules:
     - always_declare_return_types

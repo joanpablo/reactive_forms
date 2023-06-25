@@ -2,6 +2,7 @@
 // Use of this source code is governed by the MIT license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -51,6 +52,18 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     bool? enableFeedback,
     FocusNode? focusNode,
     ReactiveFormFieldCallback<bool>? onChanged,
+    ImageErrorListener? onActiveThumbImageError,
+    ImageErrorListener? onInactiveThumbImageError,
+    MaterialStateProperty<Color?>? thumbColor,
+    MaterialStateProperty<Color?>? trackColor,
+    MaterialStateProperty<Color?>? trackOutlineColor,
+    MaterialStateProperty<Icon?>? thumbIcon,
+    MaterialTapTargetSize? materialTapTargetSize,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    MouseCursor? mouseCursor,
+    MaterialStateProperty<Color?>? overlayColor,
+    double? splashRadius,
+    ValueChanged<bool>? onFocusChange,
   }) : super(
           key: key,
           formControl: formControl,
@@ -63,6 +76,18 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
               activeTrackColor: activeTrackColor,
               inactiveThumbColor: inactiveThumbColor,
               inactiveTrackColor: inactiveTrackColor,
+              mouseCursor: mouseCursor,
+              overlayColor: overlayColor,
+              splashRadius: splashRadius,
+              onFocusChange: onFocusChange,
+              thumbColor: thumbColor,
+              trackColor: trackColor,
+              dragStartBehavior: dragStartBehavior,
+              materialTapTargetSize: materialTapTargetSize,
+              thumbIcon: thumbIcon,
+              trackOutlineColor: trackOutlineColor,
+              onActiveThumbImageError: onActiveThumbImageError,
+              onInactiveThumbImageError: onInactiveThumbImageError,
               hoverColor: hoverColor,
               activeThumbImage: activeThumbImage,
               title: title,

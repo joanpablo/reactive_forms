@@ -101,7 +101,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextAlignVertical? textAlignVertical,
     bool autofocus = false,
     bool readOnly = false,
-    ToolbarOptions? toolbarOptions,
+    EditableTextContextMenuBuilder? contextMenuBuilder,
     bool? showCursor,
     bool obscureText = false,
     String obscuringCharacter = '•',
@@ -141,6 +141,13 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     ReactiveFormFieldCallback<T>? onEditingComplete,
     ReactiveFormFieldCallback<T>? onSubmitted,
     ReactiveFormFieldCallback<T>? onChanged,
+    UndoHistoryController? undoController,
+    bool? cursorOpacityAnimates,
+    TapRegionCallback? onTapOutside,
+    ContentInsertionConfiguration? contentInsertionConfiguration,
+    bool canRequestFocus = true,
+    SpellCheckConfiguration? spellCheckConfiguration,
+    TextMagnifierConfiguration? magnifierConfiguration,
   })  : _textController = controller,
         super(
           key: key,
@@ -169,7 +176,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               textDirection: textDirection,
               textCapitalization: textCapitalization,
               autofocus: autofocus,
-              toolbarOptions: toolbarOptions,
+              contextMenuBuilder: contextMenuBuilder,
               readOnly: readOnly,
               showCursor: showCursor,
               obscureText: obscureText,
@@ -223,6 +230,13 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
                 field.didChange(value);
                 onChanged?.call(field.control);
               },
+              undoController: undoController,
+              cursorOpacityAnimates: cursorOpacityAnimates,
+              onTapOutside: onTapOutside,
+              contentInsertionConfiguration: contentInsertionConfiguration,
+              canRequestFocus: canRequestFocus,
+              spellCheckConfiguration: spellCheckConfiguration,
+              magnifierConfiguration: magnifierConfiguration,
             );
           },
         );
