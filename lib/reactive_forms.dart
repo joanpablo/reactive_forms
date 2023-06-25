@@ -18,7 +18,6 @@ export 'src/models/control_state.dart';
 export 'src/models/control_status.dart';
 export 'src/models/focus_controller.dart';
 export 'src/models/form_builder.dart';
-export 'src/models/form_control_collection.dart';
 export 'src/models/models.dart';
 export 'src/utils/control_extensions.dart';
 export 'src/utils/control_utils.dart';
