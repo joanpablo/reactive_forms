@@ -3,27 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:reactive_forms/src/validators/any_validator.dart';
-import 'package:reactive_forms/src/validators/compare_validator.dart';
-import 'package:reactive_forms/src/validators/compose_or_validator.dart';
-import 'package:reactive_forms/src/validators/compose_validator.dart';
-import 'package:reactive_forms/src/validators/contains_validator.dart';
-import 'package:reactive_forms/src/validators/credit_card_validator.dart';
-import 'package:reactive_forms/src/validators/delegate_async_validator.dart';
-import 'package:reactive_forms/src/validators/delegate_validator.dart';
-import 'package:reactive_forms/src/validators/email_validator.dart';
-import 'package:reactive_forms/src/validators/equals_validator.dart';
-import 'package:reactive_forms/src/validators/max_length_validator.dart';
-import 'package:reactive_forms/src/validators/max_validator.dart';
-import 'package:reactive_forms/src/validators/min_length_validator.dart';
-import 'package:reactive_forms/src/validators/min_validator.dart';
-import 'package:reactive_forms/src/validators/must_match_validator.dart';
-import 'package:reactive_forms/src/validators/number_validator.dart';
-import 'package:reactive_forms/src/validators/pattern/default_pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern/pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern/regex_pattern_evaluator.dart';
-import 'package:reactive_forms/src/validators/pattern_validator.dart';
-import 'package:reactive_forms/src/validators/required_validator.dart';
 
 /// Provides a set of built-in validators that can be used by form controls,
 /// form groups, and form arrays.
