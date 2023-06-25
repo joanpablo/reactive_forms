@@ -1,3 +1,14 @@
+# 16.0.0
+
+## Breaking Changes
+
+- Flutter >= 3.10 required for this version.
+
+## Fixes
+
+- Updated some documentation.
+- Expose validator classes to allow direct instantiation. 
+
 # 15.0.0
 
 ## Breaking Changes
