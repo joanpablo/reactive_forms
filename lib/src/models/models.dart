@@ -1010,6 +1010,79 @@ class FormControl<T> extends AbstractControl<T> {
   AbstractControl<dynamic> findControl(String path) => this;
 }
 
+/// The base class form [FormGroup] and [FormArray].
+/// Its provides methods for get a control by name and a [Listenable]
+/// that emits events each time you add or remove a control to the collection.
+abstract class FormControlCollection<T> extends AbstractControl<T> {
+  FormControlCollection({
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
+    int asyncValidatorsDebounceTime = 250,
+    bool disabled = false
+  }) : super(
+    validators: validators,
+    asyncValidators: asyncValidators,
+    asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+    disabled: disabled,
+  );
+
+  final _collectionChanges =
+  StreamController<List<AbstractControl<Object?>>>.broadcast();
+
+  /// Retrieves a child control given the control's [name] or path.
+  ///
+  /// The [name] is a dot-delimited string that define the path to the
+  /// control.
+  ///
+  /// Throws [FormControlNotFoundException] if no control founded with
+  /// the specified [name]/path.
+  AbstractControl<dynamic> control(String name);
+
+  /// Checks if collection contains a control by a given [name].
+  ///
+  /// Returns true if collection contains the control, otherwise returns false.
+  bool contains(String name);
+
+  /// Emits when a control is added or removed from collection.
+  Stream<List<AbstractControl<Object?>>> get collectionChanges =>
+      _collectionChanges.stream;
+
+  /// Close stream that emit collection change events
+  void closeCollectionEvents() {
+    _collectionChanges.close();
+  }
+
+  /// Notify to listeners that the collection changed.
+  ///
+  /// This is for internal use only.
+  @protected
+  void emitsCollectionChanged(List<AbstractControl<Object?>> controls) {
+    _collectionChanges.add(List.unmodifiable(controls));
+  }
+
+  /// Walks the [path] to find the matching control.
+  ///
+  /// Returns null if no match is found.
+  AbstractControl<Object>? findControlInCollection(List<String> path) {
+    if (path.isEmpty) {
+      return null;
+    }
+
+    final result = path.fold(this as AbstractControl<Object>?, (control, name) {
+      if (control != null && control is FormControlCollection<dynamic>) {
+        final collection = control as FormControlCollection<dynamic>;
+        return collection.contains(name)
+            ? collection.control(name) as AbstractControl<Object>
+            : null;
+      } else {
+        return null;
+      }
+    });
+
+    return result;
+  }
+}
+
 /// Tracks the value and validity state of a group of FormControl instances.
 ///
 /// A FormGroup aggregates the values of each child FormControl into one object,
@@ -1018,8 +1091,7 @@ class FormControl<T> extends AbstractControl<T> {
 /// It calculates its status by reducing the status values of its children.
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
-class FormGroup extends AbstractControl<Map<String, Object?>>
-    with FormControlCollection<Object> {
+class FormGroup extends FormControlCollection<Map<String, Object?>> {
   final Map<String, AbstractControl<dynamic>> _controls = {};
 
   /// Creates a new FormGroup instance.
@@ -1523,8 +1595,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
 ///
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
-class FormArray<T> extends AbstractControl<List<T?>>
-    with FormControlCollection<T> {
+class FormArray<T> extends FormControlCollection<List<T?>> {
   final List<AbstractControl<T>> _controls = [];
 
   /// Creates a new [FormArray] instance.
