@@ -1,3 +1,10 @@
+# 16.0.1
+
+## Fixes
+
+- Update the intl dependency version, because in flutter 3.10, 
+`flutter_localizations` depends on intl 0.18.0.
+
 # 16.0.0
 
 ## Breaking Changes
