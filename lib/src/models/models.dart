@@ -1569,6 +1569,8 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
 
     _controls.removeWhere((key, value) => key == name);
     updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+
+    emitsCollectionChanged(_controls.values.toList());
   }
 
   @override
