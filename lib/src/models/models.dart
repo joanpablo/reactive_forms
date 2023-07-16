@@ -1063,17 +1063,14 @@ abstract class FormControlCollection<T> extends AbstractControl<T> {
   /// Walks the [path] to find the matching control.
   ///
   /// Returns null if no match is found.
-  AbstractControl<Object>? findControlInCollection(List<String> path) {
+  AbstractControl<dynamic>? findControlInCollection(List<String> path) {
     if (path.isEmpty) {
       return null;
     }
 
-    final result = path.fold(this as AbstractControl<Object>?, (control, name) {
+    final result = path.fold<AbstractControl<dynamic>?>(this, (control, name) {
       if (control != null && control is FormControlCollection<dynamic>) {
-        final collection = control as FormControlCollection<dynamic>;
-        return collection.contains(name)
-            ? collection.control(name) as AbstractControl<Object>
-            : null;
+        return control.contains(name) ? control.control(name) : null;
       } else {
         return null;
       }
