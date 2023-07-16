@@ -1,3 +1,13 @@
+# 16.0.2
+
+## Fixes
+
+- Fix an issue with `FormBuilder` when trying to build a control with a nullable '?' data type.
+- Fix an issue with `FormGroup` that was not triggering the event `collectionChanges` when a control
+is removed.
+- Fix an issue with `FormGroup` and `FormArray` when trying to find a control with a nullable '?'
+data type.
+
 # 16.0.1
 
 ## Fixes
