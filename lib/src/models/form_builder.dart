@@ -78,7 +78,7 @@ class FormBuilder {
         return MapEntry(key, FormControl<DateTime>(value: value));
       } else if (value is TimeOfDay) {
         return MapEntry(key, FormControl<TimeOfDay>(value: value));
-      } else if (value is AbstractControl<Object>) {
+      } else if (value is AbstractControl<dynamic>) {
         return MapEntry(key, value);
       } else if (value is Validator<dynamic>) {
         return MapEntry(key, FormControl<dynamic>(validators: [value]));
