@@ -1,6 +1,6 @@
 name: reactive_forms
 description: This is a model-driven approach to handling form inputs and validations, heavily inspired in Angular Reactive Forms.
-version: 16.0.1
+version: 16.0.2
 homepage: "https://github.com/joanpablo/reactive_forms"
 
 environment:
