@@ -1151,7 +1151,13 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   ///
   /// Retrieves all values regardless of disabled status.
   Map<String, Object?> get rawValue => _controls
-      .map<String, Object?>((key, control) => MapEntry(key, control.value));
+      .map<String, Object?>((key, control) {
+        if (control is FormGroup) {
+          return MapEntry(key, control.rawValue);
+        }
+
+        return MapEntry(key, control.value);
+  });
 
   @override
   bool contains(String name) {

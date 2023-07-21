@@ -869,12 +869,34 @@ void main() {
     test('A control disabled is part of group Raw Value', () {
       // Given: a form with a disable control
       final form = FormGroup({
-        'name': FormControl<String>(value: 'Reactive'),
-        'email': FormControl<String>(value: 'Forms', disabled: true),
+        'name': FormControl<String>(value: 'Flutter Reactive Forms'),
+        'email': FormControl<String>(value: 'rf@email.com', disabled: true),
       });
 
       // Expect: raw value includes disabled controls
-      expect(form.rawValue, {'name': 'Reactive', 'email': 'Forms'});
+      expect(form.rawValue, {
+        'name': 'Flutter Reactive Forms',
+        'rf@email.com': 'Forms',
+      });
+    });
+
+    test('A control disabled is part of recursive group Raw Value', () {
+      // Given: a nested form group with a disable control
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'Flutter Reactive Forms'),
+        'email': FormControl<String>(value: 'rf@email.com', disabled: true),
+        'address': FormGroup({
+          'city': FormControl<String>(value: 'Toronto'),
+          'street': FormControl<String>(value: 'Cherry St', disabled: true)
+        })
+      });
+
+      // Expect: raw value includes disabled controls
+      expect(form.rawValue, {
+        'name': 'Flutter Reactive Forms',
+        'email': 'rf@email.com',
+        'address': {'city': 'Toronto', 'street': 'Cherry St'}
+      });
     });
 
     test('Remove control from FormGroup', () {
