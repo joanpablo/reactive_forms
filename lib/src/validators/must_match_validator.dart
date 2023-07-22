@@ -17,17 +17,19 @@ class MustMatchValidator extends Validator<dynamic> {
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final error = {ValidationMessage.mustMatch: true};
-    var form = {};
+    var form = <dynamic, dynamic>{};
     control.parent?.valueChanges.listen((event) {
-      form = event as Map<dynamic, dynamic>;
-
-      if (form[controlName] != form[matchingControlName]) {
-        control.setErrors(error, markAsDirty: markAsDirty);
-        control.markAsTouched();
-      } else {
-        control.removeError(ValidationMessage.mustMatch);
+      if (event != null) {
+        form = event as Map;
+        if (form[controlName] != form[matchingControlName]) {
+          control.setErrors(error, markAsDirty: markAsDirty);
+          control.markAsTouched();
+        } else {
+          control.removeError(ValidationMessage.mustMatch);
+        }
       }
     });
+
     return null;
   }
 }
