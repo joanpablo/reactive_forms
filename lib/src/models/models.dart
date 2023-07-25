@@ -1156,14 +1156,14 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   ///
   /// Retrieves all values regardless of disabled status.
   @override
-  Map<String, Object?> get rawValue => _controls
-      .map<String, Object?>((key, control) {
+  Map<String, Object?> get rawValue =>
+      _controls.map<String, Object?>((key, control) {
         if (control is FormControlCollection<dynamic>) {
           return MapEntry(key, control.rawValue);
         }
 
         return MapEntry(key, control.value);
-  });
+      });
 
   @override
   bool contains(String name) {
@@ -1671,8 +1671,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   ///
   /// Retrieves all values regardless of disabled status.
   @override
-  List<T?> get rawValue =>
-      _controls.map<T?>((control) {
+  List<T?> get rawValue => _controls.map<T?>((control) {
         if (control is FormControlCollection<T?>) {
           return (control as FormControlCollection<T?>).rawValue;
         }

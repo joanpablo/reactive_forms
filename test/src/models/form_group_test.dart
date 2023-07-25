@@ -900,7 +900,9 @@ void main() {
       });
     });
 
-    test('Disabled children of nested array are part of recursive group Raw Value', () {
+    test(
+        'Disabled children of nested array are part of recursive group Raw Value',
+        () {
       // Given: a nested form group with a disable control
       final form = FormGroup({
         'brands': FormArray<String>([
