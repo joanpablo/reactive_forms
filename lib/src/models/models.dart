@@ -1043,6 +1043,11 @@ abstract class FormControlCollection<T> extends AbstractControl<T> {
   /// Returns true if collection contains the control, otherwise returns false.
   bool contains(String name);
 
+  /// Gets the value of the control, including any disabled control.
+  ///
+  /// Retrieves all values regardless of disabled status of children controls.
+  T get rawValue;
+
   /// Emits when a control is added or removed from collection.
   Stream<List<AbstractControl<Object?>>> get collectionChanges =>
       _collectionChanges.stream;
@@ -1150,8 +1155,15 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   /// Gets the value of the [FormGroup], including any disabled controls.
   ///
   /// Retrieves all values regardless of disabled status.
+  @override
   Map<String, Object?> get rawValue => _controls
-      .map<String, Object?>((key, control) => MapEntry(key, control.value));
+      .map<String, Object?>((key, control) {
+        if (control is FormControlCollection<dynamic>) {
+          return MapEntry(key, control.rawValue);
+        }
+
+        return MapEntry(key, control.value);
+  });
 
   @override
   bool contains(String name) {
@@ -1207,7 +1219,7 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   Map<String, AbstractControl<Object?>> get controls =>
       Map<String, AbstractControl<Object?>>.unmodifiable(_controls);
 
-  /// Reduce the value of the group is a key-value pair for each control
+  /// Reduce the value of the group as a key-value pair for each control
   /// in the group.
   ///
   /// ### Example:
@@ -1658,8 +1670,15 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   /// Gets the value of the [FormArray], including any disabled controls.
   ///
   /// Retrieves all values regardless of disabled status.
+  @override
   List<T?> get rawValue =>
-      _controls.map<T?>((control) => control.value).toList();
+      _controls.map<T?>((control) {
+        if (control is FormControlCollection<T?>) {
+          return (control as FormControlCollection<T?>).rawValue;
+        }
+
+        return control.value;
+      }).toList();
 
   /// Sets the value of the [FormArray].
   ///
