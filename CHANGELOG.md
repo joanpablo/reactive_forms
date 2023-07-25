@@ -1,3 +1,9 @@
+# 16.0.3
+
+## Fixes
+
+- Fix an issue with `FormGroup` and `FormArray` were recursive `Raw Value` was not working properly.
+
 # 16.0.2
 
 ## Fixes
