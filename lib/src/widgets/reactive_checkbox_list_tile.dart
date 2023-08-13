@@ -7,23 +7,19 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// This is a convenience widget that wraps a [CheckboxListTile] widget in a
 /// [ReactiveCheckboxListTile].
-///
-/// Can optionally provide a [formControl] to bind this widget to a control.
-///
-/// Can optionally provide a [formControlName] to bind this ReactiveFormField
-/// to a [FormControl].
-///
-/// Must provide one of the arguments [formControl] or a [formControlName],
-/// but not both at the same time.
-///
-/// For documentation about the various parameters, see the [CheckboxListTile]
-/// class and [CheckboxListTile], the constructor.
 class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
-  /// The [formControlName] arguments must not be null.
+  /// Can optionally provide a [formControl] to bind this widget to a control.
   ///
-  /// See also [CheckboxListTile]
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
+  ///
+  /// For documentation about the various parameters, see the [CheckboxListTile]
+  /// class and the [CheckboxListTile] constructor.
   ReactiveCheckboxListTile({
     Key? key,
     String? formControlName,
@@ -56,11 +52,15 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
     double? splashRadius,
     MaterialTapTargetSize? materialTapTargetSize,
     ValueChanged<bool>? onFocusChange,
+    ShowErrorsFunction<bool>? showErrors,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           focusNode: focusNode,
+          showErrors: showErrors ??
+              (control) =>
+                  control.invalid && (control.dirty || control.touched),
           builder: (field) {
             return CheckboxListTile(
               value: tristate ? field.value : field.value ?? false,
@@ -73,7 +73,7 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
               activeColor: activeColor,
               checkColor: checkColor,
               onFocusChange: onFocusChange,
-              isError: !field.control.valid,
+              isError: field.errorText != null,
               title: title,
               subtitle: subtitle,
               isThreeLine: isThreeLine,
@@ -92,6 +92,7 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
               enableFeedback: enableFeedback,
               checkboxShape: checkboxShape,
               side: side,
+              enabled: field.control.enabled,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);

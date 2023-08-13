@@ -8,7 +8,10 @@ class LoginSample extends StatelessWidget {
           validators: [Validators.required, Validators.email],
         ),
         'password': ['', Validators.required, Validators.minLength(8)],
-        'rememberMe': false,
+        'acceptTerms': FormControl<bool>(
+          value: false,
+          validators: [Validators.requiredTrue],
+        ),
       });
 
   @override
@@ -19,6 +22,7 @@ class LoginSample extends StatelessWidget {
         form: buildForm,
         builder: (context, form, child) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ReactiveTextField<String>(
                 formControlName: 'email',
@@ -55,11 +59,10 @@ class LoginSample extends StatelessWidget {
                   errorStyle: TextStyle(height: 0.7),
                 ),
               ),
-              Row(
-                children: [
-                  ReactiveCheckbox(formControlName: 'rememberMe'),
-                  const Text('Remember me')
-                ],
+              const SizedBox(height: 16.0),
+              ReactiveCheckboxListTile(
+                formControlName: 'acceptTerms',
+                title: const Text('Accept terms & conditions'),
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
@@ -72,12 +75,16 @@ class LoginSample extends StatelessWidget {
                 },
                 child: const Text('Sign Up'),
               ),
+              const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () => form.resetState({
-                  'email': ControlState<String>(value: null),
-                  'password': ControlState<String>(value: null),
-                  'rememberMe': ControlState<bool>(value: false),
-                }, removeFocus: true),
+                onPressed: () => form.resetState(
+                  {
+                    'email': ControlState<String>(value: null),
+                    'password': ControlState<String>(value: null),
+                    'acceptTerms': ControlState<bool>(value: false),
+                  },
+                  removeFocus: true,
+                ),
                 child: const Text('Reset all'),
               ),
             ],

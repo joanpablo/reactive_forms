@@ -1,3 +1,17 @@
+# 16.0.4
+
+## Fixes
+
+- Add missing properties to `ReactiveSwitchListTile.adaptative()` widget.
+- Add `showError()` to `ReactiveCheckbox` and `ReactiveCheckboxListTile` widgets. This does not
+display any error messages but it is now compatible with the Flutter builtin behavior of Checkboxes
+when Material 3 is enabled (`ThemeData(useMaterial3: true)`) in the active App Theme.
+
+## Enhances
+
+- Update `Readme.md` file with testing examples in the section 
+`ReactiveForm vs ReactiveFormBuilder which one?`
+
 # 16.0.3
 
 ## Fixes
