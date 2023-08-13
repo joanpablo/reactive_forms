@@ -1571,6 +1571,86 @@ You should use **ReactiveFormBuilder** if:
 
 But the final decision is really up to you, you can use any of them in any situations ;)
 
+## Widget testing
+
+**note: mark your fields with `Key`'s for easy access via widget tester**
+
+### example component
+
+```dart
+class LoginForm extends StatefulWidget {
+  const LoginForm({Key? key}) : super(key: key);
+
+  @override
+  LoginFormState createState() => LoginFormState();
+}
+
+class LoginFormState extends State<LoginForm> {
+  final form = FormGroup({
+    'email': FormControl<String>(validators: [Validators.required, Validators.email]),
+    'password': FormControl<String>(validators: [Validators.required]),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveForm(
+      formGroup: form,
+      child: Column(
+        children: <Widget>[
+          ReactiveTextField(
+            key: const Key('email'),
+            formControlName: 'email',
+          ),
+          ReactiveTextField(
+            key: const Key('password'),
+            formControlName: 'password',
+            obscureText: true,
+          ),
+          ElevatedButton(
+            key: const Key('submit'),
+            onPressed: () {},
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+### example test
+
+```dart
+
+void main() {
+  testWidgets('LoginForm should pass with correct values', (tester) async {
+    // Build the widget.
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(body: LoginForm()),
+    ));
+
+    await tester.enterText(find.byKey(const Key('email')), 'etc@test.qa');
+    await tester.enterText(find.byKey(const Key('password')), 'password');
+
+    await tester.tap(find.byKey(const Key('submit')));
+
+    await tester.pump();
+
+    // Expect to find the item on screen if needed
+    expect(find.text('etc@test.qa'), findsOneWidget);
+
+    // Get form state
+    final LoginFormState loginFormState = tester.state(find.byType(LoginForm));
+
+    // Check form state
+    expect(loginFormState.form.valid, true);
+  });
+}
+
+```
+
+
+
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 
 Although **Reactive Forms** can be used with any state management library or even without any one at all, **Reactive Forms** gets its maximum potential when is used in combination with a state management library like the [Provider](https://pub.dev/packages/provider) plugin.
