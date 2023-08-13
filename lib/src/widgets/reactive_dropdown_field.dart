@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// A reactive widget that wraps a [DropdownButton].
+/// A reactive widget that wraps a [DropdownButtonFormField].
 class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
@@ -20,7 +20,10 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// If [readOnly] is true, the button will be disabled, the down arrow will
   /// be grayed out, and the disabledHint will be shown (if provided).
   ///
-  /// The [DropdownButton] [items] parameters must not be null.
+  /// The [items] parameter must not be null.
+  ///
+  /// For more information about all various parameters,
+  /// see [DropdownButtonFormField] constructor.
   ReactiveDropdownField({
     Key? key,
     String? formControlName,
@@ -50,6 +53,7 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
     bool? enableFeedback,
     AlignmentGeometry alignment = AlignmentDirectional.centerStart,
     BorderRadius? borderRadius,
+    EdgeInsetsGeometry? padding,
     ReactiveFormFieldCallback<T>? onTap,
     ReactiveFormFieldCallback<T>? onChanged,
   })  : assert(itemHeight == null || itemHeight > 0),
@@ -111,6 +115,7 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
               enableFeedback: enableFeedback,
               alignment: alignment,
               borderRadius: borderRadius,
+              padding: padding,
               onTap: onTap != null ? () => onTap(field.control) : null,
               onChanged: isDisabled
                   ? null

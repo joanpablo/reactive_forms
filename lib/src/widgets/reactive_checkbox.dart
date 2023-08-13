@@ -7,21 +7,19 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 /// This is a convenience widget that wraps a [Checkbox] widget in a
 /// [ReactiveCheckbox].
-///
-/// Can optionally provide a [formControl] to bind this widget to a control.
-///
-/// Can optionally provide a [formControlName] to bind this ReactiveFormField
-/// to a [FormControl].
-///
-/// Must provide one of the arguments [formControl] or a [formControlName],
-/// but not both at the same time.
-///
-/// For documentation about the various parameters, see the [Checkbox] class
-/// and [Checkbox], the constructor.
 class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
   /// Create an instance of a [ReactiveCheckbox].
   ///
-  /// The [formControlName] arguments must not be null.
+  /// Can optionally provide a [formControl] to bind this widget to a control.
+  ///
+  /// Can optionally provide a [formControlName] to bind this ReactiveFormField
+  /// to a [FormControl].
+  ///
+  /// Must provide one of the arguments [formControl] or a [formControlName],
+  /// but not both at the same time.
+  ///
+  /// For documentation about the various parameters, see the [Checkbox] class
+  /// and the [Checkbox] constructor.
   ReactiveCheckbox({
     Key? key,
     String? formControlName,
@@ -42,11 +40,15 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
     OutlinedBorder? shape,
     BorderSide? side,
     ReactiveFormFieldCallback<bool>? onChanged,
+    ShowErrorsFunction<bool>? showErrors,
   }) : super(
           key: key,
           formControl: formControl,
           formControlName: formControlName,
           focusNode: focusNode,
+          showErrors: showErrors ??
+              (control) =>
+                  control.invalid && (control.dirty || control.touched),
           builder: (field) {
             return Checkbox(
               value: tristate ? field.value : field.value ?? false,
@@ -65,7 +67,7 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
               focusNode: field.focusNode,
               shape: shape,
               side: side,
-              isError: !field.control.valid,
+              isError: field.errorText != null,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);

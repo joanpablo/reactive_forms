@@ -40,7 +40,14 @@ class ReactiveFormsApp extends StatelessWidget {
         'uniqueEmail': (_) => 'This email is already in use',
       },
       child: MaterialApp(
-        theme: customTheme,
+        theme: ThemeData(
+          useMaterial3: true,
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(),
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
+            alignLabelWithHint: true,
+          ),
+        ),
         routes: <String, WidgetBuilder>{
           Routes.complex: (_) => ComplexSample(),
           Routes.simple: (_) => SimpleSample(),
@@ -55,11 +62,3 @@ class ReactiveFormsApp extends StatelessWidget {
     );
   }
 }
-
-final customTheme = ThemeData.light().copyWith(
-  inputDecorationTheme: const InputDecorationTheme(
-    border: OutlineInputBorder(),
-    floatingLabelBehavior: FloatingLabelBehavior.auto,
-    alignLabelWithHint: true,
-  ),
-);

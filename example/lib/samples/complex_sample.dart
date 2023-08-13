@@ -49,6 +49,7 @@ class ComplexSample extends StatelessWidget {
         form: buildForm,
         builder: (context, form, child) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ReactiveTextField<String>(
                 formControlName: 'email',
