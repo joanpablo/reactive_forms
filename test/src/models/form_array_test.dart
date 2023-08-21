@@ -716,6 +716,24 @@ void main() {
       // Then: array value is patched
       expect(array.value, [2, 2], reason: 'array value not patched');
     });
+
+    test('Test that markAsPending() a control, set pending status to the array '
+        'as well.', () {
+      // Given: an array with valid status.
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+      ]);
+
+      // Expect: the array to be VALID and not PENDING.
+      expect(array.valid, true);
+      expect(array.pending, false);
+
+      // When: I call mark a child control as PENDING.
+      array.controls.first.markAsPending();
+
+      // Then: the status of the array is PENDING as well.
+      expect(array.pending, true);
+    });
   });
 }
 

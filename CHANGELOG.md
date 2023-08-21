@@ -1,3 +1,10 @@
+# 16.1.0
+
+## Features
+
+- Add `markAsPending()` method to `AbstractControl` to allow set the status
+to PENDING by demand.
+
 # 16.0.4
 
 ## Fixes
