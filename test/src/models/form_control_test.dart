@@ -371,5 +371,20 @@ void main() {
       // Then: a new async validator is added
       expect(formControl.asyncValidators.length, 1);
     });
+
+    test('Test that markAsPending() change the status to PENDING.', () {
+      // Given: a control with valid status.
+      final control = FormControl<String>(value: 'Reactive Forms');
+
+      // Expect: the control to be VALID and not PENDING.
+      expect(control.valid, true);
+      expect(control.pending, false);
+
+      // When: I call markAsPending() method.
+      control.markAsPending();
+
+      // Then: the status is PENDING.
+      expect(control.pending, true);
+    });
   });
 }
