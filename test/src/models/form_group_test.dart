@@ -982,5 +982,23 @@ void main() {
       // Expect: an assertion error
       expect(form, throwsAssertionError);
     });
+
+    test(
+        'Test that markAsPending() a control, set pending status to the group '
+        'as well.', () {
+      // Given: a form group with valid status.
+      final form =
+          FormGroup({'name': FormControl<String>(value: "Reactive Forms")});
+
+      // Expect: the group to be VALID and not PENDING.
+      expect(form.valid, true);
+      expect(form.pending, false);
+
+      // When: I call mark a child control as PENDING.
+      form.control('name').markAsPending();
+
+      // Then: the status of the Form Group is PENDING as well.
+      expect(form.pending, true);
+    });
   });
 }

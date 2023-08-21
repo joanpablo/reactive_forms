@@ -228,6 +228,8 @@ abstract class AbstractControl<T> {
   /// * VALID: This control has passed all validation checks.
   /// * INVALID: This control has failed at least one validation check.
   /// * PENDING: This control is in the midst of conducting a validation check.
+  /// * DISABLED: This control is exempt from ancestor calculations of
+  /// validity or value.
   ///
   /// These status values are mutually exclusive, so a control cannot be both
   /// valid AND invalid or invalid AND pending.
@@ -418,6 +420,28 @@ abstract class AbstractControl<T> {
       _statusChanges.add(_status);
     }
     _updateAncestors(updateParent);
+  }
+
+  /// Marks the control as `pending`.
+  ///
+  /// A control is pending while the control performs async validation.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a [statusChanged]
+  /// event is emitted.
+  ///
+  void markAsPending({bool updateParent = true, bool emitEvent = true}) {
+    _status = ControlStatus.pending;
+
+    if (emitEvent) {
+      this._statusChanges.add(_status);
+    }
+
+    if (updateParent) {
+      parent?.markAsPending(updateParent: updateParent, emitEvent: emitEvent);
+    }
   }
 
   /// Disposes the control
