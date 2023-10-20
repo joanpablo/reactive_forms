@@ -19,6 +19,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   final TextEditingController? _textController;
 
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
+    return AdaptiveTextSelectionToolbar.editableText(
+      editableTextState: editableTextState,
+    );
+  }
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -101,7 +108,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextAlignVertical? textAlignVertical,
     bool autofocus = false,
     bool readOnly = false,
-    EditableTextContextMenuBuilder? contextMenuBuilder,
+    EditableTextContextMenuBuilder? contextMenuBuilder =
+        _defaultContextMenuBuilder,
     bool? showCursor,
     bool obscureText = false,
     String obscuringCharacter = '•',
