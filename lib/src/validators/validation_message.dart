@@ -26,6 +26,10 @@ class ValidationMessage {
   /// Key text for number validation message.
   static const String number = 'number';
 
+  /// Key text for integer validation message.
+
+  static const String integer = 'integer';
+
   /// Key text for must match validation message.
   static const String mustMatch = 'mustMatch';
 
