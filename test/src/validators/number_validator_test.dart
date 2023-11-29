@@ -15,7 +15,7 @@ void main() {
     test('FormControl valid if a number', () {
       final control = FormControl<String>(validators: [Validators.number]);
 
-      control.value = '10';
+      control.value = '10.0';
 
       expect(control.valid, true);
     });

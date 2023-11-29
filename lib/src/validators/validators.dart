@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/integer_validator.dart';
 
 /// Provides a set of built-in validators that can be used by form controls,
 /// form groups, and form arrays.
@@ -34,6 +35,9 @@ class Validators {
 
   /// Gets a validator that validates if control's value is a numeric value.
   static Validator<dynamic> get number => const NumberValidator();
+
+  /// Gets a validator that validates if control's value is an integer value.
+  static Validator<dynamic> get integer => const IntegerValidator();
 
   /// Gets a validator that validates if the control's value is a valid
   /// credit card number.

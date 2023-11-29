@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms/src/validators/integer_validator.dart';
 
 /// A credit card validator that validates that the control's value is a valid
 /// credit card.
@@ -18,7 +19,7 @@ class CreditCardValidator extends Validator<dynamic> {
     }
 
     final cardNumber = control.value.toString().replaceAll(' ', '');
-    final isNumber = NumberValidator.numberRegex.hasMatch(cardNumber);
+    final isNumber = IntegerValidator.numberRegex.hasMatch(cardNumber);
 
     return isNumber &&
             cardNumber.length >= 13 &&
