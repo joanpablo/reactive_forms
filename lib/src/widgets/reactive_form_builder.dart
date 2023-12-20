@@ -24,18 +24,6 @@ class ReactiveFormBuilder extends StatefulWidget {
   /// The widget below this widget in the tree.
   final Widget? child;
 
-  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
-  /// that contains the form.
-  ///
-  /// If the callback returns a Future that resolves to false, the form's route
-  /// will not be popped.
-  ///
-  /// See also:
-  ///
-  ///  * [WillPopScope], another widget that provides a way to intercept the
-  ///    back button.
-  final WillPopCallback? onWillPop;
-
   /// Creates and instance of [ReactiveFormBuilder].
   ///
   /// The [form] and [builder] arguments must not be null.
@@ -59,7 +47,6 @@ class ReactiveFormBuilder extends StatefulWidget {
   const ReactiveFormBuilder({
     Key? key,
     this.child,
-    this.onWillPop,
     required this.form,
     required this.builder,
   }) : super(key: key);
@@ -81,7 +68,6 @@ class ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
   Widget build(BuildContext context) {
     return ReactiveForm(
       formGroup: _form,
-      onWillPop: widget.onWillPop,
       child: widget.builder(context, _form, widget.child),
     );
   }

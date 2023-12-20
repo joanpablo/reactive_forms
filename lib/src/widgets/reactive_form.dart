@@ -18,18 +18,6 @@ class ReactiveForm extends StatelessWidget {
   /// The form group control that is bound to this widget.
   final FormGroup formGroup;
 
-  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
-  /// that contains the form.
-  ///
-  /// If the callback returns a Future that resolves to false, the form's route
-  /// will not be popped.
-  ///
-  /// See also:
-  ///
-  ///  * [WillPopScope], another widget that provides a way to intercept the
-  ///    back button.
-  final WillPopCallback? onWillPop;
-
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
@@ -37,7 +25,6 @@ class ReactiveForm extends StatelessWidget {
     Key? key,
     required this.formGroup,
     required this.child,
-    this.onWillPop,
   }) : super(key: key);
 
   /// Returns the nearest model up its widget tree.
@@ -67,10 +54,7 @@ class ReactiveForm extends StatelessWidget {
     return FormControlInheritedStreamer(
       control: formGroup,
       stream: formGroup.statusChanged,
-      child: WillPopScope(
-        onWillPop: onWillPop,
-        child: child,
-      ),
+      child: child,
     );
   }
 }
