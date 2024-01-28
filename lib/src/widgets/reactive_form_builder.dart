@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
+import 'package:reactive_forms/src/widgets/reactive_form_pop_scope.dart';
 
 /// FormGroup builder function definition of the [ReactiveFormBuilder].
 typedef ReactiveFormBuilderCreator = FormGroup Function();
@@ -20,6 +21,12 @@ class ReactiveFormBuilder extends StatefulWidget {
 
   /// Called to create the FormGroup that will be bind to this widget.
   final ReactiveFormBuilderCreator form;
+
+  /// Determine whether a route can popped. See [PopScope] for more details.
+  final bool Function(FormGroup formGroup)? canPop;
+
+  /// A callback invoked when a route is popped. See [PopScope] for more details.
+  final void Function(FormGroup formGroup, bool didPop)? onPopInvoked;
 
   /// The widget below this widget in the tree.
   final Widget? child;
@@ -46,9 +53,11 @@ class ReactiveFormBuilder extends StatefulWidget {
   /// ```
   const ReactiveFormBuilder({
     Key? key,
-    this.child,
     required this.form,
     required this.builder,
+    this.canPop,
+    this.onPopInvoked,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -66,9 +75,16 @@ class ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    final child = widget.builder(context, _form, widget.child);
     return ReactiveForm(
       formGroup: _form,
-      child: widget.builder(context, _form, widget.child),
+      child: widget.canPop != null || widget.onPopInvoked != null
+          ? ReactiveFormPopScope(
+              canPop: widget.canPop,
+              onPopInvoked: widget.onPopInvoked,
+              child: child,
+            )
+          : child,
     );
   }
 }
