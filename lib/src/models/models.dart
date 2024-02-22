@@ -1662,15 +1662,6 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
     bool removeFocus = false,
     bool? disabled,
   }) {
-    //
-    // super.reset(
-    //   value: value,
-    //   updateParent: updateParent,
-    //   emitEvent: emitEvent,
-    //   removeFocus: removeFocus,
-    //   disabled: disabled,
-    // );
-
     markAsPristine(updateParent: updateParent);
     markAsUntouched(updateParent: updateParent);
 
