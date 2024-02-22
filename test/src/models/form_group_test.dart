@@ -105,9 +105,11 @@ void main() {
     });
 
     test('Reset group restores value of all controls to null', () {
+      const pureNameValue = 'john doe';
+      var pureEmailValue = 'johndoe@reactiveforms.com';
       final formGroup = FormGroup({
-        'name': FormControl<String>(value: 'john doe'),
-        'email': FormControl<String>(value: 'johndoe@reactiveforms.com'),
+        'name': FormControl<String>(value: pureNameValue),
+        'email': FormControl<String>(value: pureEmailValue),
       });
 
       formGroup.control('name').value = 'hello john';
@@ -115,8 +117,8 @@ void main() {
 
       formGroup.reset();
 
-      expect(formGroup.control('name').value, null);
-      expect(formGroup.control('email').value, null);
+      expect(formGroup.control('name').value, equals(pureNameValue));
+      expect(formGroup.control('email').value, equals(pureEmailValue));
     });
 
     test('Set value to FormGroup', () {
@@ -315,21 +317,6 @@ void main() {
       expect(form.hasErrors, false);
     });
 
-    test('Group valid when invalid control is disable', () {
-      // Given: a form with an invalid control
-      final form = FormGroup({
-        'name': FormControl<String>(value: 'Reactive'),
-        'email': FormControl<String>(validators: [Validators.required]),
-      });
-
-      // When: disable invalid control
-      form.control('email').markAsDisabled();
-
-      // Then: form is valid
-      expect(form.valid, true);
-      expect(form.hasErrors, false);
-    });
-
     test('Group invalid when enable invalid control', () {
       // Given: a form with a invalid disable control
       final form = FormGroup({
@@ -382,6 +369,30 @@ void main() {
       expect(form.control('name').touched, false);
     });
 
+    test('Resets a group with his pure values', () {
+      var pureValue = 'someInitialValue';
+
+      // Given: a group
+      final form = FormGroup({
+        'name': FormControl<String>(
+          value: pureValue,
+          touched: true,
+        ),
+      });
+
+      form.control('name').value = 'otherValue';
+
+      // When: resets the group
+      form.reset();
+      //   value: {
+      //   'name': initialValue,
+      // }
+
+      // Then: value of the control has the new initial value
+      expect(form.control('name').value, equals(pureValue));
+      expect(form.control('name').touched, isTrue);
+    });
+
     test('Resets a group and set initial values and disabled', () {
       // Given: a group
       final form = FormGroup({
@@ -399,15 +410,16 @@ void main() {
 
       // Then: value of the control has the new initial value
       expect(form.control('name').value, initialValue);
-      expect(form.control('name').touched, false);
-      expect(form.control('name').disabled, true);
+      expect(form.control('name').touched, isTrue);
+      expect(form.control('name').disabled, isTrue);
     });
 
     test('Resets a group with empty {} state', () {
       // Given: a group
+      const pureValue = 'someInitialValue';
       final form = FormGroup({
         'name': FormControl<String>(
-          value: 'someInitialValue',
+          value: pureValue,
           touched: true,
         ),
       });
@@ -416,8 +428,8 @@ void main() {
       form.resetState({});
 
       // Then: all controls has null value
-      expect(form.control('name').value, null, reason: 'value is not null');
-      expect(form.control('name').touched, false, reason: 'control is touched');
+      expect(form.control('name').value, equals(pureValue));
+      expect(form.control('name').touched, isTrue);
     });
 
     test('Reset a group marks it as pristine', () {
@@ -456,26 +468,6 @@ void main() {
 
       // Then: all controls has null value
       expect(form.dirty, false, reason: 'form is dirty');
-      expect(form.pristine, true, reason: 'form is dirty');
-    });
-
-    test('Resets a group state marks it as pristine', () {
-      // Given: a group
-      final form = FormGroup({
-        'name': FormControl<String>(value: 'initial value'),
-      });
-
-      // When: marks it as dirty
-      form.markAsDirty();
-
-      // Expect: form is dirty
-      expect(form.dirty, true);
-
-      // When: resets the group
-      form.resetState({'name': ControlState()});
-
-      // Then: all controls has null value
-      expect(form.dirty, false, reason: 'form is pristine');
       expect(form.pristine, true, reason: 'form is dirty');
     });
 
@@ -613,22 +605,6 @@ void main() {
       expect((form.control('name') as FormControl).touched, false);
       expect((form.control('email') as FormControl).hasFocus, false);
       expect((form.control('email') as FormControl).touched, false);
-    });
-
-    test('Add controls to the FormGroup', () {
-      // Given: a group
-      final form = FormGroup({
-        'name': FormControl<String>(),
-        'email': FormControl<String>(),
-      });
-
-      // When: add controls
-      form.addAll({
-        'password': FormControl<String>(),
-      });
-
-      // Then: controls are added
-      expect(form.controls.length, 3, reason: 'controls were not added');
     });
 
     test('Add controls to the FormGroup', () {

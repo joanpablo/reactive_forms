@@ -102,7 +102,7 @@ void main() {
           throwsA(isInstanceOf<FormControlNotFoundException>()));
     });
 
-    test('Reset array restores default value of all items to null', () {
+    test('Reset array restores default value in each control', () {
       // Given: an array with items with default values
       final array = FormArray<int>([
         FormControl<int>(value: 1),
@@ -114,13 +114,13 @@ void main() {
       array.reset();
 
       //Then: items has initial default values
-      expect(array.control('0').value, null);
-      expect(array.control('1').value, null);
-      expect(array.control('2').value, null);
+      expect(array.control('0').value, equals(1));
+      expect(array.control('1').value, equals(2));
+      expect(array.control('2').value, equals(3));
     });
 
     test(
-        'Reset array restores default value of all items to null when calling resetState with empty array',
+        'Reset array restores default value of all items to intial values when calling resetState with empty array',
         () {
       // Given: an array with items with default values
       final array = FormArray<int>([
@@ -133,9 +133,9 @@ void main() {
       array.resetState([]);
 
       //Then: items has initial default values
-      expect(array.control('0').value, null);
-      expect(array.control('1').value, null);
-      expect(array.control('2').value, null);
+      expect(array.control('0').value, equals(1));
+      expect(array.control('1').value, equals(2));
+      expect(array.control('2').value, equals(3));
     });
 
     test('Reset array with initial values', () {
@@ -203,7 +203,7 @@ void main() {
       ]);
 
       //Then: items has initial reset values and are disabled
-      expect(array.control('0').value, null);
+      expect(array.control('0').value, equals(1));
       expect(array.control('0').disabled, true);
     });
 
@@ -323,6 +323,24 @@ void main() {
 
       // Then: last control is removed
       expect(array.value!.join(''), 'Reactive');
+    });
+
+    test('Reset FromArry after remove a control', () {
+      // Given: an array with two controls
+      final array = FormArray<String>([
+        FormControl<String>(value: 'Reactive'),
+        FormControl<String>(value: 'Forms'),
+      ]);
+
+      // When: removed last control
+      array.remove(array.controls.last);
+
+      expect(array.controls.length, equals(1));
+
+      array.reset();
+
+      expect(array.controls.length, equals(2));
+      expect(array.controls.map((e) => e.value), equals(['Reactive', 'Forms']));
     });
 
     test('Insert control at index position', () {

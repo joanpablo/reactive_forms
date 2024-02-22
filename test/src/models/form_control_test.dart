@@ -76,18 +76,6 @@ void main() {
       expect(formControl.errors[ValidationMessage.minLength] != null, true);
     });
 
-    test('Reset a control set value to null', () {
-      final formControl = FormControl(
-        value: 'john doe',
-      );
-
-      formControl.value = 'hello john';
-
-      formControl.reset();
-
-      expect(formControl.value, null);
-    });
-
     test('Assert error if debounce time < 0', () {
       void formControl() =>
           FormControl<dynamic>(asyncValidatorsDebounceTime: -1);
@@ -135,7 +123,46 @@ void main() {
       expect(control.status, ControlStatus.disabled);
     });
 
-    test('Resets a control and sets initial value', () {
+    test('Resets a control with the pure value', () {
+      const pureValue = 'pureValue';
+
+      // Given: a touched control with some default value
+      final control = FormControl<String>(
+        value: pureValue,
+        touched: true,
+      );
+
+      // When: reset control with the pure value
+      control.reset();
+
+      // Expect: the control has initial value
+      expect(control.value, pureValue);
+      // And: control is untouched
+      expect(control.touched, false);
+    });
+
+    test('Resets a control with the pure value after change the value', () {
+      const pureValue = 'pureValue';
+
+      // Given: a touched control with some default value
+      final control = FormControl<String>(
+        value: pureValue,
+        touched: true,
+      );
+
+      // Change the pure value
+      control.updateValue('new value');
+
+      // When: reset control with the pure value
+      control.reset();
+
+      // Expect: the control has initial value
+      expect(control.value, pureValue);
+      // And: control is untouched
+      expect(control.touched, false);
+    });
+
+    test('Resets a control with custom value', () {
       // Given: a touched control with some default value
       final control = FormControl<String>(
         value: 'someValue',
