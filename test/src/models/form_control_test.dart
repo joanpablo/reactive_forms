@@ -135,10 +135,9 @@ void main() {
       // When: reset control with the pure value
       control.reset();
 
-      // Expect: the control has initial value
+      // Expect: the control has initial values
       expect(control.value, pureValue);
-      // And: control is untouched
-      expect(control.touched, false);
+      expect(control.touched, isTrue);
     });
 
     test('Resets a control with the pure value after change the value', () {
@@ -156,10 +155,9 @@ void main() {
       // When: reset control with the pure value
       control.reset();
 
-      // Expect: the control has initial value
+      // Expect: the control has initial values
       expect(control.value, pureValue);
-      // And: control is untouched
-      expect(control.touched, false);
+      expect(control.touched, isTrue);
     });
 
     test('Resets a control with custom value', () {
@@ -173,10 +171,9 @@ void main() {
       final initialValue = 'otherValue';
       control.reset(value: initialValue);
 
-      // Expect: the control has initial value
+      // Expect: the control has initial values
       expect(control.value, initialValue);
-      // And: control is untouched
-      expect(control.touched, false);
+      expect(control.touched, isTrue);
     });
 
     test('Resets a control and sets initial value and disabled state', () {
@@ -192,8 +189,8 @@ void main() {
 
       // Then: the control has initial value
       expect(control.value, initialValue);
-      // And: control is untouched
-      expect(control.touched, false);
+      expect(control.touched, isTrue);
+
       // And: is disabled
       expect(control.disabled, true);
     });
