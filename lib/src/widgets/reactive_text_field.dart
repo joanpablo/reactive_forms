@@ -299,4 +299,12 @@ class _ReactiveTextFieldState<T>
         : TextEditingController();
     _textController.text = initialValue == null ? '' : initialValue.toString();
   }
+
+  @override
+  void dispose() {
+    if (widget.textController == null) {
+      _textController.dispose();
+    }    
+    super.dispose();
+  }
 }
