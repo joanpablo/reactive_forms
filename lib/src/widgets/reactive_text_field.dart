@@ -297,7 +297,7 @@ class _ReactiveTextFieldState<T>
   void dispose() {
     if (widget.textController == null) {
       _textController.dispose();
-    }    
+    }
     super.dispose();
   }
 }
