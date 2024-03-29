@@ -295,7 +295,8 @@ class _ReactiveTextFieldState<T>
 
   @override
   void dispose() {
-    if (widget.textController == null) {
+    final currentWidget = widget as ReactiveTextField<T>;
+    if (currentWidget._textController == null) {
       _textController.dispose();
     }
     super.dispose();
