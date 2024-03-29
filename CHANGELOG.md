@@ -1,3 +1,13 @@
+# 17.0.0
+
+## Breaking changes
+
+- Remove `onWillPop` from `ReactiveForm` and `ReactiveFormBuilder` widgets.
+
+## Features
+
+- Add `canPop` and `onPopInvoked` to `ReactiveForm` and `ReactiveFormBuilder` widgets.
+
 # 16.1.1
 
 ## Fixes
