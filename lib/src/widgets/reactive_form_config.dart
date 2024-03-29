@@ -33,10 +33,10 @@ class ReactiveFormConfig extends InheritedWidget {
   /// );
   /// ```
   const ReactiveFormConfig({
-    required Widget child,
+    required super.child,
     required this.validationMessages,
-    Key? key,
-  }) : super(child: child, key: key);
+    super.key,
+  });
 
   @override
   bool updateShouldNotify(covariant ReactiveFormConfig oldWidget) {

@@ -5,9 +5,9 @@ class ReactiveTimePickerTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveTimePickerTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

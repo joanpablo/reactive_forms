@@ -7,8 +7,8 @@ class ViewModelProvider extends InheritedWidget {
 
   ViewModelProvider({
     required this.viewModel,
-    required Widget child,
-  }) : super(child: child);
+    required super.child,
+  });
 
   static NewContactViewModel? of(BuildContext context) =>
       context.findAncestorWidgetOfExactType<ViewModelProvider>()?.viewModel;

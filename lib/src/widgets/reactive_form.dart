@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
-import 'package:reactive_forms/src/widgets/reactive_form_pop_scope.dart';
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
@@ -29,12 +28,12 @@ class ReactiveForm extends StatelessWidget {
   ///
   /// The [formGroup] and [child] arguments are required.
   const ReactiveForm({
-    Key? key,
+    super.key,
     required this.formGroup,
     required this.child,
     this.canPop,
     this.onPopInvoked,
-  }) : super(key: key);
+  });
 
   /// Returns the nearest model up its widget tree.
   ///
@@ -64,9 +63,11 @@ class ReactiveForm extends StatelessWidget {
       control: formGroup,
       stream: formGroup.statusChanged,
       child: canPop != null || onPopInvoked != null
-          ? ReactiveFormPopScope(
-              canPop: canPop,
-              onPopInvoked: onPopInvoked,
+          ? PopScope(
+              canPop: canPop != null ? canPop!(formGroup) : true,
+              onPopInvoked: onPopInvoked != null
+                  ? (didPop) => onPopInvoked!(formGroup, didPop)
+                  : null,
               child: child,
             )
           : child,

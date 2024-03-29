@@ -26,9 +26,9 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
   ///
   /// See also [CheckboxListTile]
   ReactiveSwitchListTile({
-    Key? key,
-    String? formControlName,
-    FormControl<bool>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     Color? tileColor,
     Color? activeColor,
     Color? activeTrackColor,
@@ -50,7 +50,7 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     Color? selectedTileColor,
     VisualDensity? visualDensity,
     bool? enableFeedback,
-    FocusNode? focusNode,
+    super.focusNode,
     ReactiveFormFieldCallback<bool>? onChanged,
     ImageErrorListener? onActiveThumbImageError,
     ImageErrorListener? onInactiveThumbImageError,
@@ -65,10 +65,6 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     double? splashRadius,
     ValueChanged<bool>? onFocusChange,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           builder: (field) {
             return SwitchListTile(
               value: field.value ?? false,
@@ -132,9 +128,9 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
   /// For documentation about the various parameters, see the
   /// [SwitchListTile.adaptive] constructor.
   ReactiveSwitchListTile.adaptative({
-    Key? key,
-    String? formControlName,
-    FormControl<bool>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     Color? activeColor,
     Color? activeTrackColor,
     Color? inactiveThumbColor,
@@ -158,7 +154,7 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     ListTileControlAffinity controlAffinity = ListTileControlAffinity.platform,
     bool? dense,
     bool? enableFeedback,
-    FocusNode? focusNode,
+    super.focusNode,
     ValueChanged<bool>? onFocusChange,
     Color? hoverColor,
     bool isThreeLine = false,
@@ -172,10 +168,6 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     VisualDensity? visualDensity,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           builder: (field) {
             return SwitchListTile.adaptive(
               value: field.value ?? false,

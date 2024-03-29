@@ -32,7 +32,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   /// at the same time.
   ///
   const ReactiveStatusListenableBuilder({
-    Key? key,
+    super.key,
     this.formControlName,
     this.formControl,
     required this.builder,
@@ -40,8 +40,7 @@ class ReactiveStatusListenableBuilder extends StatelessWidget {
   })  : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
-            'Must provide a formControlName or a formControl, but not both at the same time.'),
-        super(key: key);
+            'Must provide a formControlName or a formControl, but not both at the same time.');
 
   @override
   Widget build(BuildContext context) {

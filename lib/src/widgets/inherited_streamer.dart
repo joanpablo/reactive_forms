@@ -7,8 +7,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 abstract class InheritedStreamer<T> extends InheritedWidget {
-  const InheritedStreamer(this.stream, Widget child, {Key? key})
-      : super(key: key, child: child);
+  const InheritedStreamer(this.stream, Widget child, {super.key})
+      : super(child: child);
 
   final Stream<T> stream;
 

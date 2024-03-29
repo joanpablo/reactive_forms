@@ -833,18 +833,12 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T? value,
-    List<Validator<dynamic>> validators = const [],
-    List<AsyncValidator<dynamic>> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
-    bool touched = false,
-    bool disabled = false,
-  }) : super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
-          disabled: disabled,
-          touched: touched,
-        ) {
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
+    super.touched,
+    super.disabled,
+  }) {
     if (value != null) {
       this.value = value;
     } else {
@@ -1039,16 +1033,11 @@ class FormControl<T> extends AbstractControl<T> {
 /// that emits events each time you add or remove a control to the collection.
 abstract class FormControlCollection<T> extends AbstractControl<T> {
   FormControlCollection({
-    List<Validator<dynamic>> validators = const [],
-    List<AsyncValidator<dynamic>> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
-    bool disabled = false,
-  }) : super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
-          disabled: disabled,
-        );
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
+    super.disabled,
+  });
 
   final _collectionChanges =
       StreamController<List<AbstractControl<Object?>>>.broadcast();
@@ -1156,17 +1145,14 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   /// See also [AbstractControl.validators]
   FormGroup(
     Map<String, AbstractControl<dynamic>> controls, {
-    List<Validator<dynamic>> validators = const [],
-    List<AsyncValidator<dynamic>> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
     bool disabled = false,
   })  : assert(
             !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
             'Control name should not contain dot($_controlNameDelimiter)'),
         super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
         ) {
     addAll(controls);
@@ -1670,14 +1656,11 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<Validator<dynamic>> validators = const [],
-    List<AsyncValidator<dynamic>> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
     bool disabled = false,
   }) : super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
         ) {
     addAll(controls);

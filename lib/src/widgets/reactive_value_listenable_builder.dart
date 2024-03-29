@@ -38,7 +38,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   /// subtree does not depend on the value of the [FormControl] that is bind
   /// with this widget.
   const ReactiveValueListenableBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     this.formControlName,
     this.formControl,
@@ -46,8 +46,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
   })  : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
-            'Must provide a formControlName or a formControl, but not both at the same time.'),
-        super(key: key);
+            'Must provide a formControlName or a formControl, but not both at the same time.');
 
   @override
   Widget build(BuildContext context) {

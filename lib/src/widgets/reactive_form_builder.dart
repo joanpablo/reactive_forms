@@ -51,13 +51,13 @@ class ReactiveFormBuilder extends StatefulWidget {
   /// }
   /// ```
   const ReactiveFormBuilder({
-    Key? key,
+    super.key,
     required this.form,
     required this.builder,
     this.canPop,
     this.onPopInvoked,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   ReactiveFormBuilderState createState() => ReactiveFormBuilderState();
