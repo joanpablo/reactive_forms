@@ -43,7 +43,7 @@ class ReactiveValueListenableBuilder<T> extends StatelessWidget {
     this.formControlName,
     this.formControl,
     this.child,
-  })  : assert(
+  }) : assert(
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
             'Must provide a formControlName or a formControl, but not both at the same time.');

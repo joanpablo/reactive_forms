@@ -38,7 +38,7 @@ class ReactiveFormArray<T> extends StatefulWidget {
     this.formArrayName,
     this.formArray,
     this.child,
-  })  : assert(
+  }) : assert(
             (formArrayName != null && formArray == null) ||
                 (formArrayName == null && formArray != null),
             'Must provide a formArrayName or a formArray, but not both at the same time.');
