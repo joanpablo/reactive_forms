@@ -21,7 +21,7 @@ class ReactiveFormBuilder extends StatefulWidget {
   /// Called to create the FormGroup that will be bind to this widget.
   final ReactiveFormBuilderCreator form;
 
-  /// Determine whether a route can popped. See [PopScope] for more details.
+  /// Determine whether a route can be popped. See [PopScope] for more details.
   final bool Function(FormGroup formGroup)? canPop;
 
   /// A callback invoked when a route is popped. See [PopScope] for more details.
@@ -41,6 +41,23 @@ class ReactiveFormBuilder extends StatefulWidget {
   ///   Widget build(BuildContext context) {
   ///     return ReactiveFormBuilder(
   ///       form: (context) => FormGroup({'name': FormControl<String>()}),
+  ///       builder: (context, form, child) {
+  ///         return ReactiveTextField(
+  ///           formControlName: 'name',
+  ///         );
+  ///       },
+  ///     );
+  ///   }
+  /// }
+  /// ```
+  /// ### Example: Allows the route to be popped only if the form is valid.
+  /// ```dart
+  /// class MyWidget extends StatelessWidget {
+  ///   @override
+  ///   Widget build(BuildContext context) {
+  ///     return ReactiveFormBuilder(
+  ///       form: (context) => FormGroup({'name': FormControl<String>()}),
+  ///       canPop: (formGroup) => formGroup.valid
   ///       builder: (context, form, child) {
   ///         return ReactiveTextField(
   ///           formControlName: 'name',

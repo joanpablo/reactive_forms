@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
+import 'package:reactive_forms/src/widgets/reactive_form_pop_scope.dart';
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
@@ -19,10 +20,10 @@ class ReactiveForm extends StatelessWidget {
   final FormGroup formGroup;
 
   /// Determine whether a route can popped. See [PopScope] for more details.
-  final bool Function(FormGroup formGroup)? canPop;
+  final ReactiveFormCanPopCallback? canPop;
 
   /// A callback invoked when a route is popped. See [PopScope] for more details.
-  final void Function(FormGroup formGroup, bool didPop)? onPopInvoked;
+  final ReactiveFormPopInvokedCallback? onPopInvoked;
 
   /// Creates and instance of [ReactiveForm].
   ///
@@ -62,15 +63,11 @@ class ReactiveForm extends StatelessWidget {
     return FormControlInheritedStreamer(
       control: formGroup,
       stream: formGroup.statusChanged,
-      child: canPop != null || onPopInvoked != null
-          ? PopScope(
-              canPop: canPop != null ? canPop!(formGroup) : true,
-              onPopInvoked: onPopInvoked != null
-                  ? (didPop) => onPopInvoked!(formGroup, didPop)
-                  : null,
-              child: child,
-            )
-          : child,
+      child: ReactiveFormPopScope(
+        canPop: canPop,
+        onPopInvoked: onPopInvoked,
+        child: child,
+      ),
     );
   }
 }
