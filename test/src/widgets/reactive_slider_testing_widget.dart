@@ -12,14 +12,14 @@ class ReactiveSliderTestingWidget extends StatelessWidget {
   final ReactiveFormFieldCallback<num>? onChanged;
 
   const ReactiveSliderTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.focusNode,
     this.labelBuilder,
     this.onChanged,
     this.onChangeStart,
     this.onChangeEnd,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

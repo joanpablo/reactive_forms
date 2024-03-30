@@ -21,20 +21,14 @@ class ReactiveFormBuilder extends StatefulWidget {
   /// Called to create the FormGroup that will be bind to this widget.
   final ReactiveFormBuilderCreator form;
 
+  /// Determine whether a route can be popped. See [PopScope] for more details.
+  final bool Function(FormGroup formGroup)? canPop;
+
+  /// A callback invoked when a route is popped. See [PopScope] for more details.
+  final void Function(FormGroup formGroup, bool didPop)? onPopInvoked;
+
   /// The widget below this widget in the tree.
   final Widget? child;
-
-  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
-  /// that contains the form.
-  ///
-  /// If the callback returns a Future that resolves to false, the form's route
-  /// will not be popped.
-  ///
-  /// See also:
-  ///
-  ///  * [WillPopScope], another widget that provides a way to intercept the
-  ///    back button.
-  final WillPopCallback? onWillPop;
 
   /// Creates and instance of [ReactiveFormBuilder].
   ///
@@ -56,13 +50,31 @@ class ReactiveFormBuilder extends StatefulWidget {
   ///   }
   /// }
   /// ```
+  /// ### Example: Allows the route to be popped only if the form is valid.
+  /// ```dart
+  /// class MyWidget extends StatelessWidget {
+  ///   @override
+  ///   Widget build(BuildContext context) {
+  ///     return ReactiveFormBuilder(
+  ///       form: (context) => FormGroup({'name': FormControl<String>()}),
+  ///       canPop: (formGroup) => formGroup.valid
+  ///       builder: (context, form, child) {
+  ///         return ReactiveTextField(
+  ///           formControlName: 'name',
+  ///         );
+  ///       },
+  ///     );
+  ///   }
+  /// }
+  /// ```
   const ReactiveFormBuilder({
-    Key? key,
-    this.child,
-    this.onWillPop,
+    super.key,
     required this.form,
     required this.builder,
-  }) : super(key: key);
+    this.canPop,
+    this.onPopInvoked,
+    this.child,
+  });
 
   @override
   ReactiveFormBuilderState createState() => ReactiveFormBuilderState();
@@ -81,7 +93,8 @@ class ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
   Widget build(BuildContext context) {
     return ReactiveForm(
       formGroup: _form,
-      onWillPop: widget.onWillPop,
+      canPop: widget.canPop,
+      onPopInvoked: widget.onPopInvoked,
       child: widget.builder(context, _form, widget.child),
     );
   }

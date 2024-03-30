@@ -5,9 +5,9 @@ class ReactiveValueListenableTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveValueListenableTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

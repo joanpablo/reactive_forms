@@ -10,12 +10,12 @@ class ReactiveSwitchTestingWidget extends StatelessWidget {
   final ReactiveFormFieldCallback<bool>? adaptativeOnChanged;
 
   const ReactiveSwitchTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.focusNode,
     this.onChanged,
     this.adaptativeOnChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

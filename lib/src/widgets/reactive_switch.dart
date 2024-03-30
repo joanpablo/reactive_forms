@@ -33,10 +33,10 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
   /// For documentation about the various parameters, see the [Switch] class
   /// and [Switch], the constructor.
   ReactiveSwitch({
-    Key? key,
-    String? formControlName,
-    FormControl<bool>? formControl,
-    FocusNode? focusNode,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.focusNode,
     Color? activeColor,
     Color? activeTrackColor,
     Color? inactiveThumbColor,
@@ -60,10 +60,6 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
     MaterialStateProperty<Icon?>? thumbIcon,
     ValueChanged<bool>? onFocusChange,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           builder: (field) {
             return Switch(
               value: field.value ?? false,
@@ -120,10 +116,10 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
   /// For documentation about the various parameters, see the [Switch.adaptive]
   /// constructor.
   ReactiveSwitch.adaptive({
-    Key? key,
-    String? formControlName,
-    FormControl<bool>? formControl,
-    FocusNode? focusNode,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.focusNode,
     Color? activeColor,
     Color? activeTrackColor,
     Color? inactiveThumbColor,
@@ -144,10 +140,6 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
     double? splashRadius,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           builder: (field) {
             return Switch.adaptive(
               value: field.value ?? false,

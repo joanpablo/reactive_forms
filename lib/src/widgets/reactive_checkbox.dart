@@ -21,9 +21,9 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
   /// For documentation about the various parameters, see the [Checkbox] class
   /// and the [Checkbox] constructor.
   ReactiveCheckbox({
-    Key? key,
-    String? formControlName,
-    FormControl<bool>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     bool tristate = false,
     Color? activeColor,
     Color? checkColor,
@@ -36,16 +36,12 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
     MaterialStateProperty<Color?>? fillColor,
     MaterialStateProperty<Color?>? overlayColor,
     double? splashRadius,
-    FocusNode? focusNode,
+    super.focusNode,
     OutlinedBorder? shape,
     BorderSide? side,
     ReactiveFormFieldCallback<bool>? onChanged,
     ShowErrorsFunction<bool>? showErrors,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           showErrors: showErrors ??
               (control) =>
                   control.invalid && (control.dirty || control.touched),

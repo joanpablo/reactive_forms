@@ -5,8 +5,7 @@ class SampleScreen extends StatelessWidget {
   final Widget body;
   final Widget? title;
 
-  const SampleScreen({Key? key, required this.body, this.title})
-      : super(key: key);
+  const SampleScreen({super.key, required this.body, this.title});
 
   @override
   Widget build(BuildContext context) {

@@ -10,12 +10,12 @@ class ReactiveCheckboxListTileTestingWidget extends StatelessWidget {
   final ReactiveFormFieldCallback<bool>? onChanged;
 
   const ReactiveCheckboxListTileTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.tristate = false,
     this.focusNode,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

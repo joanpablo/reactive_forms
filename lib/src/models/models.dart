@@ -1188,17 +1188,14 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   /// See also [AbstractControl.validators]
   FormGroup(
     Map<String, AbstractControl<dynamic>> controls, {
-    List<Validator<dynamic>> validators = const [],
-    List<AsyncValidator<dynamic>> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
     bool disabled = false,
   })  : assert(
             !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
             'Control name should not contain dot($_controlNameDelimiter)'),
         super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
           pureValue: controls,
         ) {
@@ -1742,14 +1739,11 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<Validator<dynamic>> validators = const [],
-    List<AsyncValidator<dynamic>> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
     bool disabled = false,
   }) : super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
           pureValue: controls.map((e) => e.value).toList(),
         ) {
