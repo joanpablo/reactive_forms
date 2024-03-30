@@ -7,6 +7,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// A credit card validator that validates that the control's value is a valid
 /// credit card.
 class CreditCardValidator extends Validator<dynamic> {
+  static final RegExp onlyNumbersRegex = RegExp(r'^[0-9]+$');
+
   const CreditCardValidator() : super();
 
   @override
@@ -18,7 +20,7 @@ class CreditCardValidator extends Validator<dynamic> {
     }
 
     final cardNumber = control.value.toString().replaceAll(' ', '');
-    final isNumber = NumberValidator.numberRegex.hasMatch(cardNumber);
+    final isNumber = onlyNumbersRegex.hasMatch(cardNumber);
 
     return isNumber &&
             cardNumber.length >= 13 &&
