@@ -33,16 +33,15 @@ class ReactiveFormArray<T> extends StatefulWidget {
   /// subtree does not depend on the value of the [FormArray] that is bind
   /// with this widget.
   const ReactiveFormArray({
-    Key? key,
+    super.key,
     required this.builder,
     this.formArrayName,
     this.formArray,
     this.child,
-  })  : assert(
+  }) : assert(
             (formArrayName != null && formArray == null) ||
                 (formArrayName == null && formArray != null),
-            'Must provide a formArrayName or a formArray, but not both at the same time.'),
-        super(key: key);
+            'Must provide a formArrayName or a formArray, but not both at the same time.');
 
   @override
   ReactiveFormArrayState<T> createState() => ReactiveFormArrayState<T>();

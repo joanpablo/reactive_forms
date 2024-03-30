@@ -21,9 +21,9 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
   /// For documentation about the various parameters, see the [CheckboxListTile]
   /// class and the [CheckboxListTile] constructor.
   ReactiveCheckboxListTile({
-    Key? key,
-    String? formControlName,
-    FormControl<bool>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     Color? activeColor,
     Color? checkColor,
     Widget? title,
@@ -40,7 +40,7 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
     Color? tileColor,
     ShapeBorder? shape,
     VisualDensity? visualDensity,
-    FocusNode? focusNode,
+    super.focusNode,
     bool? enableFeedback,
     OutlinedBorder? checkboxShape,
     BorderSide? side,
@@ -54,10 +54,6 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
     ValueChanged<bool>? onFocusChange,
     ShowErrorsFunction<bool>? showErrors,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           showErrors: showErrors ??
               (control) =>
                   control.invalid && (control.dirty || control.touched),

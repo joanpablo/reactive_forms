@@ -2,7 +2,10 @@
 
 ## Breaking changes
 
-- Remove `onWillPop` from `ReactiveForm` and `ReactiveFormBuilder` widgets.
+- Removed deprecated `onWillPop` from `ReactiveForm` and `ReactiveFormBuilder` widgets. 
+It was replaced with the `PopScope` widget.
+- `Validators.number` allows now to define negative numbers and decimal numbers with the addition
+of two optional arguments `allowNegatives` and `allowedDecimals`.
 
 ## Features
 

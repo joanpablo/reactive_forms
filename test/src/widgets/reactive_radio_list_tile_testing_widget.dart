@@ -9,11 +9,11 @@ class ReactiveRadioListTileTestingWidget extends StatelessWidget {
   final ReactiveFormFieldCallback<bool>? onChanged;
 
   const ReactiveRadioListTileTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.focusNode,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

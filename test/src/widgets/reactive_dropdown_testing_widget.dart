@@ -11,7 +11,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
   final DropdownButtonBuilder? selectedItemBuilder;
 
   const ReactiveDropdownTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     required this.items,
     this.onChanged,
@@ -19,7 +19,7 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
     this.readOnly = false,
     this.disabledHint,
     this.selectedItemBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

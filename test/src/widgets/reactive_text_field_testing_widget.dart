@@ -13,7 +13,7 @@ class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
   final ReactiveFormFieldCallback<T>? onEditingComplete;
 
   const ReactiveTextFieldTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.validationMessages,
     this.showErrors,
@@ -25,7 +25,7 @@ class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
     this.onTap,
     this.onSubmitted,
     this.onEditingComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

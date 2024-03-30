@@ -7,71 +7,81 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Provides a set of built-in validators that can be used by form controls,
 /// form groups, and form arrays.
 class Validators {
-  /// Gets a validator that delegates the validation to the external [validator]
+  /// Creates a validator that delegates the validation to the external [validator]
   /// function.
   static Validator<dynamic> delegate(ValidatorFunction validator) =>
       DelegateValidator(validator);
 
-  /// Gets a validator that delegates the validation to the external
+  /// Creates a validator that delegates the validation to the external
   /// asynchronous [validator] function.
   static AsyncValidator<dynamic> delegateAsync(
           AsyncValidatorFunction validator) =>
       DelegateAsyncValidator(validator);
 
-  /// Gets a validator that requires the control have a non-empty value.
+  /// Creates a validator that requires the control have a non-empty value.
   static Validator<dynamic> get required => const RequiredValidator();
 
-  /// Gets a validator that requires the control's value be true.
+  /// Creates a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
   static Validator<dynamic> get requiredTrue => const EqualsValidator<bool>(
         true,
         validationMessage: ValidationMessage.requiredTrue,
       );
 
-  /// Gets a validator that requires the control's value pass an email
+  /// Creates a validator that requires the control's value pass an email
   /// validation test.
   static Validator<dynamic> get email => const EmailValidator();
 
-  /// Gets a validator that validates if control's value is a numeric value.
-  static Validator<dynamic> get number => const NumberValidator();
+  /// Creates a validator function that checks if a control's value is a valid number.
+  ///
+  /// [allowedDecimals] (optional): The allowed number of decimal places. Defaults to 0.
+  /// [allowNegatives] (optional): Whether to allow negative numbers. Defaults to true.
+  static Validator<dynamic> number({
+    int allowedDecimals = 0,
+    bool allowNegatives = true,
+  }) =>
+      NumberValidator(
+        allowedDecimals: allowedDecimals,
+        allowNegatives: allowNegatives,
+      );
 
-  /// Gets a validator that validates if the control's value is a valid
+  /// Creates a validator that validates if the control's value is a valid
   /// credit card number.
   static Validator<dynamic> get creditCard => const CreditCardValidator();
 
-  /// Gets a validator that requires the control's value to be equals to
+  /// Creates a validator that requires the control's value to be equals to
   /// argument [value].
   ///
   /// The argument [value] must not be null.
   static Validator<dynamic> equals<T>(T value) => EqualsValidator<T>(value);
 
-  /// Gets a validator that requires the control's value to be greater than
+  /// Creates a validator that requires the control's value to be greater than
   /// or equal to [min] value.
   ///
   /// The argument [min] must not be null.
   static Validator<dynamic> min<T>(T min) => MinValidator<T>(min);
 
-  /// Gets a validator that requires the control's value to be less than
+  /// Creates a validator that requires the control's value to be less than
   /// or equal to [max] value.
   ///
   /// The argument [max] must not be null.
   static Validator<dynamic> max<T>(T max) => MaxValidator<T>(max);
 
-  /// Gets a validator that requires the length of the control's value to be
+  /// Creates a validator that requires the length of the control's value to be
   /// greater than or equal to the provided [minLength].
   ///
   /// The argument [minLength] argument must not be null.
   static Validator<dynamic> minLength(int minLength) =>
       MinLengthValidator(minLength);
 
-  /// Gets a validator that requires the length of the control's value to be
+  /// Creates a validator that requires the length of the control's value to be
   /// less than or equal to the provided [maxLength].
   ///
   /// The argument [maxLength] must not be null.
   static Validator<dynamic> maxLength(int maxLength) =>
       MaxLengthValidator(maxLength);
 
-  /// Gets a validator that requires the control's value to match a
+  /// Creates a validator that requires the control's value to match a
   /// regex [pattern].
   ///
   /// The argument [pattern] must not be null.
@@ -145,7 +155,7 @@ class Validators {
     return PatternValidator(evaluator, validationMessage: validationMessage);
   }
 
-  /// Gets a [FormGroup] validator that checks the controls [controlName] and
+  /// Creates a [FormGroup] validator that checks the controls [controlName] and
   /// [matchingControlName] have the same values.
   ///
   /// The arguments [controlName] and [matchingControlName] must not be null.
@@ -208,7 +218,7 @@ class Validators {
     return MustMatchValidator(controlName, matchingControlName, markAsDirty);
   }
 
-  /// Gets a [FormGroup] validator that compares two controls in the group.
+  /// Creates a [FormGroup] validator that compares two controls in the group.
   ///
   /// The arguments [controlName], [compareControlName] and [compareOption]
   /// must not be null.
@@ -251,7 +261,7 @@ class Validators {
     return ComposeOrValidator(validators);
   }
 
-  /// Gets a validator that requires the control's value contains all the
+  /// Creates a validator that requires the control's value contains all the
   /// values specified in [values].
   ///
   /// The argument [values] must not be null.
@@ -277,7 +287,7 @@ class Validators {
     return ContainsValidator<T>(values);
   }
 
-  /// Gets a validator that requires any element of the control's iterable value
+  /// Creates a validator that requires any element of the control's iterable value
   /// satisfies [test].
   ///
   /// Checks every element in control's value in iteration order, and marks

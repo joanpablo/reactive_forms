@@ -26,9 +26,9 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
   ///
   /// See also [RadioListTile]
   ReactiveRadioListTile({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     required T value,
     Color? activeColor,
     Color? selectedTileColor,
@@ -45,7 +45,7 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
     bool autofocus = false,
     bool selected = false,
     VisualDensity? visualDensity,
-    FocusNode? focusNode,
+    super.focusNode,
     bool? enableFeedback,
     ReactiveFormFieldCallback<T>? onChanged,
     MouseCursor? mouseCursor,
@@ -56,10 +56,6 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
     MaterialTapTargetSize? materialTapTargetSize,
     ValueChanged<bool>? onFocusChange,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          focusNode: focusNode,
           builder: (field) {
             return RadioListTile<T>(
               value: value,

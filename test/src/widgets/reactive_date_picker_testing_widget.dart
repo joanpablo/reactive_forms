@@ -8,12 +8,12 @@ class ReactiveDatePickerTestingWidget<T> extends StatelessWidget {
   final DateTime? initialDate;
 
   const ReactiveDatePickerTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.lastDate,
     this.firstDate,
     this.initialDate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

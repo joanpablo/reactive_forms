@@ -20,21 +20,21 @@ class ReactiveForm extends StatelessWidget {
   final FormGroup formGroup;
 
   /// Determine whether a route can popped. See [PopScope] for more details.
-  final bool Function(FormGroup formGroup)? canPop;
+  final ReactiveFormCanPopCallback? canPop;
 
   /// A callback invoked when a route is popped. See [PopScope] for more details.
-  final void Function(FormGroup formGroup, bool didPop)? onPopInvoked;
+  final ReactiveFormPopInvokedCallback? onPopInvoked;
 
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
   const ReactiveForm({
-    Key? key,
+    super.key,
     required this.formGroup,
     required this.child,
     this.canPop,
     this.onPopInvoked,
-  }) : super(key: key);
+  });
 
   /// Returns the nearest model up its widget tree.
   ///
@@ -63,13 +63,11 @@ class ReactiveForm extends StatelessWidget {
     return FormControlInheritedStreamer(
       control: formGroup,
       stream: formGroup.statusChanged,
-      child: canPop != null || onPopInvoked != null
-          ? ReactiveFormPopScope(
-              canPop: canPop,
-              onPopInvoked: onPopInvoked,
-              child: child,
-            )
-          : child,
+      child: ReactiveFormPopScope(
+        canPop: canPop,
+        onPopInvoked: onPopInvoked,
+        child: child,
+      ),
     );
   }
 }
