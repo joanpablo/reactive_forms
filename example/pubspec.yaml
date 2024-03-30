@@ -18,33 +18,29 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
-  flutter: ">=3.0.0"
+  sdk: ">=3.2.0 <4.0.0"
+  flutter: ">=3.16.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.17.0
+  intl: ^0.19.0
   reactive_forms:
     path: ../
   #reactive_forms_widgets: ^0.3.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.5
+  cupertino_icons: ^1.0.6
   #reactive_dropdown_search: ^0.9.0
   #reactive_touch_spin: ^0.6.0
   #reactive_segmented_control: ^0.4.0
   #reactive_date_time_picker: ^0.4.0
 
 dev_dependencies:
-  lints: ^2.0.0
+  flutter_lints: ^3.0.2
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  reactive_forms:
-    path: ../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

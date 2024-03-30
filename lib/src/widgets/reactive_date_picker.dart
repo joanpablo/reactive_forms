@@ -55,9 +55,9 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
   /// For documentation about the various parameters, see the [showTimePicker]
   /// function parameters.
   ReactiveDatePicker({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
+    super.key,
+    super.formControlName,
+    super.formControl,
     required ReactiveDatePickerBuilder<T> builder,
     required DateTime firstDate,
     required DateTime lastDate,
@@ -82,9 +82,6 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
     TextInputType? keyboardType,
     Offset? anchorPoint,
   }) : super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
           builder: (ReactiveFormFieldState<T, DateTime> field) {
             return builder(
               field.context,

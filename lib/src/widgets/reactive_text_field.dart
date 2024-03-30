@@ -19,6 +19,13 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   final TextEditingController? _textController;
 
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
+    return AdaptiveTextSelectionToolbar.editableText(
+      editableTextState: editableTextState,
+    );
+  }
+
   /// Creates a [ReactiveTextField] that contains a [TextField].
   ///
   /// Can optionally provide a [formControl] to bind this widget to a control.
@@ -83,13 +90,13 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   /// For documentation about the various parameters, see the [TextField] class
   /// and [TextField], the constructor.
   ReactiveTextField({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ControlValueAccessor<T, String>? valueAccessor,
-    ShowErrorsFunction<T>? showErrors,
-    FocusNode? focusNode,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    super.valueAccessor,
+    super.showErrors,
+    super.focusNode,
     InputDecoration decoration = const InputDecoration(),
     TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -101,7 +108,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextAlignVertical? textAlignVertical,
     bool autofocus = false,
     bool readOnly = false,
-    ToolbarOptions? toolbarOptions,
+    EditableTextContextMenuBuilder? contextMenuBuilder =
+        _defaultContextMenuBuilder,
     bool? showCursor,
     bool obscureText = false,
     String obscuringCharacter = '•',
@@ -141,15 +149,15 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     ReactiveFormFieldCallback<T>? onEditingComplete,
     ReactiveFormFieldCallback<T>? onSubmitted,
     ReactiveFormFieldCallback<T>? onChanged,
+    UndoHistoryController? undoController,
+    bool? cursorOpacityAnimates,
+    TapRegionCallback? onTapOutside,
+    ContentInsertionConfiguration? contentInsertionConfiguration,
+    bool canRequestFocus = true,
+    SpellCheckConfiguration? spellCheckConfiguration,
+    TextMagnifierConfiguration? magnifierConfiguration,
   })  : _textController = controller,
         super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          valueAccessor: valueAccessor,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
-          focusNode: focusNode,
           builder: (ReactiveFormFieldState<T, String> field) {
             final state = field as _ReactiveTextFieldState<T>;
             final effectiveDecoration = decoration
@@ -169,7 +177,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               textDirection: textDirection,
               textCapitalization: textCapitalization,
               autofocus: autofocus,
-              toolbarOptions: toolbarOptions,
+              contextMenuBuilder: contextMenuBuilder,
               readOnly: readOnly,
               showCursor: showCursor,
               obscureText: obscureText,
@@ -223,6 +231,13 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
                 field.didChange(value);
                 onChanged?.call(field.control);
               },
+              undoController: undoController,
+              cursorOpacityAnimates: cursorOpacityAnimates,
+              onTapOutside: onTapOutside,
+              contentInsertionConfiguration: contentInsertionConfiguration,
+              canRequestFocus: canRequestFocus,
+              spellCheckConfiguration: spellCheckConfiguration,
+              magnifierConfiguration: magnifierConfiguration,
             );
           },
         );
@@ -276,5 +291,14 @@ class _ReactiveTextFieldState<T>
         ? currentWidget._textController!
         : TextEditingController();
     _textController.text = initialValue == null ? '' : initialValue.toString();
+  }
+
+  @override
+  void dispose() {
+    final currentWidget = widget as ReactiveTextField<T>;
+    if (currentWidget._textController == null) {
+      _textController.dispose();
+    }
+    super.dispose();
   }
 }

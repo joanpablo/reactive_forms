@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// A reactive widget that wraps a [DropdownButton].
+/// A reactive widget that wraps a [DropdownButtonFormField].
 class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// Creates a [DropdownButton] widget wrapped in an [InputDecorator].
   ///
@@ -20,15 +20,18 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
   /// If [readOnly] is true, the button will be disabled, the down arrow will
   /// be grayed out, and the disabledHint will be shown (if provided).
   ///
-  /// The [DropdownButton] [items] parameters must not be null.
+  /// The [items] parameter must not be null.
+  ///
+  /// For more information about all various parameters,
+  /// see [DropdownButtonFormField] constructor.
   ReactiveDropdownField({
-    Key? key,
-    String? formControlName,
-    FormControl<T>? formControl,
-    FocusNode? focusNode,
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.focusNode,
     required List<DropdownMenuItem<T>> items,
-    Map<String, ValidationMessageFunction>? validationMessages,
-    ShowErrorsFunction<T>? showErrors,
+    super.validationMessages,
+    super.showErrors,
     DropdownButtonBuilder? selectedItemBuilder,
     Widget? hint,
     InputDecoration decoration = const InputDecoration(),
@@ -45,22 +48,16 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
     double? itemHeight,
     Color? dropdownColor,
     Color? focusColor,
-    Widget? underline,
     bool autofocus = false,
     double? menuMaxHeight,
     bool? enableFeedback,
     AlignmentGeometry alignment = AlignmentDirectional.centerStart,
     BorderRadius? borderRadius,
+    EdgeInsetsGeometry? padding,
     ReactiveFormFieldCallback<T>? onTap,
     ReactiveFormFieldCallback<T>? onChanged,
   })  : assert(itemHeight == null || itemHeight > 0),
         super(
-          key: key,
-          formControl: formControl,
-          formControlName: formControlName,
-          validationMessages: validationMessages,
-          showErrors: showErrors,
-          focusNode: focusNode,
           builder: (ReactiveFormFieldState<T, T> field) {
             final effectiveDecoration = decoration.applyDefaults(
               Theme.of(field.context).inputDecorationTheme,
@@ -85,46 +82,41 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
               }
             }
 
-            return InputDecorator(
+            return DropdownButtonFormField<T>(
+              value: effectiveValue,
               decoration: effectiveDecoration.copyWith(
                 errorText: field.errorText,
                 enabled: !isDisabled,
               ),
-              isEmpty: effectiveValue == null,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<T>(
-                  value: effectiveValue,
-                  items: items,
-                  selectedItemBuilder: selectedItemBuilder,
-                  hint: hint,
-                  disabledHint: effectiveDisabledHint,
-                  elevation: elevation,
-                  style: style,
-                  icon: icon,
-                  iconDisabledColor: iconDisabledColor,
-                  iconEnabledColor: iconEnabledColor,
-                  iconSize: iconSize,
-                  isDense: isDense,
-                  isExpanded: isExpanded,
-                  itemHeight: itemHeight,
-                  focusNode: field.focusNode,
-                  dropdownColor: dropdownColor,
-                  focusColor: focusColor,
-                  underline: underline,
-                  autofocus: autofocus,
-                  menuMaxHeight: menuMaxHeight,
-                  enableFeedback: enableFeedback,
-                  alignment: alignment,
-                  borderRadius: borderRadius,
-                  onTap: onTap != null ? () => onTap(field.control) : null,
-                  onChanged: isDisabled
-                      ? null
-                      : (value) {
-                          field.didChange(value);
-                          onChanged?.call(field.control);
-                        },
-                ),
-              ),
+              items: items,
+              selectedItemBuilder: selectedItemBuilder,
+              hint: hint,
+              disabledHint: effectiveDisabledHint,
+              elevation: elevation,
+              style: style,
+              icon: icon,
+              iconDisabledColor: iconDisabledColor,
+              iconEnabledColor: iconEnabledColor,
+              iconSize: iconSize,
+              isDense: isDense,
+              isExpanded: isExpanded,
+              itemHeight: itemHeight,
+              focusNode: field.focusNode,
+              dropdownColor: dropdownColor,
+              focusColor: focusColor,
+              autofocus: autofocus,
+              menuMaxHeight: menuMaxHeight,
+              enableFeedback: enableFeedback,
+              alignment: alignment,
+              borderRadius: borderRadius,
+              padding: padding,
+              onTap: onTap != null ? () => onTap(field.control) : null,
+              onChanged: isDisabled
+                  ? null
+                  : (value) {
+                      field.didChange(value);
+                      onChanged?.call(field.control);
+                    },
             );
           },
         );

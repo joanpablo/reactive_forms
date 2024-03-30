@@ -1,3 +1,100 @@
+# 17.0.0
+
+## Breaking changes
+
+- Removed deprecated `onWillPop` from `ReactiveForm` and `ReactiveFormBuilder` widgets. 
+It was replaced with the `PopScope` widget.
+- `Validators.number` allows now to define negative numbers and decimal numbers with the addition
+of two optional arguments `allowNegatives` and `allowedDecimals`.
+
+## Features
+
+- Add `canPop` and `onPopInvoked` to `ReactiveForm` and `ReactiveFormBuilder` widgets.
+
+# 16.1.1
+
+## Fixes
+
+- Add default Context Menu to `ReactiveTextField`. 
+
+# 16.1.0
+
+## Features
+
+- Add `markAsPending()` method to `AbstractControl` to allow set the status
+to PENDING by demand.
+
+# 16.0.4
+
+## Fixes
+
+- Add missing properties to `ReactiveSwitchListTile.adaptative()` widget.
+- Add `showError()` to `ReactiveCheckbox` and `ReactiveCheckboxListTile` widgets. This does not
+display any error messages but it is now compatible with the Flutter builtin behavior of Checkboxes
+when Material 3 is enabled (`ThemeData(useMaterial3: true)`) in the active App Theme.
+
+## Enhances
+
+- Update `Readme.md` file with testing examples in the section 
+`ReactiveForm vs ReactiveFormBuilder which one?`
+
+# 16.0.3
+
+## Fixes
+
+- Fix an issue with `FormGroup` and `FormArray` were recursive `Raw Value` was not working properly.
+
+# 16.0.2
+
+## Fixes
+
+- Fix an issue with `FormBuilder` when trying to build a control with a nullable '?' data type.
+- Fix an issue with `FormGroup` that was not triggering the event `collectionChanges` when a control
+is removed.
+- Fix an issue with `FormGroup` and `FormArray` when trying to find a control with a nullable '?'
+data type.
+
+# 16.0.1
+
+## Fixes
+
+- Update the intl dependency version, because in flutter 3.10, 
+`flutter_localizations` depends on intl 0.18.0.
+
+# 16.0.0
+
+## Breaking Changes
+
+- Flutter >= 3.10 required for this version.
+
+## Fixes
+
+- Updated some documentation.
+- Expose validator classes to allow direct instantiation. 
+
+# 15.0.0
+
+## Breaking Changes
+
+- All validators have been changed to classes with `const` constructors.
+- The Asynchronous Validator is now a class from where any custom async validator can inherit.
+
+## Features
+
+- A new validator `Validators.delegate(...)` has been introduced to be used with a custom
+  validation function.
+- A new validator `Validators.delegateAsync(...)` has been introduced to be used with a custom
+  async validation functions.
+
+# 14.3.0
+
+- Fix the inkwell ripple effect in the **ReactiveDropdownField**.
+- Add some other minor fixes.
+
+# 14.2.0
+
+- Update intl to latest version 0.18.0.
+
 # 14.1.0
 
 ## Enhances

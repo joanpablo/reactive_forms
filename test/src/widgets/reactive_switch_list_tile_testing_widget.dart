@@ -12,14 +12,14 @@ class ReactiveSwitchListTileTestingWidget extends StatelessWidget {
   final bool renderAdaptative;
 
   const ReactiveSwitchListTileTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.renderAdaptative = true,
     this.focusNode,
     this.adaptativeFocusNode,
     this.onChanged,
     this.adaptativeOnChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

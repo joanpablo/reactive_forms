@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
+import 'package:reactive_forms/src/widgets/reactive_form_pop_scope.dart';
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
@@ -18,27 +19,22 @@ class ReactiveForm extends StatelessWidget {
   /// The form group control that is bound to this widget.
   final FormGroup formGroup;
 
-  /// Enables the form to veto attempts by the user to dismiss the [ModalRoute]
-  /// that contains the form.
-  ///
-  /// If the callback returns a Future that resolves to false, the form's route
-  /// will not be popped.
-  ///
-  /// See also:
-  ///
-  ///  * [WillPopScope], another widget that provides a way to intercept the
-  ///    back button.
-  final WillPopCallback? onWillPop;
+  /// Determine whether a route can popped. See [PopScope] for more details.
+  final ReactiveFormCanPopCallback? canPop;
+
+  /// A callback invoked when a route is popped. See [PopScope] for more details.
+  final ReactiveFormPopInvokedCallback? onPopInvoked;
 
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
   const ReactiveForm({
-    Key? key,
+    super.key,
     required this.formGroup,
     required this.child,
-    this.onWillPop,
-  }) : super(key: key);
+    this.canPop,
+    this.onPopInvoked,
+  });
 
   /// Returns the nearest model up its widget tree.
   ///
@@ -67,8 +63,9 @@ class ReactiveForm extends StatelessWidget {
     return FormControlInheritedStreamer(
       control: formGroup,
       stream: formGroup.statusChanged,
-      child: WillPopScope(
-        onWillPop: onWillPop,
+      child: ReactiveFormPopScope(
+        canPop: canPop,
+        onPopInvoked: onPopInvoked,
         child: child,
       ),
     );

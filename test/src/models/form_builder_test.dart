@@ -99,6 +99,18 @@ void main() {
           reason: 'control is not instance of FormControl<String>');
     });
 
+    test('Build a group with a nullable form control', () {
+      // Given: a form control with nullable type and a form group created with it
+      final control = fb.control<int?>(null);
+      final form = fb.group({
+        'control': control,
+      });
+
+      // Expect a form group created with the correct type
+      expect(form.control('control') is FormControl<int?>, true,
+          reason: 'control is not instance of FormControl<int?>');
+    });
+
     test('Build a group with single validator', () {
       // Given: a form group builder creation
       final validator = Validators.required;
@@ -107,7 +119,7 @@ void main() {
       });
 
       // Expect a form group created
-      expect(form.control('control') is FormControl<Object>, true,
+      expect(form.control('control') is FormControl<dynamic>, true,
           reason: 'control is not instance of FormControl<dynamic>');
       expect(form.control('control').validators.first, validator,
           reason: 'validator not set');

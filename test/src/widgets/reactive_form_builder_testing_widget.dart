@@ -7,13 +7,13 @@ class ReactiveFormBuilderTestingWidget<T> extends StatelessWidget {
   final Map<String, String> bindings;
 
   const ReactiveFormBuilderTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
     this.validationMessages,
     this.bindings = const {
       'textField': 'name',
     },
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

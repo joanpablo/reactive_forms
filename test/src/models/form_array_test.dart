@@ -16,7 +16,7 @@ void main() {
         'selectedEmails': FormArray<bool>(
           [], // an empty array of controls
           validators: [
-            _emptyAddressee
+            Validators.delegate(_emptyAddressee),
           ], // validates that at least one email is selected
         ),
       });
@@ -50,7 +50,7 @@ void main() {
         'selectedEmails': FormArray<bool>(
           [], // an empty array of controls
           validators: [
-            _emptyAddressee
+            Validators.delegate(_emptyAddressee),
           ], // validates that at least one email is selected
         ),
       });
@@ -398,18 +398,50 @@ void main() {
       expect(array.rawValue, ['Reactive', 'Forms']);
     });
 
-    test('Enable a array enable children', () {
-      // Given: a form with a disable control
-      final array = FormArray([
+    test('Disabled array includes all controls in value and raw value', () {
+      // Given: a disabled array
+      final array = FormArray<String>([
         FormControl(value: 'Reactive'),
-        FormControl(value: 'Forms', disabled: true),
+        FormControl(value: 'Forms'),
+      ], disabled: true);
+
+      // Expect: value and raw value includes all controls
+      expect(array.value!.length, 2);
+      expect(array.rawValue.length, 2);
+      expect(array.rawValue, ['Reactive', 'Forms']);
+      expect(array.value, ['Reactive', 'Forms']);
+    });
+
+    test('Disabled array includes all controls of nested group', () {
+      // Given: a disabled array
+      final array = FormArray<String>([
+        FormControl(value: 'Reactive'),
+        FormControl(value: 'Forms'),
+      ], disabled: true);
+
+      // Expect: value and raw value includes all controls
+      expect(array.value!.length, 2);
+      expect(array.rawValue.length, 2);
+      expect(array.rawValue, ['Reactive', 'Forms']);
+      expect(array.value, ['Reactive', 'Forms']);
+    });
+
+    test('Enable a array enable children', () {
+      // Given: a disabled array of groups
+      final addressArray = FormArray([
+        fb.group({
+          'country': FormControl<String>(value: 'Canada'),
+          'city': FormControl<String>(value: 'Toronto', disabled: true),
+        }),
+      ], disabled: true);
+
+      // Expect: value and raw value includes all controls
+      expect(addressArray.value, [
+        {'country': 'Canada', 'city': 'Toronto'}
       ]);
-
-      // When: enable form
-      array.markAsEnabled();
-
-      // Then: all controls are enabled
-      expect(array.controls.every((control) => control.enabled), true);
+      expect(addressArray.rawValue, [
+        {'country': 'Canada', 'city': 'Toronto'}
+      ]);
     });
 
     test('Array valid when invalid control is disable', () {
@@ -469,181 +501,240 @@ void main() {
       // Then: state error
       expect(addValue, throwsStateError);
     });
-  });
-  test('Set empty array value to array does not update values', () {
-    // Given: an array with items with default values
-    final array = FormArray<int>([
-      FormControl<int>(value: 1),
-      FormControl<int>(value: 2),
-      FormControl<int>(value: 3),
-    ]);
 
-    // And: reset array
-    array.value = [];
+    test('Set empty array value to array does not update values', () {
+      // Given: an array with items with default values
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+        FormControl<int>(value: 3),
+      ]);
 
-    //Then: items has initial default values
-    expect(array.control('0').value, 1);
-    expect(array.control('1').value, 2);
-    expect(array.control('2').value, 3);
-  });
+      // And: reset array
+      array.value = [];
 
-  test('Get control with nested name', () {
-    // Given: a nested array
-    final form = FormGroup({
-      'numbers': FormArray<int>([
+      //Then: items has initial default values
+      expect(array.control('0').value, 1);
+      expect(array.control('1').value, 2);
+      expect(array.control('2').value, 3);
+    });
+
+    test('Get control with nested name', () {
+      // Given: a nested array
+      final form = FormGroup({
+        'numbers': FormArray<int>([
+          FormControl(value: 1),
+          FormControl(value: 2),
+          FormControl(value: 3),
+        ]),
+      });
+
+      // When: get a nested control
+      final control = form.control('numbers.2');
+
+      // Then: control is not null
+      expect(control is FormControl<int>, true);
+      expect(control.value, 3);
+    });
+
+    test('Array of groups', () {
+      // Given: an array of groups
+      final addressArray = FormArray([
+        fb.group({'city': 'Sofia'}),
+        fb.group({'city': 'Havana'}),
+      ]);
+
+      // Expect: array is created
+      expect(addressArray.controls.length, 2);
+      expect(addressArray.control('0').value, {'city': 'Sofia'});
+    });
+
+    test('Value on nested disabled Form Group', () {
+      // Given: an array of groups with a disabled control
+      final addressArray = FormArray([
+        fb.group({
+          'city': FormControl<String>(
+            value: 'Toronto',
+            disabled: true,
+          ),
+        }),
+      ]);
+
+      // Expect: array is created
+      expect(addressArray.controls.length, 1);
+      expect(addressArray.value, [
+        {'city': 'Toronto'}
+      ]);
+    });
+
+    test('Raw Value on nested Form Group', () {
+      // Given: an array of groups with a disabled control
+      final addressArray = FormArray([
+        fb.group({
+          'country': FormControl<String>(value: 'Canada'),
+          'city': FormControl<String>(value: 'Toronto', disabled: true),
+        }),
+      ]);
+
+      // Expect: array is created
+      expect(addressArray.rawValue, [
+        {
+          'country': 'Canada',
+          'city': 'Toronto',
+        },
+      ]);
+    });
+
+    test('Focused a control', () {
+      // Given: an array
+      final array = FormArray<int>([
         FormControl(value: 1),
         FormControl(value: 2),
         FormControl(value: 3),
-      ]),
+      ]);
+
+      // When: set a control focus
+      array.focus('0');
+
+      // Then: control is focused
+      expect((array.control('0') as FormControl).hasFocus, true,
+          reason: 'control is not focused');
     });
 
-    // When: get a nested control
-    final control = form.control('numbers.2');
+    test('Focused first control if no argument specified', () {
+      // Given: an array
+      final array = FormArray<int>([
+        FormControl(value: 1),
+        FormControl(value: 2),
+        FormControl(value: 3),
+      ]);
 
-    // Then: control is not null
-    expect(control is FormControl<int>, true);
-    expect(control.value, 3);
-  });
+      // When: set a control focus
+      array.focus();
 
-  test('Array of groups', () {
-    // Given: an array of groups
-    final addressArray = FormArray([
-      fb.group({'city': 'Sofia'}),
-      fb.group({'city': 'Havana'}),
-    ]);
+      // Then: control is focused
+      expect(
+        (array.control('0') as FormControl).hasFocus,
+        true,
+        reason: 'control is not focused',
+      );
+    });
 
-    // Expect: array is created
-    expect(addressArray.controls.length, 2);
-    expect(addressArray.control('0').value, {'city': 'Sofia'});
-  });
+    test('Focused a nested control', () {
+      // Given: array
+      final addressArray = FormArray([
+        fb.group({'city': 'Sofia'}),
+        fb.group({'city': 'Havana'}),
+      ]);
 
-  test('Focused a control', () {
-    // Given: an array
-    final array = FormArray<int>([
-      FormControl(value: 1),
-      FormControl(value: 2),
-      FormControl(value: 3),
-    ]);
+      // When: set a control focus
+      addressArray.focus('0.city');
 
-    // When: set a control focus
-    array.focus('0');
+      final city = addressArray.control('0.city') as FormControl<String?>;
 
-    // Then: control is focused
-    expect((array.control('0') as FormControl).hasFocus, true,
-        reason: 'control is not focused');
-  });
+      // Then: control is focused
+      expect(city.hasFocus, true, reason: 'control is not focused');
+    });
 
-  test('Focused first control if no argument specified', () {
-    // Given: an array
-    final array = FormArray<int>([
-      FormControl(value: 1),
-      FormControl(value: 2),
-      FormControl(value: 3),
-    ]);
+    test('Remove Focus to all control', () {
+      // Given: array
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+      ]);
 
-    // When: set a control focus
-    array.focus();
+      // And: all control with focus
+      array.focus('0');
+      array.focus('1');
 
-    // Then: control is focused
-    expect(
-      (array.control('0') as FormControl).hasFocus,
-      true,
-      reason: 'control is not focused',
-    );
-  });
+      // When: remove focus to a control
+      array.unfocus();
 
-  test('Focused a nested control', () {
-    // Given: array
-    final addressArray = FormArray([
-      fb.group({'city': 'Sofia'}),
-      fb.group({'city': 'Havana'}),
-    ]);
+      // Then: any control has focus
+      expect((array.control('0') as FormControl).hasFocus, false,
+          reason: 'control is focused');
+      expect((array.control('1') as FormControl).hasFocus, false,
+          reason: 'control is focused');
+    });
 
-    // When: set a control focus
-    addressArray.focus('0.city');
+    test('Clear Array', () {
+      // Given: array
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+      ]);
 
-    final city = addressArray.control('0.city') as FormControl<String?>;
+      // When: clear array
+      array.clear();
 
-    // Then: control is focused
-    expect(city.hasFocus, true, reason: 'control is not focused');
-  });
+      // Then: any control has focus
+      expect(array.controls.length, 0, reason: 'array is not empty');
+    });
 
-  test('Remove Focus to all control', () {
-    // Given: array
-    final array = FormArray<int>([
-      FormControl<int>(value: 1),
-      FormControl<int>(value: 2),
-    ]);
+    test('Disabled Array marks all children as disabled', () {
+      // Given: a disabled form
+      final array = FormArray(
+        [
+          FormControl<String>(),
+          FormControl<String>(),
+        ],
+        disabled: true,
+      );
 
-    // And: all control with focus
-    array.focus('0');
-    array.focus('1');
+      // Then: array is disabled and all controls are disabled
+      expect(array.disabled, true, reason: 'array is enabled');
+      expect(array.controls[0].disabled, true, reason: 'first is enabled');
+      expect(array.controls[1].disabled, true, reason: 'second is enabled');
+    });
 
-    // When: remove focus to a control
-    array.unfocus();
+    test('Disabled array changes to enable when enable children', () {
+      // Given: a disabled array
+      final array = FormArray([
+        FormControl<String>(),
+        FormControl<String>(),
+      ], disabled: true);
 
-    // Then: any control has focus
-    expect((array.control('0') as FormControl).hasFocus, false,
-        reason: 'control is focused');
-    expect((array.control('1') as FormControl).hasFocus, false,
-        reason: 'control is focused');
-  });
+      // When: enabled child
+      array.controls.first.markAsEnabled();
 
-  test('Clear Array', () {
-    // Given: array
-    final array = FormArray<int>([
-      FormControl<int>(value: 1),
-      FormControl<int>(value: 2),
-    ]);
+      // Then: array is enabled
+      expect(array.enabled, true, reason: 'array is disabled');
+      expect(array.controls[0].enabled, true, reason: 'first is disabled');
+      expect(array.controls[1].disabled, true, reason: 'second is enabled');
+    });
 
-    // When: clear array
-    array.clear();
+    test('Patch array value', () {
+      // Given: an array
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+        FormControl<int>(value: 2),
+      ]);
 
-    // Then: any control has focus
-    expect(array.controls.length, 0, reason: 'array is not empty');
-  });
+      // When: patch array value
+      array.patchValue([2]);
 
-  test('Initialize disabled array', () {
-    // Given: a disabled form
-    final array = FormArray([
-      FormControl<String>(),
-      FormControl<String>(),
-    ], disabled: true);
+      // Then: array value is patched
+      expect(array.value, [2, 2], reason: 'array value not patched');
+    });
 
-    // Then: array is disabled and all controls are disabled
-    expect(array.enabled, false, reason: 'array is enabled');
-    expect(array.controls[0].enabled, false, reason: 'first is enabled');
-    expect(array.controls[1].enabled, false, reason: 'second is enabled');
-  });
+    test(
+        'Test that markAsPending() a control, set pending status to the array '
+        'as well.', () {
+      // Given: an array with valid status.
+      final array = FormArray<int>([
+        FormControl<int>(value: 1),
+      ]);
 
-  test('Disabled array changes to enable when enable children', () {
-    // Given: a disabled array
-    final array = FormArray([
-      FormControl<String>(),
-      FormControl<String>(),
-    ], disabled: true);
+      // Expect: the array to be VALID and not PENDING.
+      expect(array.valid, true);
+      expect(array.pending, false);
 
-    // When: enabled child
-    array.controls.first.markAsEnabled();
+      // When: I call mark a child control as PENDING.
+      array.controls.first.markAsPending();
 
-    // Then: array is enabled
-    expect(array.enabled, true, reason: 'array is disabled');
-    expect(array.controls[0].enabled, true, reason: 'first is disabled');
-    expect(array.controls[1].disabled, true, reason: 'second is enabled');
-  });
-
-  test('Patch array value', () {
-    // Given: an array
-    final array = FormArray<int>([
-      FormControl<int>(value: 1),
-      FormControl<int>(value: 2),
-    ]);
-
-    // When: patch array value
-    array.patchValue([2]);
-
-    // Then: array value is patched
-    expect(array.value, [2, 2], reason: 'array value not patched');
+      // Then: the status of the array is PENDING as well.
+      expect(array.pending, true);
+    });
   });
 }
 

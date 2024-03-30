@@ -61,7 +61,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   ///
   /// The [builder] arguments are required.
   ReactiveFormField({
-    Key? key,
+    super.key,
     this.formControl,
     this.formControlName,
     this.valueAccessor,
@@ -73,8 +73,7 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
             (formControlName != null && formControl == null) ||
                 (formControlName == null && formControl != null),
             'Must provide a formControlName or a formControl, but not both at the same time.'),
-        _builder = builder,
-        super(key: key);
+        _builder = builder;
 
   @override
   ReactiveFormFieldState<ModelDataType, ViewDataType> createState() =>

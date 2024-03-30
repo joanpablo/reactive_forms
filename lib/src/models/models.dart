@@ -22,9 +22,9 @@ abstract class AbstractControl<T> {
   final _statusChanges = StreamController<ControlStatus>.broadcast();
   final _valueChanges = StreamController<T?>.broadcast();
   final _touchChanges = StreamController<bool>.broadcast();
-  final List<ValidatorFunction> _validators = <ValidatorFunction>[];
-  final List<AsyncValidatorFunction> _asyncValidators =
-      <AsyncValidatorFunction>[];
+  final List<Validator<dynamic>> _validators = <Validator<dynamic>>[];
+  final List<AsyncValidator<dynamic>> _asyncValidators =
+      <AsyncValidator<dynamic>>[];
 
   StreamSubscription<Map<String, dynamic>?>? _asyncValidationSubscription;
   Map<String, dynamic> _errors = <String, dynamic>{};
@@ -47,8 +47,8 @@ abstract class AbstractControl<T> {
 
   /// Constructor of the [AbstractControl].
   AbstractControl({
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
@@ -89,8 +89,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<ValidatorFunction> get validators =>
-      List<ValidatorFunction>.unmodifiable(_validators);
+  List<Validator<dynamic>> get validators =>
+      List<Validator<dynamic>>.unmodifiable(_validators);
 
   /// Sets the synchronous [validators] that are active on this control. Calling
   /// this overwrites any existing sync validators.
@@ -111,7 +111,7 @@ abstract class AbstractControl<T> {
   /// This argument is only taking into account if [autoValidate] is equals to
   /// `true`.
   void setValidators(
-    List<ValidatorFunction> validators, {
+    List<Validator<dynamic>> validators, {
     bool autoValidate = false,
     bool updateParent = true,
     bool emitEvent = true,
@@ -137,8 +137,8 @@ abstract class AbstractControl<T> {
   ///
   /// In [FormGroup] these come in handy when you want to perform validation
   /// that considers the value of more than one child control.
-  List<AsyncValidatorFunction> get asyncValidators =>
-      List<AsyncValidatorFunction>.unmodifiable(_asyncValidators);
+  List<AsyncValidator<dynamic>> get asyncValidators =>
+      List<AsyncValidator<dynamic>>.unmodifiable(_asyncValidators);
 
   /// Sets the async [validators] that are active on this control. Calling this
   /// overwrites any existing async validators.
@@ -159,7 +159,7 @@ abstract class AbstractControl<T> {
   /// This argument is only taking into account if [autoValidate] is equals to
   /// `true`.
   void setAsyncValidators(
-    List<AsyncValidatorFunction> validators, {
+    List<AsyncValidator<dynamic>> validators, {
     bool autoValidate = false,
     bool updateParent = true,
     bool emitEvent = true,
@@ -228,6 +228,8 @@ abstract class AbstractControl<T> {
   /// * VALID: This control has passed all validation checks.
   /// * INVALID: This control has failed at least one validation check.
   /// * PENDING: This control is in the midst of conducting a validation check.
+  /// * DISABLED: This control is exempt from ancestor calculations of
+  /// validity or value.
   ///
   /// These status values are mutually exclusive, so a control cannot be both
   /// valid AND invalid or invalid AND pending.
@@ -420,6 +422,28 @@ abstract class AbstractControl<T> {
     _updateAncestors(updateParent);
   }
 
+  /// Marks the control as `pending`.
+  ///
+  /// A control is pending while the control performs async validation.
+  ///
+  /// When [updateParent] is false, mark only this control. When true or not
+  /// supplied, marks all direct ancestors. Default is true.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), a [statusChanged]
+  /// event is emitted.
+  ///
+  void markAsPending({bool updateParent = true, bool emitEvent = true}) {
+    _status = ControlStatus.pending;
+
+    if (emitEvent) {
+      this._statusChanges.add(_status);
+    }
+
+    if (updateParent) {
+      parent?.markAsPending(updateParent: updateParent, emitEvent: emitEvent);
+    }
+  }
+
   /// Disposes the control
   void dispose() {
     _statusChanges.close();
@@ -602,7 +626,7 @@ abstract class AbstractControl<T> {
   Map<String, dynamic> _runValidators() {
     final errors = <String, dynamic>{};
     for (final validator in validators) {
-      final error = validator(this);
+      final error = validator.validate(this);
       if (error != null) {
         errors.addAll(error);
       }
@@ -676,8 +700,9 @@ abstract class AbstractControl<T> {
     _debounceTimer = Timer(
       Duration(milliseconds: _asyncValidatorsDebounceTime),
       () {
-        final validatorsStream = Stream.fromFutures(
-            asyncValidators.map((validator) => validator(this)).toList());
+        final validatorsStream = Stream.fromFutures(asyncValidators
+            .map((validator) => validator.validate(this))
+            .toList());
 
         final asyncValidationErrors = <String, dynamic>{};
         _asyncValidationSubscription = validatorsStream.listen(
@@ -808,18 +833,12 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T? value,
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
-    bool touched = false,
-    bool disabled = false,
-  }) : super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
-          disabled: disabled,
-          touched: touched,
-        ) {
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
+    super.touched,
+    super.disabled,
+  }) {
     if (value != null) {
       this.value = value;
     } else {
@@ -1009,6 +1028,76 @@ class FormControl<T> extends AbstractControl<T> {
   AbstractControl<dynamic> findControl(String path) => this;
 }
 
+/// The base class form [FormGroup] and [FormArray].
+/// Its provides methods for get a control by name and a [Listenable]
+/// that emits events each time you add or remove a control to the collection.
+abstract class FormControlCollection<T> extends AbstractControl<T> {
+  FormControlCollection({
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
+    super.disabled,
+  });
+
+  final _collectionChanges =
+      StreamController<List<AbstractControl<Object?>>>.broadcast();
+
+  /// Retrieves a child control given the control's [name] or path.
+  ///
+  /// The [name] is a dot-delimited string that define the path to the
+  /// control.
+  ///
+  /// Throws [FormControlNotFoundException] if no control founded with
+  /// the specified [name]/path.
+  AbstractControl<dynamic> control(String name);
+
+  /// Checks if collection contains a control by a given [name].
+  ///
+  /// Returns true if collection contains the control, otherwise returns false.
+  bool contains(String name);
+
+  /// Gets the value of the control, including any disabled control.
+  ///
+  /// Retrieves all values regardless of disabled status of children controls.
+  T get rawValue;
+
+  /// Emits when a control is added or removed from collection.
+  Stream<List<AbstractControl<Object?>>> get collectionChanges =>
+      _collectionChanges.stream;
+
+  /// Close stream that emit collection change events
+  void closeCollectionEvents() {
+    _collectionChanges.close();
+  }
+
+  /// Notify to listeners that the collection changed.
+  ///
+  /// This is for internal use only.
+  @protected
+  void emitsCollectionChanged(List<AbstractControl<Object?>> controls) {
+    _collectionChanges.add(List.unmodifiable(controls));
+  }
+
+  /// Walks the [path] to find the matching control.
+  ///
+  /// Returns null if no match is found.
+  AbstractControl<dynamic>? findControlInCollection(List<String> path) {
+    if (path.isEmpty) {
+      return null;
+    }
+
+    final result = path.fold<AbstractControl<dynamic>?>(this, (control, name) {
+      if (control != null && control is FormControlCollection<dynamic>) {
+        return control.contains(name) ? control.control(name) : null;
+      } else {
+        return null;
+      }
+    });
+
+    return result;
+  }
+}
+
 /// Tracks the value and validity state of a group of FormControl instances.
 ///
 /// A FormGroup aggregates the values of each child FormControl into one object,
@@ -1017,8 +1106,7 @@ class FormControl<T> extends AbstractControl<T> {
 /// It calculates its status by reducing the status values of its children.
 /// For example, if one of the controls in a group is invalid, the entire group
 /// becomes invalid.
-class FormGroup extends AbstractControl<Map<String, Object?>>
-    with FormControlCollection<Object> {
+class FormGroup extends FormControlCollection<Map<String, Object?>> {
   final Map<String, AbstractControl<dynamic>> _controls = {};
 
   /// Creates a new FormGroup instance.
@@ -1057,17 +1145,14 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// See also [AbstractControl.validators]
   FormGroup(
     Map<String, AbstractControl<dynamic>> controls, {
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
     bool disabled = false,
   })  : assert(
             !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
             'Control name should not contain dot($_controlNameDelimiter)'),
         super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
         ) {
     addAll(controls);
@@ -1080,8 +1165,15 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   /// Gets the value of the [FormGroup], including any disabled controls.
   ///
   /// Retrieves all values regardless of disabled status.
-  Map<String, Object?> get rawValue => _controls
-      .map<String, Object?>((key, control) => MapEntry(key, control.value));
+  @override
+  Map<String, Object?> get rawValue =>
+      _controls.map<String, Object?>((key, control) {
+        if (control is FormControlCollection<dynamic>) {
+          return MapEntry(key, control.rawValue);
+        }
+
+        return MapEntry(key, control.value);
+      });
 
   @override
   bool contains(String name) {
@@ -1137,7 +1229,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
   Map<String, AbstractControl<Object?>> get controls =>
       Map<String, AbstractControl<Object?>>.unmodifiable(_controls);
 
-  /// Reduce the value of the group is a key-value pair for each control
+  /// Reduce the value of the group as a key-value pair for each control
   /// in the group.
   ///
   /// ### Example:
@@ -1496,6 +1588,8 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
 
     _controls.removeWhere((key, value) => key == name);
     updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+
+    emitsCollectionChanged(_controls.values.toList());
   }
 
   @override
@@ -1522,8 +1616,7 @@ class FormGroup extends AbstractControl<Map<String, Object?>>
 ///
 /// FormArray is one of the three fundamental building blocks used to define
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
-class FormArray<T> extends AbstractControl<List<T?>>
-    with FormControlCollection<T> {
+class FormArray<T> extends FormControlCollection<List<T?>> {
   final List<AbstractControl<T>> _controls = [];
 
   /// Creates a new [FormArray] instance.
@@ -1563,14 +1656,11 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// See also [AbstractControl.validators]
   FormArray(
     List<AbstractControl<T>> controls, {
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
-    int asyncValidatorsDebounceTime = 250,
+    super.validators,
+    super.asyncValidators,
+    super.asyncValidatorsDebounceTime,
     bool disabled = false,
   }) : super(
-          validators: validators,
-          asyncValidators: asyncValidators,
-          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
           disabled: disabled,
         ) {
     addAll(controls);
@@ -1587,8 +1677,14 @@ class FormArray<T> extends AbstractControl<List<T?>>
   /// Gets the value of the [FormArray], including any disabled controls.
   ///
   /// Retrieves all values regardless of disabled status.
-  List<T?> get rawValue =>
-      _controls.map<T?>((control) => control.value).toList();
+  @override
+  List<T?> get rawValue => _controls.map<T?>((control) {
+        if (control is FormControlCollection<T?>) {
+          return (control as FormControlCollection<T?>).rawValue;
+        }
+
+        return control.value;
+      }).toList();
 
   /// Sets the value of the [FormArray].
   ///

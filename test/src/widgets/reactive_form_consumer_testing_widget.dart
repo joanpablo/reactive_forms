@@ -5,9 +5,9 @@ class ReactiveFormConsumerTestingWidget extends StatelessWidget {
   final FormGroup form;
 
   const ReactiveFormConsumerTestingWidget({
-    Key? key,
+    super.key,
     required this.form,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

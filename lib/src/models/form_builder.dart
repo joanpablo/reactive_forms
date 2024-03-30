@@ -61,11 +61,11 @@ class FormBuilder {
   /// ```
   FormGroup group(
     Map<String, Object> controls, [
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
   ]) {
     final map = controls
-        .map<String, AbstractControl<Object>>((String key, Object value) {
+        .map<String, AbstractControl<dynamic>>((String key, Object value) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
@@ -78,39 +78,39 @@ class FormBuilder {
         return MapEntry(key, FormControl<DateTime>(value: value));
       } else if (value is TimeOfDay) {
         return MapEntry(key, FormControl<TimeOfDay>(value: value));
-      } else if (value is AbstractControl<Object>) {
+      } else if (value is AbstractControl<dynamic>) {
         return MapEntry(key, value);
-      } else if (value is ValidatorFunction) {
-        return MapEntry(key, FormControl(validators: [value]));
-      } else if (value is List<ValidatorFunction>) {
-        return MapEntry(key, FormControl(validators: value));
+      } else if (value is Validator<dynamic>) {
+        return MapEntry(key, FormControl<dynamic>(validators: [value]));
+      } else if (value is List<Validator<dynamic>>) {
+        return MapEntry(key, FormControl<dynamic>(validators: value));
       } else if (value is List<Object?>) {
         if (value.isEmpty) {
-          return MapEntry(key, FormControl());
+          return MapEntry(key, FormControl<dynamic>());
         } else {
           final defaultValue = value.first;
           final validators = List.of(value.skip(1));
 
           if (validators.isNotEmpty &&
-              validators.any((validator) => validator is! ValidatorFunction)) {
+              validators.any((validator) => validator is! Validator<dynamic>)) {
             throw FormBuilderInvalidInitializationException(
                 'Invalid validators initialization');
           }
 
-          if (defaultValue is ValidatorFunction) {
+          if (defaultValue is Validator<dynamic>) {
             throw FormBuilderInvalidInitializationException(
                 'Expected first value in array to be default value of the control and not a validator.');
           }
 
           final effectiveValidators = validators
-              .map<ValidatorFunction>((v) => v! as ValidatorFunction)
+              .map<Validator<dynamic>>((v) => v! as Validator<dynamic>)
               .toList();
-          final control = _control(defaultValue, effectiveValidators);
-          return MapEntry(key, control as AbstractControl<Object>);
+
+          return MapEntry(key, _control(defaultValue, effectiveValidators));
         }
       }
 
-      return MapEntry(key, FormControl(value: value));
+      return MapEntry(key, FormControl<dynamic>(value: value));
     });
 
     return FormGroup(
@@ -161,8 +161,8 @@ class FormBuilder {
   /// ```
   FormControl<T> control<T>(
     T value, [
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
   ]) {
     return FormControl<T>(
       value: value,
@@ -201,8 +201,8 @@ class FormBuilder {
   ///
   FormArray<T> array<T>(
     List<Object> value, [
-    List<ValidatorFunction> validators = const [],
-    List<AsyncValidatorFunction> asyncValidators = const [],
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
   ]) {
     return FormArray<T>(
       value.map<AbstractControl<T>>((v) {
@@ -221,7 +221,7 @@ class FormBuilder {
   }
 
   FormControl<dynamic> _control(
-      dynamic value, List<ValidatorFunction> validators) {
+      dynamic value, List<Validator<dynamic>> validators) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
           'Default value of control must not be an AbstractControl.');
@@ -241,7 +241,7 @@ class FormBuilder {
       return FormControl<TimeOfDay>(value: value);
     }
 
-    return FormControl<Object>(value: value, validators: validators);
+    return FormControl<dynamic>(value: value, validators: validators);
   }
 }
 

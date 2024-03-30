@@ -114,7 +114,7 @@ void main() {
               Validators.compose([
                 Validators.minLength(10),
                 Validators.maxLength(10),
-                Validators.number,
+                Validators.number(),
               ]),
             ]),
           ],

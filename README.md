@@ -64,8 +64,8 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Minimum Requirements
 
-- Dart SDK: >= 2.17.0 <3.0.0
-- Flutter: >= 3.0.0
+- Dart SDK: >=3.2.0 <4.0.0
+- Flutter: >=3.16.0
 
 > For using **Reactive Forms** in projects below Flutter 2.8.0 please use the version <= 10.7.0 of
 > **Reactive Forms**.
@@ -88,7 +88,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^14.1.0
+  reactive_forms: ^17.0.0
 ```
 
 Then run the command `flutter packages get` on the console.
@@ -209,22 +209,67 @@ There are common predefined validators, but you can implement custom validators 
 
 ### Custom Validators
 
-A custom **FormControl** validator is a function that receives the _control_ to validate and returns a **Map**. If the value of the _control_ is valid the function must returns **null** otherwise returns a **Map** with a key and custom information, in the previous example we just set **true** as custom information.
+All validators are instances of classes that inherit from the `Validator` abstract class.
+In order to implement a custom validator you can follow two different approaches:
 
-Let's implement a custom validator that validates a control's value must be _true_:
+1- Extend from `Validator` class and override the `validate` method.  
+2- Or implement a custom validator function|method, and use it with the `Validators.delegate(...)` validator.
+
+Let's implement a custom validator that validates a control's value must be `true`:
+
+### Inheriting from `Validator` class:
+
+Let's create a class that extends from `Validator` and overrides the `validate` method:
+
+```dart
+/// Validator that validates the control's value must be `true`.
+class RequiredTrueValidator extends Validator<dynamic> {
+  const RequiredTrueValidator() : super();
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    return control.isNotNull &&
+           control.value is bool &&
+           control.value == true
+    ? null
+    : {'requiredTrue': true};
+  }
+}
+```
+
+The `validator` method is a function that receives the _control_ to validate and returns a `Map`. If the value of the _control_ is valid the function returns `null`, otherwise returns a `Map` with the error key and a custom information. In the previous example we have defined `requiredTrue` as the error key and `true` as the custom information.
+
+In order to use the new validator class we provide an instance of it in the FormControl definition.
 
 ```dart
 final form = FormGroup({
   'acceptLicense': FormControl<bool>(
     value: false,
-    validators: [_requiredTrue], // custom validator
+    validators: [
+      RequiredTrueValidator(), // providing the new custom validator
+    ],
+  ),
+});
+```
+
+### Using the `Validators.delegate()` validator:
+
+Sometimes it's more convenient to implement a custom validator in a separate method|function than in a different new class. In that case, it is necessary to use the `Validators.delegate()` validator. It creates a validator that delegates the validation to the external function|method.
+
+```dart
+final form = FormGroup({
+  'acceptLicense': FormControl<bool>(
+    value: false,
+    validators: [
+      Validators.delegate(_requiredTrue) // delegates validation to a custom function
+    ],
   ),
 });
 ```
 
 ```dart
-/// Validates that control's value must be `true`
-Map<String, dynamic> _requiredTrue(AbstractControl<dynamic> control) {
+/// Custom function that validates that control's value must be `true`.
+Map<String, dynamic>? _requiredTrue(AbstractControl<dynamic> control) {
   return control.isNotNull &&
          control.value is bool &&
          control.value == true
@@ -233,7 +278,7 @@ Map<String, dynamic> _requiredTrue(AbstractControl<dynamic> control) {
 }
 ```
 
-> You can see the current implementation of predefined validators in the source code to see more examples.
+> Check the [Migration Guide](https://github.com/joanpablo/reactive_forms/wiki/Migration-Guide/_edit#breaking-changes-in-15x) to learn more about custom validators after version 15.0.0 of the package.
 
 ### Pattern Validator
 
@@ -281,7 +326,7 @@ There are special validators that can be attached to **FormGroup**. In the next 
 
 There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with _email_ and _emailConfirmation_ or _password_ and _passwordConfirmation_.
 
-For that cases we could implement a custom validator and attach it to the **FormGroup**, let's see an example:
+For those cases we could implement a custom validator as a class and attach it to the **FormGroup**. Let's see an example:
 
 ```dart
 final form = FormGroup({
@@ -293,7 +338,7 @@ final form = FormGroup({
   ]),
   'passwordConfirmation': FormControl<String>(),
 }, validators: [
-  _mustMatch('password', 'passwordConfirmation')
+  MustMatchValidator(controlName: 'password', matchingControlName: 'passwordConfirmation')
 ]);
 ```
 
@@ -304,8 +349,17 @@ In the previous code we have added two more fields to the form: _password_ and _
 However the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator and the implementation follows as:
 
 ```dart
-ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
-  return (AbstractControl<dynamic> control) {
+class MustMatchValidator extends Validator<dynamic> {
+  final String controlName;
+  final String matchingControlName;
+
+  MustMatchValidator({
+    required this.controlName,
+    required this.matchingControlName,
+  }) : super();
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final form = control as FormGroup;
 
     final formControl = form.control(controlName);
@@ -321,7 +375,7 @@ ValidatorFunction _mustMatch(String controlName, String matchingControlName) {
     }
 
     return null;
-  };
+  }
 }
 ```
 
@@ -344,7 +398,7 @@ final form = FormGroup({
 
 Some times you want to perform a validation against a remote server, this operations are more time consuming and need to be done asynchronously.
 
-For example you want to validate that the _email_ the user is currently typing in a _registration form_ is unique and is not already used in your application. **Asynchronous Validators** are just another tool so use it wisely.
+For example you want to validate that the _email_ the user is currently typing in a _registration form_ is unique and is not already used in your application. **Asynchronous Validators** are just another tool so use them wisely.
 
 **Asynchronous Validators** are very similar to their synchronous counterparts, with the following difference:
 
@@ -365,7 +419,9 @@ final form = FormGroup({
       Validators.required, // traditional required and email validators
       Validators.email,
     ],
-    asyncValidators: [_uniqueEmail], // custom asynchronous validator :)
+    asyncValidators: [
+      UniqueEmailAsyncValidator(), // custom asynchronous validator :)
+    ],
   ),
 });
 ```
@@ -373,33 +429,43 @@ final form = FormGroup({
 We have declared a simple **Form** with an email **field** that is _required_ and must have a valid email value, and we have include a custom async validator that will validate if the email is unique. Let's see the implementation of our new async validator:
 
 ```dart
-/// just a simple array to simulate a database of emails in a server
-const inUseEmails = ['johndoe@email.com', 'john@email.com'];
+/// Validator that validates the user's email is unique, sending a request to
+/// the Server.
+class UniqueEmailAsyncValidator extends AsyncValidator<dynamic> {
+  @override
+  Future<Map<String, dynamic>?> validate(AbstractControl<dynamic> control) async {
+    final error = {'unique': false};
 
-/// Async validator example that simulates a request to a server
-/// and validates if the email of the user is unique.
-Future<Map<String, dynamic>> _uniqueEmail(AbstractControl<dynamic> control) async {
-  final error = {'unique': false};
+    final isUniqueEmail = await _getIsUniqueEmail(control.value.toString());
+    if (!isUniqueEmail) {
+      control.markAsTouched();
+      return error;
+    }
 
-  final emailAlreadyUsed = await Future.delayed(
-    Duration(seconds: 5), // a delay to simulate a time consuming operation
-    () => inUseEmails.contains(control.value),
-  );
-
-  if (emailAlreadyUsed) {
-    control.markAsTouched();
-    return error;
+    return null;
   }
 
-  return null;
+  /// Simulates a time consuming operation (i.e. a Server request)
+  Future<bool> _getIsUniqueEmail(String email) {
+    // simple array that simulates emails stored in the Server DB.
+    final storedEmails = ['johndoe@email.com', 'john@email.com'];
+
+    return Future.delayed(
+      const Duration(seconds: 5),
+              () => !storedEmails.contains(email),
+    );
+  }
 }
 ```
 
 > Note the use of **control.markAsTouched()** to force the validation message to show up as soon as possible.
 
-The previous implementation was a simple function that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the _value_ of the _control_ is contained in the _server_ array of emails.
+The previous implementation was a simple validator that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the _value_ of the _control_ is contained in the _server_ array of emails.
 
 > If you want to see **Async Validators** in action with a **full example** using widgets and animations to feedback the user we strong advice you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file just to simplify things here and to not anticipate things that we will see later in this doc.
+
+> The validator `Validators.delegateAsync()` is another way to implement custom validator, for more reference
+> check the [Custom validators](https://github.com/joanpablo/reactive_forms#custom-validators) section.
 
 ### Debounce time in async validators
 
@@ -409,7 +475,7 @@ You can set a different debounce time as an optionally argument in the **FormCon
 
 ```dart
 final control = FormControl<String>(
-  asyncValidators: [_uniqueEmail],
+  asyncValidators: [UniqueEmailAsyncValidator()],
   asyncValidatorsDebounceTime: 1000, // sets 1 second of debounce time.
 );
 ```
@@ -973,7 +1039,7 @@ set name(String newName) {
 > form.markAllAsTouched();
 > ```
 
-### Overriding Reactive Widgets _show errors_ behavior
+### Overriding Reactive Widgets show errors behavior
 
 The second way to customize when to show error messages is to override the method **showErrors** in reactive widgets.
 
@@ -1504,6 +1570,86 @@ You should use **ReactiveFormBuilder** if:
 - You don't want to use a StatefulWidget to declare the FormGroup.
 
 But the final decision is really up to you, you can use any of them in any situations ;)
+
+## Widget testing
+
+**note: mark your fields with `Key`'s for easy access via widget tester**
+
+### example component
+
+```dart
+class LoginForm extends StatefulWidget {
+  const LoginForm({Key? key}) : super(key: key);
+
+  @override
+  LoginFormState createState() => LoginFormState();
+}
+
+class LoginFormState extends State<LoginForm> {
+  final form = FormGroup({
+    'email': FormControl<String>(validators: [Validators.required, Validators.email]),
+    'password': FormControl<String>(validators: [Validators.required]),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ReactiveForm(
+      formGroup: form,
+      child: Column(
+        children: <Widget>[
+          ReactiveTextField(
+            key: const Key('email'),
+            formControlName: 'email',
+          ),
+          ReactiveTextField(
+            key: const Key('password'),
+            formControlName: 'password',
+            obscureText: true,
+          ),
+          ElevatedButton(
+            key: const Key('submit'),
+            onPressed: () {},
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+### example test
+
+```dart
+
+void main() {
+  testWidgets('LoginForm should pass with correct values', (tester) async {
+    // Build the widget.
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(body: LoginForm()),
+    ));
+
+    await tester.enterText(find.byKey(const Key('email')), 'etc@test.qa');
+    await tester.enterText(find.byKey(const Key('password')), 'password');
+
+    await tester.tap(find.byKey(const Key('submit')));
+
+    await tester.pump();
+
+    // Expect to find the item on screen if needed
+    expect(find.text('etc@test.qa'), findsOneWidget);
+
+    // Get form state
+    final LoginFormState loginFormState = tester.state(find.byType(LoginForm));
+
+    // Check form state
+    expect(loginFormState.form.valid, true);
+  });
+}
+
+```
+
+
 
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 

@@ -285,6 +285,7 @@ void main() {
       expect(formValue.length, 1);
       expect(formValue.keys.first, 'name');
       expect(formValue.values.first, 'Reactive');
+      expect(formValue, {'name': 'Reactive'});
     });
 
     test('Enable a group enable children and recalculate validity', () {
@@ -869,12 +870,71 @@ void main() {
     test('A control disabled is part of group Raw Value', () {
       // Given: a form with a disable control
       final form = FormGroup({
-        'name': FormControl<String>(value: 'Reactive'),
-        'email': FormControl<String>(value: 'Forms', disabled: true),
+        'name': FormControl<String>(value: 'Flutter Reactive Forms'),
+        'email': FormControl<String>(value: 'rf@email.com', disabled: true),
       });
 
       // Expect: raw value includes disabled controls
-      expect(form.rawValue, {'name': 'Reactive', 'email': 'Forms'});
+      expect(form.rawValue, {
+        'name': 'Flutter Reactive Forms',
+        'email': 'rf@email.com',
+      });
+    });
+
+    test('A control disabled is part of recursive group Raw Value', () {
+      // Given: a nested form group with a disable control
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'Flutter Reactive Forms'),
+        'email': FormControl<String>(value: 'rf@email.com', disabled: true),
+        'address': FormGroup({
+          'city': FormControl<String>(value: 'Toronto'),
+          'street': FormControl<String>(value: 'Cherry St', disabled: true)
+        })
+      });
+
+      // Expect: raw value includes disabled controls
+      expect(form.rawValue, {
+        'name': 'Flutter Reactive Forms',
+        'email': 'rf@email.com',
+        'address': {'city': 'Toronto', 'street': 'Cherry St'}
+      });
+    });
+
+    test(
+        'Disabled children of nested array are part of recursive group Raw Value',
+        () {
+      // Given: a nested form group with a disable control
+      final form = FormGroup({
+        'brands': FormArray<String>([
+          FormControl<String>(value: 'Nissan'),
+          FormControl<String>(value: 'Mercedes', disabled: true),
+          FormControl<String>(value: 'Toyota'),
+        ])
+      });
+
+      // Expect: raw value includes disabled controls
+      expect(form.rawValue, {
+        'brands': ['Nissan', 'Mercedes', 'Toyota']
+      });
+    });
+
+    test('A disabled group includes all controls in the value', () {
+      // Given: a disabled group
+      final form = FormGroup({
+        'name': FormControl<String>(value: 'Flutter Reactive Forms'),
+        'email': FormControl<String>(value: 'rf@email.com'),
+      }, disabled: true);
+
+      // Expect: value  and raw value includes disabled controls
+      expect(form.value, {
+        'name': 'Flutter Reactive Forms',
+        'email': 'rf@email.com',
+      });
+
+      expect(form.rawValue, {
+        'name': 'Flutter Reactive Forms',
+        'email': 'rf@email.com',
+      });
     });
 
     test('Remove control from FormGroup', () {
@@ -921,6 +981,24 @@ void main() {
 
       // Expect: an assertion error
       expect(form, throwsAssertionError);
+    });
+
+    test(
+        'Test that markAsPending() a control, set pending status to the group '
+        'as well.', () {
+      // Given: a form group with valid status.
+      final form =
+          FormGroup({'name': FormControl<String>(value: "Reactive Forms")});
+
+      // Expect: the group to be VALID and not PENDING.
+      expect(form.valid, true);
+      expect(form.pending, false);
+
+      // When: I call mark a child control as PENDING.
+      form.control('name').markAsPending();
+
+      // Then: the status of the Form Group is PENDING as well.
+      expect(form.pending, true);
     });
   });
 }

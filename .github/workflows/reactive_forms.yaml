@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.0.0"
+          flutter-version: "3.16.0"
           channel: "stable"
       - run: flutter pub get
       - run: flutter test --no-pub --coverage
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.0.0"
+          flutter-version: "3.16.0"
           channel: "stable"
       - run: flutter pub get
       - name: Analyze lib
@@ -49,13 +49,13 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.0.0"
+          flutter-version: "3.16.0"
           channel: "stable"
       - run: flutter pub get
       - name: Format lib
-        run: flutter format lib --set-exit-if-changed
+        run: dart format lib --set-exit-if-changed
       - name: Format test
-        run: flutter format test --set-exit-if-changed
+        run: dart format test --set-exit-if-changed
 
   publish-warnings:
     name: Publish warnings
