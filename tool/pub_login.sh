@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # This script creates/updates credentials.json file which is used
 # to authorize publisher when publishing packages to pub.dev
 
