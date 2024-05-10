@@ -27,6 +27,7 @@ class NumberValidator extends Validator<dynamic> {
 
   /// Creates a new NumberValidator instance to validate strings representing numbers.
   ///
+  /// [allowNull] (optional): Whether the validator allows null values.
   /// [allowedDecimals] (optional): The allowed number of decimal places. Defaults to 0.
   /// [allowNegatives] (optional): Whether to allow negative numbers. Defaults to true.
   const NumberValidator({

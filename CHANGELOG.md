@@ -1,3 +1,8 @@
+# 17.0.1
+
+- Reduce `intl` dependency constraint to match Flutter 3.16.0.
+- NumberValidator allows null values.
+
 # 17.0.0
 
 ## Breaking changes
