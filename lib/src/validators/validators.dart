@@ -37,10 +37,12 @@ class Validators {
   /// [allowedDecimals] (optional): The allowed number of decimal places. Defaults to 0.
   /// [allowNegatives] (optional): Whether to allow negative numbers. Defaults to true.
   static Validator<dynamic> number({
+    bool allowNull = false,
     int allowedDecimals = 0,
     bool allowNegatives = true,
   }) =>
       NumberValidator(
+        allowNull: allowNull,
         allowedDecimals: allowedDecimals,
         allowNegatives: allowNegatives,
       );
