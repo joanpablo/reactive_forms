@@ -31,6 +31,7 @@ abstract class AbstractControl<T> {
   bool _pristine = true;
 
   T? _value;
+  final PureControlValues<T>? _pureValues;
 
   ControlStatus _status;
 
@@ -52,9 +53,16 @@ abstract class AbstractControl<T> {
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
+    PureControlValues<T>? pureValues,
   })  : assert(asyncValidatorsDebounceTime >= 0),
         _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
         _touched = touched,
+        _pureValues = pureValues ??
+            PureControlValues<T>(
+              asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+              disabled: disabled,
+              touched: touched,
+            ),
         _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
     setValidators(validators);
     setAsyncValidators(asyncValidators);
@@ -183,6 +191,12 @@ abstract class AbstractControl<T> {
 
   /// The current value of the control.
   T? get value => _value;
+
+  /// The fisrt value of the control.
+  T? get pureValue => _pureValues?.value;
+
+  /// The first values of the control.
+  PureControlValues<T>? get pureValues => _pureValues;
 
   /// Sets the value to the control
   set value(T? value) {
@@ -548,7 +562,13 @@ abstract class AbstractControl<T> {
     markAsPristine(updateParent: updateParent);
     markAsUntouched(updateParent: updateParent);
 
-    updateValue(value, updateParent: updateParent, emitEvent: emitEvent);
+    updateValue(
+      value ?? _pureValues?.value,
+      updateParent: updateParent,
+      emitEvent: emitEvent,
+    );
+
+    _touched = _pureValues?.touched ?? false;
 
     if (disabled != null) {
       disabled
@@ -833,12 +853,24 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   FormControl({
     T? value,
-    super.validators,
-    super.asyncValidators,
-    super.asyncValidatorsDebounceTime,
-    super.touched,
-    super.disabled,
-  }) {
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
+    int asyncValidatorsDebounceTime = 250,
+    bool touched = false,
+    bool disabled = false,
+  }) : super(
+          pureValues: PureControlValues<T>(
+            asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+            disabled: disabled,
+            touched: touched,
+            value: value,
+          ),
+          validators: validators,
+          asyncValidators: asyncValidators,
+          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+          disabled: disabled,
+          touched: touched,
+        ) {
     if (value != null) {
       this.value = value;
     } else {
@@ -1033,11 +1065,22 @@ class FormControl<T> extends AbstractControl<T> {
 /// that emits events each time you add or remove a control to the collection.
 abstract class FormControlCollection<T> extends AbstractControl<T> {
   FormControlCollection({
-    super.validators,
-    super.asyncValidators,
-    super.asyncValidatorsDebounceTime,
-    super.disabled,
-  });
+    List<Validator<dynamic>> validators = const [],
+    List<AsyncValidator<dynamic>> asyncValidators = const [],
+    int asyncValidatorsDebounceTime = 250,
+    bool disabled = false,
+    T? pureValue,
+  }) : super(
+          pureValues: PureControlValues<T>(
+            asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+            disabled: disabled,
+            value: pureValue,
+          ),
+          validators: validators,
+          asyncValidators: asyncValidators,
+          asyncValidatorsDebounceTime: asyncValidatorsDebounceTime,
+          disabled: disabled,
+        );
 
   final _collectionChanges =
       StreamController<List<AbstractControl<Object?>>>.broadcast();
@@ -1154,6 +1197,7 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
             'Control name should not contain dot($_controlNameDelimiter)'),
         super(
           disabled: disabled,
+          pureValue: controls,
         ) {
     addAll(controls);
 
@@ -1522,8 +1566,8 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
     } else {
       _controls.forEach((name, control) {
         control.reset(
-          value: state[name]?.value,
-          disabled: state[name]?.disabled,
+          value: state[name]?.value ?? control.pureValues?.value,
+          disabled: state[name]?.disabled ?? control.pureValues?.disabled,
           removeFocus: removeFocus,
           updateParent: false,
         );
@@ -1606,6 +1650,45 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   @override
   AbstractControl<dynamic>? findControl(String path) =>
       findControlInCollection(path.split(_controlNameDelimiter));
+
+  @override
+  void reset({
+    Map<String, Object?>? value,
+    bool updateParent = true,
+    bool emitEvent = true,
+    bool removeFocus = false,
+    bool? disabled,
+  }) {
+    markAsPristine(updateParent: updateParent);
+    markAsUntouched(updateParent: updateParent);
+
+    if (value == null) {
+      for (var control in _controls.values) {
+        control.reset(
+          disabled: control.pureValues?.disabled,
+          updateParent: updateParent,
+          emitEvent: emitEvent,
+          removeFocus: removeFocus,
+        );
+      }
+    } else {
+      updateValue(
+        value,
+        updateParent: updateParent,
+        emitEvent: emitEvent,
+      );
+    }
+
+    if (disabled != null) {
+      disabled
+          ? markAsDisabled(updateParent: true, emitEvent: false)
+          : markAsEnabled(updateParent: true, emitEvent: false);
+    }
+
+    if (removeFocus) {
+      unfocus(touched: false);
+    }
+  }
 }
 
 /// A FormArray aggregates the values of each child FormControl into an array.
@@ -1662,6 +1745,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     bool disabled = false,
   }) : super(
           disabled: disabled,
+          pureValue: controls.map((e) => e.value).toList(),
         ) {
     addAll(controls);
 
@@ -2275,4 +2359,18 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   @override
   AbstractControl<dynamic>? findControl(String path) =>
       findControlInCollection(path.split(_controlNameDelimiter));
+}
+
+class PureControlValues<T> {
+  final int asyncValidatorsDebounceTime;
+  final bool disabled;
+  final bool touched;
+  final T? value;
+
+  PureControlValues({
+    this.asyncValidatorsDebounceTime = 250,
+    this.disabled = false,
+    this.touched = false,
+    this.value,
+  });
 }
