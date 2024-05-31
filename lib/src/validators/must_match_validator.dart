@@ -10,10 +10,12 @@ class MustMatchValidator extends Validator<dynamic> {
   final String controlName;
   final String matchingControlName;
   final bool markAsDirty;
+  final bool markAsTouched;
 
   /// Constructs an instance of [MustMatchValidator]
   const MustMatchValidator(
-      this.controlName, this.matchingControlName, this.markAsDirty)
+      this.controlName, this.matchingControlName, this.markAsDirty,
+      {this.markAsTouched = true})
       : super();
 
   @override
@@ -29,7 +31,9 @@ class MustMatchValidator extends Validator<dynamic> {
 
     if (formControl.value != matchingFormControl.value) {
       matchingFormControl.setErrors(error, markAsDirty: markAsDirty);
-      matchingFormControl.markAsTouched();
+      if (markAsTouched) {
+        matchingFormControl.markAsTouched();
+      }
     } else {
       matchingFormControl.removeError(ValidationMessage.mustMatch);
     }
