@@ -216,8 +216,9 @@ class Validators {
   /// ```
   static Validator<dynamic> mustMatch(
       String controlName, String matchingControlName,
-      {bool markAsDirty = true}) {
-    return MustMatchValidator(controlName, matchingControlName, markAsDirty);
+      {bool markAsDirty = true, bool markAsTouched = true}) {
+    return MustMatchValidator(controlName, matchingControlName, markAsDirty,
+        markAsTouched: markAsTouched);
   }
 
   /// Creates a [FormGroup] validator that compares two controls in the group.
