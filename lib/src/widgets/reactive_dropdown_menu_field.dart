@@ -1,9 +1,12 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// A reactive widget that wraps a [DropdownMenu].
 class ReactiveDropdownMenuField<T> extends ReactiveFocusableFormField<T, T> {
+  final List<DropdownMenuEntry<T>> _dropdownMenuEntries;
+
   ReactiveDropdownMenuField({
     required List<DropdownMenuEntry<T>> dropdownMenuEntries,
     super.key,
@@ -28,15 +31,17 @@ class ReactiveDropdownMenuField<T> extends ReactiveFocusableFormField<T, T> {
     TextAlign textAlign = TextAlign.start,
     InputDecorationTheme? inputDecorationTheme,
     MenuStyle? menuStyle,
-    TextEditingController? controller,
     ValueChanged<FormControl<T?>>? onSelected,
     bool? requestFocusOnTap,
     EdgeInsets? expandedInsets,
     FilterCallback<T>? filterCallback,
     SearchCallback<T>? searchCallback,
     List<TextInputFormatter>? inputFormatters,
-  }) : super(
-          builder: (field) {
+  })  : _dropdownMenuEntries = dropdownMenuEntries,
+        super(
+          builder: (state) {
+            final field = state as ReactiveDropdownMenuFieldState<ReactiveDropdownMenuField<T>, T, T>;
+
             var effectiveValue = field.value;
             if (effectiveValue != null && !dropdownMenuEntries.any((item) => item.value == effectiveValue)) {
               effectiveValue = null;
@@ -59,7 +64,7 @@ class ReactiveDropdownMenuField<T> extends ReactiveFocusableFormField<T, T> {
               textAlign: textAlign,
               inputDecorationTheme: inputDecorationTheme,
               menuStyle: menuStyle,
-              controller: controller,
+              controller: field._controller,
               initialSelection: effectiveValue,
               onSelected: readOnly || field.control.disabled
                   ? null
@@ -77,4 +82,43 @@ class ReactiveDropdownMenuField<T> extends ReactiveFocusableFormField<T, T> {
             );
           },
         );
+
+  @override
+  ReactiveDropdownMenuFieldState<ReactiveDropdownMenuField<T>, T, T> createState() =>
+      ReactiveDropdownMenuFieldState<ReactiveDropdownMenuField<T>, T, T>();
+}
+
+class ReactiveDropdownMenuFieldState<W extends ReactiveDropdownMenuField<T>, T, V>
+    extends ReactiveFocusableFormFieldState<T, T> {
+  final TextEditingController _controller = TextEditingController();
+
+  W get _reactiveWidget => widget as W;
+
+  @override
+  void dispose() {
+    _controller.removeListener(_ensureValueIsInEntries);
+    _controller.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller.addListener(_ensureValueIsInEntries);
+  }
+
+  void _ensureValueIsInEntries() {
+    final match = _reactiveWidget._dropdownMenuEntries
+        .firstWhereOrNull((item) => item.label.toLowerCase() == _controller.text.toLowerCase());
+
+    if (match != null && match.value != value) {
+      didChange(match.value);
+    }
+
+    if (match == null && value != null) {
+      didChange(null);
+    }
+  }
 }
