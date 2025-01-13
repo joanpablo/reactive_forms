@@ -9,16 +9,21 @@ class CompareValidator extends Validator<dynamic> {
   final String controlName;
   final String compareControlName;
   final CompareOption compareOption;
+  final bool allowNull;
 
   /// Constructs an instance of the validator.
   ///
   /// The arguments [controlName], [compareControlName] and [compareOption]
   /// must not be null.
+  ///
+  /// [allowNull] (optional): skip this validation if one of the controls has
+  /// null value. Defaults to false (report an error in case of null).
   const CompareValidator(
     this.controlName,
     this.compareControlName,
-    this.compareOption,
-  ) : super();
+    this.compareOption, {
+    this.allowNull = false,
+  }) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
@@ -42,7 +47,11 @@ class CompareValidator extends Validator<dynamic> {
         compareControl.isNull) {
       return null;
     } else if (mainControl.isNull || compareControl.isNull) {
-      mainControl.setErrors(error);
+      if (allowNull) {
+        mainControl.removeError(ValidationMessage.compare);
+      } else {
+        mainControl.setErrors(error);
+      }
       return null;
     } else if (mainControl.value is! Comparable<dynamic>) {
       throw ValidatorException(
