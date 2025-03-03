@@ -1098,6 +1098,9 @@ abstract class FormControlCollection<T> extends AbstractControl<T> {
   }
 }
 
+typedef FormGroupControlFactory = AbstractControl<Object?>? Function(
+    String key, Object? value);
+
 /// Tracks the value and validity state of a group of FormControl instances.
 ///
 /// A FormGroup aggregates the values of each child FormControl into one object,
@@ -1108,6 +1111,20 @@ abstract class FormControlCollection<T> extends AbstractControl<T> {
 /// becomes invalid.
 class FormGroup extends FormControlCollection<Map<String, Object?>> {
   final Map<String, AbstractControl<dynamic>> _controls = {};
+
+  /// A function that maps a value to a control.
+  /// Used in [updateValue] to create a new control for new values.
+  final FormGroupControlFactory? controlFactory;
+
+  static AbstractControl<Object?>? defaultControlFactory(
+    String key,
+    Object? value,
+  ) {
+    return null;
+  }
+
+  FormGroupControlFactory get controlFactoryOrDefault =>
+      controlFactory ?? defaultControlFactory;
 
   /// Creates a new FormGroup instance.
   ///
@@ -1149,6 +1166,7 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
     super.asyncValidators,
     super.asyncValidatorsDebounceTime,
     bool disabled = false,
+    this.controlFactory,
   })  : assert(
             !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
             'Control name should not contain dot($_controlNameDelimiter)'),
@@ -1431,6 +1449,20 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
       );
     }
 
+    // Add missing controls via controlFactory, similar to FormArray
+    final controlFactory = controlFactoryOrDefault;
+    final newControls = Map.fromEntries(
+      value.entries
+          .where((e) => !_controls.containsKey(e.key))
+          .map((e) => MapEntry(e.key, controlFactory(e.key, e.value)))
+          .where((e) => e.value != null),
+    ).cast<String, AbstractControl<Object?>>();
+    if (newControls.isNotEmpty) {
+      _controls.addAll(newControls);
+      newControls.forEach((name, control) {
+        control.parent = this;
+      });
+    }
     updateValueAndValidity(
       updateParent: updateParent,
       emitEvent: emitEvent,
@@ -1608,6 +1640,9 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
       findControlInCollection(path.split(_controlNameDelimiter));
 }
 
+typedef FormArrayControlFactory<T> = AbstractControl<T> Function(
+    int index, T? value);
+
 /// A FormArray aggregates the values of each child FormControl into an array.
 ///
 /// It calculates its status by reducing the status values of its children.
@@ -1618,6 +1653,17 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
 /// forms in Reactive Forms, along with [FormControl] and [FormGroup].
 class FormArray<T> extends FormControlCollection<List<T?>> {
   final List<AbstractControl<T>> _controls = [];
+
+  /// A function that maps a value to a control.
+  /// Used in [updateValue] to create a new control for the value.
+  final FormArrayControlFactory<T>? controlFactory;
+
+  static AbstractControl<T> defaultControlFactory<T>(int index, T? value) {
+    return FormControl<T>(value: value);
+  }
+
+  FormArrayControlFactory<T> get controlFactoryOrDefault =>
+      controlFactory ?? defaultControlFactory;
 
   /// Creates a new [FormArray] instance.
   ///
@@ -1660,6 +1706,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     super.asyncValidators,
     super.asyncValidatorsDebounceTime,
     bool disabled = false,
+    this.controlFactory,
   }) : super(
           disabled: disabled,
         ) {
@@ -2091,12 +2138,13 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     }
 
     if (value != null && value.length > _controls.length) {
+      final controlFactory = controlFactoryOrDefault;
       final newControls = value
           .toList()
           .asMap()
           .entries
           .where((entry) => entry.key >= _controls.length)
-          .map((entry) => FormControl<T>(value: entry.value))
+          .map((entry) => controlFactory(entry.key, entry.value))
           .toList();
 
       addAll(

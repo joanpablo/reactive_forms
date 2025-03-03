@@ -63,6 +63,7 @@ class FormBuilder {
     Map<String, Object> controls, [
     List<Validator<dynamic>> validators = const [],
     List<AsyncValidator<dynamic>> asyncValidators = const [],
+    FormGroupControlFactory? controlFactory,
   ]) {
     final map = controls
         .map<String, AbstractControl<dynamic>>((String key, Object value) {
@@ -117,6 +118,7 @@ class FormBuilder {
       map,
       validators: validators,
       asyncValidators: asyncValidators,
+      controlFactory: controlFactory,
     );
   }
 
@@ -203,6 +205,7 @@ class FormBuilder {
     List<Object> value, [
     List<Validator<dynamic>> validators = const [],
     List<AsyncValidator<dynamic>> asyncValidators = const [],
+    FormArrayControlFactory<T>? controlFactory,
   ]) {
     return FormArray<T>(
       value.map<AbstractControl<T>>((v) {
@@ -217,6 +220,7 @@ class FormBuilder {
       }).toList(),
       validators: validators,
       asyncValidators: asyncValidators,
+      controlFactory: controlFactory,
     );
   }
 
