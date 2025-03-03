@@ -6,55 +6,70 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
+- [Reactive Forms](#reactive-forms)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
   - [Minimum Requirements](#minimum-requirements)
   - [Installation and Usage](#installation-and-usage)
-- [Creating a form](#creating-a-form)
-- [How to get/set Form data](#how-to-getset-form-data)
-- [Validators](#what-about-validators)
-  - [Predefined validators](#predefined-validators)
-  - [Custom Validators](#custom-validators)
-  - [Pattern Validator](#pattern-validator)
-  - [FormGroup validators](#formgroup-validators)
-  - [Password and Password Confirmation](#what-about-password-and-password-confirmation)
-  - [Asynchronous Validators](#asynchronous-validators-sunglasses)
-  - [Debounce time in async validators](#debounce-time-in-async-validators)
+  - [Creating a form](#creating-a-form)
+  - [Default Values](#default-values)
+  - [How to get/set Form data](#how-to-getset-form-data)
+  - [What about Validators?](#what-about-validators)
+    - [Predefined validators](#predefined-validators)
+      - [FormControl](#formcontrol)
+      - [FormGroup](#formgroup)
+      - [FormArray](#formarray)
+    - [Custom Validators](#custom-validators)
+    - [Inheriting from `Validator` class:](#inheriting-from-validator-class)
+    - [Using the `Validators.delegate()` validator:](#using-the-validatorsdelegate-validator)
+    - [Pattern Validator](#pattern-validator)
+    - [FormGroup validators](#formgroup-validators)
+  - [What about Password and Password Confirmation?](#what-about-password-and-password-confirmation)
+  - [Asynchronous Validators :sunglasses:](#asynchronous-validators-sunglasses)
+    - [Debounce time in async validators](#debounce-time-in-async-validators)
   - [Composing Validators](#composing-validators)
-- [Groups of Groups](#groups-of-groups-grin)
-- [Dynamic forms with FormArray](#dynamic-forms-with-formarray)
-- [Arrays of Groups](#arrays-of-groups)
-- [FormBuilder](#formbuilder)
-  - [Groups](#groups)
-  - [Arrays](#arrays)
-  - [Control](#control)
-  - [Control state](#control-state)
-- [Reactive Form Widgets](#reactive-form-widgets)
-- [How to customize error messages?](#how-to-customize-error-messages)
-  - [Reactive Widget level](#1-reactive-widget-level)
-  - [Global/Application level](#2-globalapplication-level)
-  - [Parameterized validation messages](#parameterized-validation-messages)
-- [When does Validation Messages begin to show up?](#when-does-validation-messages-begin-to-show-up)
-  - [Touching a control](#touching-a-control)
-  - [Overriding Reactive Widgets show errors behavior](#overriding-reactive-widgets-show-errors-behavior)
-- [Enable/Disable Submit button](#enabledisable-submit-button)
-  - [Submit Button in a different Widget](#separating-submit-button-in-a-different-widget)
-  - [ReactiveFormConsumer widget](#using-reactiveformconsumer-widget)
-- [Focus/UnFocus a FormControl](#focusunfocus-a-formcontrol)
-- [Focus flow between Text Fields](#focus-flow-between-text-fields)
-- [Enable/Disable a widget](#how-enabledisable-a-widget)
-- [How does ReactiveTextField differs from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfieldhttpsapiflutterdevfluttermaterialtextformfield-classhtml-or-textfieldhttpsapiflutterdevfluttermaterialtextfield-classhtml)
-- [Reactive Form Field Widgets](#supported-reactive-form-field-widgets)
-- [Bonus Field Widgets](#bonus-field-widgets)
-- [Other Reactive Forms Widgets](#other-reactive-forms-widgets)
-- [Advanced Reactive Field Widgets](#advanced-reactive-field-widgets)
-- [ReactiveValueListenableBuilder to listen when value changes in a FormControl](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
-- [ReactiveForm vs ReactiveFormBuilder which one?](#reactiveform-vs-reactiveformbuilder-which-one)
-- [Reactive Forms + Provider plugin](#reactive-forms--providerhttpspubdevpackagesprovider-plugin-muscle)
-- [Reactive Forms + code generation plugin](#reactive-forms--code-generationhttpspubdevpackagesreactive_forms_generator-)
-- [How create a custom Reactive Widget?](#how-create-a-custom-reactive-widget)
-- [What is not Reactive Forms](#what-is-not-reactive-forms)
-- [What is Reactive Forms](#what-is-reactive-forms)
-- [Migrate versions](#migrate-versions)
+  - [Groups of Groups :grin:](#groups-of-groups-grin)
+  - [Dynamic forms with **FormArray**](#dynamic-forms-with-formarray)
+  - [Arrays of Groups](#arrays-of-groups)
+  - [FormBuilder](#formbuilder)
+    - [Groups](#groups)
+    - [Arrays](#arrays)
+    - [Control](#control)
+    - [Control state](#control-state)
+  - [Nested Controls](#nested-controls)
+  - [Reactive Form Widgets](#reactive-form-widgets)
+  - [How to customize error messages?](#how-to-customize-error-messages)
+    - [1. Reactive Widget level.](#1-reactive-widget-level)
+    - [2. Global/Application level.](#2-globalapplication-level)
+    - [Validation messages with error arguments:](#validation-messages-with-error-arguments)
+    - [Parameterized validation messages](#parameterized-validation-messages)
+  - [When does Validation Messages begin to show up?](#when-does-validation-messages-begin-to-show-up)
+    - [Touching a control](#touching-a-control)
+    - [Overriding Reactive Widgets show errors behavior](#overriding-reactive-widgets-show-errors-behavior)
+  - [Enable/Disable Submit button](#enabledisable-submit-button)
+    - [Separating Submit Button in a different Widget:](#separating-submit-button-in-a-different-widget)
+    - [Using **ReactiveFormConsumer** widget:](#using-reactiveformconsumer-widget)
+  - [Focus/UnFocus a **FormControl**](#focusunfocus-a-formcontrol)
+  - [Focus flow between Text Fields](#focus-flow-between-text-fields)
+  - [How Enable/Disable a widget](#how-enabledisable-a-widget)
+  - [How does **ReactiveTextField** differs from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfield-or-textfield)
+  - [Supported Reactive Form Field Widgets](#supported-reactive-form-field-widgets)
+  - [Bonus Field Widgets](#bonus-field-widgets)
+  - [Other Reactive Forms Widgets](#other-reactive-forms-widgets)
+  - [Advanced Reactive Field Widgets](#advanced-reactive-field-widgets)
+    - [ReactiveTextField](#reactivetextfield)
+    - [ReactiveDropdownField](#reactivedropdownfield)
+  - [**ReactiveValueListenableBuilder** to listen when value changes in a **FormControl**](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
+  - [**ReactiveForm** vs **ReactiveFormBuilder** which one?](#reactiveform-vs-reactiveformbuilder-which-one)
+  - [Widget testing](#widget-testing)
+    - [example component](#example-component)
+    - [example test](#example-test)
+  - [Reactive Forms + Provider plugin :muscle:](#reactive-forms--provider-plugin-muscle)
+  - [Reactive Forms + code generation 🤖](#reactive-forms--code-generation-)
+  - [How create a custom Reactive Widget?](#how-create-a-custom-reactive-widget)
+  - [What is not **Reactive Forms**](#what-is-not-reactive-forms)
+  - [What is **Reactive Forms**](#what-is-reactive-forms)
+  - [Migrate versions](#migrate-versions)
 
 ## Getting Started
 
@@ -718,32 +733,73 @@ Map<String, dynamic> emptyAddressee(AbstractControl control) {
 }
 ```
 
+You can also pass `controlFactory` to `FormArray` and `FormGroup` to have complete control over the mapping:
+
+```dart
+// Given: an empty array of strings
+final array = FormArray<String>(
+  [],
+  controlFactory: (int index, String? value) => FormControl<String>(
+    value: value,
+    validators: [const RequiredValidator()],
+  ),
+);
+
+// When: set value to array
+array.value = ["john@email.com", "susan@email.com", "caroline@email.com"];
+
+// Then: the array is no longer empty
+expect(array.controls.length, 3);
+
+// And: the new controls are all required!
+expect(array.controls('0').validators.length, 1);
+expect(array.controls('1').validators.length, 1);
+expect(array.controls('2').validators.length, 1);
+```
+
 ## Arrays of Groups
 
 You can also create arrays of groups:
 
 ```dart
 // an array of groups
-final addressArray = FormArray([
-  FormGroup({
-    'city': FormControl<String>(value: 'Sofia'),
-    'zipCode': FormControl<int>(value: 1000),
-  }),
-  FormGroup({
-    'city': FormControl<String>(value: 'Havana'),
-    'zipCode': FormControl<int>(value: 10400),
-  }),
-]);
+final addressArray = FormArray(
+  [
+    FormGroup({
+      'city': FormControl<String>(value: 'Sofia'),
+      'zipCode': FormControl<int>(value: 1000),
+    }),
+    FormGroup({
+      'city': FormControl<String>(value: 'Havana'),
+      'zipCode': FormControl<int>(value: 10400),
+    }),
+  ],
+  controlFactory: (index, value) {
+    return FormGroup({
+      'city': FormControl<String>(),
+      'zipCode': FormControl<int>(),
+    })
+      ..value = value;
+  },
+);
 ```
 
 Another example using **FormBuilder**:
 
 ```dart
 // an array of groups using FormBuilder
-final addressArray = fb.array([
+final addressArray = fb.array<Map<String,Object?>>([
   fb.group({'city': 'Sofia', 'zipCode': 1000}),
   fb.group({'city': 'Havana', 'zipCode': 10400}),
-]);
+],
+[],
+[],
+(index, value) {
+  return fb.group({
+    'city': FormControl<String>(),
+    'zipCode': FormControl<int>(),
+  })..value = value as Map<String,Object?>?;
+});
 ```
 
 or just:
@@ -753,7 +809,15 @@ or just:
 final addressArray = fb.array([
   {'city': 'Sofia', 'zipCode': 1000},
   {'city': 'Havana', 'zipCode': 10400},
-]);
+],
+[],
+[],
+(index, value) {
+  return fb.group({
+    'city': FormControl<String>(),
+    'zipCode': FormControl<int>(),
+  })..value = value as Map<String,Object?>?;
+});
 ```
 
 You can iterate over groups as follow:
@@ -767,6 +831,8 @@ final cities = addressArray.controls
 
 > A common mistake is to declare an _array_ of groups as _FormArray&lt;FormGroup&gt;_.  
 > An array of _FormGroup_ must be declared as **FormArray()** or as **FormArray&lt;Map&lt;String, dynamic&gt;&gt;()**.
+
+> It's mandatory to use `controlFactory` here if you intend to set the `FormArray.value` to add new elements, as the default behavior would create a `FormControl<Map<String, Object?>>` instead of `FormGroup` (see [#366](https://github.com/joanpablo/reactive_forms/issues/366)).
 
 ## FormBuilder
 

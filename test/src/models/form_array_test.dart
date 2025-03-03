@@ -740,7 +740,6 @@ void main() {
       'Test controlFactory',
       () {
         // Given: a FormArray with a controlFactory
-
         final array = FormArray<Map<String, Object?>>(
           [
             FormControl(value: {}),
