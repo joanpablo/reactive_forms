@@ -735,6 +735,51 @@ void main() {
       // Then: the status of the array is PENDING as well.
       expect(array.pending, true);
     });
+
+    test(
+      'Test controlFactory',
+      () {
+        // Given: a FormArray with a controlFactory
+
+        final array = FormArray<Map<String, Object?>>(
+          [
+            FormControl(value: {}),
+            FormGroup({
+              'key': FormControl<int>(),
+            }),
+          ],
+          controlFactory: (index, value) {
+            return FormGroup(
+              {},
+              controlFactory: (key, value) =>
+                  FormControl<bool>(value: value as bool?),
+            )..value = value;
+          },
+        );
+
+        // When: calling updateValue
+        array.updateValue([
+          {'key': 'value1'},
+          {'key': 20},
+          {'key': true},
+        ]);
+
+        // Then: missing controls are created
+        expect(array.controls.length, 3);
+        expect(
+          (array.control('0').value as Map<String, Object?>)['key'],
+          'value1',
+        );
+        expect(
+          array.control('1.key').value,
+          20,
+        );
+        expect(
+          array.control('2.key').value,
+          true,
+        );
+      },
+    );
   });
 }
 
