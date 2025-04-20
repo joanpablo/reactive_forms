@@ -34,14 +34,13 @@ class ReactiveDropdownTestingWidget extends StatelessWidget {
             readOnly: readOnly,
             disabledHint: disabledHint,
             selectedItemBuilder: selectedItemBuilder,
-            items: items.map<DropdownMenuItem<String>>(
-              (item) {
-                return DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                );
-              },
-            ).toList(),
+            items:
+                items.map<DropdownMenuItem<String>>((item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item),
+                  );
+                }).toList(),
           ),
         ),
       ),

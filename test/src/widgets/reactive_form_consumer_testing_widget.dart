@@ -4,10 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveFormConsumerTestingWidget extends StatelessWidget {
   final FormGroup form;
 
-  const ReactiveFormConsumerTestingWidget({
-    super.key,
-    required this.form,
-  });
+  const ReactiveFormConsumerTestingWidget({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

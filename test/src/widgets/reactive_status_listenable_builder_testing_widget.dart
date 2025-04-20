@@ -4,10 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveStatusListenableTestingWidget extends StatelessWidget {
   final FormGroup form;
 
-  const ReactiveStatusListenableTestingWidget({
-    super.key,
-    required this.form,
-  });
+  const ReactiveStatusListenableTestingWidget({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

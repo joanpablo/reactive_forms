@@ -5,16 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// This is the signature to determine whether a route can popped.
-/// See [PopScope] for more details.
-typedef ReactiveFormCanPopCallback = bool Function(FormGroup formGroup);
-
-/// This is the signature of the callback invoked when a route is popped.
-/// See [PopScope] for more details.
-typedef ReactiveFormPopInvokedCallback = void Function(
-    FormGroup formGroup, bool didPop);
-
-class ReactiveFormPopScope extends StatelessWidget {
+@optionalTypeArgs
+class ReactiveFormPopScope<T> extends StatelessWidget {
   /// The widget below this widget in the tree.
   final Widget child;
 
@@ -24,29 +16,49 @@ class ReactiveFormPopScope extends StatelessWidget {
   /// A callback invoked when a route is popped. See [PopScope] for more details.
   final ReactiveFormPopInvokedCallback? onPopInvoked;
 
+  /// A callback invoked when a route is popped. See [PopScope] for more details.
+  final ReactiveFormPopInvokedWithResultCallback<T>? onPopInvokedWithResult;
+
   const ReactiveFormPopScope({
     super.key,
     this.canPop,
-    this.onPopInvoked,
+    @Deprecated('Use onPopInvokedWithResult instead.') this.onPopInvoked,
+    this.onPopInvokedWithResult,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (canPop == null && onPopInvoked == null) {
+    if (canPop == null &&
+        onPopInvoked == null &&
+        onPopInvokedWithResult == null) {
       return child;
     }
 
     return ReactiveFormConsumer(
       builder: (context, formGroup, _) {
-        return PopScope(
+        return PopScope<T>(
           canPop: canPop?.call(formGroup) ?? true,
-          onPopInvoked: onPopInvoked != null
-              ? (didPop) => onPopInvoked!(formGroup, didPop)
-              : null,
+          onPopInvokedWithResult: _buildOnPopInvokedCallback(formGroup),
           child: child,
         );
       },
     );
+  }
+
+  /// Builds the onPopInvoked callback based on the available callbacks.
+  PopInvokedWithResultCallback<T>? _buildOnPopInvokedCallback(
+    FormGroup formGroup,
+  ) {
+    if (onPopInvokedWithResult != null) {
+      return (didPop, result) =>
+          onPopInvokedWithResult!(formGroup, didPop, result);
+    }
+
+    if (onPopInvoked != null) {
+      return (didPop, _) => onPopInvoked!(formGroup, didPop);
+    }
+
+    return null;
   }
 }

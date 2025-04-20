@@ -4,10 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveFormArrayTestingWidget extends StatelessWidget {
   final FormGroup form;
 
-  const ReactiveFormArrayTestingWidget({
-    super.key,
-    required this.form,
-  });
+  const ReactiveFormArrayTestingWidget({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +16,10 @@ class ReactiveFormArrayTestingWidget extends StatelessWidget {
             formArrayName: 'array',
             builder: (context, array, child) {
               return Column(
-                children: array.value!
-                    .map((value) => Text(value.toString()))
-                    .toList(),
+                children:
+                    array.value!
+                        .map((value) => Text(value.toString()))
+                        .toList(),
               );
             },
           ),

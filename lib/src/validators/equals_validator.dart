@@ -26,10 +26,10 @@ class EqualsValidator<T> extends Validator<dynamic> {
     return control.value == value
         ? null
         : <String, dynamic>{
-            validationMessage: <String, dynamic>{
-              'required': value,
-              'actual': control.value,
-            }
-          };
+          validationMessage: <String, dynamic>{
+            'required': value,
+            'actual': control.value,
+          },
+        };
   }
 }

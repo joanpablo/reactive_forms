@@ -7,10 +7,4 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Represents the comparison option in [Validators.compare] validator
 ///
 /// See [Validators.compare].
-enum CompareOption {
-  lower,
-  lowerOrEqual,
-  greater,
-  greaterOrEqual,
-  equal,
-}
+enum CompareOption { lower, lowerOrEqual, greater, greaterOrEqual, equal }

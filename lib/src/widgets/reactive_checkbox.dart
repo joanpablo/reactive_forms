@@ -33,44 +33,47 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
     MaterialTapTargetSize? materialTapTargetSize,
     VisualDensity? visualDensity,
     bool autofocus = false,
-    MaterialStateProperty<Color?>? fillColor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? fillColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     super.focusNode,
     OutlinedBorder? shape,
     BorderSide? side,
+    String? semanticLabel,
     ReactiveFormFieldCallback<bool>? onChanged,
     ShowErrorsFunction<bool>? showErrors,
   }) : super(
-          showErrors: showErrors ??
-              (control) =>
-                  control.invalid && (control.dirty || control.touched),
-          builder: (field) {
-            return Checkbox(
-              value: tristate ? field.value : field.value ?? false,
-              tristate: tristate,
-              mouseCursor: mouseCursor,
-              activeColor: activeColor,
-              checkColor: checkColor,
-              focusColor: focusColor,
-              hoverColor: hoverColor,
-              materialTapTargetSize: materialTapTargetSize,
-              visualDensity: visualDensity,
-              autofocus: autofocus,
-              fillColor: fillColor,
-              overlayColor: overlayColor,
-              splashRadius: splashRadius,
-              focusNode: field.focusNode,
-              shape: shape,
-              side: side,
-              isError: field.errorText != null,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         showErrors:
+             showErrors ??
+             (control) => control.invalid && (control.dirty || control.touched),
+         builder: (field) {
+           return Checkbox(
+             value: tristate ? field.value : field.value ?? false,
+             tristate: tristate,
+             mouseCursor: mouseCursor,
+             activeColor: activeColor,
+             checkColor: checkColor,
+             focusColor: focusColor,
+             hoverColor: hoverColor,
+             materialTapTargetSize: materialTapTargetSize,
+             visualDensity: visualDensity,
+             autofocus: autofocus,
+             fillColor: fillColor,
+             overlayColor: overlayColor,
+             splashRadius: splashRadius,
+             focusNode: field.focusNode,
+             shape: shape,
+             side: side,
+             isError: field.errorText != null,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+             semanticLabel: semanticLabel,
+           );
+         },
+       );
 }

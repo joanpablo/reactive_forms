@@ -4,10 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ReactiveTimePickerTestingWidget extends StatelessWidget {
   final FormGroup form;
 
-  const ReactiveTimePickerTestingWidget({
-    super.key,
-    required this.form,
-  });
+  const ReactiveTimePickerTestingWidget({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

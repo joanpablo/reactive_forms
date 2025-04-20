@@ -50,50 +50,55 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
     Color? focusColor,
     Color? hoverColor,
     bool autofocus = false,
-    MaterialStateProperty<Color?>? thumbColor,
-    MaterialStateProperty<Color?>? trackColor,
+    EdgeInsetsGeometry? padding,
+    WidgetStateProperty<double?>? trackOutlineWidth,
+    WidgetStateProperty<Color?>? thumbColor,
+    WidgetStateProperty<Color?>? trackColor,
     MouseCursor? mouseCursor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     ReactiveFormFieldCallback<bool>? onChanged,
-    MaterialStateProperty<Color?>? trackOutlineColor,
-    MaterialStateProperty<Icon?>? thumbIcon,
+    WidgetStateProperty<Color?>? trackOutlineColor,
+    WidgetStateProperty<Icon?>? thumbIcon,
     ValueChanged<bool>? onFocusChange,
   }) : super(
-          builder: (field) {
-            return Switch(
-              value: field.value ?? false,
-              activeColor: activeColor,
-              trackOutlineColor: trackOutlineColor,
-              thumbIcon: thumbIcon,
-              onFocusChange: onFocusChange,
-              activeTrackColor: activeTrackColor,
-              inactiveThumbColor: inactiveThumbColor,
-              inactiveTrackColor: inactiveTrackColor,
-              activeThumbImage: activeThumbImage,
-              onActiveThumbImageError: onActiveThumbImageError,
-              inactiveThumbImage: inactiveThumbImage,
-              onInactiveThumbImageError: onInactiveThumbImageError,
-              materialTapTargetSize: materialTapTargetSize,
-              dragStartBehavior: dragStartBehavior,
-              focusColor: focusColor,
-              hoverColor: hoverColor,
-              autofocus: autofocus,
-              thumbColor: thumbColor,
-              trackColor: trackColor,
-              mouseCursor: mouseCursor,
-              overlayColor: overlayColor,
-              splashRadius: splashRadius,
-              focusNode: field.focusNode,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         builder: (field) {
+           return Switch(
+             value: field.value ?? false,
+             activeColor: activeColor,
+             trackOutlineColor: trackOutlineColor,
+             thumbIcon: thumbIcon,
+             onFocusChange: onFocusChange,
+             activeTrackColor: activeTrackColor,
+             inactiveThumbColor: inactiveThumbColor,
+             inactiveTrackColor: inactiveTrackColor,
+             activeThumbImage: activeThumbImage,
+             onActiveThumbImageError: onActiveThumbImageError,
+             inactiveThumbImage: inactiveThumbImage,
+             onInactiveThumbImageError: onInactiveThumbImageError,
+             materialTapTargetSize: materialTapTargetSize,
+             dragStartBehavior: dragStartBehavior,
+             focusColor: focusColor,
+             hoverColor: hoverColor,
+             autofocus: autofocus,
+             thumbColor: thumbColor,
+             trackColor: trackColor,
+             mouseCursor: mouseCursor,
+             overlayColor: overlayColor,
+             splashRadius: splashRadius,
+             focusNode: field.focusNode,
+             padding: padding,
+             trackOutlineWidth: trackOutlineWidth,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 
   /// Creates a [ReactiveSwitch] that wraps a [CupertinoSwitch] if the
   /// target platform is iOS, creates a material design switch otherwise.
@@ -140,35 +145,36 @@ class ReactiveSwitch extends ReactiveFocusableFormField<bool, bool> {
     double? splashRadius,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
-          builder: (field) {
-            return Switch.adaptive(
-              value: field.value ?? false,
-              activeColor: activeColor,
-              activeTrackColor: activeTrackColor,
-              inactiveThumbColor: inactiveThumbColor,
-              inactiveTrackColor: inactiveTrackColor,
-              activeThumbImage: activeThumbImage,
-              onActiveThumbImageError: onActiveThumbImageError,
-              inactiveThumbImage: inactiveThumbImage,
-              onInactiveThumbImageError: onInactiveThumbImageError,
-              materialTapTargetSize: materialTapTargetSize,
-              dragStartBehavior: dragStartBehavior,
-              focusColor: focusColor,
-              hoverColor: hoverColor,
-              thumbColor: thumbColor,
-              trackColor: trackColor,
-              mouseCursor: mouseCursor,
-              overlayColor: overlayColor,
-              splashRadius: splashRadius,
-              autofocus: autofocus,
-              focusNode: field.focusNode,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         builder: (field) {
+           return Switch.adaptive(
+             value: field.value ?? false,
+             activeColor: activeColor,
+             activeTrackColor: activeTrackColor,
+             inactiveThumbColor: inactiveThumbColor,
+             inactiveTrackColor: inactiveTrackColor,
+             activeThumbImage: activeThumbImage,
+             onActiveThumbImageError: onActiveThumbImageError,
+             inactiveThumbImage: inactiveThumbImage,
+             onInactiveThumbImageError: onInactiveThumbImageError,
+             materialTapTargetSize: materialTapTargetSize,
+             dragStartBehavior: dragStartBehavior,
+             focusColor: focusColor,
+             hoverColor: hoverColor,
+             thumbColor: thumbColor,
+             trackColor: trackColor,
+             mouseCursor: mouseCursor,
+             overlayColor: overlayColor,
+             splashRadius: splashRadius,
+             autofocus: autofocus,
+             focusNode: field.focusNode,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 }

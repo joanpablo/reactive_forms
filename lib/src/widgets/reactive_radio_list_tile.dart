@@ -49,48 +49,51 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
     bool? enableFeedback,
     ReactiveFormFieldCallback<T>? onChanged,
     MouseCursor? mouseCursor,
-    MaterialStateProperty<Color?>? fillColor,
+    WidgetStateProperty<Color?>? fillColor,
     Color? hoverColor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     MaterialTapTargetSize? materialTapTargetSize,
+    double radioScaleFactor = 1.0,
     ValueChanged<bool>? onFocusChange,
   }) : super(
-          builder: (field) {
-            return RadioListTile<T>(
-              value: value,
-              groupValue: field.value,
-              mouseCursor: mouseCursor,
-              activeColor: activeColor,
-              hoverColor: hoverColor,
-              overlayColor: overlayColor,
-              materialTapTargetSize: materialTapTargetSize,
-              fillColor: fillColor,
-              splashRadius: splashRadius,
-              onFocusChange: onFocusChange,
-              selectedTileColor: selectedTileColor,
-              tileColor: tileColor,
-              title: title,
-              subtitle: subtitle,
-              isThreeLine: isThreeLine,
-              dense: dense,
-              secondary: secondary,
-              controlAffinity: controlAffinity,
-              contentPadding: contentPadding,
-              toggleable: toggleable,
-              shape: shape,
-              selected: selected,
-              autofocus: autofocus,
-              visualDensity: visualDensity,
-              focusNode: field.focusNode,
-              enableFeedback: enableFeedback,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         builder: (field) {
+           return RadioListTile<T>(
+             value: value,
+             groupValue: field.value,
+             mouseCursor: mouseCursor,
+             activeColor: activeColor,
+             hoverColor: hoverColor,
+             overlayColor: overlayColor,
+             materialTapTargetSize: materialTapTargetSize,
+             fillColor: fillColor,
+             splashRadius: splashRadius,
+             onFocusChange: onFocusChange,
+             selectedTileColor: selectedTileColor,
+             tileColor: tileColor,
+             title: title,
+             subtitle: subtitle,
+             isThreeLine: isThreeLine,
+             dense: dense,
+             secondary: secondary,
+             controlAffinity: controlAffinity,
+             contentPadding: contentPadding,
+             toggleable: toggleable,
+             shape: shape,
+             selected: selected,
+             autofocus: autofocus,
+             visualDensity: visualDensity,
+             focusNode: field.focusNode,
+             enableFeedback: enableFeedback,
+             radioScaleFactor: radioScaleFactor,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 }

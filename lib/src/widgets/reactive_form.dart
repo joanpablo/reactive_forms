@@ -5,14 +5,17 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/widgets/form_control_inherited_notifier.dart';
-import 'package:reactive_forms/src/widgets/reactive_form_pop_scope.dart';
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormGroup] to all descendants widgets.
 ///
 /// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
-class ReactiveForm extends StatelessWidget {
+///
+/// The optional type argument `T` allows for specifying the type of result that
+/// can be returned when a route associated with this form is popped.
+@optionalTypeArgs
+class ReactiveForm<T> extends StatelessWidget {
   /// The widget below this widget in the tree.
   final Widget child;
 
@@ -25,6 +28,14 @@ class ReactiveForm extends StatelessWidget {
   /// A callback invoked when a route is popped. See [PopScope] for more details.
   final ReactiveFormPopInvokedCallback? onPopInvoked;
 
+  /// A callback invoked when a route is popped. See [PopScope] for more details.
+  ///
+  /// This uses the type argument `T` to define the type of the result. If `T`
+  /// is not specified, it defaults to `dynamic`. This parameter is optional
+  /// and allows for handling results with specific data types when a route is
+  /// popped.
+  final ReactiveFormPopInvokedWithResultCallback<T>? onPopInvokedWithResult;
+
   /// Creates and instance of [ReactiveForm].
   ///
   /// The [formGroup] and [child] arguments are required.
@@ -33,7 +44,8 @@ class ReactiveForm extends StatelessWidget {
     required this.formGroup,
     required this.child,
     this.canPop,
-    this.onPopInvoked,
+    @Deprecated('Use onPopInvokedWithResult instead.') this.onPopInvoked,
+    this.onPopInvokedWithResult,
   });
 
   /// Returns the nearest model up its widget tree.
@@ -43,16 +55,21 @@ class ReactiveForm extends StatelessWidget {
   ///
   /// `listen: false` is necessary if want to avoid rebuilding the
   /// [context] when model changes.
-  static AbstractControl<Object>? of(BuildContext context,
-      {bool listen = true}) {
+  static AbstractControl<Object>? of(
+    BuildContext context, {
+    bool listen = true,
+  }) {
     if (listen) {
       return context
           .dependOnInheritedWidgetOfExactType<FormControlInheritedStreamer>()
           ?.control;
     }
 
-    final element = context.getElementForInheritedWidgetOfExactType<
-        FormControlInheritedStreamer>();
+    final element =
+        context
+            .getElementForInheritedWidgetOfExactType<
+              FormControlInheritedStreamer
+            >();
     return element == null
         ? null
         : (element.widget as FormControlInheritedStreamer).control;
@@ -63,11 +80,26 @@ class ReactiveForm extends StatelessWidget {
     return FormControlInheritedStreamer(
       control: formGroup,
       stream: formGroup.statusChanged,
-      child: ReactiveFormPopScope(
-        canPop: canPop,
-        onPopInvoked: onPopInvoked,
+      child: PopScope<T>(
+        canPop: canPop?.call(formGroup) ?? true,
+        onPopInvokedWithResult: _buildOnPopInvokedCallback(formGroup),
         child: child,
       ),
     );
+  }
+
+  PopInvokedWithResultCallback<T>? _buildOnPopInvokedCallback(
+    FormGroup formGroup,
+  ) {
+    if (onPopInvokedWithResult != null) {
+      return (didPop, result) =>
+          onPopInvokedWithResult!(formGroup, didPop, result);
+    }
+
+    if (onPopInvoked != null) {
+      return (didPop, _) => onPopInvoked!(formGroup, didPop);
+    }
+
+    return null;
   }
 }
