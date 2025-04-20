@@ -16,7 +16,6 @@ linter:
     - null_check_on_nullable_type_parameter
     - omit_local_variable_types
     - only_throw_errors
-    - package_api_docs
     - prefer_const_constructors
     - prefer_interpolation_to_compose_strings
     - test_types_in_equals
