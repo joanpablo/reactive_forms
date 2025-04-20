@@ -14,7 +14,7 @@
   - ReactiveRadioListTile: `radioScaleFactor`.
   - ReactiveSlider: `padding`, `allowedInteraction`.
   - ReactiveSwitch: `padding`, `trackOutlineWidth`.
-  - ReactiveSwitch.adaptive: `thumbIcon`, `trackOutlineWidth`, `trackOutlineColor`, `padding`, `applyCupertinoTheme`, `onFocusChange`. 
+  - ReactiveSwitch.adaptive: `thumbIcon`, `trackOutlineWidth`, `trackOutlineColor`, `padding`, `applyCupertinoTheme`, `onFocusChange`.
   - ReactiveTextField: `groupId`, `ignorePointers`, `cursorErrorColor`, `stylusHandwritingEnabled` (removed deprecated `scribbleEnabled`), `onTapAlwaysCalled`, `onTapUpOutside`, `statesController` 
 - Renamed `ReactiveSwitchListTile.adaptative` to `ReactiveSwitchListTile.adaptive` 
 
