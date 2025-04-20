@@ -27,8 +27,10 @@ class MaxValidator<T> extends Validator<dynamic> {
       return error;
     }
 
-    assert(control.value is Comparable<dynamic>,
-        'The MinValidator validator is expecting a control of type `Comparable` but received a control of type ${control.value.runtimeType}');
+    assert(
+      control.value is Comparable<dynamic>,
+      'The MinValidator validator is expecting a control of type `Comparable` but received a control of type ${control.value.runtimeType}',
+    );
 
     final comparableValue = control.value as Comparable<dynamic>;
     return comparableValue.compareTo(max) <= 0 ? null : error;

@@ -56,68 +56,72 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
     EdgeInsetsGeometry? padding,
     ReactiveFormFieldCallback<T>? onTap,
     ReactiveFormFieldCallback<T>? onChanged,
-  })  : assert(itemHeight == null || itemHeight > 0),
-        super(
-          builder: (ReactiveFormFieldState<T, T> field) {
-            final effectiveDecoration = decoration.applyDefaults(
-              Theme.of(field.context).inputDecorationTheme,
-            );
+  }) : assert(itemHeight == null || itemHeight > 0),
+       super(
+         builder: (ReactiveFormFieldState<T, T> field) {
+           final effectiveDecoration = decoration.applyDefaults(
+             Theme.of(field.context).inputDecorationTheme,
+           );
 
-            var effectiveValue = field.value;
-            if (effectiveValue != null &&
-                !items.any((item) => item.value == effectiveValue)) {
-              effectiveValue = null;
-            }
+           var effectiveValue = field.value;
+           if (effectiveValue != null &&
+               !items.any((item) => item.value == effectiveValue)) {
+             effectiveValue = null;
+           }
 
-            final isDisabled = readOnly || field.control.disabled;
-            var effectiveDisabledHint = disabledHint;
-            if (isDisabled && disabledHint == null) {
-              final selectedItemIndex =
-                  items.indexWhere((item) => item.value == effectiveValue);
-              if (selectedItemIndex > -1) {
-                effectiveDisabledHint = selectedItemBuilder != null
-                    ? selectedItemBuilder(field.context)
-                        .elementAt(selectedItemIndex)
-                    : items.elementAt(selectedItemIndex).child;
-              }
-            }
+           final isDisabled = readOnly || field.control.disabled;
+           var effectiveDisabledHint = disabledHint;
+           if (isDisabled && disabledHint == null) {
+             final selectedItemIndex = items.indexWhere(
+               (item) => item.value == effectiveValue,
+             );
+             if (selectedItemIndex > -1) {
+               effectiveDisabledHint =
+                   selectedItemBuilder != null
+                       ? selectedItemBuilder(
+                         field.context,
+                       ).elementAt(selectedItemIndex)
+                       : items.elementAt(selectedItemIndex).child;
+             }
+           }
 
-            return DropdownButtonFormField<T>(
-              value: effectiveValue,
-              decoration: effectiveDecoration.copyWith(
-                errorText: field.errorText,
-                enabled: !isDisabled,
-              ),
-              items: items,
-              selectedItemBuilder: selectedItemBuilder,
-              hint: hint,
-              disabledHint: effectiveDisabledHint,
-              elevation: elevation,
-              style: style,
-              icon: icon,
-              iconDisabledColor: iconDisabledColor,
-              iconEnabledColor: iconEnabledColor,
-              iconSize: iconSize,
-              isDense: isDense,
-              isExpanded: isExpanded,
-              itemHeight: itemHeight,
-              focusNode: field.focusNode,
-              dropdownColor: dropdownColor,
-              focusColor: focusColor,
-              autofocus: autofocus,
-              menuMaxHeight: menuMaxHeight,
-              enableFeedback: enableFeedback,
-              alignment: alignment,
-              borderRadius: borderRadius,
-              padding: padding,
-              onTap: onTap != null ? () => onTap(field.control) : null,
-              onChanged: isDisabled
-                  ? null
-                  : (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    },
-            );
-          },
-        );
+           return DropdownButtonFormField<T>(
+             value: effectiveValue,
+             decoration: effectiveDecoration.copyWith(
+               errorText: field.errorText,
+               enabled: !isDisabled,
+             ),
+             items: items,
+             selectedItemBuilder: selectedItemBuilder,
+             hint: hint,
+             disabledHint: effectiveDisabledHint,
+             elevation: elevation,
+             style: style,
+             icon: icon,
+             iconDisabledColor: iconDisabledColor,
+             iconEnabledColor: iconEnabledColor,
+             iconSize: iconSize,
+             isDense: isDense,
+             isExpanded: isExpanded,
+             itemHeight: itemHeight,
+             focusNode: field.focusNode,
+             dropdownColor: dropdownColor,
+             focusColor: focusColor,
+             autofocus: autofocus,
+             menuMaxHeight: menuMaxHeight,
+             enableFeedback: enableFeedback,
+             alignment: alignment,
+             borderRadius: borderRadius,
+             padding: padding,
+             onTap: onTap != null ? () => onTap(field.control) : null,
+             onChanged:
+                 isDisabled
+                     ? null
+                     : (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     },
+           );
+         },
+       );
 }

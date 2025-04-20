@@ -16,9 +16,10 @@ class ContainsValidator<T> extends Validator<dynamic> {
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     assert(
-        control is AbstractControl<Iterable<T>> ||
-            control is AbstractControl<Iterable<T?>>,
-        'Expected a control of type AbstractControl<Iterable<$T>> or AbstractControl<Iterable<$T?>>');
+      control is AbstractControl<Iterable<T>> ||
+          control is AbstractControl<Iterable<T?>>,
+      'Expected a control of type AbstractControl<Iterable<$T>> or AbstractControl<Iterable<$T?>>',
+    );
 
     final iterableControl = control as AbstractControl<Iterable<dynamic>>;
     return iterableControl.value != null &&

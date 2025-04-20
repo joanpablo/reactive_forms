@@ -74,8 +74,10 @@ void main() {
     test('Throws FormArrayInvalidIndexException if index not a valid int', () {
       final array = FormArray([]);
 
-      expect(() => array.control('control'),
-          throwsA(isInstanceOf<FormArrayInvalidIndexException>()));
+      expect(
+        () => array.control('control'),
+        throwsA(isInstanceOf<FormArrayInvalidIndexException>()),
+      );
     });
 
     test('Add values to array sets value to each item', () {
@@ -98,8 +100,10 @@ void main() {
     test('Throws FormControlNotFoundException if invalid control index', () {
       final array = FormArray([]);
 
-      expect(() => array.control('0'),
-          throwsA(isInstanceOf<FormControlNotFoundException>()));
+      expect(
+        () => array.control('0'),
+        throwsA(isInstanceOf<FormControlNotFoundException>()),
+      );
     });
 
     test('Reset array restores default value of all items to null', () {
@@ -120,23 +124,24 @@ void main() {
     });
 
     test(
-        'Reset array restores default value of all items to null when calling resetState with empty array',
-        () {
-      // Given: an array with items with default values
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
-        FormControl<int>(value: 2),
-        FormControl<int>(value: 3),
-      ]);
+      'Reset array restores default value of all items to null when calling resetState with empty array',
+      () {
+        // Given: an array with items with default values
+        final array = FormArray<int>([
+          FormControl<int>(value: 1),
+          FormControl<int>(value: 2),
+          FormControl<int>(value: 3),
+        ]);
 
-      // And: reset array
-      array.resetState([]);
+        // And: reset array
+        array.resetState([]);
 
-      //Then: items has initial default values
-      expect(array.control('0').value, null);
-      expect(array.control('1').value, null);
-      expect(array.control('2').value, null);
-    });
+        //Then: items has initial default values
+        expect(array.control('0').value, null);
+        expect(array.control('1').value, null);
+        expect(array.control('2').value, null);
+      },
+    );
 
     test('Reset array with initial values', () {
       // Given: an array with items with default values
@@ -193,14 +198,10 @@ void main() {
 
     test('Reset array with disabled states', () {
       // Given: an array with items with default values
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
-      ]);
+      final array = FormArray<int>([FormControl<int>(value: 1)]);
 
       // And: reset array value and disable the control
-      array.resetState([
-        ControlState(disabled: true),
-      ]);
+      array.resetState([ControlState(disabled: true)]);
 
       //Then: items has initial reset values and are disabled
       expect(array.control('0').value, null);
@@ -209,14 +210,10 @@ void main() {
 
     test('Reset array with state', () {
       // Given: an array with items with default values
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
-      ]);
+      final array = FormArray<int>([FormControl<int>(value: 1)]);
 
       // And: reset array value with state
-      array.resetState([
-        ControlState(value: 2),
-      ]);
+      array.resetState([ControlState(value: 2)]);
 
       //Then: items has initial reset values and are enabled
       expect(array.control('0').value, 2);
@@ -225,9 +222,7 @@ void main() {
 
     test('Reset array marks it as pristine', () {
       // Given: an array
-      final array = FormArray<int>([
-        FormControl<int>(),
-      ]);
+      final array = FormArray<int>([FormControl<int>()]);
 
       // When: mark it as dirty
       array.markAsDirty();
@@ -244,17 +239,13 @@ void main() {
 
     test('Reset array state marks it as pristine', () {
       // Given: an array with items with default values
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
-      ]);
+      final array = FormArray<int>([FormControl<int>(value: 1)]);
 
       // When: mark it as dirty
       array.markAsDirty();
 
       // And: reset array value with state
-      array.resetState([
-        ControlState(value: 2),
-      ]);
+      array.resetState([ControlState(value: 2)]);
 
       //Then: array is pristine
       expect(array.pristine, true, reason: 'array is not pristine');
@@ -298,9 +289,7 @@ void main() {
 
     test('Array notify value changes when control value changes', () {
       // Given: an array with a controls
-      final array = FormArray<dynamic>([
-        FormControl<dynamic>(),
-      ]);
+      final array = FormArray<dynamic>([FormControl<dynamic>()]);
 
       final value = 'Reactive Forms';
 
@@ -359,9 +348,7 @@ void main() {
 
     test('When an array is disable then all children are disabled', () {
       // Given: a form with controls
-      final array = FormArray<dynamic>([
-        FormControl<dynamic>(),
-      ]);
+      final array = FormArray<dynamic>([FormControl<dynamic>()]);
 
       // When: disable group
       array.markAsDisabled();
@@ -437,10 +424,10 @@ void main() {
 
       // Expect: value and raw value includes all controls
       expect(addressArray.value, [
-        {'country': 'Canada', 'city': 'Toronto'}
+        {'country': 'Canada', 'city': 'Toronto'},
       ]);
       expect(addressArray.rawValue, [
-        {'country': 'Canada', 'city': 'Toronto'}
+        {'country': 'Canada', 'city': 'Toronto'},
       ]);
     });
 
@@ -488,9 +475,7 @@ void main() {
 
     test('State error if dispose an array and try to change value', () {
       // Given: an array
-      final array = FormArray<Object>([
-        FormControl(),
-      ]);
+      final array = FormArray<Object>([FormControl()]);
 
       // When: dispose the array
       array.dispose();
@@ -553,17 +538,14 @@ void main() {
       // Given: an array of groups with a disabled control
       final addressArray = FormArray([
         fb.group({
-          'city': FormControl<String>(
-            value: 'Toronto',
-            disabled: true,
-          ),
+          'city': FormControl<String>(value: 'Toronto', disabled: true),
         }),
       ]);
 
       // Expect: array is created
       expect(addressArray.controls.length, 1);
       expect(addressArray.value, [
-        {'city': 'Toronto'}
+        {'city': 'Toronto'},
       ]);
     });
 
@@ -578,10 +560,7 @@ void main() {
 
       // Expect: array is created
       expect(addressArray.rawValue, [
-        {
-          'country': 'Canada',
-          'city': 'Toronto',
-        },
+        {'country': 'Canada', 'city': 'Toronto'},
       ]);
     });
 
@@ -597,8 +576,11 @@ void main() {
       array.focus('0');
 
       // Then: control is focused
-      expect((array.control('0') as FormControl).hasFocus, true,
-          reason: 'control is not focused');
+      expect(
+        (array.control('0') as FormControl).hasFocus,
+        true,
+        reason: 'control is not focused',
+      );
     });
 
     test('Focused first control if no argument specified', () {
@@ -651,10 +633,16 @@ void main() {
       array.unfocus();
 
       // Then: any control has focus
-      expect((array.control('0') as FormControl).hasFocus, false,
-          reason: 'control is focused');
-      expect((array.control('1') as FormControl).hasFocus, false,
-          reason: 'control is focused');
+      expect(
+        (array.control('0') as FormControl).hasFocus,
+        false,
+        reason: 'control is focused',
+      );
+      expect(
+        (array.control('1') as FormControl).hasFocus,
+        false,
+        reason: 'control is focused',
+      );
     });
 
     test('Clear Array', () {
@@ -673,13 +661,10 @@ void main() {
 
     test('Disabled Array marks all children as disabled', () {
       // Given: a disabled form
-      final array = FormArray(
-        [
-          FormControl<String>(),
-          FormControl<String>(),
-        ],
-        disabled: true,
-      );
+      final array = FormArray([
+        FormControl<String>(),
+        FormControl<String>(),
+      ], disabled: true);
 
       // Then: array is disabled and all controls are disabled
       expect(array.disabled, true, reason: 'array is enabled');
@@ -717,13 +702,10 @@ void main() {
       expect(array.value, [2, 2], reason: 'array value not patched');
     });
 
-    test(
-        'Test that markAsPending() a control, set pending status to the array '
+    test('Test that markAsPending() a control, set pending status to the array '
         'as well.', () {
       // Given: an array with valid status.
-      final array = FormArray<int>([
-        FormControl<int>(value: 1),
-      ]);
+      final array = FormArray<int>([FormControl<int>(value: 1)]);
 
       // Expect: the array to be VALID and not PENDING.
       expect(array.valid, true);

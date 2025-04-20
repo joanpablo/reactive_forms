@@ -18,9 +18,7 @@ class ReactiveTextFieldTestingWidget<T> extends StatelessWidget {
     this.validationMessages,
     this.showErrors,
     this.focusNode,
-    this.bindings = const {
-      'textField': 'name',
-    },
+    this.bindings = const {'textField': 'name'},
     this.onChanged,
     this.onTap,
     this.onSubmitted,

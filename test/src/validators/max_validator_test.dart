@@ -38,9 +38,7 @@ void main() {
 
     test('FormControl with lower value is valid', () {
       // Given: a valid control
-      final control = FormControl<int>(
-        validators: [Validators.max(20)],
-      );
+      final control = FormControl<int>(validators: [Validators.max(20)]);
 
       // Expect: control is valid
       expect(control.valid, false);

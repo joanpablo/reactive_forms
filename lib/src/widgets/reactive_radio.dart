@@ -36,8 +36,8 @@ class ReactiveRadio<T> extends ReactiveFocusableFormField<T, T> {
     Color? activeColor,
     Color? focusColor,
     Color? hoverColor,
-    MaterialStateProperty<Color?>? fillColor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? fillColor,
+    WidgetStateProperty<Color?>? overlayColor,
     MouseCursor? mouseCursor,
     MaterialTapTargetSize? materialTapTargetSize,
     VisualDensity? visualDensity,
@@ -47,29 +47,30 @@ class ReactiveRadio<T> extends ReactiveFocusableFormField<T, T> {
     super.focusNode,
     ReactiveFormFieldCallback<T>? onChanged,
   }) : super(
-          builder: (field) {
-            return Radio<T>(
-              value: value,
-              groupValue: field.value,
-              activeColor: activeColor,
-              focusColor: focusColor,
-              hoverColor: hoverColor,
-              fillColor: fillColor,
-              overlayColor: overlayColor,
-              mouseCursor: mouseCursor,
-              splashRadius: splashRadius,
-              materialTapTargetSize: materialTapTargetSize,
-              visualDensity: visualDensity,
-              autofocus: autofocus,
-              toggleable: toggleable,
-              focusNode: field.focusNode,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         builder: (field) {
+           return Radio<T>(
+             value: value,
+             groupValue: field.value,
+             activeColor: activeColor,
+             focusColor: focusColor,
+             hoverColor: hoverColor,
+             fillColor: fillColor,
+             overlayColor: overlayColor,
+             mouseCursor: mouseCursor,
+             splashRadius: splashRadius,
+             materialTapTargetSize: materialTapTargetSize,
+             visualDensity: visualDensity,
+             autofocus: autofocus,
+             toggleable: toggleable,
+             focusNode: field.focusNode,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 }

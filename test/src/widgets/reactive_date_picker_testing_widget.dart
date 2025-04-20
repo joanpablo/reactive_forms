@@ -30,8 +30,11 @@ class ReactiveDatePickerTestingWidget<T> extends StatelessWidget {
             initialDate: initialDate,
             firstDate: firstDate,
             lastDate: lastDate,
-            builder: (BuildContext context,
-                ReactiveDatePickerDelegate<T> picker, Widget? child) {
+            builder: (
+              BuildContext context,
+              ReactiveDatePickerDelegate<T> picker,
+              Widget? child,
+            ) {
               return TextButton(
                 onPressed: picker.showPicker,
                 child: const Text('Select Birthday'),

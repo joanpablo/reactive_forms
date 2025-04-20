@@ -7,9 +7,7 @@ void main() {
     testWidgets('Show local validation message', (WidgetTester tester) async {
       // Given: an invalid form with a required field
       final form = FormGroup({
-        'requiredField': FormControl<String>(
-          validators: [Validators.required],
-        ),
+        'requiredField': FormControl<String>(validators: [Validators.required]),
       });
 
       // And: a global and widget level definition for required validation
@@ -50,9 +48,7 @@ void main() {
     testWidgets('Show global validation message', (WidgetTester tester) async {
       // Given: an invalid form with a required field
       final form = FormGroup({
-        'requiredField': FormControl<String>(
-          validators: [Validators.required],
-        ),
+        'requiredField': FormControl<String>(validators: [Validators.required]),
       });
 
       // And: a global definition for required validation message
@@ -88,13 +84,12 @@ void main() {
       );
     });
 
-    testWidgets('No local either global validation messages',
-        (WidgetTester tester) async {
+    testWidgets('No local either global validation messages', (
+      WidgetTester tester,
+    ) async {
       // Given: an invalid form with a required field
       final form = FormGroup({
-        'requiredField': FormControl<String>(
-          validators: [Validators.required],
-        ),
+        'requiredField': FormControl<String>(validators: [Validators.required]),
       });
 
       // And: a global and widget level definition for another error different
@@ -111,8 +106,8 @@ void main() {
                 formControlName: 'requiredField',
                 showErrors: (_) => true,
                 validationMessages: {
-                  ValidationMessage.maxLength: (_) =>
-                      ValidationMessage.maxLength,
+                  ValidationMessage.maxLength:
+                      (_) => ValidationMessage.maxLength,
                 },
               ),
             ),

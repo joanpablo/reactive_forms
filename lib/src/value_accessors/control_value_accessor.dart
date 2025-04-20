@@ -44,7 +44,8 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
   void updateModel(ViewDataType? viewValue) {
     if (_control == null) {
       throw ValueAccessorException(
-          'No control registered. Call [ControlValueAccessor.registerControl] to register a control first.');
+        'No control registered. Call [ControlValueAccessor.registerControl] to register a control first.',
+      );
     }
 
     _viewToModelChange = true;
@@ -64,8 +65,10 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
   ///
   /// The argument [onChange] is optionally and will be called every time the
   /// [control] emits the value change event.
-  void registerControl(FormControl<ModelDataType> control,
-      {ChangeFunction<ViewDataType>? onChange}) {
+  void registerControl(
+    FormControl<ModelDataType> control, {
+    ChangeFunction<ViewDataType>? onChange,
+  }) {
     _control = control;
     _onChangeSubscription = _control!.valueChanges.listen(_updateView);
 

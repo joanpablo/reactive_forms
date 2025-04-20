@@ -92,9 +92,7 @@ void main() {
         '3088 0000 0000 0009',
       ];
 
-      final control = FormControl<String>(
-        validators: [Validators.creditCard],
-      );
+      final control = FormControl<String>(validators: [Validators.creditCard]);
 
       for (final cardNumber in cardNumbers) {
         control.value = cardNumber;
