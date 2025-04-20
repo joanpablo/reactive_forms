@@ -11,6 +11,7 @@
   - ReactiveTimePicker: `barrierColor`, `barrierDismissible`, `barrierLabel`, `orientation`, `switchToInputEntryModeIcon`, `switchToTimerEntryModeIcon`.
   - ReactiveForm: `onPopInvokedWithResult` (used in `PopScope`), removed deprecated `onPopInvoked`.
   - ReactiveFormPopScope: `onPopInvokedWithResult` (used in `PopScope`), removed deprecated `onPopInvoked`.
+  - ReactiveFormBuilder: `onPopInvokedWithResult` (used in `PopScope`), removed deprecated `onPopInvoked`.
   - ReactiveRadioListTile: `radioScaleFactor`.
   - ReactiveSlider: `padding`, `allowedInteraction`.
   - ReactiveSwitch: `padding`, `trackOutlineWidth`.

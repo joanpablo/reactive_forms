@@ -26,9 +26,6 @@ class ReactiveForm<T> extends StatelessWidget {
   final ReactiveFormCanPopCallback? canPop;
 
   /// A callback invoked when a route is popped. See [PopScope] for more details.
-  final ReactiveFormPopInvokedCallback? onPopInvoked;
-
-  /// A callback invoked when a route is popped. See [PopScope] for more details.
   ///
   /// This uses the type argument `T` to define the type of the result. If `T`
   /// is not specified, it defaults to `dynamic`. This parameter is optional
@@ -44,7 +41,6 @@ class ReactiveForm<T> extends StatelessWidget {
     required this.formGroup,
     required this.child,
     this.canPop,
-    @Deprecated('Use onPopInvokedWithResult instead.') this.onPopInvoked,
     this.onPopInvokedWithResult,
   });
 
@@ -82,24 +78,13 @@ class ReactiveForm<T> extends StatelessWidget {
       stream: formGroup.statusChanged,
       child: PopScope<T>(
         canPop: canPop?.call(formGroup) ?? true,
-        onPopInvokedWithResult: _buildOnPopInvokedCallback(formGroup),
+        onPopInvokedWithResult:
+            onPopInvokedWithResult != null
+                ? (didPop, result) =>
+                    onPopInvokedWithResult!(formGroup, didPop, result)
+                : null,
         child: child,
       ),
     );
-  }
-
-  PopInvokedWithResultCallback<T>? _buildOnPopInvokedCallback(
-    FormGroup formGroup,
-  ) {
-    if (onPopInvokedWithResult != null) {
-      return (didPop, result) =>
-          onPopInvokedWithResult!(formGroup, didPop, result);
-    }
-
-    if (onPopInvoked != null) {
-      return (didPop, _) => onPopInvoked!(formGroup, didPop);
-    }
-
-    return null;
   }
 }
