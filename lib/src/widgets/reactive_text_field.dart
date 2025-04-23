@@ -20,7 +20,9 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   final TextEditingController? _textController;
 
   static Widget _defaultContextMenuBuilder(
-      BuildContext context, EditableTextState editableTextState) {
+    BuildContext context,
+    EditableTextState editableTextState,
+  ) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -97,6 +99,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     super.valueAccessor,
     super.showErrors,
     super.focusNode,
+    Object groupId = EditableText,
     InputDecoration decoration = const InputDecoration(),
     TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -123,10 +126,12 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     bool expands = false,
     int? maxLength,
     List<TextInputFormatter>? inputFormatters,
+    bool? ignorePointers,
     double cursorWidth = 2.0,
     double? cursorHeight,
     Radius? cursorRadius,
     Color? cursorColor,
+    Color? cursorErrorColor,
     Brightness? keyboardAppearance,
     EdgeInsets scrollPadding = const EdgeInsets.all(20.0),
     bool enableInteractiveSelection = true,
@@ -137,6 +142,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     AppPrivateCommandCallback? onAppPrivateCommand,
     String? restorationId,
+    bool stylusHandwritingEnabled =
+        EditableText.defaultStylusHandwritingEnabled,
     ScrollController? scrollController,
     TextSelectionControls? selectionControls,
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
@@ -144,103 +151,115 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextEditingController? controller,
     Clip clipBehavior = Clip.hardEdge,
     bool enableIMEPersonalizedLearning = true,
-    bool scribbleEnabled = true,
     ReactiveFormFieldCallback<T>? onTap,
     ReactiveFormFieldCallback<T>? onEditingComplete,
     ReactiveFormFieldCallback<T>? onSubmitted,
     ReactiveFormFieldCallback<T>? onChanged,
     UndoHistoryController? undoController,
     bool? cursorOpacityAnimates,
+    bool onTapAlwaysCalled = false,
     TapRegionCallback? onTapOutside,
+    TapRegionUpCallback? onTapUpOutside,
     ContentInsertionConfiguration? contentInsertionConfiguration,
     bool canRequestFocus = true,
     SpellCheckConfiguration? spellCheckConfiguration,
     TextMagnifierConfiguration? magnifierConfiguration,
-  })  : _textController = controller,
-        super(
-          builder: (ReactiveFormFieldState<T, String> field) {
-            final state = field as _ReactiveTextFieldState<T>;
-            final effectiveDecoration = decoration
-                .applyDefaults(Theme.of(state.context).inputDecorationTheme);
+    WidgetStatesController? statesController,
+  }) : _textController = controller,
+       super(
+         builder: (ReactiveFormFieldState<T, String> field) {
+           final state = field as _ReactiveTextFieldState<T>;
+           final effectiveDecoration = decoration.applyDefaults(
+             Theme.of(state.context).inputDecorationTheme,
+           );
 
-            return TextField(
-              controller: state._textController,
-              focusNode: state.focusNode,
-              decoration:
-                  effectiveDecoration.copyWith(errorText: state.errorText),
-              keyboardType: keyboardType,
-              textInputAction: textInputAction,
-              style: style,
-              strutStyle: strutStyle,
-              textAlign: textAlign,
-              textAlignVertical: textAlignVertical,
-              textDirection: textDirection,
-              textCapitalization: textCapitalization,
-              autofocus: autofocus,
-              contextMenuBuilder: contextMenuBuilder,
-              readOnly: readOnly,
-              showCursor: showCursor,
-              obscureText: obscureText,
-              autocorrect: autocorrect,
-              smartDashesType: smartDashesType ??
-                  (obscureText
-                      ? SmartDashesType.disabled
-                      : SmartDashesType.enabled),
-              smartQuotesType: smartQuotesType ??
-                  (obscureText
-                      ? SmartQuotesType.disabled
-                      : SmartQuotesType.enabled),
-              enableSuggestions: enableSuggestions,
-              maxLengthEnforcement: maxLengthEnforcement,
-              maxLines: maxLines,
-              minLines: minLines,
-              expands: expands,
-              maxLength: maxLength,
-              inputFormatters: inputFormatters,
-              enabled: field.control.enabled,
-              cursorWidth: cursorWidth,
-              cursorHeight: cursorHeight,
-              cursorRadius: cursorRadius,
-              cursorColor: cursorColor,
-              scrollPadding: scrollPadding,
-              scrollPhysics: scrollPhysics,
-              keyboardAppearance: keyboardAppearance,
-              enableInteractiveSelection: enableInteractiveSelection,
-              buildCounter: buildCounter,
-              autofillHints: autofillHints,
-              mouseCursor: mouseCursor,
-              obscuringCharacter: obscuringCharacter,
-              dragStartBehavior: dragStartBehavior,
-              onAppPrivateCommand: onAppPrivateCommand,
-              restorationId: restorationId,
-              scrollController: scrollController,
-              selectionControls: selectionControls,
-              selectionHeightStyle: selectionHeightStyle,
-              selectionWidthStyle: selectionWidthStyle,
-              clipBehavior: clipBehavior,
-              enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
-              scribbleEnabled: scribbleEnabled,
-              onTap: onTap != null ? () => onTap(field.control) : null,
-              onSubmitted: onSubmitted != null
-                  ? (_) => onSubmitted(field.control)
-                  : null,
-              onEditingComplete: onEditingComplete != null
-                  ? () => onEditingComplete.call(field.control)
-                  : null,
-              onChanged: (value) {
-                field.didChange(value);
-                onChanged?.call(field.control);
-              },
-              undoController: undoController,
-              cursorOpacityAnimates: cursorOpacityAnimates,
-              onTapOutside: onTapOutside,
-              contentInsertionConfiguration: contentInsertionConfiguration,
-              canRequestFocus: canRequestFocus,
-              spellCheckConfiguration: spellCheckConfiguration,
-              magnifierConfiguration: magnifierConfiguration,
-            );
-          },
-        );
+           return TextField(
+             groupId: groupId,
+             controller: state._textController,
+             focusNode: state.focusNode,
+             decoration: effectiveDecoration.copyWith(
+               errorText: state.errorText,
+             ),
+             keyboardType: keyboardType,
+             textInputAction: textInputAction,
+             style: style,
+             strutStyle: strutStyle,
+             textAlign: textAlign,
+             textAlignVertical: textAlignVertical,
+             textDirection: textDirection,
+             textCapitalization: textCapitalization,
+             autofocus: autofocus,
+             contextMenuBuilder: contextMenuBuilder,
+             readOnly: readOnly,
+             showCursor: showCursor,
+             obscureText: obscureText,
+             autocorrect: autocorrect,
+             smartDashesType:
+                 smartDashesType ??
+                 (obscureText
+                     ? SmartDashesType.disabled
+                     : SmartDashesType.enabled),
+             smartQuotesType:
+                 smartQuotesType ??
+                 (obscureText
+                     ? SmartQuotesType.disabled
+                     : SmartQuotesType.enabled),
+             enableSuggestions: enableSuggestions,
+             maxLengthEnforcement: maxLengthEnforcement,
+             maxLines: maxLines,
+             minLines: minLines,
+             expands: expands,
+             maxLength: maxLength,
+             inputFormatters: inputFormatters,
+             enabled: field.control.enabled,
+             ignorePointers: ignorePointers,
+             cursorWidth: cursorWidth,
+             cursorHeight: cursorHeight,
+             cursorRadius: cursorRadius,
+             cursorColor: cursorColor,
+             cursorErrorColor: cursorErrorColor,
+             scrollPadding: scrollPadding,
+             scrollPhysics: scrollPhysics,
+             keyboardAppearance: keyboardAppearance,
+             enableInteractiveSelection: enableInteractiveSelection,
+             buildCounter: buildCounter,
+             autofillHints: autofillHints,
+             mouseCursor: mouseCursor,
+             obscuringCharacter: obscuringCharacter,
+             dragStartBehavior: dragStartBehavior,
+             onAppPrivateCommand: onAppPrivateCommand,
+             restorationId: restorationId,
+             stylusHandwritingEnabled: stylusHandwritingEnabled,
+             scrollController: scrollController,
+             selectionControls: selectionControls,
+             selectionHeightStyle: selectionHeightStyle,
+             selectionWidthStyle: selectionWidthStyle,
+             clipBehavior: clipBehavior,
+             enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+             onTap: onTap != null ? () => onTap(field.control) : null,
+             onSubmitted:
+                 onSubmitted != null ? (_) => onSubmitted(field.control) : null,
+             onEditingComplete:
+                 onEditingComplete != null
+                     ? () => onEditingComplete.call(field.control)
+                     : null,
+             onChanged: (value) {
+               field.didChange(value);
+               onChanged?.call(field.control);
+             },
+             undoController: undoController,
+             cursorOpacityAnimates: cursorOpacityAnimates,
+             onTapAlwaysCalled: onTapAlwaysCalled,
+             onTapOutside: onTapOutside,
+             onTapUpOutside: onTapUpOutside,
+             contentInsertionConfiguration: contentInsertionConfiguration,
+             canRequestFocus: canRequestFocus,
+             spellCheckConfiguration: spellCheckConfiguration,
+             magnifierConfiguration: magnifierConfiguration,
+             statesController: statesController,
+           );
+         },
+       );
 
   @override
   ReactiveFormFieldState<T, String> createState() =>
@@ -287,9 +306,10 @@ class _ReactiveTextFieldState<T>
   void _initializeTextController() {
     final initialValue = value;
     final currentWidget = widget as ReactiveTextField<T>;
-    _textController = (currentWidget._textController != null)
-        ? currentWidget._textController!
-        : TextEditingController();
+    _textController =
+        (currentWidget._textController != null)
+            ? currentWidget._textController!
+            : TextEditingController();
     _textController.text = initialValue == null ? '' : initialValue.toString();
   }
 

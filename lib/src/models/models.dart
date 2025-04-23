@@ -52,10 +52,10 @@ abstract class AbstractControl<T> {
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
-  })  : assert(asyncValidatorsDebounceTime >= 0),
-        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
-        _touched = touched,
-        _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
+  }) : assert(asyncValidatorsDebounceTime >= 0),
+       _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
+       _touched = touched,
+       _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
     setValidators(validators);
     setAsyncValidators(asyncValidators);
   }
@@ -700,9 +700,9 @@ abstract class AbstractControl<T> {
     _debounceTimer = Timer(
       Duration(milliseconds: _asyncValidatorsDebounceTime),
       () {
-        final validatorsStream = Stream.fromFutures(asyncValidators
-            .map((validator) => validator.validate(this))
-            .toList());
+        final validatorsStream = Stream.fromFutures(
+          asyncValidators.map((validator) => validator.validate(this)).toList(),
+        );
 
         final asyncValidationErrors = <String, dynamic>{};
         _asyncValidationSubscription = validatorsStream.listen(
@@ -951,10 +951,7 @@ class FormControl<T> extends AbstractControl<T> {
   }
 
   void _onFocusControllerChanged() {
-    _updateFocusState(
-      _focusController!.hasFocus,
-      notifyFocusController: false,
-    );
+    _updateFocusState(_focusController!.hasFocus, notifyFocusController: false);
 
     if (_focusController!.hasFocus == false) {
       markAsTouched();
@@ -991,10 +988,7 @@ class FormControl<T> extends AbstractControl<T> {
     if (_value != value) {
       _value = value;
 
-      updateValueAndValidity(
-        updateParent: updateParent,
-        emitEvent: emitEvent,
-      );
+      updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
     }
   }
 
@@ -1149,12 +1143,11 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
     super.asyncValidators,
     super.asyncValidatorsDebounceTime,
     bool disabled = false,
-  })  : assert(
-            !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
-            'Control name should not contain dot($_controlNameDelimiter)'),
-        super(
-          disabled: disabled,
-        ) {
+  }) : assert(
+         !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
+         'Control name should not contain dot($_controlNameDelimiter)',
+       ),
+       super(disabled: disabled) {
     addAll(controls);
 
     if (disabled) {
@@ -1431,10 +1424,7 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
       );
     }
 
-    updateValueAndValidity(
-      updateParent: updateParent,
-      emitEvent: emitEvent,
-    );
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Patches the value of the [FormGroup]. It accepts an object with control
@@ -1483,10 +1473,7 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
       }
     });
 
-    updateValueAndValidity(
-      updateParent: updateParent,
-      emitEvent: emitEvent,
-    );
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Resets the [FormGroup], marks all descendants as *untouched*, and sets
@@ -1515,8 +1502,10 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   /// print(form.value);  // output: {first: 'name', last: 'last name'}
   /// print(form.control('first').disabled);  // output: true
   /// ```
-  void resetState(Map<String, ControlState<Object>> state,
-      {bool removeFocus = false}) {
+  void resetState(
+    Map<String, ControlState<Object>> state, {
+    bool removeFocus = false,
+  }) {
     if (state.isEmpty) {
       reset(removeFocus: removeFocus);
     } else {
@@ -1561,8 +1550,9 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   @override
   void focus([String name = '']) {
     if (name.isNotEmpty) {
-      final control =
-          findControlInCollection(name.split(_controlNameDelimiter));
+      final control = findControlInCollection(
+        name.split(_controlNameDelimiter),
+      );
       if (control != null) {
         control.focus();
       }
@@ -1580,8 +1570,11 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   /// When [emitEvent] is true or not supplied (the default), both the
   /// *statusChanges* and *valueChanges* emit events with the latest status
   /// and value when the control is reset. When false, no events are emitted.
-  void removeControl(String name,
-      {bool updateParent = true, bool emitEvent = true}) {
+  void removeControl(
+    String name, {
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
     if (!_controls.containsKey(name)) {
       throw FormControlNotFoundException(controlName: name);
     }
@@ -1599,8 +1592,9 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
 
   @override
   bool anyControls(bool Function(AbstractControl<dynamic>) condition) {
-    return _controls.values
-        .any((control) => control.enabled && condition(control));
+    return _controls.values.any(
+      (control) => control.enabled && condition(control),
+    );
   }
 
   @override
@@ -1660,9 +1654,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     super.asyncValidators,
     super.asyncValidatorsDebounceTime,
     bool disabled = false,
-  }) : super(
-          disabled: disabled,
-        ) {
+  }) : super(disabled: disabled) {
     addAll(controls);
 
     if (disabled) {
@@ -1678,7 +1670,8 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   ///
   /// Retrieves all values regardless of disabled status.
   @override
-  List<T?> get rawValue => _controls.map<T?>((control) {
+  List<T?> get rawValue =>
+      _controls.map<T?>((control) {
         if (control is FormControlCollection<T?>) {
           return (control as FormControlCollection<T?>).rawValue;
         }
@@ -1770,10 +1763,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     _controls.insert(index, control);
     control.parent = this;
 
-    updateValueAndValidity(
-      emitEvent: emitEvent,
-      updateParent: updateParent,
-    );
+    updateValueAndValidity(emitEvent: emitEvent, updateParent: updateParent);
 
     if (emitEvent) {
       emitsCollectionChanged(_controls);
@@ -1816,10 +1806,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
       control.parent = this;
     }
 
-    updateValueAndValidity(
-      updateParent: updateParent,
-      emitEvent: emitEvent,
-    );
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
     emitsCollectionChanged(_controls);
   }
 
@@ -1841,10 +1828,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   }) {
     final removedControl = _controls.removeAt(index);
     removedControl.parent = null;
-    updateValueAndValidity(
-      emitEvent: emitEvent,
-      updateParent: updateParent,
-    );
+    updateValueAndValidity(emitEvent: emitEvent, updateParent: updateParent);
 
     if (emitEvent) {
       emitsCollectionChanged(_controls);
@@ -1912,10 +1896,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   void clear({bool emitEvent = true, bool updateParent = true}) {
     forEachChild((control) => control.parent = null);
     _controls.clear();
-    updateValueAndValidity(
-      emitEvent: emitEvent,
-      updateParent: updateParent,
-    );
+    updateValueAndValidity(emitEvent: emitEvent, updateParent: updateParent);
 
     if (emitEvent) {
       emitsCollectionChanged(_controls);
@@ -2091,24 +2072,18 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     }
 
     if (value != null && value.length > _controls.length) {
-      final newControls = value
-          .toList()
-          .asMap()
-          .entries
-          .where((entry) => entry.key >= _controls.length)
-          .map((entry) => FormControl<T>(value: entry.value))
-          .toList();
+      final newControls =
+          value
+              .toList()
+              .asMap()
+              .entries
+              .where((entry) => entry.key >= _controls.length)
+              .map((entry) => FormControl<T>(value: entry.value))
+              .toList();
 
-      addAll(
-        newControls,
-        updateParent: updateParent,
-        emitEvent: emitEvent,
-      );
+      addAll(newControls, updateParent: updateParent, emitEvent: emitEvent);
     } else {
-      updateValueAndValidity(
-        updateParent: updateParent,
-        emitEvent: emitEvent,
-      );
+      updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
     }
   }
 
@@ -2181,10 +2156,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
       }
     }
 
-    updateValueAndValidity(
-      updateParent: updateParent,
-      emitEvent: emitEvent,
-    );
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Resets the array, marking all controls as untouched, and setting
@@ -2253,8 +2225,9 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   @override
   void focus([String name = '']) {
     if (name.isNotEmpty) {
-      final control =
-          findControlInCollection(name.split(_controlNameDelimiter));
+      final control = findControlInCollection(
+        name.split(_controlNameDelimiter),
+      );
       if (control != null) {
         control.focus();
       }

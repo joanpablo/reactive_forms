@@ -10,9 +10,7 @@ class ReactiveFormBuilderTestingWidget<T> extends StatelessWidget {
     super.key,
     required this.form,
     this.validationMessages,
-    this.bindings = const {
-      'textField': 'name',
-    },
+    this.bindings = const {'textField': 'name'},
   });
 
   @override

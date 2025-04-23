@@ -23,9 +23,11 @@ class AnyValidator<T> extends Validator<dynamic> {
       return <String, dynamic>{ValidationMessage.any: true};
     }
 
-    assert(control.value is Iterable<T>,
-        '''Expected the control value to be of type ${(Iterable<T>).runtimeType}
-        but found type ${control.value.runtimeType.toString()}.''');
+    assert(
+      control.value is Iterable<T>,
+      '''Expected the control value to be of type ${(Iterable<T>).runtimeType}
+        but found type ${control.value.runtimeType.toString()}.''',
+    );
 
     final iterable = control.value as Iterable<T>;
     return iterable.any(test)

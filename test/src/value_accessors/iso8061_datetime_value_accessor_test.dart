@@ -20,51 +20,60 @@ void main() {
       expect(control.value, null);
     });
 
-    test('Iso8601DateTimeValueAccessor converts to null a model null value',
-        () {
-      // And: an Iso8601 value accessor
-      final valueAccessor = Iso8601DateTimeValueAccessor();
+    test(
+      'Iso8601DateTimeValueAccessor converts to null a model null value',
+      () {
+        // And: an Iso8601 value accessor
+        final valueAccessor = Iso8601DateTimeValueAccessor();
 
-      // Then: value is converted correctly
-      expect(valueAccessor.modelToViewValue(null), null);
-    });
-
-    test('Iso8601DateTimeValueAccessor converts to null a model empty value',
-        () {
-      // And: an Iso8601 value accessor
-      final valueAccessor = Iso8601DateTimeValueAccessor();
-
-      // Then: value is converted correctly
-      expect(valueAccessor.modelToViewValue(''), null);
-    });
-
-    test('Iso8601DateTimeValueAccessor converts to String a model datetime',
-        () {
-      // And: an Iso8601 value accessor
-      final valueAccessor = Iso8601DateTimeValueAccessor();
-
-      // Then: value is converted correctly
-      expect(valueAccessor.modelToViewValue('2020-01-01T00:00:00.000'),
-          DateTime(2020));
-    });
+        // Then: value is converted correctly
+        expect(valueAccessor.modelToViewValue(null), null);
+      },
+    );
 
     test(
-        'Iso8601DateTimeValueAccessor converts to String a view DateTime value',
-        () {
-      // Given: a control
-      final control = fb.control(DateTime(2020).toIso8601String());
+      'Iso8601DateTimeValueAccessor converts to null a model empty value',
+      () {
+        // And: an Iso8601 value accessor
+        final valueAccessor = Iso8601DateTimeValueAccessor();
 
-      // And: an Iso8601 value accessor
-      final valueAccessor = Iso8601DateTimeValueAccessor();
+        // Then: value is converted correctly
+        expect(valueAccessor.modelToViewValue(''), null);
+      },
+    );
 
-      // When: register control
-      valueAccessor.registerControl(control);
+    test(
+      'Iso8601DateTimeValueAccessor converts to String a model datetime',
+      () {
+        // And: an Iso8601 value accessor
+        final valueAccessor = Iso8601DateTimeValueAccessor();
 
-      // And: update accessor model value:
-      valueAccessor.updateModel(DateTime(2020));
+        // Then: value is converted correctly
+        expect(
+          valueAccessor.modelToViewValue('2020-01-01T00:00:00.000'),
+          DateTime(2020),
+        );
+      },
+    );
 
-      // Then: value is converted correctly
-      expect(control.value, '2020-01-01T00:00:00.000');
-    });
+    test(
+      'Iso8601DateTimeValueAccessor converts to String a view DateTime value',
+      () {
+        // Given: a control
+        final control = fb.control(DateTime(2020).toIso8601String());
+
+        // And: an Iso8601 value accessor
+        final valueAccessor = Iso8601DateTimeValueAccessor();
+
+        // When: register control
+        valueAccessor.registerControl(control);
+
+        // And: update accessor model value:
+        valueAccessor.updateModel(DateTime(2020));
+
+        // Then: value is converted correctly
+        expect(control.value, '2020-01-01T00:00:00.000');
+      },
+    );
   });
 }

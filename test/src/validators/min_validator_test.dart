@@ -38,9 +38,7 @@ void main() {
 
     test('FormControl with null value has error', () {
       // Given: an invalid control
-      final control = FormControl<int>(
-        validators: [Validators.min(10)],
-      );
+      final control = FormControl<int>(validators: [Validators.min(10)]);
 
       // Expect: control is invalid
       expect(control.valid, false);

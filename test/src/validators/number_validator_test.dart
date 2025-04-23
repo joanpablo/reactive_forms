@@ -59,9 +59,7 @@ void main() {
     });
 
     test('FormControl invalid decimal number with default allowedDecimals', () {
-      final control = FormControl<String>(
-        validators: [Validators.number()],
-      );
+      final control = FormControl<String>(validators: [Validators.number()]);
 
       control.value = '10.123';
 

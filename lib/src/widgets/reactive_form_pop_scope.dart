@@ -5,16 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-/// This is the signature to determine whether a route can popped.
-/// See [PopScope] for more details.
-typedef ReactiveFormCanPopCallback = bool Function(FormGroup formGroup);
-
-/// This is the signature of the callback invoked when a route is popped.
-/// See [PopScope] for more details.
-typedef ReactiveFormPopInvokedCallback = void Function(
-    FormGroup formGroup, bool didPop);
-
-class ReactiveFormPopScope extends StatelessWidget {
+@optionalTypeArgs
+class ReactiveFormPopScope<T> extends StatelessWidget {
   /// The widget below this widget in the tree.
   final Widget child;
 
@@ -22,28 +14,30 @@ class ReactiveFormPopScope extends StatelessWidget {
   final ReactiveFormCanPopCallback? canPop;
 
   /// A callback invoked when a route is popped. See [PopScope] for more details.
-  final ReactiveFormPopInvokedCallback? onPopInvoked;
+  final ReactiveFormPopInvokedWithResultCallback<T>? onPopInvokedWithResult;
 
   const ReactiveFormPopScope({
     super.key,
     this.canPop,
-    this.onPopInvoked,
+    this.onPopInvokedWithResult,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (canPop == null && onPopInvoked == null) {
+    if (canPop == null && onPopInvokedWithResult == null) {
       return child;
     }
 
     return ReactiveFormConsumer(
       builder: (context, formGroup, _) {
-        return PopScope(
+        return PopScope<T>(
           canPop: canPop?.call(formGroup) ?? true,
-          onPopInvoked: onPopInvoked != null
-              ? (didPop) => onPopInvoked!(formGroup, didPop)
-              : null,
+          onPopInvokedWithResult:
+              onPopInvokedWithResult != null
+                  ? (didPop, result) =>
+                      onPopInvokedWithResult!(formGroup, didPop, result)
+                  : null,
           child: child,
         );
       },

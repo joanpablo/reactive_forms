@@ -18,10 +18,10 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.29.0"
           channel: "stable"
       - run: flutter pub get
       - run: flutter test --no-pub --coverage
@@ -31,10 +31,10 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.29.0"
           channel: "stable"
       - run: flutter pub get
       - name: Analyze lib
@@ -46,10 +46,10 @@ jobs:
     name: Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.29.0"
           channel: "stable"
       - run: flutter pub get
       - name: Format lib
@@ -61,10 +61,10 @@ jobs:
     name: Publish warnings
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.29.0"
           channel: "stable"
       - run: flutter pub get
       - name: Check publish warnings
@@ -78,11 +78,11 @@ jobs:
 
     steps:
     - name: Configure enviroment
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Download flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: "3.16.0"
+        flutter-version: "3.29.0"
         channel: "stable"
     - name: Setup pub credentials
       shell: bash

@@ -35,7 +35,7 @@ class ReactiveSwitchListTileTestingWidget extends StatelessWidget {
                 focusNode: focusNode,
               ),
               if (renderAdaptative)
-                ReactiveSwitchListTile.adaptative(
+                ReactiveSwitchListTile.adaptive(
                   formControlName: switchListTileControl,
                   onChanged: adaptativeOnChanged,
                   focusNode: adaptativeFocusNode,

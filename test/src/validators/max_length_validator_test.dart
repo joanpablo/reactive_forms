@@ -49,9 +49,7 @@ void main() {
 
     test('FormGroup is valid if control value is null', () {
       final form = FormGroup({
-        'name': FormControl<String>(
-          validators: [Validators.maxLength(10)],
-        ),
+        'name': FormControl<String>(validators: [Validators.maxLength(10)]),
       });
 
       expect(form.valid, true);
@@ -81,13 +79,10 @@ void main() {
 
     test('FormArray valid if maxLength is valid', () {
       // Given: a valid array
-      final array = FormArray<int>([
-        FormControl<int>(),
-        FormControl<int>(),
-        FormControl<int>(),
-      ], validators: [
-        Validators.maxLength(4)
-      ]);
+      final array = FormArray<int>(
+        [FormControl<int>(), FormControl<int>(), FormControl<int>()],
+        validators: [Validators.maxLength(4)],
+      );
 
       // Expect: array is valid
       expect(array.valid, true);
@@ -95,13 +90,10 @@ void main() {
 
     test('FormArray invalid if maxLength is invalid', () {
       // Given: an invalid array
-      final array = FormArray<int>([
-        FormControl<int>(),
-        FormControl<int>(),
-        FormControl<int>(),
-      ], validators: [
-        Validators.maxLength(2)
-      ]);
+      final array = FormArray<int>(
+        [FormControl<int>(), FormControl<int>(), FormControl<int>()],
+        validators: [Validators.maxLength(2)],
+      );
 
       // Expect: array is valid
       expect(array.valid, false);
@@ -109,13 +101,14 @@ void main() {
 
     test('FormGroup valid if maxLength is valid', () {
       // Given: a valid group
-      final form = FormGroup({
-        'name': FormControl<String>(),
-        'email': FormControl<String>(),
-        'password': FormControl<String>(),
-      }, validators: [
-        Validators.maxLength(4)
-      ]);
+      final form = FormGroup(
+        {
+          'name': FormControl<String>(),
+          'email': FormControl<String>(),
+          'password': FormControl<String>(),
+        },
+        validators: [Validators.maxLength(4)],
+      );
 
       // Expect: group is valid
       expect(form.valid, true);
@@ -123,13 +116,14 @@ void main() {
 
     test('FormGroup invalid if maxLength is invalid', () {
       // Given: an invalid group
-      final form = FormGroup({
-        'name': FormControl<String>(),
-        'email': FormControl<String>(),
-        'password': FormControl<String>(),
-      }, validators: [
-        Validators.maxLength(2)
-      ]);
+      final form = FormGroup(
+        {
+          'name': FormControl<String>(),
+          'email': FormControl<String>(),
+          'password': FormControl<String>(),
+        },
+        validators: [Validators.maxLength(2)],
+      );
 
       // Expect: group is invalid
       expect(form.valid, false);
