@@ -7,6 +7,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+typedef ModelToViewCallback<ModelDataType, ViewDataType> = ViewDataType?
+    Function(ModelDataType? modelValue);
+
+typedef ViewToModelCallback<ModelDataType, ViewDataType> = ModelDataType?
+    Function(ViewDataType? modelValue);
+
 /// Type of the function to be called when the control emits a value changes
 /// event.
 typedef ChangeFunction<K> = dynamic Function(K? value);
@@ -14,6 +20,18 @@ typedef ChangeFunction<K> = dynamic Function(K? value);
 /// Defines an interface that acts as a bridge between [FormControl] and a
 /// reactive native widget.
 abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
+  ControlValueAccessor();
+
+  /// Create simple [ControlValueAccessor] that maps the [FormControl] value
+  factory ControlValueAccessor.create({
+    required ModelToViewCallback<ModelDataType, ViewDataType> modelToView,
+    required ViewToModelCallback<ModelDataType, ViewDataType> valueToModel,
+  }) =>
+      _WrapperValueAccessor<ModelDataType, ViewDataType>(
+        modelToViewValue: modelToView,
+        valueToModelValue: valueToModel,
+      );
+
   FormControl<ModelDataType>? _control;
   ChangeFunction<ViewDataType>? _onChange;
   bool _viewToModelChange = false;
@@ -93,4 +111,24 @@ abstract class ControlValueAccessor<ModelDataType, ViewDataType> {
       _onChange!(viewValue);
     }
   }
+}
+
+class _WrapperValueAccessor<ModelDataType, ViewDataType>
+    extends ControlValueAccessor<ModelDataType, ViewDataType> {
+  final ModelToViewCallback<ModelDataType, ViewDataType> _modelToViewValue;
+  final ViewToModelCallback<ModelDataType, ViewDataType> _valueToModelValue;
+
+  _WrapperValueAccessor({
+    required ModelToViewCallback<ModelDataType, ViewDataType> modelToViewValue,
+    required ViewToModelCallback<ModelDataType, ViewDataType> valueToModelValue,
+  })  : _modelToViewValue = modelToViewValue,
+        _valueToModelValue = valueToModelValue;
+
+  @override
+  ViewDataType? modelToViewValue(ModelDataType? modelValue) =>
+      _modelToViewValue(modelValue);
+
+  @override
+  ModelDataType? viewToModelValue(ViewDataType? viewValue) =>
+      _valueToModelValue(viewValue);
 }
