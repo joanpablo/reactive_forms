@@ -3,6 +3,8 @@
 - Downgraded Flutter version to `3.27.0` and SDK to `^3.6.0`.
   This is due to an issue reported in dart-lang: https://github.com/dart-lang/sdk/issues/60335.
 
+## Fixes
+- Fixed broken reactivity with the `PopScope`.
 
 # 18.0.0
 

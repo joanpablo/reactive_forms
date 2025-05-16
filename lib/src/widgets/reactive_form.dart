@@ -61,11 +61,8 @@ class ReactiveForm<T> extends StatelessWidget {
           ?.control;
     }
 
-    final element =
-        context
-            .getElementForInheritedWidgetOfExactType<
-              FormControlInheritedStreamer
-            >();
+    final element = context.getElementForInheritedWidgetOfExactType<
+        FormControlInheritedStreamer>();
     return element == null
         ? null
         : (element.widget as FormControlInheritedStreamer).control;
@@ -76,14 +73,18 @@ class ReactiveForm<T> extends StatelessWidget {
     return FormControlInheritedStreamer(
       control: formGroup,
       stream: formGroup.statusChanged,
-      child: PopScope<T>(
-        canPop: canPop?.call(formGroup) ?? true,
-        onPopInvokedWithResult:
-            onPopInvokedWithResult != null
+      child: StreamBuilder<ControlStatus>(
+        stream: formGroup.statusChanged,
+        builder: (context, snapshot) {
+          return PopScope<T>(
+            canPop: canPop?.call(formGroup) ?? true,
+            onPopInvokedWithResult: onPopInvokedWithResult != null
                 ? (didPop, result) =>
                     onPopInvokedWithResult!(formGroup, didPop, result)
                 : null,
-        child: child,
+            child: child,
+          );
+        },
       ),
     );
   }
