@@ -20,8 +20,8 @@ class FocusController extends ChangeNotifier {
   /// it and [focusNode] must be explicitly dispose after dispose focus
   /// controller instance.
   FocusController({FocusNode? focusNode})
-    : _focusNode = focusNode ?? FocusNode(),
-      _shouldDisposeFocusNode = focusNode == null {
+      : _focusNode = focusNode ?? FocusNode(),
+        _shouldDisposeFocusNode = focusNode == null {
     this.focusNode.addListener(_onFocusNodeFocusChanges);
   }
 

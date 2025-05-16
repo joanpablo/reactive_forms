@@ -11,7 +11,7 @@ class DateTimeValueAccessor extends ControlValueAccessor<DateTime, String> {
   final DateFormat dateTimeFormat;
 
   DateTimeValueAccessor({DateFormat? dateTimeFormat})
-    : dateTimeFormat = dateTimeFormat ?? DateFormat('yyyy/MM/dd');
+      : dateTimeFormat = dateTimeFormat ?? DateFormat('yyyy/MM/dd');
 
   @override
   String modelToViewValue(DateTime? modelValue) {

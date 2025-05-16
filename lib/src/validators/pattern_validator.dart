@@ -24,10 +24,10 @@ class PatternValidator extends Validator<dynamic> {
             evaluator.hasMatch(control.value.toString()))
         ? null
         : <String, dynamic>{
-          validationMessage: {
-            'requiredPattern': evaluator.pattern,
-            'actualValue': control.value as Object,
-          },
-        };
+            validationMessage: {
+              'requiredPattern': evaluator.pattern,
+              'actualValue': control.value as Object,
+            },
+          };
   }
 }

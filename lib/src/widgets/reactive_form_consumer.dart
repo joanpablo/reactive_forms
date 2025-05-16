@@ -8,8 +8,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// Builder function definition of the [ReactiveFormConsumer] builder.
 ///
 /// See also [ReactiveFormConsumer].
-typedef ReactiveFormConsumerBuilder =
-    Widget Function(BuildContext context, FormGroup formGroup, Widget? child);
+typedef ReactiveFormConsumerBuilder = Widget Function(
+    BuildContext context, FormGroup formGroup, Widget? child);
 
 /// Obtains [FormGroup] from its ancestors and passes its value to [builder].
 ///

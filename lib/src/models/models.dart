@@ -52,10 +52,10 @@ abstract class AbstractControl<T> {
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
-  }) : assert(asyncValidatorsDebounceTime >= 0),
-       _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
-       _touched = touched,
-       _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
+  })  : assert(asyncValidatorsDebounceTime >= 0),
+        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
+        _touched = touched,
+        _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
     setValidators(validators);
     setAsyncValidators(asyncValidators);
   }
@@ -1143,11 +1143,11 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
     super.asyncValidators,
     super.asyncValidatorsDebounceTime,
     bool disabled = false,
-  }) : assert(
-         !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
-         'Control name should not contain dot($_controlNameDelimiter)',
-       ),
-       super(disabled: disabled) {
+  })  : assert(
+          !controls.keys.any((name) => name.contains(_controlNameDelimiter)),
+          'Control name should not contain dot($_controlNameDelimiter)',
+        ),
+        super(disabled: disabled) {
     addAll(controls);
 
     if (disabled) {
@@ -1670,8 +1670,7 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   ///
   /// Retrieves all values regardless of disabled status.
   @override
-  List<T?> get rawValue =>
-      _controls.map<T?>((control) {
+  List<T?> get rawValue => _controls.map<T?>((control) {
         if (control is FormControlCollection<T?>) {
           return (control as FormControlCollection<T?>).rawValue;
         }
@@ -2072,14 +2071,13 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
     }
 
     if (value != null && value.length > _controls.length) {
-      final newControls =
-          value
-              .toList()
-              .asMap()
-              .entries
-              .where((entry) => entry.key >= _controls.length)
-              .map((entry) => FormControl<T>(value: entry.value))
-              .toList();
+      final newControls = value
+          .toList()
+          .asMap()
+          .entries
+          .where((entry) => entry.key >= _controls.length)
+          .map((entry) => FormControl<T>(value: entry.value))
+          .toList();
 
       addAll(newControls, updateParent: updateParent, emitEvent: emitEvent);
     } else {

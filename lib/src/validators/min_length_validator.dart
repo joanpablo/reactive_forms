@@ -36,10 +36,10 @@ class MinLengthValidator extends Validator<dynamic> {
     return (collection != null && collection.length >= minLength)
         ? null
         : <String, dynamic>{
-          ValidationMessage.minLength: {
-            'requiredLength': minLength,
-            'actualLength': collection != null ? collection.length : 0,
-          },
-        };
+            ValidationMessage.minLength: {
+              'requiredLength': minLength,
+              'actualLength': collection != null ? collection.length : 0,
+            },
+          };
   }
 }
