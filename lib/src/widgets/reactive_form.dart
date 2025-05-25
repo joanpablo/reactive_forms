@@ -74,6 +74,7 @@ class ReactiveForm<T> extends StatelessWidget {
       control: formGroup,
       stream: formGroup.statusChanged,
       child: StreamBuilder<ControlStatus>(
+        initialData: formGroup.status,
         stream: formGroup.statusChanged,
         builder: (context, snapshot) {
           return PopScope<T>(
