@@ -1,13 +1,13 @@
 name: reactive_forms
 
 on:
-  # Trigger the workflow on push
-  # but only for the master branch
   push:
     branches:
       - master
       - develop
       - "feature/**"
+    tags:
+      - '*'
   pull_request:
     branches:
       - master
@@ -15,15 +15,13 @@ on:
 
 jobs:
   test:
-    # Job name is Running Tests
     name: Tests
-    # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.27.0"
           channel: "stable"
       - run: flutter pub get
       - run: flutter test --no-pub --coverage
@@ -33,10 +31,10 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.27.0"
           channel: "stable"
       - run: flutter pub get
       - name: Analyze lib
@@ -48,13 +46,50 @@ jobs:
     name: Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.27.0"
           channel: "stable"
       - run: flutter pub get
       - name: Format lib
         run: dart format lib --set-exit-if-changed
       - name: Format test
         run: dart format test --set-exit-if-changed
+
+  publish-warnings:
+    name: Publish warnings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.27.0"
+          channel: "stable"
+      - run: flutter pub get
+      - name: Check publish warnings
+        run: dart pub publish --dry-run
+
+  deployment:
+    if: ${{ github.ref_type == 'tag' }}
+    needs: [test, analyze, format, publish-warnings]
+    name: Deploy package
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure enviroment
+      uses: actions/checkout@v4
+    - name: Download flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "3.27.0"
+        channel: "stable"
+    - name: Setup pub credentials
+      shell: bash
+      env:
+        PUB_DEV_PUBLISH_ACCESS_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
+        PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
+      run: |
+        sh ./tool/pub_login.sh
+    - name: Publish package
+      run: dart pub publish -v -f

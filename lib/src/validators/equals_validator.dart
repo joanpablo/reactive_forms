@@ -29,7 +29,7 @@ class EqualsValidator<T> extends Validator<dynamic> {
             validationMessage: <String, dynamic>{
               'required': value,
               'actual': control.value,
-            }
+            },
           };
   }
 }

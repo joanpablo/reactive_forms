@@ -72,12 +72,14 @@ class ReactiveDropdownField<T> extends ReactiveFocusableFormField<T, T> {
             final isDisabled = readOnly || field.control.disabled;
             var effectiveDisabledHint = disabledHint;
             if (isDisabled && disabledHint == null) {
-              final selectedItemIndex =
-                  items.indexWhere((item) => item.value == effectiveValue);
+              final selectedItemIndex = items.indexWhere(
+                (item) => item.value == effectiveValue,
+              );
               if (selectedItemIndex > -1) {
                 effectiveDisabledHint = selectedItemBuilder != null
-                    ? selectedItemBuilder(field.context)
-                        .elementAt(selectedItemIndex)
+                    ? selectedItemBuilder(
+                        field.context,
+                      ).elementAt(selectedItemIndex)
                     : items.elementAt(selectedItemIndex).child;
               }
             }

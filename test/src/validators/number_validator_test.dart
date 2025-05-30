@@ -13,6 +13,25 @@ void main() {
       expect(control.hasError(ValidationMessage.number), true);
     });
 
+    test('FormControl invalid if value is null', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      expect(control.valid, false);
+      expect(control.hasError(ValidationMessage.number), true);
+      expect(control.errors, {
+        ValidationMessage.number: NumberValidatorError.nullValue,
+      });
+    });
+
+    test('FormControl valid if value is null and null values is allowed', () {
+      final control = FormControl<String>(
+        validators: [Validators.number(allowNull: true)],
+      );
+
+      expect(control.valid, true);
+      expect(control.hasError(ValidationMessage.number), false);
+    });
+
     test('FormControl valid if a number', () {
       final control = FormControl<String>(validators: [Validators.number()]);
 
@@ -40,9 +59,7 @@ void main() {
     });
 
     test('FormControl invalid decimal number with default allowedDecimals', () {
-      final control = FormControl<String>(
-        validators: [Validators.number()],
-      );
+      final control = FormControl<String>(validators: [Validators.number()]);
 
       control.value = '10.123';
 

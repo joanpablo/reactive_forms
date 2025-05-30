@@ -4,7 +4,7 @@
 
 /// This library is a model-driven approach to handling Forms inputs and
 /// validations, heavily inspired in Angular's Reactive Forms.
-library reactive_forms;
+library;
 
 export 'src/exceptions/binding_cast_exception.dart';
 export 'src/exceptions/form_array_invalid_index_exception.dart';

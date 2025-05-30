@@ -12,3 +12,15 @@ typedef ReactiveListenableWidgetBuilder<T> = Widget Function(
   AbstractControl<T> control,
   Widget? child,
 );
+
+/// This is the signature to determine whether a route can popped.
+/// See [PopScope] for more details.
+typedef ReactiveFormCanPopCallback = bool Function(FormGroup formGroup);
+
+/// This is the signature of the callback invoked when a route is popped.
+/// See [PopScope] for more details.
+typedef ReactiveFormPopInvokedCallback = void Function(
+    FormGroup formGroup, bool didPop);
+
+typedef ReactiveFormPopInvokedWithResultCallback<T> = void Function(
+    FormGroup formGroup, bool didPop, T? result);

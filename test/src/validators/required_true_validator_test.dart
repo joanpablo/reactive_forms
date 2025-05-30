@@ -13,10 +13,7 @@ void main() {
       // Expect: control is invalid
       expect(control.valid, false);
       expect(control.errors, {
-        ValidationMessage.requiredTrue: {
-          'required': true,
-          'actual': false,
-        }
+        ValidationMessage.requiredTrue: {'required': true, 'actual': false},
       });
     });
 
@@ -33,17 +30,12 @@ void main() {
 
     test('FormControl is invalid if value is null', () {
       // Given: a control with null value
-      final control = FormControl<bool>(
-        validators: [Validators.requiredTrue],
-      );
+      final control = FormControl<bool>(validators: [Validators.requiredTrue]);
 
       // Expect: control is invalid
       expect(control.valid, false);
       expect(control.errors, {
-        ValidationMessage.requiredTrue: {
-          'required': true,
-          'actual': null,
-        }
+        ValidationMessage.requiredTrue: {'required': true, 'actual': null},
       });
     });
 
@@ -60,10 +52,7 @@ void main() {
       // Then: control is invalid
       expect(control.valid, false);
       expect(control.errors, {
-        ValidationMessage.requiredTrue: {
-          'required': true,
-          'actual': false,
-        }
+        ValidationMessage.requiredTrue: {'required': true, 'actual': false},
       });
     });
 

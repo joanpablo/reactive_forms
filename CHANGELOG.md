@@ -1,3 +1,40 @@
+# 18.0.1
+
+- Downgraded Flutter version to `3.27.0` and SDK to `^3.6.0`.
+  This is due to an issue reported in dart-lang: https://github.com/dart-lang/sdk/issues/60335.
+
+## Fixes
+- Fixed broken reactivity with the `PopScope`.
+
+# 18.0.0
+
+- Moved `examples` project out of the package's code, and uploaded to its own [repo](https://github.com/joanpablo/reactive_forms_example).
+
+## Breaking changes
+- Upgraded Flutter minimum version to `3.29.0`.
+- Added missing fields to widgets:
+  - ReactiveCheckbox: `semanticLabel`.
+  - ReactiveCheckboxListTile: `checkboxSemanticLabel`.
+  - ReactiveDatePicker: `barrierColor`, `barrierDismissible`, `barrierLabel`, `switchToInputEntryModeIcon`, `switchToCalendarEntryModeIcon`, `onDatePickerModeChange`.
+  - ReactiveTimePicker: `barrierColor`, `barrierDismissible`, `barrierLabel`, `orientation`, `switchToInputEntryModeIcon`, `switchToTimerEntryModeIcon`.
+  - ReactiveForm: `onPopInvokedWithResult` (used in `PopScope`), removed deprecated `onPopInvoked`.
+  - ReactiveFormPopScope: `onPopInvokedWithResult` (used in `PopScope`), removed deprecated `onPopInvoked`.
+  - ReactiveFormBuilder: `onPopInvokedWithResult` (used in `PopScope`), removed deprecated `onPopInvoked`.
+  - ReactiveRadioListTile: `radioScaleFactor`.
+  - ReactiveSlider: `padding`, `allowedInteraction`.
+  - ReactiveSwitch: `padding`, `trackOutlineWidth`.
+  - ReactiveSwitch.adaptive: `thumbIcon`, `trackOutlineWidth`, `trackOutlineColor`, `padding`, `applyCupertinoTheme`, `onFocusChange`.
+  - ReactiveTextField: `groupId`, `ignorePointers`, `cursorErrorColor`, `stylusHandwritingEnabled` (removed deprecated `scribbleEnabled`), `onTapAlwaysCalled`, `onTapUpOutside`, `statesController` 
+- Renamed `ReactiveSwitchListTile.adaptative` to `ReactiveSwitchListTile.adaptive` 
+
+## Fixes
+- Added `const` keyword to `DefaultPatternEvaluator` and `RegExpPatternEvaluator` constructors.
+
+# 17.0.1
+
+- Reduce `intl` dependency constraint to match Flutter 3.16.0.
+- NumberValidator allows null values.
+
 # 17.0.0
 
 ## Breaking changes

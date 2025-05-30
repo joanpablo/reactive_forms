@@ -51,7 +51,8 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
   /// Gets the callback that define when to show errors in UI.
   final ShowErrorsFunction<ModelDataType>? showErrors;
 
-  /// TODO: add documentation
+  /// An object that can be used by a stateful widget to obtain the keyboard
+  /// focus.
   final FocusNode? focusNode;
 
   /// Creates an instance of the [ReactiveFormField].
@@ -70,9 +71,10 @@ class ReactiveFormField<ModelDataType, ViewDataType> extends StatefulWidget {
     this.focusNode,
     required ReactiveFormFieldBuilder<ModelDataType, ViewDataType> builder,
   })  : assert(
-            (formControlName != null && formControl == null) ||
-                (formControlName == null && formControl != null),
-            'Must provide a formControlName or a formControl, but not both at the same time.'),
+          (formControlName != null && formControl == null) ||
+              (formControlName == null && formControl != null),
+          'Must provide a formControlName or a formControl, but not both at the same time.',
+        ),
         _builder = builder;
 
   @override
@@ -99,7 +101,8 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   ControlValueAccessor<ModelDataType, ViewDataType> get valueAccessor =>
       _valueAccessor;
 
-  /// TODO: add documentation
+  /// An object that can be used by a stateful widget to obtain the keyboard
+  /// focus.
   FocusNode? get focusNode => widget.focusNode;
 
   /// Gets the error text calculated from validators of the control.
@@ -150,7 +153,8 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
 
   @override
   void didUpdateWidget(
-      ReactiveFormField<ModelDataType, ViewDataType> oldWidget) {
+    ReactiveFormField<ModelDataType, ViewDataType> oldWidget,
+  ) {
     if (widget.valueAccessor != null && widget.valueAccessor != valueAccessor) {
       valueAccessor.dispose();
       _valueAccessor = widget.valueAccessor!;
@@ -182,10 +186,12 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   @protected
   @mustCallSuper
   void subscribeControl() {
-    _statusChangesSubscription =
-        control.statusChanged.listen(_onControlStatusChanged);
-    _touchChangesSubscription =
-        control.touchChanges.listen(_onControlTouchChanged);
+    _statusChangesSubscription = control.statusChanged.listen(
+      _onControlStatusChanged,
+    );
+    _touchChangesSubscription = control.touchChanges.listen(
+      _onControlTouchChanged,
+    );
     _subscribeValueAccessor();
   }
 
@@ -213,10 +219,7 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
   }
 
   void _subscribeValueAccessor() {
-    _valueAccessor.registerControl(
-      control,
-      onChange: onControlValueChanged,
-    );
+    _valueAccessor.registerControl(control, onChange: onControlValueChanged);
   }
 
   void _checkTouchedState() {

@@ -16,6 +16,9 @@ class NumberValidator extends Validator<dynamic> {
   /// decimal point in the validated string. Defaults to 0 (no decimals).
   final int allowedDecimals;
 
+  /// Whether the validator allows null values.
+  final bool allowNull;
+
   /// Whether the validator allows negative numbers.
   ///
   /// If set to `true`, the validator will accept strings representing
@@ -24,15 +27,22 @@ class NumberValidator extends Validator<dynamic> {
 
   /// Creates a new NumberValidator instance to validate strings representing numbers.
   ///
+  /// [allowNull] (optional): Whether the validator allows null values.
   /// [allowedDecimals] (optional): The allowed number of decimal places. Defaults to 0.
   /// [allowNegatives] (optional): Whether to allow negative numbers. Defaults to true.
   const NumberValidator({
+    this.allowNull = false,
     this.allowedDecimals = 0,
     this.allowNegatives = true,
   }) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    // Skip validation if null value is allowed
+    if (allowNull && control.value == null) {
+      return null;
+    }
+
     if (control.value == null) {
       return <String, dynamic>{
         ValidationMessage.number: NumberValidatorError.nullValue,

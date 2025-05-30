@@ -36,25 +36,25 @@ void main() {
     test('FormControl.errors contains all errors', () {
       final formControl = FormControl(
         value: 'hi',
-        validators: [
-          Validators.email,
-          Validators.minLength(5),
-        ],
+        validators: [Validators.email, Validators.minLength(5)],
       );
 
       expect(formControl.errors.keys.length, 2);
-      expect(formControl.errors.containsKey(ValidationMessage.email), true,
-          reason: 'mail');
-      expect(formControl.errors[ValidationMessage.minLength] != null, true,
-          reason: 'minLength');
+      expect(
+        formControl.errors.containsKey(ValidationMessage.email),
+        true,
+        reason: 'mail',
+      );
+      expect(
+        formControl.errors[ValidationMessage.minLength] != null,
+        true,
+        reason: 'minLength',
+      );
     });
 
     test('FormControl.errors contains all matching errors', () {
       final formControl = FormControl<dynamic>(
-        validators: [
-          Validators.required,
-          Validators.minLength(5),
-        ],
+        validators: [Validators.required, Validators.minLength(5)],
       );
 
       formControl.value = 'hi';
@@ -66,14 +66,21 @@ void main() {
     test('FormControl with default value contains all matching errors', () {
       final formControl = FormControl(
         value: 'hi',
-        validators: [
-          Validators.required,
-          Validators.minLength(5),
-        ],
+        validators: [Validators.required, Validators.minLength(5)],
       );
 
       expect(formControl.errors.keys.length, 1);
       expect(formControl.errors[ValidationMessage.minLength] != null, true);
+    });
+
+    test('Reset a control set value to null', () {
+      final formControl = FormControl(value: 'john doe');
+
+      formControl.value = 'hello john';
+
+      formControl.reset();
+
+      expect(formControl.value, null);
     });
 
     test('Assert error if debounce time < 0', () {
@@ -162,10 +169,7 @@ void main() {
 
     test('Resets a control with custom value', () {
       // Given: a touched control with some default value
-      final control = FormControl<String>(
-        value: 'someValue',
-        touched: true,
-      );
+      final control = FormControl<String>(value: 'someValue', touched: true);
 
       // When: reset control with other initial value
       final initialValue = 'otherValue';
@@ -178,10 +182,7 @@ void main() {
 
     test('Resets a control and sets initial value and disabled state', () {
       // Given: a touched control with some default value
-      final control = FormControl<String>(
-        value: 'someValue',
-        touched: true,
-      );
+      final control = FormControl<String>(value: 'someValue', touched: true);
 
       // When: reset control with other initial value and sets to disabled
       final initialValue = 'otherValue';
@@ -264,8 +265,9 @@ void main() {
       final control = FormControl<String>();
 
       // When: set errors and specify markAsDirty = false
-      control
-          .setErrors(<String, dynamic>{'someError': true}, markAsDirty: false);
+      control.setErrors(<String, dynamic>{
+        'someError': true,
+      }, markAsDirty: false);
 
       // Then: the control is pristine
       expect(control.pristine, true);
@@ -389,8 +391,9 @@ void main() {
       expect(formControl.asyncValidators.isEmpty, true);
 
       // When: setting new async validators
-      formControl.setAsyncValidators(
-          [Validators.delegateAsync((control) => Future.value(null))]);
+      formControl.setAsyncValidators([
+        Validators.delegateAsync((control) => Future.value(null)),
+      ]);
 
       // Then: a new async validator is added
       expect(formControl.asyncValidators.length, 1);

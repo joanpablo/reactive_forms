@@ -54,9 +54,7 @@ void main() {
     test('FormGroup valid if control value is null', () {
       // Given: a valid control
       final form = FormGroup({
-        'name': FormControl<String>(
-          validators: [Validators.minLength(6)],
-        ),
+        'name': FormControl<String>(validators: [Validators.minLength(6)]),
       });
 
       // Expect: control is valid
@@ -78,12 +76,10 @@ void main() {
 
     test('FormArray invalid if minLength invalid', () {
       // Given: an invalid array
-      final array = FormArray<Object>([
-        FormControl(),
-        FormControl(),
-      ], validators: [
-        Validators.minLength(3)
-      ]);
+      final array = FormArray<Object>(
+        [FormControl(), FormControl()],
+        validators: [Validators.minLength(3)],
+      );
 
       // Expect: array is invalid
       expect(array.invalid, true);
@@ -92,13 +88,10 @@ void main() {
 
     test('FormArray valid if minLength valid', () {
       // Given: a valid array
-      final array = FormArray<Object>([
-        FormControl(),
-        FormControl(),
-        FormControl(),
-      ], validators: [
-        Validators.minLength(3)
-      ]);
+      final array = FormArray<Object>(
+        [FormControl(), FormControl(), FormControl()],
+        validators: [Validators.minLength(3)],
+      );
 
       // Expect: array is valid
       expect(array.valid, true);
@@ -106,12 +99,10 @@ void main() {
 
     test('FormGroup valid if minLength valid', () {
       // Given: a valid group
-      final array = FormGroup({
-        'name': FormControl<String>(),
-        'email': FormControl<String>(),
-      }, validators: [
-        Validators.minLength(2)
-      ]);
+      final array = FormGroup(
+        {'name': FormControl<String>(), 'email': FormControl<String>()},
+        validators: [Validators.minLength(2)],
+      );
 
       // Expect: group is valid
       expect(array.valid, true);
@@ -119,11 +110,10 @@ void main() {
 
     test('FormGroup invalid if minLength invalid', () {
       // Given: an invalid group
-      final array = FormGroup({
-        'name': FormControl<String>(),
-      }, validators: [
-        Validators.minLength(2)
-      ]);
+      final array = FormGroup(
+        {'name': FormControl<String>()},
+        validators: [Validators.minLength(2)],
+      );
 
       // Expect: group is invalid
       expect(array.valid, false);

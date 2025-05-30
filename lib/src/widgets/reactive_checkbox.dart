@@ -33,12 +33,13 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
     MaterialTapTargetSize? materialTapTargetSize,
     VisualDensity? visualDensity,
     bool autofocus = false,
-    MaterialStateProperty<Color?>? fillColor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? fillColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     super.focusNode,
     OutlinedBorder? shape,
     BorderSide? side,
+    String? semanticLabel,
     ReactiveFormFieldCallback<bool>? onChanged,
     ShowErrorsFunction<bool>? showErrors,
   }) : super(
@@ -70,6 +71,7 @@ class ReactiveCheckbox extends ReactiveFocusableFormField<bool, bool> {
                       onChanged?.call(field.control);
                     }
                   : null,
+              semanticLabel: semanticLabel,
             );
           },
         );

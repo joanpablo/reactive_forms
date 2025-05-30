@@ -20,7 +20,9 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
   final TextEditingController? _textController;
 
   static Widget _defaultContextMenuBuilder(
-      BuildContext context, EditableTextState editableTextState) {
+    BuildContext context,
+    EditableTextState editableTextState,
+  ) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -97,6 +99,7 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     super.valueAccessor,
     super.showErrors,
     super.focusNode,
+    Object groupId = EditableText,
     InputDecoration decoration = const InputDecoration(),
     TextInputType? keyboardType,
     TextCapitalization textCapitalization = TextCapitalization.none,
@@ -123,10 +126,12 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     bool expands = false,
     int? maxLength,
     List<TextInputFormatter>? inputFormatters,
+    bool? ignorePointers,
     double cursorWidth = 2.0,
     double? cursorHeight,
     Radius? cursorRadius,
     Color? cursorColor,
+    Color? cursorErrorColor,
     Brightness? keyboardAppearance,
     EdgeInsets scrollPadding = const EdgeInsets.all(20.0),
     bool enableInteractiveSelection = true,
@@ -137,6 +142,8 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     AppPrivateCommandCallback? onAppPrivateCommand,
     String? restorationId,
+    bool stylusHandwritingEnabled =
+        EditableText.defaultStylusHandwritingEnabled,
     ScrollController? scrollController,
     TextSelectionControls? selectionControls,
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
@@ -144,30 +151,35 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
     TextEditingController? controller,
     Clip clipBehavior = Clip.hardEdge,
     bool enableIMEPersonalizedLearning = true,
-    bool scribbleEnabled = true,
     ReactiveFormFieldCallback<T>? onTap,
     ReactiveFormFieldCallback<T>? onEditingComplete,
     ReactiveFormFieldCallback<T>? onSubmitted,
     ReactiveFormFieldCallback<T>? onChanged,
     UndoHistoryController? undoController,
     bool? cursorOpacityAnimates,
+    bool onTapAlwaysCalled = false,
     TapRegionCallback? onTapOutside,
+    TapRegionUpCallback? onTapUpOutside,
     ContentInsertionConfiguration? contentInsertionConfiguration,
     bool canRequestFocus = true,
     SpellCheckConfiguration? spellCheckConfiguration,
     TextMagnifierConfiguration? magnifierConfiguration,
+    WidgetStatesController? statesController,
   })  : _textController = controller,
         super(
           builder: (ReactiveFormFieldState<T, String> field) {
             final state = field as _ReactiveTextFieldState<T>;
-            final effectiveDecoration = decoration
-                .applyDefaults(Theme.of(state.context).inputDecorationTheme);
+            final effectiveDecoration = decoration.applyDefaults(
+              Theme.of(state.context).inputDecorationTheme,
+            );
 
             return TextField(
+              groupId: groupId,
               controller: state._textController,
               focusNode: state.focusNode,
-              decoration:
-                  effectiveDecoration.copyWith(errorText: state.errorText),
+              decoration: effectiveDecoration.copyWith(
+                errorText: state.errorText,
+              ),
               keyboardType: keyboardType,
               textInputAction: textInputAction,
               style: style,
@@ -198,10 +210,12 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               maxLength: maxLength,
               inputFormatters: inputFormatters,
               enabled: field.control.enabled,
+              ignorePointers: ignorePointers,
               cursorWidth: cursorWidth,
               cursorHeight: cursorHeight,
               cursorRadius: cursorRadius,
               cursorColor: cursorColor,
+              cursorErrorColor: cursorErrorColor,
               scrollPadding: scrollPadding,
               scrollPhysics: scrollPhysics,
               keyboardAppearance: keyboardAppearance,
@@ -213,13 +227,13 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               dragStartBehavior: dragStartBehavior,
               onAppPrivateCommand: onAppPrivateCommand,
               restorationId: restorationId,
+              stylusHandwritingEnabled: stylusHandwritingEnabled,
               scrollController: scrollController,
               selectionControls: selectionControls,
               selectionHeightStyle: selectionHeightStyle,
               selectionWidthStyle: selectionWidthStyle,
               clipBehavior: clipBehavior,
               enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
-              scribbleEnabled: scribbleEnabled,
               onTap: onTap != null ? () => onTap(field.control) : null,
               onSubmitted: onSubmitted != null
                   ? (_) => onSubmitted(field.control)
@@ -233,11 +247,14 @@ class ReactiveTextField<T> extends ReactiveFormField<T, String> {
               },
               undoController: undoController,
               cursorOpacityAnimates: cursorOpacityAnimates,
+              onTapAlwaysCalled: onTapAlwaysCalled,
               onTapOutside: onTapOutside,
+              onTapUpOutside: onTapUpOutside,
               contentInsertionConfiguration: contentInsertionConfiguration,
               canRequestFocus: canRequestFocus,
               spellCheckConfiguration: spellCheckConfiguration,
               magnifierConfiguration: magnifierConfiguration,
+              statesController: statesController,
             );
           },
         );

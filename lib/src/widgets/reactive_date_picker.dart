@@ -14,7 +14,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveDatePickerDelegate].
 typedef ReactiveDatePickerBuilder<T> = Widget Function(
-    BuildContext context, ReactiveDatePickerDelegate<T> picker, Widget? child);
+  BuildContext context,
+  ReactiveDatePickerDelegate<T> picker,
+  Widget? child,
+);
 
 /// This is a convenience widget that wraps the function
 /// [showDatePicker] in a [ReactiveDatePicker].
@@ -81,6 +84,12 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
     DateTime? initialDate,
     TextInputType? keyboardType,
     Offset? anchorPoint,
+    Color? barrierColor,
+    bool barrierDismissible = true,
+    String? barrierLabel,
+    Icon? switchToInputEntryModeIcon,
+    Icon? switchToCalendarEntryModeIcon,
+    ValueChanged<DatePickerEntryMode>? onDatePickerModeChange,
   }) : super(
           builder: (ReactiveFormFieldState<T, DateTime> field) {
             return builder(
@@ -89,8 +98,11 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
                 field,
                 (field) => showDatePicker(
                   context: field.context,
-                  initialDate: _getInitialDate(firstDate, lastDate,
-                      initialDate ?? field.value ?? DateTime.now()),
+                  initialDate: _getInitialDate(
+                    firstDate,
+                    lastDate,
+                    initialDate ?? field.value ?? DateTime.now(),
+                  ),
                   firstDate: firstDate,
                   lastDate: lastDate,
                   initialEntryMode: initialEntryMode,
@@ -111,6 +123,12 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
                   currentDate: currentDate,
                   keyboardType: keyboardType,
                   anchorPoint: anchorPoint,
+                  barrierColor: barrierColor,
+                  barrierDismissible: barrierDismissible,
+                  barrierLabel: barrierLabel,
+                  switchToCalendarEntryModeIcon: switchToCalendarEntryModeIcon,
+                  switchToInputEntryModeIcon: switchToInputEntryModeIcon,
+                  onDatePickerModeChange: onDatePickerModeChange,
                 ).then((value) {
                   if (value != null) {
                     field.didChange(value);
@@ -123,7 +141,10 @@ class ReactiveDatePicker<T> extends ReactiveFormField<T, DateTime> {
         );
 
   static DateTime _getInitialDate(
-      DateTime firstDate, DateTime lastDate, DateTime defaultInitDate) {
+    DateTime firstDate,
+    DateTime lastDate,
+    DateTime defaultInitDate,
+  ) {
     var initialDate = defaultInitDate;
 
     if (initialDate.isBefore(firstDate)) {
@@ -175,9 +196,11 @@ class _ReactiveDatePickerState<T> extends ReactiveFormFieldState<T, DateTime> {
       return super.selectValueAccessor();
     }
 
-    throw ValueAccessorException('Invalid widget binding. ReactiveDatePicker '
-        'widget must be bound to a control that inherited from '
-        'AbstractControl<String> or AbstractControl<DateTime>. '
-        'Control of type: ${control.runtimeType} is not valid.');
+    throw ValueAccessorException(
+      'Invalid widget binding. ReactiveDatePicker '
+      'widget must be bound to a control that inherited from '
+      'AbstractControl<String> or AbstractControl<DateTime>. '
+      'Control of type: ${control.runtimeType} is not valid.',
+    );
   }
 }

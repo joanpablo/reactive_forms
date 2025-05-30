@@ -64,8 +64,10 @@ class FormBuilder {
     List<Validator<dynamic>> validators = const [],
     List<AsyncValidator<dynamic>> asyncValidators = const [],
   ]) {
-    final map = controls
-        .map<String, AbstractControl<dynamic>>((String key, Object value) {
+    final map = controls.map<String, AbstractControl<dynamic>>((
+      String key,
+      Object value,
+    ) {
       if (value is String) {
         return MapEntry(key, FormControl<String>(value: value));
       } else if (value is int) {
@@ -94,12 +96,14 @@ class FormBuilder {
           if (validators.isNotEmpty &&
               validators.any((validator) => validator is! Validator<dynamic>)) {
             throw FormBuilderInvalidInitializationException(
-                'Invalid validators initialization');
+              'Invalid validators initialization',
+            );
           }
 
           if (defaultValue is Validator<dynamic>) {
             throw FormBuilderInvalidInitializationException(
-                'Expected first value in array to be default value of the control and not a validator.');
+              'Expected first value in array to be default value of the control and not a validator.',
+            );
           }
 
           final effectiveValidators = validators
@@ -221,10 +225,13 @@ class FormBuilder {
   }
 
   FormControl<dynamic> _control(
-      dynamic value, List<Validator<dynamic>> validators) {
+    dynamic value,
+    List<Validator<dynamic>> validators,
+  ) {
     if (value is AbstractControl) {
       throw FormBuilderInvalidInitializationException(
-          'Default value of control must not be an AbstractControl.');
+        'Default value of control must not be an AbstractControl.',
+      );
     }
 
     if (value is String) {

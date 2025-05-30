@@ -6,46 +6,44 @@ import 'reactive_form_consumer_testing_widget.dart';
 
 void main() {
   group('ReactiveFormConsumer Tests', () {
-    testWidgets(
-      'Submit Button is enabled if form is valid',
-      (WidgetTester tester) async {
-        // Given: a valid form
-        final form = FormGroup({
-          'name': FormControl<String>(
-            value: 'Reactive Forms',
-            validators: [Validators.required],
-          ),
-        });
+    testWidgets('Submit Button is enabled if form is valid', (
+      WidgetTester tester,
+    ) async {
+      // Given: a valid form
+      final form = FormGroup({
+        'name': FormControl<String>(
+          value: 'Reactive Forms',
+          validators: [Validators.required],
+        ),
+      });
 
-        // And: a widget bind to the form
-        await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
+      // And: a widget bind to the form
+      await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
-        // Expect: submit button is enabled
-        final submitButton =
-            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
-        expect(submitButton.enabled, true);
-      },
-    );
+      // Expect: submit button is enabled
+      final submitButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
+      expect(submitButton.enabled, true);
+    });
 
-    testWidgets(
-      'Submit Button is disabled if form is invalid',
-      (WidgetTester tester) async {
-        // Given: an invalid form
-        final form = FormGroup({
-          'name': FormControl<String>(
-            validators: [Validators.required],
-          ),
-        });
+    testWidgets('Submit Button is disabled if form is invalid', (
+      WidgetTester tester,
+    ) async {
+      // Given: an invalid form
+      final form = FormGroup({
+        'name': FormControl<String>(validators: [Validators.required]),
+      });
 
-        // And: a widget bind to the form
-        await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
+      // And: a widget bind to the form
+      await tester.pumpWidget(ReactiveFormConsumerTestingWidget(form: form));
 
-        // Expect: submit button is disabled
-        final submitButton =
-            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
-        expect(submitButton.enabled, false);
-      },
-    );
+      // Expect: submit button is disabled
+      final submitButton = tester.widget<ElevatedButton>(
+        find.byType(ElevatedButton),
+      );
+      expect(submitButton.enabled, false);
+    });
 
     testWidgets(
       'Submit Button is disabled if a valid form changes status to invalid',
@@ -66,8 +64,9 @@ void main() {
         await tester.pump();
 
         // Expect: submit button is disabled
-        final submitButton =
-            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+        final submitButton = tester.widget<ElevatedButton>(
+          find.byType(ElevatedButton),
+        );
         expect(submitButton.enabled, false);
       },
     );
@@ -77,9 +76,7 @@ void main() {
       (WidgetTester tester) async {
         // Given: an invalid form
         final form = FormGroup({
-          'name': FormControl<String>(
-            validators: [Validators.required],
-          ),
+          'name': FormControl<String>(validators: [Validators.required]),
         });
 
         // And: a widget bind to the form
@@ -90,8 +87,9 @@ void main() {
         await tester.pump();
 
         // Expect: submit button is disabled
-        final submitButton =
-            tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+        final submitButton = tester.widget<ElevatedButton>(
+          find.byType(ElevatedButton),
+        );
         expect(submitButton.enabled, true);
       },
     );

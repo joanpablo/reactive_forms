@@ -10,9 +10,7 @@ import 'package:reactive_forms/src/value_accessors/control_value_accessor.dart';
 class DoubleValueAccessor extends ControlValueAccessor<double, String> {
   final int fractionDigits;
 
-  DoubleValueAccessor({
-    this.fractionDigits = 2,
-  });
+  DoubleValueAccessor({this.fractionDigits = 2});
 
   @override
   String modelToViewValue(double? modelValue) {

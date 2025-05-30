@@ -34,7 +34,7 @@ class CompareValidator extends Validator<dynamic> {
         'control': mainControl.value,
         'compareControl': compareControl.value,
         'option': compareOption,
-      }
+      },
     };
 
     if (compareOption == CompareOption.equal &&
@@ -46,7 +46,8 @@ class CompareValidator extends Validator<dynamic> {
       return null;
     } else if (mainControl.value is! Comparable<dynamic>) {
       throw ValidatorException(
-          'Control "$controlName" must be of type "Comparable"');
+        'Control "$controlName" must be of type "Comparable"',
+      );
     }
 
     try {
@@ -65,7 +66,8 @@ class CompareValidator extends Validator<dynamic> {
       return null;
     } on TypeError {
       throw ValidatorException(
-          'Can\'t compare control "$controlName" of type "${mainControl.value.runtimeType}" with the control "$compareControlName" of type ${compareControl.value.runtimeType}');
+        'Can\'t compare control "$controlName" of type "${mainControl.value.runtimeType}" with the control "$compareControlName" of type ${compareControl.value.runtimeType}',
+      );
     }
   }
 

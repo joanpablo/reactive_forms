@@ -8,8 +8,5 @@ class ControlState<T> {
   final bool? disabled;
 
   /// Constructs a state with a default [value] and a [disabled] status.
-  ControlState({
-    this.value,
-    this.disabled,
-  });
+  ControlState({this.value, this.disabled});
 }

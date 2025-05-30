@@ -39,7 +39,7 @@ class MaxLengthValidator extends Validator<dynamic> {
             ValidationMessage.maxLength: {
               'requiredLength': maxLength,
               'actualLength': collection.length,
-            }
+            },
           };
   }
 }

@@ -15,7 +15,8 @@ class Validators {
   /// Creates a validator that delegates the validation to the external
   /// asynchronous [validator] function.
   static AsyncValidator<dynamic> delegateAsync(
-          AsyncValidatorFunction validator) =>
+    AsyncValidatorFunction validator,
+  ) =>
       DelegateAsyncValidator(validator);
 
   /// Creates a validator that requires the control have a non-empty value.
@@ -37,10 +38,12 @@ class Validators {
   /// [allowedDecimals] (optional): The allowed number of decimal places. Defaults to 0.
   /// [allowNegatives] (optional): Whether to allow negative numbers. Defaults to true.
   static Validator<dynamic> number({
+    bool allowNull = false,
     int allowedDecimals = 0,
     bool allowNegatives = true,
   }) =>
       NumberValidator(
+        allowNull: allowNull,
         allowedDecimals: allowedDecimals,
         allowNegatives: allowNegatives,
       );
@@ -213,8 +216,10 @@ class Validators {
   /// ...
   /// ```
   static Validator<dynamic> mustMatch(
-      String controlName, String matchingControlName,
-      {bool markAsDirty = true}) {
+    String controlName,
+    String matchingControlName, {
+    bool markAsDirty = true,
+  }) {
     return MustMatchValidator(controlName, matchingControlName, markAsDirty);
   }
 

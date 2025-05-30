@@ -13,8 +13,10 @@ class MustMatchValidator extends Validator<dynamic> {
 
   /// Constructs an instance of [MustMatchValidator]
   const MustMatchValidator(
-      this.controlName, this.matchingControlName, this.markAsDirty)
-      : super();
+    this.controlName,
+    this.matchingControlName,
+    this.markAsDirty,
+  ) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

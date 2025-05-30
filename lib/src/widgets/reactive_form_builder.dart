@@ -14,7 +14,11 @@ typedef ReactiveFormBuilderCreator = FormGroup Function();
 ///
 /// It also configures the inner [FormControlInheritedStreamer] to rebuild
 /// context each time the [FormGroup.status] changes.
-class ReactiveFormBuilder extends StatefulWidget {
+///
+/// The optional type argument `T` allows for specifying the type of result that
+/// can be returned when a route associated with this form is popped.
+@optionalTypeArgs
+class ReactiveFormBuilder<T> extends StatefulWidget {
   /// Called to obtain the child widget.
   final ReactiveFormConsumerBuilder builder;
 
@@ -22,10 +26,15 @@ class ReactiveFormBuilder extends StatefulWidget {
   final ReactiveFormBuilderCreator form;
 
   /// Determine whether a route can be popped. See [PopScope] for more details.
-  final bool Function(FormGroup formGroup)? canPop;
+  final ReactiveFormCanPopCallback? canPop;
 
   /// A callback invoked when a route is popped. See [PopScope] for more details.
-  final void Function(FormGroup formGroup, bool didPop)? onPopInvoked;
+  ///
+  /// This uses the type argument `T` to define the type of the result. If `T`
+  /// is not specified, it defaults to `dynamic`. This parameter is optional
+  /// and allows for handling results with specific data types when a route is
+  /// popped.
+  final ReactiveFormPopInvokedWithResultCallback<T>? onPopInvokedWithResult;
 
   /// The widget below this widget in the tree.
   final Widget? child;
@@ -72,7 +81,7 @@ class ReactiveFormBuilder extends StatefulWidget {
     required this.form,
     required this.builder,
     this.canPop,
-    this.onPopInvoked,
+    this.onPopInvokedWithResult,
     this.child,
   });
 
@@ -94,7 +103,7 @@ class ReactiveFormBuilderState extends State<ReactiveFormBuilder> {
     return ReactiveForm(
       formGroup: _form,
       canPop: widget.canPop,
-      onPopInvoked: widget.onPopInvoked,
+      onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: widget.builder(context, _form, widget.child),
     );
   }

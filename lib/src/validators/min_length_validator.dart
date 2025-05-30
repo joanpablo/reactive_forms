@@ -39,7 +39,7 @@ class MinLengthValidator extends Validator<dynamic> {
             ValidationMessage.minLength: {
               'requiredLength': minLength,
               'actualLength': collection != null ? collection.length : 0,
-            }
+            },
           };
   }
 }

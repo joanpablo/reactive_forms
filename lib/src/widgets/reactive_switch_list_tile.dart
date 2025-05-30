@@ -54,14 +54,14 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     ReactiveFormFieldCallback<bool>? onChanged,
     ImageErrorListener? onActiveThumbImageError,
     ImageErrorListener? onInactiveThumbImageError,
-    MaterialStateProperty<Color?>? thumbColor,
-    MaterialStateProperty<Color?>? trackColor,
-    MaterialStateProperty<Color?>? trackOutlineColor,
-    MaterialStateProperty<Icon?>? thumbIcon,
+    WidgetStateProperty<Color?>? thumbColor,
+    WidgetStateProperty<Color?>? trackColor,
+    WidgetStateProperty<Color?>? trackOutlineColor,
+    WidgetStateProperty<Icon?>? thumbIcon,
     MaterialTapTargetSize? materialTapTargetSize,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     MouseCursor? mouseCursor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     ValueChanged<bool>? onFocusChange,
   }) : super(
@@ -127,7 +127,7 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
   ///
   /// For documentation about the various parameters, see the
   /// [SwitchListTile.adaptive] constructor.
-  ReactiveSwitchListTile.adaptative({
+  ReactiveSwitchListTile.adaptive({
     super.key,
     super.formControlName,
     super.formControl,
@@ -139,14 +139,14 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     ImageErrorListener? onActiveThumbImageError,
     ImageProvider? inactiveThumbImage,
     ImageErrorListener? onInactiveThumbImageError,
-    MaterialStateProperty<Color?>? thumbColor,
-    MaterialStateProperty<Color?>? trackColor,
-    MaterialStateProperty<Color?>? trackOutlineColor,
-    MaterialStateProperty<Icon?>? thumbIcon,
+    WidgetStateProperty<Color?>? thumbColor,
+    WidgetStateProperty<Color?>? trackColor,
+    WidgetStateProperty<Color?>? trackOutlineColor,
+    WidgetStateProperty<Icon?>? thumbIcon,
     MaterialTapTargetSize? materialTapTargetSize,
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
     MouseCursor? mouseCursor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     bool autofocus = false,
     bool? applyCupertinoTheme,

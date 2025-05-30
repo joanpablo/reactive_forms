@@ -35,11 +35,7 @@ class ReactiveFormConsumer extends StatelessWidget {
   /// The [child] is optional but is good practice to use if part of the widget
   /// subtree does not depend on the value of the [FormGroup] that is bind
   /// with this widget.
-  const ReactiveFormConsumer({
-    super.key,
-    required this.builder,
-    this.child,
-  });
+  const ReactiveFormConsumer({super.key, required this.builder, this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -30,28 +30,30 @@ class ReactiveSlider extends ReactiveFocusableFormField<num, double> {
   ///
   /// The [labelBuilder] is called each time the [FormControl] changes its value
   /// so you can supply a label to the Slider.
-  ReactiveSlider(
-      {super.key,
-      super.formControlName,
-      super.formControl,
-      double min = 0.0,
-      double max = 1.0,
-      int? divisions,
-      ReactiveSliderLabelBuilder? labelBuilder,
-      Color? activeColor,
-      Color? inactiveColor,
-      Color? thumbColor,
-      SemanticFormatterCallback? semanticFormatterCallback,
-      bool autofocus = false,
-      MouseCursor? mouseCursor,
-      super.focusNode,
-      ReactiveFormFieldCallback<num>? onChangeEnd,
-      ReactiveFormFieldCallback<num>? onChangeStart,
-      ReactiveFormFieldCallback<num>? onChanged,
-      double? secondaryTrackValue,
-      Color? secondaryActiveColor,
-      MaterialStateProperty<Color?>? overlayColor})
-      : super(
+  ReactiveSlider({
+    super.key,
+    super.formControlName,
+    super.formControl,
+    double min = 0.0,
+    double max = 1.0,
+    int? divisions,
+    ReactiveSliderLabelBuilder? labelBuilder,
+    Color? activeColor,
+    Color? inactiveColor,
+    Color? thumbColor,
+    SemanticFormatterCallback? semanticFormatterCallback,
+    bool autofocus = false,
+    MouseCursor? mouseCursor,
+    super.focusNode,
+    EdgeInsetsGeometry? padding,
+    SliderInteraction? allowedInteraction,
+    ReactiveFormFieldCallback<num>? onChangeEnd,
+    ReactiveFormFieldCallback<num>? onChangeStart,
+    ReactiveFormFieldCallback<num>? onChanged,
+    double? secondaryTrackValue,
+    Color? secondaryActiveColor,
+    WidgetStateProperty<Color?>? overlayColor,
+  }) : super(
           builder: (field) {
             var value = field.value;
             if (value == null) {
@@ -80,6 +82,8 @@ class ReactiveSlider extends ReactiveFocusableFormField<num, double> {
               mouseCursor: mouseCursor,
               autofocus: autofocus,
               focusNode: field.focusNode,
+              padding: padding,
+              allowedInteraction: allowedInteraction,
               onChangeEnd: onChangeEnd != null
                   ? (_) => onChangeEnd(field.control)
                   : null,

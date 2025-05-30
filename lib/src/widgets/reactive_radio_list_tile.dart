@@ -49,11 +49,12 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
     bool? enableFeedback,
     ReactiveFormFieldCallback<T>? onChanged,
     MouseCursor? mouseCursor,
-    MaterialStateProperty<Color?>? fillColor,
+    WidgetStateProperty<Color?>? fillColor,
     Color? hoverColor,
-    MaterialStateProperty<Color?>? overlayColor,
+    WidgetStateProperty<Color?>? overlayColor,
     double? splashRadius,
     MaterialTapTargetSize? materialTapTargetSize,
+    double radioScaleFactor = 1.0,
     ValueChanged<bool>? onFocusChange,
   }) : super(
           builder: (field) {
@@ -84,6 +85,7 @@ class ReactiveRadioListTile<T> extends ReactiveFocusableFormField<T, T> {
               visualDensity: visualDensity,
               focusNode: field.focusNode,
               enableFeedback: enableFeedback,
+              radioScaleFactor: radioScaleFactor,
               onChanged: field.control.enabled
                   ? (value) {
                       field.didChange(value);

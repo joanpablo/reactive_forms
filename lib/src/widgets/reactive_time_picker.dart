@@ -14,7 +14,10 @@ import 'package:reactive_forms/reactive_forms.dart';
 ///
 /// See also [ReactiveTimePickerDelegate].
 typedef ReactiveTimePickerBuilder = Widget Function(
-    BuildContext context, ReactiveTimePickerDelegate picker, Widget? child);
+  BuildContext context,
+  ReactiveTimePickerDelegate picker,
+  Widget? child,
+);
 
 /// This is a convenience widget that wraps the function
 /// [showTimePicker] in a [ReactiveTimePicker].
@@ -77,6 +80,12 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay, TimeOfDay> {
     TimePickerEntryMode initialEntryMode = TimePickerEntryMode.dial,
     EntryModeChangeCallback? onEntryModeChanged,
     Offset? anchorPoint,
+    String? barrierLabel,
+    Color? barrierColor,
+    bool barrierDismissible = true,
+    Orientation? orientation,
+    Icon? switchToInputEntryModeIcon,
+    Icon? switchToTimerEntryModeIcon,
   }) : super(
           builder: (ReactiveFormFieldState<TimeOfDay, TimeOfDay> field) {
             return builder(
@@ -98,6 +107,12 @@ class ReactiveTimePicker extends ReactiveFormField<TimeOfDay, TimeOfDay> {
                   routeSettings: routeSettings,
                   onEntryModeChanged: onEntryModeChanged,
                   anchorPoint: anchorPoint,
+                  barrierLabel: barrierLabel,
+                  barrierColor: barrierColor,
+                  barrierDismissible: barrierDismissible,
+                  orientation: orientation,
+                  switchToInputEntryModeIcon: switchToInputEntryModeIcon,
+                  switchToTimerEntryModeIcon: switchToTimerEntryModeIcon,
                 ).then((value) {
                   if (value != null) {
                     field.didChange(value);
