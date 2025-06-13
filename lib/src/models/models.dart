@@ -44,6 +44,7 @@ abstract class AbstractControl<T> {
   final int _asyncValidatorsDebounceTime;
 
   bool _touched;
+  final bool _initialDisabled;
 
   /// Constructor of the [AbstractControl].
   AbstractControl({
@@ -55,6 +56,7 @@ abstract class AbstractControl<T> {
   }) : assert(asyncValidatorsDebounceTime >= 0),
        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
        _touched = touched,
+       _initialDisabled = disabled,
        _status = disabled ? ControlStatus.disabled : ControlStatus.valid {
     setValidators(validators);
     setAsyncValidators(asyncValidators);
@@ -552,8 +554,14 @@ abstract class AbstractControl<T> {
 
     if (disabled != null) {
       disabled
-          ? markAsDisabled(updateParent: true, emitEvent: false)
-          : markAsEnabled(updateParent: true, emitEvent: false);
+          ? markAsDisabled(updateParent: updateParent, emitEvent: false)
+          : markAsEnabled(updateParent: updateParent, emitEvent: false);
+    } else {
+      if (_initialDisabled) {
+        markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
+      } else {
+        markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
+      }
     }
 
     if (removeFocus) {
