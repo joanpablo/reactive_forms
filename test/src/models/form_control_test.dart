@@ -377,6 +377,21 @@ void main() {
       // Then: the status is PENDING.
       expect(control.pending, true);
     });
+
+    test(
+      'Given a disabled control, when enabled and then reset, it is disabled',
+      () {
+        // Arrange
+        final control = FormControl<String>(disabled: true);
+
+        // Act
+        control.markAsEnabled();
+        control.reset();
+
+        // Assert
+        expect(control.disabled, true);
+      },
+    );
   });
 
   group('FormControl reset with initial value', () {
