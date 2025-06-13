@@ -1,7 +1,9 @@
 # 18.0.1
 
-- Downgraded Flutter version to `3.27.0` and SDK to `^3.6.0`.
-  This is due to an issue reported in dart-lang: https://github.com/dart-lang/sdk/issues/60335.
+## Features
+- The FormControl.reset() method has been updated to align with
+  the common expectation that resetting a control without specifying a
+  new value should revert it to its initial state.
 
 ## Fixes
 - Fixed broken reactivity with the `PopScope`.

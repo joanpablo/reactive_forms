@@ -64,8 +64,8 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Minimum Requirements
 
-- Dart SDK: ^3.6.0
-- Flutter: ">=3.27.0"
+- Dart SDK: ^3.7.0
+- Flutter: ">=3.29.0"
 
 > For using **Reactive Forms** in projects below Flutter 2.8.0 please use the version <= 10.7.0 of
 > **Reactive Forms**.
