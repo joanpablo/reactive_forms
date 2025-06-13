@@ -556,12 +556,10 @@ abstract class AbstractControl<T> {
       disabled
           ? markAsDisabled(updateParent: updateParent, emitEvent: false)
           : markAsEnabled(updateParent: updateParent, emitEvent: false);
+    } else if (_initialDisabled) {
+      markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
     } else {
-      if (_initialDisabled) {
-        markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
-      } else {
-        markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
-      }
+      markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
     }
 
     if (removeFocus) {
