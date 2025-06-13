@@ -74,7 +74,7 @@ void main() {
     });
 
     test('Reset a control set value to null', () {
-      final formControl = FormControl(value: 'john doe');
+      final formControl = FormControl<String>();
 
       formControl.value = 'hello john';
 
