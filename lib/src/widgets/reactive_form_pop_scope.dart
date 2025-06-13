@@ -33,10 +33,11 @@ class ReactiveFormPopScope<T> extends StatelessWidget {
       builder: (context, formGroup, _) {
         return PopScope<T>(
           canPop: canPop?.call(formGroup) ?? true,
-          onPopInvokedWithResult: onPopInvokedWithResult != null
-              ? (didPop, result) =>
-                  onPopInvokedWithResult!(formGroup, didPop, result)
-              : null,
+          onPopInvokedWithResult:
+              onPopInvokedWithResult != null
+                  ? (didPop, result) =>
+                      onPopInvokedWithResult!(formGroup, didPop, result)
+                  : null,
           child: child,
         );
       },

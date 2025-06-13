@@ -36,10 +36,10 @@ class MaxLengthValidator extends Validator<dynamic> {
     return (collection == null || collection.length <= maxLength)
         ? null
         : <String, dynamic>{
-            ValidationMessage.maxLength: {
-              'requiredLength': maxLength,
-              'actualLength': collection.length,
-            },
-          };
+          ValidationMessage.maxLength: {
+            'requiredLength': maxLength,
+            'actualLength': collection.length,
+          },
+        };
   }
 }

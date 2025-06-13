@@ -65,52 +65,53 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     double? splashRadius,
     ValueChanged<bool>? onFocusChange,
   }) : super(
-          builder: (field) {
-            return SwitchListTile(
-              value: field.value ?? false,
-              activeColor: activeColor,
-              activeTrackColor: activeTrackColor,
-              inactiveThumbColor: inactiveThumbColor,
-              inactiveTrackColor: inactiveTrackColor,
-              mouseCursor: mouseCursor,
-              overlayColor: overlayColor,
-              splashRadius: splashRadius,
-              onFocusChange: onFocusChange,
-              thumbColor: thumbColor,
-              trackColor: trackColor,
-              dragStartBehavior: dragStartBehavior,
-              materialTapTargetSize: materialTapTargetSize,
-              thumbIcon: thumbIcon,
-              trackOutlineColor: trackOutlineColor,
-              onActiveThumbImageError: onActiveThumbImageError,
-              onInactiveThumbImageError: onInactiveThumbImageError,
-              hoverColor: hoverColor,
-              activeThumbImage: activeThumbImage,
-              title: title,
-              subtitle: subtitle,
-              isThreeLine: isThreeLine,
-              dense: dense,
-              contentPadding: contentPadding,
-              secondary: secondary,
-              inactiveThumbImage: inactiveThumbImage,
-              tileColor: tileColor,
-              selected: selected,
-              autofocus: autofocus,
-              controlAffinity: controlAffinity,
-              shape: shape,
-              selectedTileColor: selectedTileColor,
-              visualDensity: visualDensity,
-              enableFeedback: enableFeedback,
-              focusNode: field.focusNode,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         builder: (field) {
+           return SwitchListTile(
+             value: field.value ?? false,
+             activeColor: activeColor,
+             activeTrackColor: activeTrackColor,
+             inactiveThumbColor: inactiveThumbColor,
+             inactiveTrackColor: inactiveTrackColor,
+             mouseCursor: mouseCursor,
+             overlayColor: overlayColor,
+             splashRadius: splashRadius,
+             onFocusChange: onFocusChange,
+             thumbColor: thumbColor,
+             trackColor: trackColor,
+             dragStartBehavior: dragStartBehavior,
+             materialTapTargetSize: materialTapTargetSize,
+             thumbIcon: thumbIcon,
+             trackOutlineColor: trackOutlineColor,
+             onActiveThumbImageError: onActiveThumbImageError,
+             onInactiveThumbImageError: onInactiveThumbImageError,
+             hoverColor: hoverColor,
+             activeThumbImage: activeThumbImage,
+             title: title,
+             subtitle: subtitle,
+             isThreeLine: isThreeLine,
+             dense: dense,
+             contentPadding: contentPadding,
+             secondary: secondary,
+             inactiveThumbImage: inactiveThumbImage,
+             tileColor: tileColor,
+             selected: selected,
+             autofocus: autofocus,
+             controlAffinity: controlAffinity,
+             shape: shape,
+             selectedTileColor: selectedTileColor,
+             visualDensity: visualDensity,
+             enableFeedback: enableFeedback,
+             focusNode: field.focusNode,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 
   /// Creates a [ReactiveSwitchListTile] that wraps a Material [ListTile] with
   /// an adaptive [Switch], following Material design's
@@ -168,51 +169,52 @@ class ReactiveSwitchListTile extends ReactiveFocusableFormField<bool, bool> {
     VisualDensity? visualDensity,
     ReactiveFormFieldCallback<bool>? onChanged,
   }) : super(
-          builder: (field) {
-            return SwitchListTile.adaptive(
-              value: field.value ?? false,
-              activeColor: activeColor,
-              activeTrackColor: activeTrackColor,
-              inactiveThumbColor: inactiveThumbColor,
-              inactiveTrackColor: inactiveTrackColor,
-              activeThumbImage: activeThumbImage,
-              onActiveThumbImageError: onActiveThumbImageError,
-              inactiveThumbImage: inactiveThumbImage,
-              onInactiveThumbImageError: onInactiveThumbImageError,
-              thumbColor: thumbColor,
-              trackColor: trackColor,
-              trackOutlineColor: trackOutlineColor,
-              thumbIcon: thumbIcon,
-              materialTapTargetSize: materialTapTargetSize,
-              dragStartBehavior: dragStartBehavior,
-              mouseCursor: mouseCursor,
-              overlayColor: overlayColor,
-              splashRadius: splashRadius,
-              autofocus: autofocus,
-              applyCupertinoTheme: applyCupertinoTheme,
-              contentPadding: contentPadding,
-              controlAffinity: controlAffinity,
-              dense: dense,
-              enableFeedback: enableFeedback,
-              focusNode: field.focusNode,
-              onFocusChange: onFocusChange,
-              hoverColor: hoverColor,
-              isThreeLine: isThreeLine,
-              secondary: secondary,
-              selected: selected,
-              selectedTileColor: selectedTileColor,
-              shape: shape,
-              subtitle: subtitle,
-              tileColor: tileColor,
-              title: title,
-              visualDensity: visualDensity,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         builder: (field) {
+           return SwitchListTile.adaptive(
+             value: field.value ?? false,
+             activeColor: activeColor,
+             activeTrackColor: activeTrackColor,
+             inactiveThumbColor: inactiveThumbColor,
+             inactiveTrackColor: inactiveTrackColor,
+             activeThumbImage: activeThumbImage,
+             onActiveThumbImageError: onActiveThumbImageError,
+             inactiveThumbImage: inactiveThumbImage,
+             onInactiveThumbImageError: onInactiveThumbImageError,
+             thumbColor: thumbColor,
+             trackColor: trackColor,
+             trackOutlineColor: trackOutlineColor,
+             thumbIcon: thumbIcon,
+             materialTapTargetSize: materialTapTargetSize,
+             dragStartBehavior: dragStartBehavior,
+             mouseCursor: mouseCursor,
+             overlayColor: overlayColor,
+             splashRadius: splashRadius,
+             autofocus: autofocus,
+             applyCupertinoTheme: applyCupertinoTheme,
+             contentPadding: contentPadding,
+             controlAffinity: controlAffinity,
+             dense: dense,
+             enableFeedback: enableFeedback,
+             focusNode: field.focusNode,
+             onFocusChange: onFocusChange,
+             hoverColor: hoverColor,
+             isThreeLine: isThreeLine,
+             secondary: secondary,
+             selected: selected,
+             selectedTileColor: selectedTileColor,
+             shape: shape,
+             subtitle: subtitle,
+             tileColor: tileColor,
+             title: title,
+             visualDensity: visualDensity,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 }

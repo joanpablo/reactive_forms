@@ -11,11 +11,12 @@ import '../widgets/form_control_inherited_notifier.dart';
 /// This is the signature of a function that receives the [context],
 /// the [formArray] and an optional [child] and returns a [Widget].
 ///
-typedef ReactiveFormArrayBuilder<T> = Widget Function(
-  BuildContext context,
-  FormArray<T> formArray,
-  Widget? child,
-);
+typedef ReactiveFormArrayBuilder<T> =
+    Widget Function(
+      BuildContext context,
+      FormArray<T> formArray,
+      Widget? child,
+    );
 
 /// This class is responsible for create a [FormControlInheritedStreamer] for
 /// exposing a [FormArray] to all descendants widgets.
@@ -42,10 +43,10 @@ class ReactiveFormArray<T> extends StatefulWidget {
     this.formArray,
     this.child,
   }) : assert(
-          (formArrayName != null && formArray == null) ||
-              (formArrayName == null && formArray != null),
-          'Must provide a formArrayName or a formArray, but not both at the same time.',
-        );
+         (formArrayName != null && formArray == null) ||
+             (formArrayName == null && formArray != null),
+         'Must provide a formArrayName or a formArray, but not both at the same time.',
+       );
 
   @override
   ReactiveFormArrayState<T> createState() => ReactiveFormArrayState<T>();

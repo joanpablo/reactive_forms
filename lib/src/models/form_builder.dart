@@ -106,9 +106,10 @@ class FormBuilder {
             );
           }
 
-          final effectiveValidators = validators
-              .map<Validator<dynamic>>((v) => v! as Validator<dynamic>)
-              .toList();
+          final effectiveValidators =
+              validators
+                  .map<Validator<dynamic>>((v) => v! as Validator<dynamic>)
+                  .toList();
 
           return MapEntry(key, _control(defaultValue, effectiveValidators));
         }

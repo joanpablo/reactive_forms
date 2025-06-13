@@ -56,50 +56,51 @@ class ReactiveCheckboxListTile extends ReactiveFocusableFormField<bool, bool> {
     double checkboxScaleFactor = 1.0,
     ShowErrorsFunction<bool>? showErrors,
   }) : super(
-          showErrors: showErrors ??
-              (control) =>
-                  control.invalid && (control.dirty || control.touched),
-          builder: (field) {
-            return CheckboxListTile(
-              value: tristate ? field.value : field.value ?? false,
-              mouseCursor: mouseCursor,
-              fillColor: fillColor,
-              hoverColor: hoverColor,
-              overlayColor: overlayColor,
-              materialTapTargetSize: materialTapTargetSize,
-              splashRadius: splashRadius,
-              activeColor: activeColor,
-              checkColor: checkColor,
-              onFocusChange: onFocusChange,
-              isError: field.errorText != null,
-              title: title,
-              subtitle: subtitle,
-              isThreeLine: isThreeLine,
-              dense: dense,
-              secondary: secondary,
-              controlAffinity: controlAffinity,
-              autofocus: autofocus,
-              contentPadding: contentPadding,
-              tristate: tristate,
-              selectedTileColor: selectedTileColor,
-              tileColor: tileColor,
-              shape: shape,
-              selected: selected,
-              visualDensity: visualDensity,
-              focusNode: field.focusNode,
-              enableFeedback: enableFeedback,
-              checkboxSemanticLabel: checkboxSemanticLabel,
-              checkboxScaleFactor: checkboxScaleFactor,
-              checkboxShape: checkboxShape,
-              side: side,
-              enabled: field.control.enabled,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+         showErrors:
+             showErrors ??
+             (control) => control.invalid && (control.dirty || control.touched),
+         builder: (field) {
+           return CheckboxListTile(
+             value: tristate ? field.value : field.value ?? false,
+             mouseCursor: mouseCursor,
+             fillColor: fillColor,
+             hoverColor: hoverColor,
+             overlayColor: overlayColor,
+             materialTapTargetSize: materialTapTargetSize,
+             splashRadius: splashRadius,
+             activeColor: activeColor,
+             checkColor: checkColor,
+             onFocusChange: onFocusChange,
+             isError: field.errorText != null,
+             title: title,
+             subtitle: subtitle,
+             isThreeLine: isThreeLine,
+             dense: dense,
+             secondary: secondary,
+             controlAffinity: controlAffinity,
+             autofocus: autofocus,
+             contentPadding: contentPadding,
+             tristate: tristate,
+             selectedTileColor: selectedTileColor,
+             tileColor: tileColor,
+             shape: shape,
+             selected: selected,
+             visualDensity: visualDensity,
+             focusNode: field.focusNode,
+             enableFeedback: enableFeedback,
+             checkboxSemanticLabel: checkboxSemanticLabel,
+             checkboxScaleFactor: checkboxScaleFactor,
+             checkboxShape: checkboxShape,
+             side: side,
+             enabled: field.control.enabled,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 }
