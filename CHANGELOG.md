@@ -1,3 +1,13 @@
+# 18.0.1
+
+## Features
+- The FormControl.reset() method has been updated to align with
+  the common expectation that resetting a control without specifying a
+  new value should revert it to its initial state.
+
+## Fixes
+- Fixed broken reactivity with the `PopScope`.
+
 # 18.0.0
 
 - Moved `examples` project out of the package's code, and uploaded to its own [repo](https://github.com/joanpablo/reactive_forms_example).

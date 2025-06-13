@@ -797,6 +797,7 @@ abstract class AbstractControl<T> {
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
+  final T? _initialValue;
   final _focusChanges = StreamController<bool>.broadcast();
   FocusController? _focusController;
   bool _hasFocus = false;
@@ -838,7 +839,7 @@ class FormControl<T> extends AbstractControl<T> {
     super.asyncValidatorsDebounceTime,
     super.touched,
     super.disabled,
-  }) {
+  }) : _initialValue = value {
     if (value != null) {
       this.value = value;
     } else {
@@ -965,6 +966,28 @@ class FormControl<T> extends AbstractControl<T> {
     if (notifyFocusController) {
       _focusController?.onControlFocusChanged(_hasFocus);
     }
+  }
+
+  @override
+  void reset({
+    T? value,
+    bool updateParent = true,
+    bool emitEvent = true,
+    bool removeFocus = false,
+    bool? disabled,
+  }) {
+    // If `value` is null, it implies either `reset()` was called (no explicit value)
+    // or `reset(value: null)` was called.
+    // In line with "If no value is provided it should assign the initial value",
+    // we use `_initialValue` when `value` is `null`.
+    // If `value` is explicitly provided and not null, we use that.
+    super.reset(
+      value: value ?? _initialValue,
+      updateParent: updateParent,
+      emitEvent: emitEvent,
+      removeFocus: removeFocus,
+      disabled: disabled,
+    );
   }
 
   @override
