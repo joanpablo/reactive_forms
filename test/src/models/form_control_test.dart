@@ -381,89 +381,99 @@ void main() {
 
   group('FormControl reset with initial value', () {
     test(
-        'resets to initial value if no argument is provided and initial value was not null',
-        () {
-      // Arrange
-      final control = FormControl<String>(value: 'initial');
-      control.updateValue('changed');
+      'resets to initial value if no argument is provided and initial value was not null',
+      () {
+        // Arrange
+        final control = FormControl<String>(value: 'initial');
+        control.updateValue('changed');
 
-      // Act
-      control.reset();
+        // Act
+        control.reset();
 
-      // Assert
-      expect(control.value, 'initial');
-    });
-
-    test(
-        'resets to initial value (null) if no argument is provided and initial value was null',
-        () {
-      // Arrange
-      final control = FormControl<String?>(value: null);
-      control.updateValue('changed');
-
-      // Act
-      control.reset();
-
-      // Assert
-      expect(control.value, null);
-    });
+        // Assert
+        expect(control.value, 'initial');
+      },
+    );
 
     test(
-        'resets to initial value (null) if no argument is provided and no initial value was specified (implicitly null)',
-        () {
-      // Arrange
-      final control = FormControl<String?>();
-      control.updateValue('changed');
+      'resets to initial value (null) if no argument is provided and initial value was null',
+      () {
+        // Arrange
+        final control = FormControl<String?>(value: null);
+        control.updateValue('changed');
 
-      // Act
-      control.reset();
+        // Act
+        control.reset();
 
-      // Assert
-      expect(control.value, null);
-    });
-
-    test(
-        'resets to specified value when value argument is provided, ignoring initial value',
-        () {
-      // Arrange
-      final control = FormControl<String>(value: 'initial');
-      control.updateValue('changed');
-
-      // Act
-      control.reset(value: 'newValue');
-
-      // Assert
-      expect(control.value, 'newValue');
-    });
+        // Assert
+        expect(control.value, null);
+      },
+    );
 
     test(
-        'resets to initial value when value argument is null and initial value was not null',
-        () {
-      // Arrange
-      final control = FormControl<String?>(value: 'initial');
-      control.updateValue('changed');
+      'resets to initial value (null) if no argument is provided and no initial value was specified (implicitly null)',
+      () {
+        // Arrange
+        final control = FormControl<String?>();
+        control.updateValue('changed');
 
-      // Act
-      control.reset(value: null);
+        // Act
+        control.reset();
 
-      // Assert
-      expect(control.value,
-          'initial'); // Because (value ?? _initialValue) => (null ?? "initial") => "initial"
-    });
+        // Assert
+        expect(control.value, null);
+      },
+    );
 
     test(
-        'resets to null when value argument is null and initial value was also null',
-        () {
-      // Arrange
-      final control = FormControl<String?>(value: null);
-      control.updateValue('changed');
+      'resets to specified value when value argument is provided, ignoring initial value',
+      () {
+        // Arrange
+        final control = FormControl<String>(value: 'initial');
+        control.updateValue('changed');
 
-      // Act
-      control.reset(value: null);
+        // Act
+        control.reset(value: 'newValue');
 
-      // Assert
-      expect(control.value,
-          null); // Because (value ?? _initialValue) => (null ?? null) => null
-    });
+        // Assert
+        expect(control.value, 'newValue');
+      },
+    );
+
+    test(
+      'resets to initial value when value argument is null and initial value was not null',
+      () {
+        // Arrange
+        final control = FormControl<String?>(value: 'initial');
+        control.updateValue('changed');
+
+        // Act
+        control.reset(value: null);
+
+        // Assert
+        expect(
+          control.value,
+          'initial',
+        ); // Because (value ?? _initialValue) => (null ?? "initial") => "initial"
+      },
+    );
+
+    test(
+      'resets to null when value argument is null and initial value was also null',
+      () {
+        // Arrange
+        final control = FormControl<String?>(value: null);
+        control.updateValue('changed');
+
+        // Act
+        control.reset(value: null);
+
+        // Assert
+        expect(
+          control.value,
+          null,
+        ); // Because (value ?? _initialValue) => (null ?? null) => null
+      },
+    );
   });
 }

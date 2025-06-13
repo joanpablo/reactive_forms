@@ -705,8 +705,7 @@ void main() {
       expect(array.value, [2, 2], reason: 'array value not patched');
     });
 
-    test(
-        'Test that markAsPending() a control, set pending status to the array '
+    test('Test that markAsPending() a control, set pending status to the array '
         'as well.', () {
       // Given: an array with valid status.
       final array = FormArray<int>([FormControl<int>(value: 1)]);
