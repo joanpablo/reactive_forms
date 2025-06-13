@@ -198,7 +198,10 @@ void main() {
 
     test('Reset array with disabled states', () {
       // Given: an array with items with default values
-      final array = FormArray<int>([FormControl<int>(value: 1)]);
+      final array = FormArray<int>([FormControl<int>()]);
+
+      array.value = [1];
+      expect(array.control('0').value, 1);
 
       // And: reset array value and disable the control
       array.resetState([ControlState(disabled: true)]);

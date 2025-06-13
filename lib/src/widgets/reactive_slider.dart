@@ -54,51 +54,51 @@ class ReactiveSlider extends ReactiveFocusableFormField<num, double> {
     Color? secondaryActiveColor,
     WidgetStateProperty<Color?>? overlayColor,
   }) : super(
-          builder: (field) {
-            var value = field.value;
-            if (value == null) {
-              value = min;
-            } else if (value < min) {
-              value = min;
-            } else if (value > max) {
-              value = max;
-            }
+         builder: (field) {
+           var value = field.value;
+           if (value == null) {
+             value = min;
+           } else if (value < min) {
+             value = min;
+           } else if (value > max) {
+             value = max;
+           }
 
-            return Slider(
-              value: value,
-              min: min,
-              max: max,
-              divisions: divisions,
-              secondaryTrackValue: secondaryTrackValue,
-              secondaryActiveColor: secondaryActiveColor,
-              overlayColor: overlayColor,
-              label: labelBuilder != null
-                  ? labelBuilder(field.value ?? min)
-                  : null,
-              activeColor: activeColor,
-              inactiveColor: inactiveColor,
-              thumbColor: thumbColor,
-              semanticFormatterCallback: semanticFormatterCallback,
-              mouseCursor: mouseCursor,
-              autofocus: autofocus,
-              focusNode: field.focusNode,
-              padding: padding,
-              allowedInteraction: allowedInteraction,
-              onChangeEnd: onChangeEnd != null
-                  ? (_) => onChangeEnd(field.control)
-                  : null,
-              onChangeStart: onChangeStart != null
-                  ? (_) => onChangeStart(field.control)
-                  : null,
-              onChanged: field.control.enabled
-                  ? (value) {
-                      field.didChange(value);
-                      onChanged?.call(field.control);
-                    }
-                  : null,
-            );
-          },
-        );
+           return Slider(
+             value: value,
+             min: min,
+             max: max,
+             divisions: divisions,
+             secondaryTrackValue: secondaryTrackValue,
+             secondaryActiveColor: secondaryActiveColor,
+             overlayColor: overlayColor,
+             label:
+                 labelBuilder != null ? labelBuilder(field.value ?? min) : null,
+             activeColor: activeColor,
+             inactiveColor: inactiveColor,
+             thumbColor: thumbColor,
+             semanticFormatterCallback: semanticFormatterCallback,
+             mouseCursor: mouseCursor,
+             autofocus: autofocus,
+             focusNode: field.focusNode,
+             padding: padding,
+             allowedInteraction: allowedInteraction,
+             onChangeEnd:
+                 onChangeEnd != null ? (_) => onChangeEnd(field.control) : null,
+             onChangeStart:
+                 onChangeStart != null
+                     ? (_) => onChangeStart(field.control)
+                     : null,
+             onChanged:
+                 field.control.enabled
+                     ? (value) {
+                       field.didChange(value);
+                       onChanged?.call(field.control);
+                     }
+                     : null,
+           );
+         },
+       );
 
   @override
   ReactiveFormFieldState<num, double> createState() => _ReactiveSliderState();

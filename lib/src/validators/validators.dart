@@ -16,8 +16,7 @@ class Validators {
   /// asynchronous [validator] function.
   static AsyncValidator<dynamic> delegateAsync(
     AsyncValidatorFunction validator,
-  ) =>
-      DelegateAsyncValidator(validator);
+  ) => DelegateAsyncValidator(validator);
 
   /// Creates a validator that requires the control have a non-empty value.
   static Validator<dynamic> get required => const RequiredValidator();
@@ -25,9 +24,9 @@ class Validators {
   /// Creates a validator that requires the control's value be true.
   /// This validator is commonly used for required checkboxes.
   static Validator<dynamic> get requiredTrue => const EqualsValidator<bool>(
-        true,
-        validationMessage: ValidationMessage.requiredTrue,
-      );
+    true,
+    validationMessage: ValidationMessage.requiredTrue,
+  );
 
   /// Creates a validator that requires the control's value pass an email
   /// validation test.
@@ -41,12 +40,11 @@ class Validators {
     bool allowNull = false,
     int allowedDecimals = 0,
     bool allowNegatives = true,
-  }) =>
-      NumberValidator(
-        allowNull: allowNull,
-        allowedDecimals: allowedDecimals,
-        allowNegatives: allowNegatives,
-      );
+  }) => NumberValidator(
+    allowNull: allowNull,
+    allowedDecimals: allowedDecimals,
+    allowNegatives: allowNegatives,
+  );
 
   /// Creates a validator that validates if the control's value is a valid
   /// credit card number.
