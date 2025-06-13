@@ -4,6 +4,11 @@
 - The FormControl.reset() method has been updated to align with
   the common expectation that resetting a control without specifying a
   new value should revert it to its initial state.
+- The `reset` method in `AbstractControl` (and by inheritance `FormControl`)
+  has been updated to correctly handle the `disabled` state. If the `disabled` 
+  parameter is not provided to the `reset` method, the control's `disabled`
+  status will now revert to the initial `disabled` value that was set when 
+  the control was constructed.
 
 ## Fixes
 - Fixed broken reactivity with the `PopScope`.
