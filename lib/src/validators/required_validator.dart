@@ -18,10 +18,6 @@ class RequiredValidator extends Validator<dynamic> {
       return string.trim().isEmpty ? error : null;
     } else if (control.value case Map value) {
       return value.isEmpty ? error : null;
-    } else if (control.value case List value) {
-      return value.isEmpty ? error : null;
-    } else if (control.value case Set value) {
-      return value.isEmpty ? error : null;
     } else if (control.value case Iterable value) {
       return value.isEmpty ? error : null;
     }
