@@ -194,6 +194,7 @@ There are common predefined validators, but you can implement custom validators 
 - Validators.composeOR
 - Validators.any
 - Validators.contains
+- Validators.oneOf
 
 #### FormGroup
 
@@ -518,6 +519,20 @@ final form = FormGroup({
         Validators.pattern(masterCardPattern),
         Validators.pattern(visaCardPattern),
       ])
+    ],
+  ),
+});
+```
+
+### One Of Validator
+
+The `oneOf` validator is used to validate that the control's value is one of the values in the provided collection. For `String` values, the comparison can be made case-sensitive or insensitive.
+
+```dart
+final form = FormGroup({
+  'fruit': FormControl<String>(
+    validators: [
+      Validators.oneOf(['apple', 'banana', 'orange']),
     ],
   ),
 });

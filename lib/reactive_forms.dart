@@ -39,6 +39,7 @@ export 'src/validators/min_length_validator.dart';
 export 'src/validators/min_validator.dart';
 export 'src/validators/must_match_validator.dart';
 export 'src/validators/number_validator.dart';
+export 'src/validators/one_of_validator.dart';
 export 'src/validators/pattern/default_pattern_evaluator.dart';
 export 'src/validators/pattern/pattern_evaluator.dart';
 export 'src/validators/pattern/regex_pattern_evaluator.dart';

@@ -1,3 +1,7 @@
+# 18.0.2
+
+- Add `oneOf` validator to the list of validators.
+
 # 18.0.1
 
 ## Features
