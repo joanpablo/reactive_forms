@@ -481,6 +481,64 @@ final control = FormControl<String>(
 );
 ```
 
+### Custom debounce time in async validators
+
+You can also specify a custom debounce time for a single async validator. This is useful when you have multiple async validators with different debounce time requirements.
+
+```dart
+final control = FormControl<String>(
+  asyncValidators: [
+    Validators.debounced(
+      Validators.delegateAsync((control) async {
+        // Your validation logic here
+        return null;
+      }),
+      500, // Debounce time in milliseconds
+    ),
+  ],
+);
+```
+
+### Custom debounce time in delegateAsync validator
+
+The `Validators.delegateAsync()` function now accepts an optional `debounceTime` parameter, defaulting to 0. This allows immediate execution or custom debouncing for asynchronous validation.
+
+```dart
+final form = fb.group({
+  'userName': FormControl<String>(
+    asyncValidators: [
+      Validators.delegateAsync((control) async {
+        // Simulate a call to a backend service
+        await Future<void>.delayed(Duration(seconds: 1));
+        if (control.value == 'existingUser') {
+          return {'unique': true};
+        }
+        return null;
+      }, debounceTime: 300),
+    ],
+  ),
+});
+```
+
+You can also use it without a debounce time:
+
+```dart
+final form = fb.group({
+  'userName': FormControl<String>(
+    asyncValidators: [
+      Validators.delegateAsync((control) async {
+        // Simulate a call to a backend service
+        await Future<void>.delayed(Duration(seconds: 1));
+        if (control.value == 'existingUser') {
+          return {'unique': true};
+        }
+        return null;
+      }), // No debounce time
+    ],
+  ),
+});
+```
+
 ## Composing Validators
 
 To explain what Composing Validators is, let's see an example:
