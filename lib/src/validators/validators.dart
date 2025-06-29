@@ -117,55 +117,6 @@ class Validators {
     int debounceTime,
   ) => DebouncedAsyncValidator(validator, debounceTime);
 
-  /// Creates an asynchronous validator that delays the execution of another
-  /// asynchronous [validator] by the specified [debounceTime] in milliseconds.
-  ///
-  /// This is useful for scenarios where you want to delay validation until the user
-  /// has stopped typing for a certain period, for instance, when validating
-  /// a username for availability against a remote server.
-  ///
-  /// You should use this validator when you want to specify a custom debounce
-  /// time for a single validator. If you want to apply the same debounce time
-  /// to all asynchronous validators of a form control, it is more convenient
-  /// to use the [FormControl.asyncValidatorsDebounceTime] property.
-  ///
-  /// Parameters:
-  /// - [validator]: The asynchronous validator to be debounced.
-  /// - [debounceTime]: The duration in milliseconds to wait before executing
-  ///   the [validator] after the control's value last changes.
-  ///
-  /// ## Example:
-  ///
-  /// ```dart
-  /// Future<Map<String, dynamic>?> _uniqueUsernameValidator(AbstractControl<dynamic> control) async {
-  ///   // Simulate an API call to check if the username is unique
-  ///   await Future.delayed(const Duration(milliseconds: 700));
-  ///   final username = control.value as String?;
-  ///   if (username == 'existingUser') {
-  ///     return {'uniqueUsername': 'Username already taken'};
-  ///   }
-  ///   return null;
-  /// }
-  ///
-  /// final form = fb.group({
-  ///   'username': FormControl<String>(
-  ///     asyncValidators: [
-  ///       Validators.debounced(
-  ///         Validators.delegateAsync(_uniqueUsernameValidator),
-  ///         500, // Debounce time in milliseconds
-  ///       ),
-  ///     ],
-  ///   ),
-  /// });
-  ///
-  /// // In this example, _uniqueUsernameValidator will only be called if the user
-  /// // stops typing in the username field for at least 500 milliseconds.
-  /// ```
-  static AsyncValidator<dynamic> debounced(
-    AsyncValidator<dynamic> validator,
-    int debounceTime,
-  ) => DebouncedAsyncValidator(validator, debounceTime);
-
   /// Creates a validator that requires the control have a non-empty value.
   static Validator<dynamic> get required => const RequiredValidator();
 
