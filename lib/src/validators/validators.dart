@@ -93,7 +93,7 @@ class Validators {
   ///
   /// ## Example:
   /// Using an instance of [RegExp] as argument.
-  /// '''dart
+  /// ```dart
   /// const AmericanExpressPattern = r'^3[47][0-9]{13}$';
   ///
   /// final cardNumber = FormControl(
@@ -102,10 +102,10 @@ class Validators {
   /// );
   ///
   /// expect(cardNumber.valid, true);
-  /// '''
+  /// ```
   /// ## Example:
   /// Using a [String] as argument.
-  /// '''dart
+  /// ```dart
   /// const AmericanExpressPattern = r'^3[47][0-9]{13}$';
   ///
   /// final cardNumber = FormControl(
@@ -114,10 +114,10 @@ class Validators {
   /// );
   ///
   /// expect(cardNumber.valid, true);
-  /// '''
+  /// ```
   /// ## Example:
   /// Specifying a custom validation message.
-  /// '''dart
+  /// ```dart
   /// const containsLettersPattern = r'[a-z]+';
   /// const containsNumbersPattern = r'\d+';
   ///
@@ -139,7 +139,7 @@ class Validators {
   /// );
   ///
   /// expect(password.valid, true);
-  /// '''
+  /// ```
   static Validator<dynamic> pattern(
     Pattern pattern, {
     String validationMessage = ValidationMessage.pattern,
@@ -175,33 +175,33 @@ class Validators {
   /// ## Example:
   /// Shows validation error as soon as the user interacts with `password` or
   /// `passwordConfirmation` widgets:
-  /// '''dart
+  /// ```dart
   /// final form = fb.group({
   ///    'password': FormControl<String>(),
   ///    'passwordConfirmation': FormControl<String>(),
   /// }, [
   ///    Validators.mustMatch('password', 'passwordConfirmation')
   /// ]);
-  /// '''
-  /// '''dart
+  /// ```
+  /// ```dart
   /// ...
   /// ReactiveTextField(formControlName: 'password'),
   /// ReactiveTextField(formControlName: 'passwordConfirmation'),
   /// ...
-  /// '''
+  /// ```
   ///
   /// ## Example:
   /// Shows validation error only when the user interacts with the
   /// `passwordConfirmation` widget:
-  /// '''dart
+  /// ```dart
   /// final form = fb.group({
   ///    'password': FormControl<String>(),
   ///    'passwordConfirmation': FormControl<String>(),
   /// }, [
   ///    Validators.mustMatch('password', 'passwordConfirmation', markAsDirty: false)
   /// ]);
-  /// '''
-  /// '''dart
+  /// ```
+  /// ```dart
   /// ...
   /// ReactiveTextField(
   ///    formControlName: 'password'
@@ -212,7 +212,7 @@ class Validators {
   ///    showErrors: (control) => control.invalid && control.dirty,
   /// ),
   /// ...
-  /// '''
+  /// ```
   static Validator<dynamic> mustMatch(
     String controlName,
     String matchingControlName, {
@@ -228,12 +228,12 @@ class Validators {
   ///
   /// ## Example:
   /// Validates that 'amount' is lower or equals than 'balance'
-  /// '''dart
+  /// ```dart
   /// final form = fb.group({
   ///   'amount': 20.00,
   ///   'balance': 50.00,
   /// }, [Validators.compare('amount', 'balance', CompareOption.lowerOrEquals)]);
-  /// '''
+  /// ```
   static Validator<dynamic> compare(
     String controlName,
     String compareControlName,
@@ -271,21 +271,21 @@ class Validators {
   ///
   /// ## Example:
   /// Validates that 'list' contains all the items provided
-  /// '''dart
+  /// ```dart
   /// final control = FormControl<List<int>>(
   ///   'value': [1,2,3],
   ///   'validators': [Validators.contains([1,3])],
   /// );
-  /// '''
+  /// ```
   /// or the same example but with FormArray
-  /// '''dart
+  /// ```dart
   /// final control = FormArray<int>([
   ///        FormControl<int>(value: 1),
   ///        FormControl<int>(value: 2),
   ///        FormControl<int>(value: 3),
   ///      ], validators: [Validators.contains([1,3])]
   /// );
-  /// '''
+  /// ```
   static Validator<dynamic> contains<T>(List<T> values) {
     return ContainsValidator<T>(values);
   }
@@ -298,7 +298,7 @@ class Validators {
   /// otherwise marks the control as invalid.
   ///
   /// ## Example with FormArray
-  /// '''dart
+  /// ```dart
   /// final array = FormArray<String>([
   ///     FormControl<String>(value: ''),
   ///     FormControl<String>(value: ''),
@@ -307,10 +307,10 @@ class Validators {
   /// ]);
   ///
   /// print(array.valid); // outputs: false
-  /// '''
+  /// ```
   ///
   /// ## Example with FormControl
-  /// '''dart
+  /// ```dart
   /// final control = FormControl<List<String>>(
   ///   value: [null, null, 'not empty'],
   ///   validators: [
@@ -319,7 +319,7 @@ class Validators {
   /// );
   ///
   /// print(control.valid); // outputs: true
-  /// '''
+  /// ```
   static Validator<dynamic> any<T>(AnyValidatorFunctionTest<T> test) {
     return AnyValidator<T>(test);
   }
@@ -332,7 +332,7 @@ class Validators {
   ///
   /// ## Example:
   /// Validates that the country is one of the allowed countries (case-sensitive).
-  /// '''dart
+  /// ```dart
   /// final countryControl = FormControl<String>(
   ///   validators: [Validators.oneOf(['USA', 'Canada', 'Mexico'])],
   /// );
@@ -342,11 +342,11 @@ class Validators {
   ///
   /// countryControl.value = 'usa';
   /// print(countryControl.valid); // false (due to case sensitivity)
-  /// '''
+  /// ```
   ///
   /// ## Example:
   /// Validates that the fruit is one of the allowed fruits (case-insensitive).
-  /// '''dart
+  /// ```dart
   /// final fruitControl = FormControl<String>(
   ///   validators: [
   ///     Validators.oneOf(
@@ -361,11 +361,11 @@ class Validators {
   ///
   /// fruitControl.value = 'Grape';
   /// print(fruitControl.valid); // false
-  /// '''
+  /// ```
   ///
   /// ## Example:
   /// Validates that the number is one of the allowed numbers.
-  /// '''dart
+  /// ```dart
   /// final numberControl = FormControl<int>(
   ///   validators: [Validators.oneOf([1, 2, 3, 42])],
   /// );
@@ -375,7 +375,7 @@ class Validators {
   ///
   /// numberControl.value = 5;
   /// print(numberControl.valid); // false
-  /// '''
+  /// ```
   static Validator<dynamic> oneOf(
     List<dynamic> collection, {
     bool caseSensitive = true,
