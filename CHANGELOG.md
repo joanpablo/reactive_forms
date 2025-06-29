@@ -1,6 +1,7 @@
 # 18.0.2
 
 - Add `oneOf` validator to the list of validators.
+- Add `debounced` async validator that allows to specify a custom debounce time for a single validator.
 
 # 18.0.1
 

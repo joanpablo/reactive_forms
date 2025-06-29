@@ -699,32 +699,54 @@ abstract class AbstractControl<T> {
       return;
     }
 
-    _status = ControlStatus.pending;
+    markAsPending(emitEvent: true);
+
+    final debouncedValidators = _asyncValidators
+        .whereType<DebouncedAsyncValidator>()
+        .map((v) => v.validate(this));
+
+    final regularValidators = _asyncValidators.where(
+      (v) => v is! DebouncedAsyncValidator,
+    );
+
+    final allValidators = <Future<Map<String, dynamic>?>>[];
+    allValidators.addAll(debouncedValidators);
 
     _debounceTimer?.cancel();
 
-    _debounceTimer = Timer(
-      Duration(milliseconds: _asyncValidatorsDebounceTime),
-      () {
-        final validatorsStream = Stream.fromFutures(
-          asyncValidators.map((validator) => validator.validate(this)).toList(),
-        );
+    if (regularValidators.isNotEmpty) {
+      final completer = Completer<List<Map<String, dynamic>?>>();
+      _debounceTimer = Timer(
+        Duration(milliseconds: _asyncValidatorsDebounceTime),
+        () => completer.complete(
+          Future.wait(regularValidators.map((v) => v.validate(this))),
+        ),
+      );
+      allValidators.add(
+        completer.future.then(
+          (errors) => errors.fold<Map<String, dynamic>>(
+            {},
+            (previousValue, element) => previousValue..addAll(element ?? {}),
+          ),
+        ),
+      );
+    }
 
-        final asyncValidationErrors = <String, dynamic>{};
-        _asyncValidationSubscription = validatorsStream.listen(
-          (Map<String, dynamic>? error) {
-            if (error != null) {
-              asyncValidationErrors.addAll(error);
-            }
-          },
-          onDone: () {
-            final allErrors = <String, dynamic>{};
-            allErrors.addAll(errors);
-            allErrors.addAll(asyncValidationErrors);
+    final validatorsStream = Stream.fromFutures(allValidators);
 
-            setErrors(allErrors, markAsDirty: false);
-          },
-        );
+    final asyncValidationErrors = <String, dynamic>{};
+    _asyncValidationSubscription = validatorsStream.listen(
+      (Map<String, dynamic>? error) {
+        if (error != null) {
+          asyncValidationErrors.addAll(error);
+        }
+      },
+      onDone: () {
+        final allErrors = <String, dynamic>{};
+        allErrors.addAll(errors);
+        allErrors.addAll(asyncValidationErrors);
+
+        setErrors(allErrors, markAsDirty: false);
       },
     );
   }

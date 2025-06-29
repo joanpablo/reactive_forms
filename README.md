@@ -481,6 +481,24 @@ final control = FormControl<String>(
 );
 ```
 
+### Custom debounce time in async validators
+
+You can also specify a custom debounce time for a single async validator. This is useful when you have multiple async validators with different debounce time requirements.
+
+```dart
+final control = FormControl<String>(
+  asyncValidators: [
+    Validators.debounced(
+      Validators.delegateAsync((control) async {
+        // Your validation logic here
+        return null;
+      }),
+      500, // Debounce time in milliseconds
+    ),
+  ],
+);
+```
+
 ## Composing Validators
 
 To explain what Composing Validators is, let's see an example:

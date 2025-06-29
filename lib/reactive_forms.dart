@@ -29,6 +29,7 @@ export 'src/validators/compose_or_validator.dart';
 export 'src/validators/compose_validator.dart';
 export 'src/validators/contains_validator.dart';
 export 'src/validators/credit_card_validator.dart';
+export 'src/validators/debounced_async_validator.dart';
 export 'src/validators/delegate_async_validator.dart';
 export 'src/validators/delegate_validator.dart';
 export 'src/validators/email_validator.dart';
