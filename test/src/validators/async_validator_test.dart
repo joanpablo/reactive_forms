@@ -2,7 +2,6 @@ import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-// ignore_for_file: deprecated_member_use_from_same_package
 void main() {
   group('AsyncValidator Test', () {
     test('Async validator is executed after debounce time', () {
@@ -12,9 +11,9 @@ void main() {
             Validators.delegateAsync(
               (control) =>
                   Future.delayed(const Duration(milliseconds: 100), () => null),
+              debounceTime: 200,
             ),
           ],
-          asyncValidatorsDebounceTime: 200,
         );
 
         control.value = 'some value';
@@ -47,9 +46,9 @@ void main() {
                 const Duration(milliseconds: 100),
                 () => {'unique': true},
               ),
+              debounceTime: 200,
             ),
           ],
-          asyncValidatorsDebounceTime: 200,
         );
 
         control.value = 'some value';
@@ -79,8 +78,6 @@ void main() {
                 500, // Custom debounce time
               ),
             ],
-            asyncValidatorsDebounceTime:
-                200, // Global debounce time (should be ignored for this validator)
           );
 
           control.value = 'some value';
@@ -131,8 +128,6 @@ void main() {
                 500, // Custom debounce time
               ),
             ],
-            asyncValidatorsDebounceTime:
-                200, // Global debounce time (should be ignored for this validator)
           );
 
           control.value = 'some value';
@@ -160,9 +155,9 @@ void main() {
                       validationCount++;
                       return null;
                     }),
+                debounceTime: 200,
               ),
             ],
-            asyncValidatorsDebounceTime: 200,
           );
 
           control.value = 'value1';
@@ -202,7 +197,6 @@ void main() {
                 500, // Custom debounce time
               ),
             ],
-            asyncValidatorsDebounceTime: 200, // Global debounce time
           );
 
           control.value = 'value1';
@@ -235,6 +229,7 @@ void main() {
       fakeAsync((async) {
         var validationCount = 0;
         final control = FormControl<String>(
+          // ignore: deprecated_member_use_from_same_package
           asyncValidatorsDebounceTime: 0,
           asyncValidators: [
             Validators.delegateAsync(
@@ -274,6 +269,7 @@ void main() {
       () {
         fakeAsync((async) {
           final control = FormControl<String>(
+            // ignore: deprecated_member_use_from_same_package
             asyncValidatorsDebounceTime: 0,
             asyncValidators: [
               Validators.delegateAsync(
@@ -304,6 +300,19 @@ void main() {
           );
           expect(control.hasError('error_immediate'), true);
         });
+      },
+    );
+
+    test(
+      'DebouncedAsyncValidator throws AssertionError if debounce time is negative',
+      () {
+        expect(
+          () => DebouncedAsyncValidator(
+            Validators.delegateAsync((control) async => null),
+            -1,
+          ),
+          throwsAssertionError,
+        );
       },
     );
   });

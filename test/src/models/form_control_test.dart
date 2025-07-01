@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-// ignore_for_file: deprecated_member_use_from_same_package
 void main() {
   group('Form Control', () {
     test('FormControl has no errors by default', () {
@@ -86,7 +85,8 @@ void main() {
 
     test('Assert error if debounce time < 0', () {
       void formControl() =>
-          FormControl<dynamic>(asyncValidatorsDebounceTime: -1);
+      // ignore: deprecated_member_use_from_same_package
+      FormControl<dynamic>(asyncValidatorsDebounceTime: -1);
       expect(formControl, throwsAssertionError);
     });
 
