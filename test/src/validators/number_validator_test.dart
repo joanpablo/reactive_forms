@@ -106,19 +106,22 @@ void main() {
       expect(control.errors.isEmpty, true);
     });
 
-    test('FormControl invalid negative number when allowNegatives is false', () {
-      final control = FormControl<String>(
-        validators: [Validators.number(allowNegatives: false)],
-      );
+    test(
+      'FormControl invalid negative number when allowNegatives is false',
+      () {
+        final control = FormControl<String>(
+          validators: [Validators.number(allowNegatives: false)],
+        );
 
-      control.value = '-10';
+        control.value = '-10';
 
-      expect(control.valid, false);
-      expect(
-        control.errors[ValidationMessage.number],
-        NumberValidatorError.unsignedNumber,
-      );
-    });
+        expect(control.valid, false);
+        expect(
+          control.errors[ValidationMessage.number],
+          NumberValidatorError.unsignedNumber,
+        );
+      },
+    );
 
     test('FormControl invalid with multiple decimal points', () {
       final control = FormControl<String>(validators: [Validators.number()]);
@@ -185,6 +188,18 @@ void main() {
       expect(
         control.errors[ValidationMessage.number],
         NumberValidatorError.invalidDecimals,
+      );
+    });
+
+    test('FormControl invalid with invalid characters and no decimal point', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = '1a0';
+
+      expect(control.valid, false);
+      expect(
+        control.errors[ValidationMessage.number],
+        NumberValidatorError.invalidNumber,
       );
     });
 
