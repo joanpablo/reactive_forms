@@ -14,9 +14,108 @@ class Validators {
 
   /// Creates a validator that delegates the validation to the external
   /// asynchronous [validator] function.
+  ///
+  /// The [debounceTime] argument is the duration in milliseconds to wait before
+  /// executing the [validator] after the control's value last changes.
+  ///
+  /// If [debounceTime] is 0, the validator is executed immediately.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// final form = fb.group({
+  ///   'userName': FormControl<String>(
+  ///     asyncValidators: [
+  ///       Validators.delegateAsync((control) async {
+  ///         // Simulate a call to a backend service
+  ///         await Future<void>.delayed(Duration(seconds: 1));
+  ///         if (control.value == 'existingUser') {
+  ///           return {'unique': true};
+  ///         }
+  ///         return null;
+  ///       }, debounceTime: 300),
+  ///     ],
+  ///   ),
+  /// });
+  /// ```
+  ///
+  /// You can also use it without a debounce time:
+  ///
+  /// ```dart
+  /// final form = fb.group({
+  ///   'userName': FormControl<String>(
+  ///     asyncValidators: [
+  ///       Validators.delegateAsync((control) async {
+  ///         // Simulate a call to a backend service
+  ///         await Future<void>.delayed(Duration(seconds: 1));
+  ///         if (control.value == 'existingUser') {
+  ///           return {'unique': true};
+  ///         }
+  ///         return null;
+  ///       }), // No debounce time
+  ///     ],
+  ///   ),
+  /// });
+  /// ```
   static AsyncValidator<dynamic> delegateAsync(
-    AsyncValidatorFunction validator,
-  ) => DelegateAsyncValidator(validator);
+    AsyncValidatorFunction validator, {
+    int debounceTime = 0,
+  }) {
+    final delegateValidator = DelegateAsyncValidator(validator);
+    if (debounceTime > 0) {
+      return DebouncedAsyncValidator(delegateValidator, debounceTime);
+    }
+    return delegateValidator;
+  }
+
+  /// Creates an asynchronous validator that delays the execution of another
+  /// asynchronous [validator] by the specified [debounceTime] in milliseconds.
+  ///
+  /// This is useful for scenarios where you want to delay validation until the user
+  /// has stopped typing for a certain period, for instance, when validating
+  /// a username for availability against a remote server.
+  ///
+  /// You should use this validator when you want to specify a custom debounce
+  /// time for a single validator. If you want to apply the same debounce time
+  /// to all asynchronous validators of a form control, it is more convenient
+  /// to use the [FormControl.asyncValidatorsDebounceTime] property.
+  ///
+  /// Parameters:
+  /// - [validator]: The asynchronous validator to be debounced.
+  /// - [debounceTime]: The duration in milliseconds to wait before executing
+  ///   the [validator] after the control's value last changes.
+  ///
+  /// ## Example:
+  ///
+  /// ```dart
+  /// Future<Map<String, dynamic>?> _uniqueUsernameValidator(AbstractControl<dynamic> control) async {
+  ///   // Simulate an API call to check if the username is unique
+  ///   await Future.delayed(const Duration(milliseconds: 700));
+  ///   final username = control.value as String?;
+  ///   if (username == 'existingUser') {
+  ///     return {'uniqueUsername': 'Username already taken'};
+  ///   }
+  ///   return null;
+  /// }
+  ///
+  /// final form = fb.group({
+  ///   'username': FormControl<String>(
+  ///     asyncValidators: [
+  ///       Validators.debounced(
+  ///         Validators.delegateAsync(_uniqueUsernameValidator),
+  ///         500, // Debounce time in milliseconds
+  ///       ),
+  ///     ],
+  ///   ),
+  /// });
+  ///
+  /// // In this example, _uniqueUsernameValidator will only be called if the user
+  /// // stops typing in the username field for at least 500 milliseconds.
+  /// ```
+  static AsyncValidator<dynamic> debounced(
+    AsyncValidator<dynamic> validator,
+    int debounceTime,
+  ) => DebouncedAsyncValidator(validator, debounceTime);
 
   /// Creates a validator that requires the control have a non-empty value.
   static Validator<dynamic> get required => const RequiredValidator();
@@ -331,5 +430,64 @@ class Validators {
   /// ```
   static Validator<dynamic> any<T>(AnyValidatorFunctionTest<T> test) {
     return AnyValidator<T>(test);
+  }
+
+  /// Creates a validator that checks if the control's value is one of the values
+  /// in the provided [collection].
+  ///
+  /// For [String] values, the comparison can be made case-sensitive or insensitive
+  /// using the [caseSensitive] parameter. For other types, this parameter is ignored.
+  ///
+  /// ## Example:
+  /// Validates that the country is one of the allowed countries (case-sensitive).
+  /// ```dart
+  /// final countryControl = FormControl<String>(
+  ///   validators: [Validators.oneOf(['USA', 'Canada', 'Mexico'])],
+  /// );
+  ///
+  /// countryControl.value = 'USA';
+  /// print(countryControl.valid); // true
+  ///
+  /// countryControl.value = 'usa';
+  /// print(countryControl.valid); // false (due to case sensitivity)
+  /// ```
+  ///
+  /// ## Example:
+  /// Validates that the fruit is one of the allowed fruits (case-insensitive).
+  /// ```dart
+  /// final fruitControl = FormControl<String>(
+  ///   validators: [
+  ///     Validators.oneOf(
+  ///       ['Apple', 'Banana', 'Orange'],
+  ///       caseSensitive: false,
+  ///     ),
+  ///   ],
+  /// );
+  ///
+  /// fruitControl.value = 'apple';
+  /// print(fruitControl.valid); // true
+  ///
+  /// fruitControl.value = 'Grape';
+  /// print(fruitControl.valid); // false
+  /// ```
+  ///
+  /// ## Example:
+  /// Validates that the number is one of the allowed numbers.
+  /// ```dart
+  /// final numberControl = FormControl<int>(
+  ///   validators: [Validators.oneOf([1, 2, 3, 42])],
+  /// );
+  ///
+  /// numberControl.value = 42;
+  /// print(numberControl.valid); // true
+  ///
+  /// numberControl.value = 5;
+  /// print(numberControl.valid); // false
+  /// ```
+  static Validator<dynamic> oneOf(
+    List<dynamic> collection, {
+    bool caseSensitive = true,
+  }) {
+    return OneOfValidator(collection, caseSensitive: caseSensitive);
   }
 }

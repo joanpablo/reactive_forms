@@ -122,8 +122,12 @@ void main() {
       final form = FormGroup({
         'control': FormControl<String>(
           validators: [Validators.required],
-          asyncValidators: [Validators.delegateAsync(failedAsyncValidator)],
-          asyncValidatorsDebounceTime: 0,
+          asyncValidators: [
+            Validators.debounced(
+              Validators.delegateAsync(failedAsyncValidator),
+              0,
+            ),
+          ],
         ),
       });
 
@@ -154,8 +158,7 @@ void main() {
       final form = FormGroup({
         'control': FormControl<String>(
           validators: [Validators.required],
-          asyncValidators: [asyncValidator],
-          asyncValidatorsDebounceTime: 0,
+          asyncValidators: [Validators.debounced(asyncValidator, 0)],
         ),
       });
 

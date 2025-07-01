@@ -1,6 +1,13 @@
+# 18.1.0
+
+- Add `oneOf` validator to the list of validators.
+- Add `debounced` async validator that allows to specify a custom debounce time for a single validator.
+- The `Validators.delegateAsync()` function now accepts an optional `debounceTime` parameter, defaulting to 0. This allows immediate execution or custom debouncing for asynchronous validation.
+
 # 18.0.1
 
 ## Features
+- Add `allowNull` optional parameter to the `CompareValidator`.
 - The FormControl.reset() method has been updated to align with
   the common expectation that resetting a control without specifying a
   new value should revert it to its initial state.

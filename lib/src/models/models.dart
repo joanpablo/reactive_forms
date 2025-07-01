@@ -7,6 +7,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+// ignore_for_file: deprecated_member_use_from_same_package
+
 const _controlNameDelimiter = '.';
 
 /// This is the base class for [FormGroup], [FormArray] and [FormControl].
@@ -40,7 +42,14 @@ abstract class AbstractControl<T> {
   /// Async validators debounce timer.
   Timer? _debounceTimer;
 
+  /// **DEPRECATED**: Use [Validators.debounced] to specify a debounce time for
+  /// individual asynchronous validators. This property will be removed in a
+  /// future major version.
+  ///
   /// Async validators debounce time in milliseconds.
+  @Deprecated(
+    "Use [Validators.debounced] to specify a debounce time for individual asynchronous validators.",
+  )
   final int _asyncValidatorsDebounceTime;
 
   bool _touched;
@@ -50,6 +59,12 @@ abstract class AbstractControl<T> {
   AbstractControl({
     List<Validator<dynamic>> validators = const [],
     List<AsyncValidator<dynamic>> asyncValidators = const [],
+    @Deprecated(
+      "Use [Validators.debounced] to specify a debounce time for individual asynchronous validators.",
+    )
+    /// **DEPRECATED**: Use [Validators.debounced] to specify a debounce time for
+    /// individual asynchronous validators. This property will be removed in a
+    /// future major version.
     int asyncValidatorsDebounceTime = 250,
     bool disabled = false,
     bool touched = false,
@@ -699,32 +714,54 @@ abstract class AbstractControl<T> {
       return;
     }
 
-    _status = ControlStatus.pending;
+    markAsPending(emitEvent: true);
+
+    final debouncedValidators = _asyncValidators
+        .whereType<DebouncedAsyncValidator>()
+        .map((v) => v.validate(this));
+
+    final regularValidators = _asyncValidators.where(
+      (v) => v is! DebouncedAsyncValidator,
+    );
+
+    final allValidators = <Future<Map<String, dynamic>?>>[];
+    allValidators.addAll(debouncedValidators);
 
     _debounceTimer?.cancel();
 
-    _debounceTimer = Timer(
-      Duration(milliseconds: _asyncValidatorsDebounceTime),
-      () {
-        final validatorsStream = Stream.fromFutures(
-          asyncValidators.map((validator) => validator.validate(this)).toList(),
-        );
+    if (regularValidators.isNotEmpty) {
+      final completer = Completer<List<Map<String, dynamic>?>>();
+      _debounceTimer = Timer(
+        Duration(milliseconds: _asyncValidatorsDebounceTime),
+        () => completer.complete(
+          Future.wait(regularValidators.map((v) => v.validate(this))),
+        ),
+      );
+      allValidators.add(
+        completer.future.then(
+          (errors) => errors.fold<Map<String, dynamic>>(
+            {},
+            (previousValue, element) => previousValue..addAll(element ?? {}),
+          ),
+        ),
+      );
+    }
 
-        final asyncValidationErrors = <String, dynamic>{};
-        _asyncValidationSubscription = validatorsStream.listen(
-          (Map<String, dynamic>? error) {
-            if (error != null) {
-              asyncValidationErrors.addAll(error);
-            }
-          },
-          onDone: () {
-            final allErrors = <String, dynamic>{};
-            allErrors.addAll(errors);
-            allErrors.addAll(asyncValidationErrors);
+    final validatorsStream = Stream.fromFutures(allValidators);
 
-            setErrors(allErrors, markAsDirty: false);
-          },
-        );
+    final asyncValidationErrors = <String, dynamic>{};
+    _asyncValidationSubscription = validatorsStream.listen(
+      (Map<String, dynamic>? error) {
+        if (error != null) {
+          asyncValidationErrors.addAll(error);
+        }
+      },
+      onDone: () {
+        final allErrors = <String, dynamic>{};
+        allErrors.addAll(errors);
+        allErrors.addAll(asyncValidationErrors);
+
+        setErrors(allErrors, markAsDirty: false);
       },
     );
   }
@@ -842,6 +879,12 @@ class FormControl<T> extends AbstractControl<T> {
     T? value,
     super.validators,
     super.asyncValidators,
+    @Deprecated(
+      "Use [Validators.debounced] to specify a debounce time for individual asynchronous validators.",
+    )
+    /// **DEPRECATED**: Use [Validators.debounced] to specify a debounce time for
+    /// individual asynchronous validators. This property will be removed in a
+    /// future major version.
     super.asyncValidatorsDebounceTime,
     super.touched,
     super.disabled,

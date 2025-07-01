@@ -252,68 +252,68 @@ void main() {
 
     test('Lower compare (allow null)', () {
       // Given: a valid form
-      final form = fb.group({
-        'amount': 10,
-        'balance': 20,
-      }, [
-        Validators.compare(
-          'amount',
-          'balance',
-          CompareOption.lower,
-          allowNull: true,
-        ),
-      ]);
+      final form = fb.group(
+        {'amount': 10, 'balance': 20},
+        [
+          Validators.compare(
+            'amount',
+            'balance',
+            CompareOption.lower,
+            allowNull: true,
+          ),
+        ],
+      );
 
       // Expect: form is valid
       expect(form.valid, true);
     });
     test('Lower compare invalid (allow null)', () {
       // Given: an invalid form
-      final form = fb.group({
-        'amount': 10,
-        'balance': 10,
-      }, [
-        Validators.compare(
-          'amount',
-          'balance',
-          CompareOption.lower,
-          allowNull: true,
-        ),
-      ]);
+      final form = fb.group(
+        {'amount': 10, 'balance': 10},
+        [
+          Validators.compare(
+            'amount',
+            'balance',
+            CompareOption.lower,
+            allowNull: true,
+          ),
+        ],
+      );
 
       // Expect: form is invalid
       expect(form.valid, false);
     });
     test('Compare with control null (allow null)', () {
       // Given: a form with null values (allowed)
-      final form = fb.group({
-        'value1': FormControl<int>(),
-        'value2': FormControl<int>(value: 10),
-      }, [
-        Validators.compare(
-          'value1',
-          'value2',
-          CompareOption.equal,
-          allowNull: true,
-        ),
-      ]);
+      final form = fb.group(
+        {'value1': FormControl<int>(), 'value2': FormControl<int>(value: 10)},
+        [
+          Validators.compare(
+            'value1',
+            'value2',
+            CompareOption.equal,
+            allowNull: true,
+          ),
+        ],
+      );
 
       // Expect: form is valid
       expect(form.valid, true);
     });
     test('Compare with the other control null (allow null)', () {
       // Given: a form with null values (allowed)
-      final form = fb.group({
-        'value1': FormControl<int>(value: 10),
-        'value2': FormControl<int>(),
-      }, [
-        Validators.compare(
-          'value1',
-          'value2',
-          CompareOption.equal,
-          allowNull: true,
-        ),
-      ]);
+      final form = fb.group(
+        {'value1': FormControl<int>(value: 10), 'value2': FormControl<int>()},
+        [
+          Validators.compare(
+            'value1',
+            'value2',
+            CompareOption.equal,
+            allowNull: true,
+          ),
+        ],
+      );
 
       // Expect: form is valid
       expect(form.valid, true);
