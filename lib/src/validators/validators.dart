@@ -325,6 +325,9 @@ class Validators {
   /// The arguments [controlName], [compareControlName] and [compareOption]
   /// must not be null.
   ///
+  /// [allowNull] (optional): skip this validation if one of the controls has
+  /// null value. Defaults to false (report an error in case of null).
+  ///
   /// ## Example:
   /// Validates that 'amount' is lower or equals than 'balance'
   /// ```dart
@@ -336,9 +339,15 @@ class Validators {
   static Validator<dynamic> compare(
     String controlName,
     String compareControlName,
-    CompareOption compareOption,
-  ) {
-    return CompareValidator(controlName, compareControlName, compareOption);
+    CompareOption compareOption, {
+    bool allowNull = false,
+  }) {
+    return CompareValidator(
+      controlName,
+      compareControlName,
+      compareOption,
+      allowNull: allowNull,
+    );
   }
 
   /// Compose multiple validators into a single validator that returns the union
