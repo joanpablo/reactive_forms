@@ -191,17 +191,20 @@ void main() {
       );
     });
 
-    test('FormControl invalid with invalid characters and no decimal point', () {
-      final control = FormControl<String>(validators: [Validators.number()]);
+    test(
+      'FormControl invalid with invalid characters and no decimal point',
+      () {
+        final control = FormControl<String>(validators: [Validators.number()]);
 
-      control.value = '1a0';
+        control.value = '1a0';
 
-      expect(control.valid, false);
-      expect(
-        control.errors[ValidationMessage.number],
-        NumberValidatorError.invalidNumber,
-      );
-    });
+        expect(control.valid, false);
+        expect(
+          control.errors[ValidationMessage.number],
+          NumberValidatorError.invalidNumber,
+        );
+      },
+    );
 
     test('FormControl valid with a dot at the beginning', () {
       final control = FormControl<String>(
