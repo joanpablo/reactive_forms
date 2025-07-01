@@ -93,17 +93,17 @@ class NumberValidator extends Validator<dynamic> {
     // Split the number string at the decimal point
     final parts = numberString.split('.');
 
-    if (parts.length > 2) {
+    if (parts.length > 2 || numberString == '.' || numberString.endsWith('.')) {
       // More than one decimal point, invalid format
       return false;
     }
 
     if (parts.length == 1) {
-      // No decimal part, validate it has 0 decimals
-      return allowedDecimals == 0;
+      // No decimal part, so it's valid
+      return true;
     }
 
-    // Check if the decimal part length is equal to the allowed decimals
-    return parts[1].length == allowedDecimals;
+    // Check if the decimal part length is within the allowed limit
+    return parts[1].length <= allowedDecimals;
   }
 }
