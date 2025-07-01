@@ -1,3 +1,9 @@
+# 18.1.1
+
+## Fixes
+- Fix `NumberValidator` to correctly handle decimal numbers with trailing zeros.
+- Improve `NumberValidator` to correctly validate numbers with multiple decimal points, single dot, and dot at the end.
+
 # 18.1.0
 
 - Add `oneOf` validator to the list of validators.
