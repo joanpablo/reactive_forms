@@ -48,7 +48,7 @@ class DebouncedAsyncValidator extends AsyncValidator<dynamic> {
   /// The [debounceTime] is the duration in milliseconds to wait before
   /// validating the control.
   DebouncedAsyncValidator(this._validator, this._debounceTime)
-      : assert(_debounceTime >= 0);
+    : assert(_debounceTime >= 0);
 
   @override
   Future<Map<String, dynamic>?> validate(AbstractControl<dynamic> control) {
