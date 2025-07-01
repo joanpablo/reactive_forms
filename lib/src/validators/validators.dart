@@ -131,10 +131,101 @@ class Validators {
   /// validation test.
   static Validator<dynamic> get email => const EmailValidator();
 
-  /// Creates a validator function that checks if a control's value is a valid number.
+  /// Creates a validator that checks if a control's value is a valid number.
   ///
-  /// [allowedDecimals] (optional): The allowed number of decimal places. Defaults to 0.
-  /// [allowNegatives] (optional): Whether to allow negative numbers. Defaults to true.
+  /// This validator can be applied to controls with `String` or `num` (int, double) values.
+  /// It provides fine-grained control over what constitutes a valid number:
+  ///
+  /// - [allowNull]: If `true`, a `null` control value is considered valid. Defaults to `false`.
+  /// - [allowedDecimals]: Specifies the maximum number of digits allowed after the decimal point.
+  ///   Defaults to `0`, meaning only integers are allowed. For example, `allowedDecimals: 2`
+  ///   would allow numbers like `123.45` or `123.4` but not `123.456`.
+  /// - [allowNegatives]: If `true`, negative numbers (e.g., `-10`) are considered valid.
+  ///   Defaults to `true`.
+  ///
+  /// The validation error is exposed under the `ValidationMessage.number` key.
+  /// Possible error values include `NumberValidatorError.nullValue` (if `allowNull` is `false`
+  /// and the value is `null`), `NumberValidatorError.unsignedNumber` (if `allowNegatives` is
+  /// `false` and the number is negative), `NumberValidatorError.invalidDecimals` (if the number
+  /// of decimal places exceeds `allowedDecimals`), or `NumberValidatorError.invalidNumber`
+  /// (for non-numeric input or invalid formatting).
+  ///
+  /// ## Examples:
+  ///
+  /// ### Basic Usage (Integer only, not null, positive):
+  /// ```dart
+  /// final control = FormControl<String>(validators: [Validators.number()]);
+  ///
+  /// control.value = '123';
+  /// print(control.valid); // true
+  ///
+  /// control.value = '-123';
+  /// print(control.valid); // true (allowNegatives is true by default)
+  ///
+  /// control.value = '12.34';
+  /// print(control.valid); // false (allowedDecimals is 0 by default)
+  ///
+  /// control.value = 'abc';
+  /// print(control.valid); // false
+  ///
+  /// control.value = null;
+  /// print(control.valid); // false (allowNull is false by default)
+  /// ```
+  ///
+  /// ### Allowing Decimals:
+  /// ```dart
+  /// final decimalControl = FormControl<String>(
+  ///   validators: [Validators.number(allowedDecimals: 2)],
+  /// );
+  ///
+  /// decimalControl.value = '12.34';
+  /// print(decimalControl.valid); // true
+  ///
+  /// decimalControl.value = '12.345';
+  /// print(decimalControl.valid); // false (too many decimal places)
+  ///
+  /// decimalControl.value = '12';
+  /// print(decimalControl.valid); // true (integers are valid when decimals are allowed)
+  /// ```
+  ///
+  /// ### Disallowing Negative Numbers:
+  /// ```dart
+  /// final positiveControl = FormControl<String>(
+  ///   validators: [Validators.number(allowNegatives: false)],
+  /// );
+  ///
+  /// positiveControl.value = '100';
+  /// print(positiveControl.valid); // true
+  ///
+  /// positiveControl.value = '-50';
+  /// print(positiveControl.valid); // false
+  /// ```
+  ///
+  /// ### Allowing Null Values:
+  /// ```dart
+  /// final nullableControl = FormControl<String>(
+  ///   validators: [Validators.number(allowNull: true)],
+  /// );
+  ///
+  /// nullableControl.value = null;
+  /// print(nullableControl.valid); // true
+  ///
+  /// nullableControl.value = '123';
+  /// print(nullableControl.valid); // true
+  /// ```
+  ///
+  /// ### Using with `double` type controls:
+  /// ```dart
+  /// final doubleControl = FormControl<double>(
+  ///   validators: [Validators.number(allowedDecimals: 2)],
+  /// );
+  ///
+  /// doubleControl.value = 123.45;
+  /// print(doubleControl.valid); // true
+  ///
+  /// doubleControl.value = 123.456;
+  /// print(doubleControl.valid); // false
+  /// ```
   static Validator<dynamic> number({
     bool allowNull = false,
     int allowedDecimals = 0,

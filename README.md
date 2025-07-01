@@ -1,4 +1,4 @@
-'''# Reactive Forms
+# Reactive Forms
 
 This is a model-driven approach to handling form inputs and validations, heavily inspired by [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
@@ -88,7 +88,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  reactive_forms: ^18.1.0
+  reactive_forms: ^18.1.1
 ```
 
 Then, run the command `flutter packages get` in the console.
@@ -1756,4 +1756,3 @@ You can also check the [Star Rating with Flutter Reactive Forms](https://dev.to/
 
 Visit the [Migration Guide](https://github.com/joanpablo/reactive_forms/wiki/Migration-Guide) to see
 more details about different version breaking changes.
-''

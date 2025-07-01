@@ -83,5 +83,137 @@ void main() {
         NumberValidatorError.invalidDecimals,
       );
     });
+
+    test('FormControl of type String valid decimal numbers with .00', () {
+      final control = FormControl<String>(
+        validators: [Validators.number(allowedDecimals: 2)],
+      );
+
+      control.value = '10.00';
+
+      expect(control.valid, true);
+      expect(control.errors.isEmpty, true);
+    });
+
+    test('FormControl of type double valid decimal numbers with .00', () {
+      final control = FormControl<double>(
+        validators: [Validators.number(allowedDecimals: 2)],
+      );
+
+      control.value = 10.00;
+
+      expect(control.valid, true);
+      expect(control.errors.isEmpty, true);
+    });
+
+    test(
+      'FormControl invalid negative number when allowNegatives is false',
+      () {
+        final control = FormControl<String>(
+          validators: [Validators.number(allowNegatives: false)],
+        );
+
+        control.value = '-10';
+
+        expect(control.valid, false);
+        expect(
+          control.errors[ValidationMessage.number],
+          NumberValidatorError.unsignedNumber,
+        );
+      },
+    );
+
+    test('FormControl invalid with multiple decimal points', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = '10.1.0';
+
+      expect(control.valid, false);
+      expect(
+        control.errors[ValidationMessage.number],
+        NumberValidatorError.invalidDecimals,
+      );
+    });
+
+    test('FormControl valid with leading/trailing spaces', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = ' 10 ';
+
+      expect(control.valid, true);
+    });
+
+    test('FormControl invalid with invalid characters', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = '10a.5';
+
+      expect(control.valid, false);
+      expect(
+        control.errors[ValidationMessage.number],
+        NumberValidatorError.invalidDecimals,
+      );
+    });
+
+    test('FormControl invalid with only spaces', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = '   ';
+
+      expect(control.valid, false);
+      expect(
+        control.errors[ValidationMessage.number],
+        NumberValidatorError.invalidNumber,
+      );
+    });
+
+    test('FormControl invalid with a single dot', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = '.';
+
+      expect(control.valid, false);
+      expect(
+        control.errors[ValidationMessage.number],
+        NumberValidatorError.invalidDecimals,
+      );
+    });
+
+    test('FormControl invalid with a dot at the end', () {
+      final control = FormControl<String>(validators: [Validators.number()]);
+
+      control.value = '10.';
+
+      expect(control.valid, false);
+      expect(
+        control.errors[ValidationMessage.number],
+        NumberValidatorError.invalidDecimals,
+      );
+    });
+
+    test(
+      'FormControl invalid with invalid characters and no decimal point',
+      () {
+        final control = FormControl<String>(validators: [Validators.number()]);
+
+        control.value = '1a0';
+
+        expect(control.valid, false);
+        expect(
+          control.errors[ValidationMessage.number],
+          NumberValidatorError.invalidNumber,
+        );
+      },
+    );
+
+    test('FormControl valid with a dot at the beginning', () {
+      final control = FormControl<String>(
+        validators: [Validators.number(allowedDecimals: 1)],
+      );
+
+      control.value = '.5';
+
+      expect(control.valid, true);
+    });
   });
 }
