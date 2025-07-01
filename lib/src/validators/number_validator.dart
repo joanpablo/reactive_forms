@@ -5,7 +5,42 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms/src/validators/number_validator_error.dart';
 
-/// Validator that validates if control's value is a numeric value.
+/// A validator that checks if a control's value represents a valid number.
+///
+/// This validator can be used for both `String` and `num` types. It provides
+/// options to allow or disallow null values, negative numbers, and to specify
+/// the number of allowed decimal places.
+///
+/// ## Example:
+///
+/// ```dart
+/// final control = FormControl<String>(
+///   validators: [Validators.number()],
+/// );
+///
+/// control.value = '123';
+/// print(control.valid); // true
+///
+/// control.value = 'abc';
+/// print(control.valid); // false
+///
+/// control.value = '12.34';
+/// print(control.valid); // false, because decimals are not allowed by default
+/// ```
+///
+/// To allow decimals, you can use the `allowedDecimals` parameter:
+///
+/// ```dart
+/// final decimalControl = FormControl<String>(
+///   validators: [Validators.number(allowedDecimals: 2)],
+/// );
+///
+/// decimalControl.value = '12.34';
+/// print(decimalControl.valid); // true
+///
+/// decimalControl.value = '12.345';
+/// print(decimalControl.valid); // false, as it exceeds the allowed decimal places
+/// ```
 class NumberValidator extends Validator<dynamic> {
   /// The regex expression of a numeric string value.
   static final RegExp notNumbersRegex = RegExp(r'[^0-9.]');
