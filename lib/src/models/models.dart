@@ -67,6 +67,7 @@ abstract class AbstractControl<T> {
     bool disabled = false,
     bool touched = false,
   }) : assert(asyncValidatorsDebounceTime >= 0),
+       // ignore: deprecated_member_use_from_same_package
        _asyncValidatorsDebounceTime = asyncValidatorsDebounceTime,
        _touched = touched,
        _initialDisabled = disabled,
@@ -730,6 +731,7 @@ abstract class AbstractControl<T> {
     if (regularValidators.isNotEmpty) {
       final completer = Completer<List<Map<String, dynamic>?>>();
       _debounceTimer = Timer(
+        // ignore: deprecated_member_use_from_same_package
         Duration(milliseconds: _asyncValidatorsDebounceTime),
         () => completer.complete(
           Future.wait(regularValidators.map((v) => v.validate(this))),
