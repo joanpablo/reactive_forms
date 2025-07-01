@@ -1,6 +1,6 @@
-# Reactive Forms
+'''# Reactive Forms
 
-This is a model-driven approach to handling Forms inputs and validations, heavily inspired in [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
+This is a model-driven approach to handling form inputs and validations, heavily inspired by [Angular's Reactive Forms](https://angular.io/guide/reactive-forms).
 
 [![Pub Version](https://img.shields.io/pub/v/reactive_forms)](https://pub.dev/packages/reactive_forms) ![GitHub](https://img.shields.io/github/license/joanpablo/reactive_forms) ![GitHub top language](https://img.shields.io/github/languages/top/joanpablo/reactive_forms) ![flutter tests](https://github.com/joanpablo/reactive_forms/workflows/reactive_forms/badge.svg?branch=master) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a4e40d632feb41b5af624cbd36064c83)](https://www.codacy.com/manual/joanpablo/reactive_forms?utm_source=github.com&utm_medium=referral&utm_content=joanpablo/reactive_forms&utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/joanpablo/reactive_forms/branch/master/graph/badge.svg)](https://codecov.io/gh/joanpablo/reactive_forms)
 
@@ -9,52 +9,52 @@ This is a model-driven approach to handling Forms inputs and validations, heavil
 - [Getting Started](#getting-started)
   - [Minimum Requirements](#minimum-requirements)
   - [Installation and Usage](#installation-and-usage)
-- [Creating a form](#creating-a-form)
-- [How to get/set Form data](#how-to-getset-form-data)
+- [Creating a Form](#creating-a-form)
+- [Getting/Setting Form Data](#how-to-getset-form-data)
 - [Validators](#what-about-validators)
-  - [Predefined validators](#predefined-validators)
+  - [Predefined Validators](#predefined-validators)
   - [Custom Validators](#custom-validators)
   - [Pattern Validator](#pattern-validator)
-  - [FormGroup validators](#formgroup-validators)
+  - [FormGroup Validators](#formgroup-validators)
   - [Password and Password Confirmation](#what-about-password-and-password-confirmation)
   - [Asynchronous Validators](#asynchronous-validators-sunglasses)
-  - [Debounce time in async validators](#debounce-time-in-async-validators)
+  - [Debounce Time in Async Validators](#debounce-time-in-async-validators)
   - [Composing Validators](#composing-validators)
 - [Groups of Groups](#groups-of-groups-grin)
-- [Dynamic forms with FormArray](#dynamic-forms-with-formarray)
+- [Dynamic Forms with FormArray](#dynamic-forms-with-formarray)
 - [Arrays of Groups](#arrays-of-groups)
 - [FormBuilder](#formbuilder)
   - [Groups](#groups)
   - [Arrays](#arrays)
   - [Control](#control)
-  - [Control state](#control-state)
+  - [Control State](#control-state)
 - [Reactive Form Widgets](#reactive-form-widgets)
-- [How to customize error messages?](#how-to-customize-error-messages)
-  - [Reactive Widget level](#1-reactive-widget-level)
-  - [Global/Application level](#2-globalapplication-level)
-  - [Parameterized validation messages](#parameterized-validation-messages)
-- [When does Validation Messages begin to show up?](#when-does-validation-messages-begin-to-show-up)
-  - [Touching a control](#touching-a-control)
-  - [Overriding Reactive Widgets show errors behavior](#overriding-reactive-widgets-show-errors-behavior)
-- [Enable/Disable Submit button](#enabledisable-submit-button)
-  - [Submit Button in a different Widget](#separating-submit-button-in-a-different-widget)
-  - [ReactiveFormConsumer widget](#using-reactiveformconsumer-widget)
-- [Focus/UnFocus a FormControl](#focusunfocus-a-formcontrol)
-- [Focus flow between Text Fields](#focus-flow-between-text-fields)
-- [Enable/Disable a widget](#how-enabledisable-a-widget)
-- [How does ReactiveTextField differs from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfieldhttpsapiflutterdevfluttermaterialtextformfield-classhtml-or-textfieldhttpsapiflutterdevfluttermaterialtextfield-classhtml)
+- [How to Customize Error Messages](#how-to-customize-error-messages)
+  - [Reactive Widget Level](#1-reactive-widget-level)
+  - [Global/Application Level](#2-globalapplication-level)
+  - [Parameterized Validation Messages](#parameterized-validation-messages)
+- [When do Validation Messages Appear?](#when-does-validation-messages-begin-to-show-up)
+  - [Touching a Control](#touching-a-control)
+  - [Overriding Reactive Widgets Show Errors Behavior](#overriding-reactive-widgets-show-errors-behavior)
+- [Enable/Disable Submit Button](#enabledisable-submit-button)
+  - [Submit Button in a Separate Widget](#separating-submit-button-in-a-different-widget)
+  - [ReactiveFormConsumer Widget](#using-reactiveformconsumer-widget)
+- [Focus/Unfocus a FormControl](#focusunfocus-a-formcontrol)
+- [Focus Flow Between Text Fields](#focus-flow-between-text-fields)
+- [Enable/Disable a Widget](#how-enabledisable-a-widget)
+- [How does ReactiveTextField differ from native TextFormField or TextField?](#how-does-reactivetextfield-differs-from-native-textformfieldhttpsapiflutterdevfluttermaterialtextformfield-classhtml-or-textfieldhttpsapiflutterdevfluttermaterialtextfield-classhtml)
 - [Reactive Form Field Widgets](#supported-reactive-form-field-widgets)
 - [Bonus Field Widgets](#bonus-field-widgets)
 - [Other Reactive Forms Widgets](#other-reactive-forms-widgets)
 - [Advanced Reactive Field Widgets](#advanced-reactive-field-widgets)
-- [ReactiveValueListenableBuilder to listen when value changes in a FormControl](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
-- [ReactiveForm vs ReactiveFormBuilder which one?](#reactiveform-vs-reactiveformbuilder-which-one)
-- [Reactive Forms + Provider plugin](#reactive-forms--providerhttpspubdevpackagesprovider-plugin-muscle)
-- [Reactive Forms + code generation plugin](#reactive-forms--code-generationhttpspubdevpackagesreactive_forms_generator-)
-- [How create a custom Reactive Widget?](#how-create-a-custom-reactive-widget)
-- [What is not Reactive Forms](#what-is-not-reactive-forms)
-- [What is Reactive Forms](#what-is-reactive-forms)
-- [Migrate versions](#migrate-versions)
+- [ReactiveValueListenableBuilder for Listening to Value Changes in a FormControl](#reactivevaluelistenablebuilder-to-listen-when-value-changes-in-a-formcontrol)
+- [ReactiveForm vs. ReactiveFormBuilder: Which to Choose?](#reactiveform-vs-reactiveformbuilder-which-one)
+- [Reactive Forms + Provider Plugin](#reactive-forms--providerhttpspubdevpackagesprovider-plugin-muscle)
+- [Reactive Forms + Code Generation Plugin](#reactive-forms--code-generationhttpspubdevpackagesreactive_forms_generator-)
+- [How to Create a Custom Reactive Widget](#how-create-a-custom-reactive-widget)
+- [What Reactive Forms is Not](#what-is-not-reactive-forms)
+- [What Reactive Forms Is](#what-is-reactive-forms)
+- [Migration Versions](#migrate-versions)
 
 ## Getting Started
 
@@ -67,21 +67,21 @@ samples, guidance on mobile development, and a full API reference.
 - Dart SDK: ^3.7.0
 - Flutter: ">=3.29.0"
 
-> For using **Reactive Forms** in projects below Flutter 2.8.0 please use the version <= 10.7.0 of
+> For using **Reactive Forms** in projects below Flutter 2.8.0, please use version <= 10.7.0 of
 > **Reactive Forms**.
 
-> For using **Reactive Forms** in projects below Flutter 2.2.0 please use the version <= 10.2.0 of
+> For using **Reactive Forms** in projects below Flutter 2.2.0, please use version <= 10.2.0 of
 > **Reactive Forms**.
 
-> For using **Reactive Forms** in projects with Flutter 1.17.0 please use the version 7.6.3 of
+> For using **Reactive Forms** in projects with Flutter 1.17.0, please use version 7.6.3 of
 > **Reactive Forms**.
 
-> **Reactive Forms v8.x** includes the **intl** package. If a version conflict is present, then you should use [**dependency_overrides**](https://dart.dev/tools/pub/dependencies#dependency-overrides) to temporarily override all references to **intl** and set the one that better fits your needs.
+> **Reactive Forms v8.x** includes the **intl** package. If a version conflict is present, you should use [**dependency_overrides**](https://dart.dev/tools/pub/dependencies#dependency-overrides) to temporarily override all references to **intl** and set the one that better fits your needs.
 
 ## Installation and Usage
 
-Once you're familiar with Flutter you may install this package adding `reactive_forms` to the dependencies list
-of the `pubspec.yaml` file as follow:
+Once you're familiar with Flutter, you can install this package by adding `reactive_forms` to the dependencies list
+of your `pubspec.yaml` file as follows:
 
 ```yaml
 dependencies:
@@ -91,13 +91,13 @@ dependencies:
   reactive_forms: ^18.0.1
 ```
 
-Then run the command `flutter packages get` on the console.
+Then, run the command `flutter packages get` in the console.
 
-## Creating a form
+## Creating a Form
 
-A _form_ is composed by multiple fields or _controls_.
+A _form_ is composed of multiple fields or _controls_.
 
-To declare a form with the fields _name_ and _email_ is as simple as:
+To declare a form with the fields _name_ and _email_, it's as simple as:
 
 ```dart
 final form = FormGroup({
@@ -108,9 +108,9 @@ final form = FormGroup({
 
 ## Default Values
 
-Notice in the example above that in the case of the _name_ we have also set a default value, in the case of the _email_ the default value is **null**.
+Notice in the example above that for the _name_ field, we have set a default value. For the _email_ field, the default value is **null**.
 
-## How to get/set Form data
+## How to Get/Set Form Data
 
 Given the **FormGroup**:
 
@@ -121,13 +121,13 @@ final form = FormGroup({
 });
 ```
 
-You can get the value of a single **FormControl** as simple as:
+You can get the value of a single **FormControl** as simply as:
 
 ```dart
-String get name() => this.form.control('name').value;
+String get name => this.form.control('name').value;
 ```
 
-But you can also get the complete _Form_ data as follows:
+You can also get the complete _Form_ data as follows:
 
 ```dart
 print(form.value);
@@ -144,13 +144,13 @@ The previous code prints the following output:
 
 > **FormGroup.value** returns an instance of **Map<String, dynamic>** with each field and its value.
 
-To set value to controls you can use two approaches:
+To set values to controls, you can use two approaches:
 
 ```dart
-// set value directly to the control
+// Set the value directly to the control
 this.form.control('name').value = 'John';
 
-// set value to controls by setting value to the form
+// Set values to controls by setting the value to the form
 this.form.value = {
   'name': 'John',
   'email': 'john@email.com',
@@ -171,11 +171,11 @@ final form = FormGroup({
 });
 ```
 
-> If at least one **FormControl** is **invalid** then the FormGroup is **invalid**
+> If at least one **FormControl** is **invalid**, then the FormGroup is **invalid**.
 
-There are common predefined validators, but you can implement custom validators too.
+There are common predefined validators, but you can also implement custom validators.
 
-### Predefined validators
+### Predefined Validators
 
 #### FormControl
 
@@ -211,16 +211,16 @@ There are common predefined validators, but you can implement custom validators 
 ### Custom Validators
 
 All validators are instances of classes that inherit from the `Validator` abstract class.
-In order to implement a custom validator you can follow two different approaches:
+To implement a custom validator, you can follow two different approaches:
 
-1- Extend from `Validator` class and override the `validate` method.  
-2- Or implement a custom validator function|method, and use it with the `Validators.delegate(...)` validator.
+1. Extend the `Validator` class and override the `validate` method.
+2. Implement a custom validator function/method and use it with the `Validators.delegate(...)` validator.
 
-Let's implement a custom validator that validates a control's value must be `true`:
+Let's implement a custom validator that validates that a control's value must be `true`:
 
-### Inheriting from `Validator` class:
+### Inheriting from the `Validator` class:
 
-Let's create a class that extends from `Validator` and overrides the `validate` method:
+Let's create a class that extends `Validator` and overrides the `validate` method:
 
 ```dart
 /// Validator that validates the control's value must be `true`.
@@ -238,16 +238,16 @@ class RequiredTrueValidator extends Validator<dynamic> {
 }
 ```
 
-The `validator` method is a function that receives the _control_ to validate and returns a `Map`. If the value of the _control_ is valid the function returns `null`, otherwise returns a `Map` with the error key and a custom information. In the previous example we have defined `requiredTrue` as the error key and `true` as the custom information.
+The `validate` method is a function that receives the _control_ to validate and returns a `Map`. If the value of the _control_ is valid, the function returns `null`; otherwise, it returns a `Map` with the error key and custom information. In the previous example, we defined `requiredTrue` as the error key and `true` as the custom information.
 
-In order to use the new validator class we provide an instance of it in the FormControl definition.
+To use the new validator class, we provide an instance of it in the FormControl definition.
 
 ```dart
 final form = FormGroup({
   'acceptLicense': FormControl<bool>(
     value: false,
     validators: [
-      RequiredTrueValidator(), // providing the new custom validator
+      RequiredTrueValidator(), // Providing the new custom validator
     ],
   ),
 });
@@ -255,21 +255,21 @@ final form = FormGroup({
 
 ### Using the `Validators.delegate()` validator:
 
-Sometimes it's more convenient to implement a custom validator in a separate method|function than in a different new class. In that case, it is necessary to use the `Validators.delegate()` validator. It creates a validator that delegates the validation to the external function|method.
+Sometimes, it's more convenient to implement a custom validator in a separate method/function than in a new class. In that case, it's necessary to use the `Validators.delegate()` validator. It creates a validator that delegates the validation to the external function/method.
 
 ```dart
 final form = FormGroup({
   'acceptLicense': FormControl<bool>(
     value: false,
     validators: [
-      Validators.delegate(_requiredTrue) // delegates validation to a custom function
+      Validators.delegate(_requiredTrue) // Delegates validation to a custom function
     ],
   ),
 });
 ```
 
 ```dart
-/// Custom function that validates that control's value must be `true`.
+/// Custom function that validates that the control's value must be `true`.
 Map<String, dynamic>? _requiredTrue(AbstractControl<dynamic> control) {
   return control.isNotNull &&
          control.value is bool &&
@@ -283,7 +283,7 @@ Map<String, dynamic>? _requiredTrue(AbstractControl<dynamic> control) {
 
 ### Pattern Validator
 
-**_Validator.pattern_** is a validator that comes with **Reactive Forms**. Validation using regular expressions have been always a very useful tool to solve validation requirements. Let's see how we can validate American Express card numbers:
+**_Validator.pattern_** is a validator that comes with **Reactive Forms**. Validation using regular expressions has always been a very useful tool to solve validation requirements. Let's see how we can validate American Express card numbers:
 
 > American Express card numbers start with 34 or 37 and have 15 digits.
 
@@ -294,7 +294,7 @@ final cardNumber = FormControl<String>(
   validators: [Validators.pattern(americanExpressCardPattern)],
 );
 
-cardNumber.value = '395465465421'; // not a valid number
+cardNumber.value = '395465465421'; // Not a valid number
 
 expect(cardNumber.valid, false);
 expect(cardNumber.hasError('pattern'), true);
@@ -319,15 +319,15 @@ We will get a _Map_ like this:
 }
 ```
 
-### FormGroup validators
+### FormGroup Validators
 
-There are special validators that can be attached to **FormGroup**. In the next section we will see an example of that.
+There are special validators that can be attached to a **FormGroup**. In the next section, we will see an example of that.
 
 ## What about Password and Password Confirmation?
 
-There are some cases where we want to implement a Form where a validation of a field depends on the value of another field. For example a sign-up form with _email_ and _emailConfirmation_ or _password_ and _passwordConfirmation_.
+There are some cases where we want to implement a Form where the validation of one field depends on the value of another. For example, a sign-up form with _email_ and _emailConfirmation_ or _password_ and _passwordConfirmation_.
 
-For those cases we could implement a custom validator as a class and attach it to the **FormGroup**. Let's see an example:
+For those cases, we can implement a custom validator as a class and attach it to the **FormGroup**. Let's see an example:
 
 ```dart
 final form = FormGroup({
@@ -343,11 +343,11 @@ final form = FormGroup({
 ]);
 ```
 
-> Notice the use of \*Validators.**minLength(8)\***
+> Notice the use of **_Validators.minLength(8)_**
 
-In the previous code we have added two more fields to the form: _password_ and _passwordConfirmation_, both fields are required and the password must be at least 8 characters length.
+In the previous code, we added two more fields to the form: _password_ and _passwordConfirmation_. Both fields are required, and the password must be at least 8 characters long.
 
-However the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator and the implementation follows as:
+However, the most important thing here is that we have attached a **validator** to the **FormGroup**. This validator is a custom validator, and the implementation is as follows:
 
 ```dart
 class MustMatchValidator extends Validator<dynamic> {
@@ -369,7 +369,7 @@ class MustMatchValidator extends Validator<dynamic> {
     if (formControl.value != matchingFormControl.value) {
       matchingFormControl.setErrors({'mustMatch': true});
 
-      // force messages to show up as soon as possible
+      // Force messages to show up as soon as possible
       matchingFormControl.markAsTouched();
     } else {
       matchingFormControl.removeError('mustMatch');
@@ -380,7 +380,7 @@ class MustMatchValidator extends Validator<dynamic> {
 }
 ```
 
-Fortunately you don't have to implement a custom _must match_ validator because we have already included it into the code of the **reactive_forms** package so you should reuse it. The previous form definition becomes into:
+Fortunately, you don't have to implement a custom _must match_ validator because we have already included it in the **reactive_forms** package, so you should reuse it. The previous form definition becomes:
 
 ```dart
 final form = FormGroup({
@@ -397,41 +397,41 @@ final form = FormGroup({
 
 ## Asynchronous Validators :sunglasses:
 
-Some times you want to perform a validation against a remote server, this operations are more time consuming and need to be done asynchronously.
+Sometimes, you want to perform a validation against a remote server. These operations are more time-consuming and need to be done asynchronously.
 
-For example you want to validate that the _email_ the user is currently typing in a _registration form_ is unique and is not already used in your application. **Asynchronous Validators** are just another tool so use them wisely.
+For example, you want to validate that the _email_ the user is currently typing in a _registration form_ is unique and not already used in your application. **Asynchronous Validators** are just another tool, so use them wisely.
 
 **Asynchronous Validators** are very similar to their synchronous counterparts, with the following difference:
 
-- The validator function returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html)
+- The validator function returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html).
 
-Asynchronous validation executes after the synchronous validation, and is performed only if the synchronous validation is successful. This check allows forms to avoid potentially expensive async validation processes (such as an HTTP request) if the more basic validation methods have already found invalid input.
+Asynchronous validation executes after synchronous validation and is performed only if the synchronous validation is successful. This check allows forms to avoid potentially expensive async validation processes (such as an HTTP request) if the more basic validation methods have already found invalid input.
 
-After asynchronous validation begins, the form control enters a **pending** state. You can inspect the control's pending property and use it to give visual feedback about the ongoing validation operation.
+After asynchronous validation begins, the form control enters a **pending** state. You can inspect the control's `pending` property and use it to give visual feedback about the ongoing validation operation.
 
-Code speaks more than a thousand words :) so let's see an example.
+Code speaks louder than words, so let's see an example.
 
-Let's implement the previous mentioned example: the user is typing the email in a registration Form and you want to validate that the _email_ is unique in your System. We will implement a _custom async validator_ for that purpose.
+Let's implement the previously mentioned example: the user is typing an email in a registration form, and you want to validate that the _email_ is unique in your system. We will implement a _custom async validator_ for that purpose.
 
 ```dart
 final form = FormGroup({
   'email': FormControl<String>(
     validators: [
-      Validators.required, // traditional required and email validators
+      Validators.required, // Traditional required and email validators
       Validators.email,
     ],
     asyncValidators: [
-      UniqueEmailAsyncValidator(), // custom asynchronous validator :)
+      UniqueEmailAsyncValidator(), // Custom asynchronous validator :)
     ],
   ),
 });
 ```
 
-We have declared a simple **Form** with an email **field** that is _required_ and must have a valid email value, and we have include a custom async validator that will validate if the email is unique. Let's see the implementation of our new async validator:
+We have declared a simple **Form** with an email **field** that is _required_ and must have a valid email value. We have also included a custom async validator that will validate if the email is unique. Let's see the implementation of our new async validator:
 
 ```dart
-/// Validator that validates the user's email is unique, sending a request to
-/// the Server.
+/// Validator that validates the user's email is unique by sending a request to
+/// the server.
 class UniqueEmailAsyncValidator extends AsyncValidator<dynamic> {
   @override
   Future<Map<String, dynamic>?> validate(AbstractControl<dynamic> control) async {
@@ -446,14 +446,14 @@ class UniqueEmailAsyncValidator extends AsyncValidator<dynamic> {
     return null;
   }
 
-  /// Simulates a time consuming operation (i.e. a Server request)
+  /// Simulates a time-consuming operation (e.g., a server request).
   Future<bool> _getIsUniqueEmail(String email) {
-    // simple array that simulates emails stored in the Server DB.
+    // Simple array that simulates emails stored in the server DB.
     final storedEmails = ['johndoe@email.com', 'john@email.com'];
 
     return Future.delayed(
       const Duration(seconds: 5),
-              () => !storedEmails.contains(email),
+      () => !storedEmails.contains(email),
     );
   }
 }
@@ -463,25 +463,25 @@ class UniqueEmailAsyncValidator extends AsyncValidator<dynamic> {
 
 The previous implementation was a simple validator that receives the **AbstractControl** and returns a [Future](https://api.dart.dev/stable/dart-async/Future-class.html) that completes 5 seconds after its call and performs a simple check: if the _value_ of the _control_ is contained in the _server_ array of emails.
 
-> If you want to see **Async Validators** in action with a **full example** using widgets and animations to feedback the user we strong advice you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file just to simplify things here and to not anticipate things that we will see later in this doc.
+> If you want to see **Async Validators** in action with a **full example** using widgets and animations to provide feedback to the user, we strongly advise you to visit our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Asynchronous-Validators). We have not included the full example in this README.md file to simplify things here and not to anticipate things that we will see later in this doc.
 
-> The validator `Validators.delegateAsync()` is another way to implement custom validator, for more reference
-> check the [Custom validators](https://github.com/joanpablo/reactive_forms#custom-validators) section.
+> The validator `Validators.delegateAsync()` is another way to implement a custom validator. For more reference,
+> check the [Custom Validators](#custom-validators) section.
 
-### Debounce time in async validators
+### Debounce Time in Async Validators
 
-Asynchronous validators have a debounce time that is useful if you want to minimize requests to a remote API. The debounce time is set in milliseconds and the default value is 250 milliseconds.
+Asynchronous validators have a debounce time that is useful if you want to minimize requests to a remote API. The debounce time is set in milliseconds, and the default value is 250 milliseconds.
 
-You can set a different debounce time as an optionally argument in the **FormControl** constructor.
+You can set a different debounce time as an optional argument in the **FormControl** constructor.
 
 ```dart
 final control = FormControl<String>(
   asyncValidators: [UniqueEmailAsyncValidator()],
-  asyncValidatorsDebounceTime: 1000, // sets 1 second of debounce time.
+  asyncValidatorsDebounceTime: 1000, // Sets a 1-second debounce time.
 );
 ```
 
-### Custom debounce time in async validators
+### Custom Debounce Time in Async Validators
 
 You can also specify a custom debounce time for a single async validator. This is useful when you have multiple async validators with different debounce time requirements.
 
@@ -499,9 +499,9 @@ final control = FormControl<String>(
 );
 ```
 
-### Custom debounce time in delegateAsync validator
+### Custom Debounce Time in delegateAsync Validator
 
-The `Validators.delegateAsync()` function now accepts an optional `debounceTime` parameter, defaulting to 0. This allows immediate execution or custom debouncing for asynchronous validation.
+The `Validators.delegateAsync()` function now accepts an optional `debounceTime` parameter, defaulting to 0. This allows for immediate execution or custom debouncing for asynchronous validation.
 
 ```dart
 final form = fb.group({
@@ -544,10 +544,9 @@ final form = fb.group({
 To explain what Composing Validators is, let's see an example:
 
 We want to validate a text field of an authentication form.
-In this text field the user can write an **email** or a **phone number** and we want to make sure that the information is correctly formatted. We must validate that input is a valid email or a valid phone number.
+In this text field, the user can write an **email** or a **phone number**, and we want to make sure that the information is correctly formatted. We must validate that the input is a valid email or a valid phone number.
 
 ```dart
-
 final phonePattern = '<some phone regex pattern>';
 
 final form = FormGroup({
@@ -562,11 +561,11 @@ final form = FormGroup({
 });
 ```
 
-> Note that **Validators.composeOR** receives a collection of validators as argument and returns a validator.
+> Note that **Validators.composeOR** receives a collection of validators as an argument and returns a validator.
 
-With **Validators.composeOR** we are saying to **FormControl** that **if at least one validator evaluate as VALID then the control is VALID** it's not necessary that both validators evaluate to valid.
+With **Validators.composeOR**, we are telling the **FormControl** that **if at least one validator evaluates as VALID, then the control is VALID**. It's not necessary for both validators to evaluate to valid.
 
-Another example could be to validate multiples Credit Card numbers. In that case you have several regular expression patterns for each type of credit card. So the user can introduce a card number and if the information match with at least one pattern then the information is considered as valid.
+Another example could be to validate multiple Credit Card numbers. In that case, you have several regular expression patterns for each type of credit card. So, the user can introduce a card number, and if the information matches at least one pattern, then the information is considered valid.
 
 ```dart
 final form = FormGroup({
@@ -598,9 +597,9 @@ final form = FormGroup({
 
 ## Groups of Groups :grin:
 
-**FormGroup** is not restricted to contains only **FormControl**, it can nest others **FormGroup** so you can create more complex **Forms**.
+**FormGroup** is not restricted to containing only **FormControl**; it can nest other **FormGroups**, so you can create more complex **Forms**.
 
-Supose you have a _Registration Wizzard_ with several screens. Each screen collect specific information and at the end you want to collect all that information as one piece of data:
+Suppose you have a _Registration Wizard_ with several screens. Each screen collects specific information, and at the end, you want to collect all that information as one piece of data:
 
 ```dart
 final form = FormGroup({
@@ -620,11 +619,11 @@ final form = FormGroup({
 });
 ```
 
-> Note how we have set the _data type_ to a **FormControl**, although this is not mandatory when
-> declaring a _Form_, we highly recommend this syntax as good practice or to use the FormBuilder
+> Note how we have set the _data type_ to a **FormControl**. Although this is not mandatory when
+> declaring a _Form_, we highly recommend this syntax as a good practice or to use the FormBuilder
 > syntax.
 
-Using **FormBuilder** _(read FormBuilder section below)_:
+Using **FormBuilder** _(read the FormBuilder section below)_:
 
 ```dart
 final form = fb.group({
@@ -652,7 +651,7 @@ void _printFormData(FormGroup form) {
 }
 ```
 
-The previous method outputs a _Map_ as the following one:
+The previous method outputs a _Map_ like the following one:
 
 ```json
 {
@@ -672,17 +671,17 @@ The previous method outputs a _Map_ as the following one:
 }
 ```
 
-And of course you can access to a nested **FormGroup** as following:
+And of course, you can access a nested **FormGroup** as follows:
 
 ```dart
 FormGroup personalForm = form.control('personal');
 ```
 
-A simple way to create a wizard is for example to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm** and each _Page_ inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contains a **ReactiveForm** to collect specific data.
+A simple way to create a wizard is, for example, to wrap a [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) within a **ReactiveForm**, and each _Page_ inside the [PageView](https://api.flutter.dev/flutter/widgets/PageView-class.html) can contain a **ReactiveForm** to collect specific data.
 
-## Dynamic forms with **FormArray**
+## Dynamic Forms with **FormArray**
 
-FormArray is an alternative to **FormGroup** for managing any number of unnamed controls. As with **FormGroup** instances, you can dynamically insert and remove controls from **FormArray** instances, and the form array instance value and validation status is calculated from its child controls.
+FormArray is an alternative to **FormGroup** for managing any number of unnamed controls. As with **FormGroup** instances, you can dynamically insert and remove controls from **FormArray** instances, and the form array instance value and validation status are calculated from its child controls.
 
 You don't need to define a _key_ for each control by _name_, so this is a great option if you don't know the number of child values in advance.
 
@@ -690,7 +689,7 @@ Let's see a simple example:
 
 ```dart
 final form = FormGroup({
-  'emails': FormArray<String>([]), // an empty array of emails
+  'emails': FormArray<String>([]), // An empty array of emails
 });
 ```
 
@@ -705,9 +704,9 @@ final form = FormGroup({
 });
 ```
 
-> Note that you don't have to specify the name of the controls inside of the array.
+> Note that you don't have to specify the name of the controls inside the array.
 
-If we output the _value_ of the previous form group we will get something like this:
+If we output the _value_ of the previous form group, we will get something like this:
 
 ```dart
 print(form.value);
@@ -724,7 +723,7 @@ Let's dynamically add another control:
 ```dart
 final array = form.control('emails') as FormArray<String>;
 
-// adding another email
+// Adding another email
 array.add(
   FormControl<String>(value: 'caroline@email.com'),
 );
@@ -738,51 +737,51 @@ print(form.value);
 }
 ```
 
-Another way of add controls is to assign values directly to the array:
+Another way to add controls is to assign values directly to the array:
 
 ```dart
 // Given: an empty array of strings
 final array = FormArray<String>([]);
 
-// When: set value to array
+// When: set value to the array
 array.value = ["john@email.com", "susan@email.com", "caroline@email.com"];
 
 // Then: the array is no longer empty
 expect(array.controls.length, 3);
 
-// And: array has a control for each inserted value
+// And: the array has a control for each inserted value
 expect(array.controls('0').value, "john@email.com");
 expect(array.controls('1').value, "susan@email.com");
 expect(array.controls('2').value, "caroline@email.com");
 ```
 
-> To get a control from the array you must pass the index position as a _String_. This is because **FormGroup** and **FormArray** inherited from the same parent class and **FormControl** gets the controls by name (String).
+> To get a control from the array, you must pass the index position as a _String_. This is because **FormGroup** and **FormArray** inherit from the same parent class, and **FormControl** gets the controls by name (String).
 
 A more advanced example:
 
 ```dart
-// an array of contacts
+// An array of contacts
 final contacts = ['john@email.com', 'susan@email.com', 'caroline@email.com'];
 
-// a form with a list of selected emails
+// A form with a list of selected emails
 final form = FormGroup({
-  'selectedEmails': FormArray<bool>([], // an empty array of controls
-    validators: [emptyAddressee], // validates that at least one email is selected
+  'selectedEmails': FormArray<bool>([], // An empty array of controls
+    validators: [emptyAddressee], // Validates that at least one email is selected
   ),
 });
 
-// get the array of controls
+// Get the array of controls
 final formArray = form.control('selectedEmails') as FormArray<bool>;
 
-// populates the array of controls.
-// for each contact add a boolean form control to the array.
+// Populates the array of controls.
+// For each contact, add a boolean form control to the array.
 formArray.addAll(
   contacts.map((email) => FormControl<bool>(value: true)).toList(),
 );
 ```
 
 ```dart
-// validates that at least one email is selected
+// Validates that at least one email is selected
 Map<String, dynamic> emptyAddressee(AbstractControl control) {
   final emails = (control as FormArray<bool>).value;
   return emails.any((isSelected) => isSelected)
@@ -796,7 +795,7 @@ Map<String, dynamic> emptyAddressee(AbstractControl control) {
 You can also create arrays of groups:
 
 ```dart
-// an array of groups
+// An array of groups
 final addressArray = FormArray([
   FormGroup({
     'city': FormControl<String>(value: 'Sofia'),
@@ -812,7 +811,7 @@ final addressArray = FormArray([
 Another example using **FormBuilder**:
 
 ```dart
-// an array of groups using FormBuilder
+// An array of groups using FormBuilder
 final addressArray = fb.array([
   fb.group({'city': 'Sofia', 'zipCode': 1000}),
   fb.group({'city': 'Havana', 'zipCode': 10400}),
@@ -822,14 +821,14 @@ final addressArray = fb.array([
 or just:
 
 ```dart
-// an array of groups using a very simple syntax
+// An array of groups using a very simple syntax
 final addressArray = fb.array([
   {'city': 'Sofia', 'zipCode': 1000},
   {'city': 'Havana', 'zipCode': 10400},
 ]);
 ```
 
-You can iterate over groups as follow:
+You can iterate over groups as follows:
 
 ```dart
 final cities = addressArray.controls
@@ -838,17 +837,17 @@ final cities = addressArray.controls
         .toList();
 ```
 
-> A common mistake is to declare an _array_ of groups as _FormArray&lt;FormGroup&gt;_.  
-> An array of _FormGroup_ must be declared as **FormArray()** or as **FormArray&lt;Map&lt;String, dynamic&gt;&gt;()**.
+> A common mistake is to declare an _array_ of groups as _FormArray<FormGroup>_.
+> An array of _FormGroup_ must be declared as **FormArray()** or as **FormArray<Map<String, dynamic>>()**.
 
 ## FormBuilder
 
-The **FormBuilder** provides syntactic sugar that shortens creating instances of a FormGroup, FormArray and FormControl. It reduces the amount of boilerplate needed to build complex forms.
+The **FormBuilder** provides syntactic sugar that shortens the creation of instances of a FormGroup, FormArray, and FormControl. It reduces the amount of boilerplate needed to build complex forms.
 
 ### Groups
 
 ```dart
-// creates a group
+// Creates a group
 final form = fb.group({
   'name': 'John Doe',
   'email': ['', Validators.required, Validators.email],
@@ -856,7 +855,7 @@ final form = fb.group({
 });
 ```
 
-The previous code is equivalent to the following one:
+The previous code is equivalent to the following:
 
 ```dart
 final form = FormGroup({
@@ -869,30 +868,30 @@ final form = FormGroup({
 ### Arrays
 
 ```dart
-// creates an array
+// Creates an array
 final aliases = fb.array(['john', 'little john']);
 ```
 
 ### Control
 
 ```dart
-// creates a control of type String with a required validator
+// Creates a control of type String with a required validator
 final control = fb.control<String>('', [Validators.required]);
 ```
 
-### Control state
+### Control State
 
 ```dart
-// create a group
+// Create a group
 final group = fb.group(
-  // creates a control with default value and disabled state
+  // Creates a control with a default value and disabled state
   'name': fb.state(value: 'john', disabled: true),
 );
 ```
 
 ## Nested Controls
 
-To retrieves nested controls you can specify the name of the control as a dot-delimited string that define the path to the control:
+To retrieve nested controls, you can specify the name of the control as a dot-delimited string that defines the path to the control:
 
 ```dart
 final form = FormGroup({
@@ -902,15 +901,15 @@ final form = FormGroup({
   }),
 });
 
-// get nested control value
+// Get nested control value
 final city = form.control('address.city');
 
-print(city.value); // outputs: Sofia
+print(city.value); // Outputs: Sofia
 ```
 
 ## Reactive Form Widgets
 
-So far we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Forms Widgets is the answer ;)
+So far, we have only defined our model-driven form, but how do we bind the form definition with our Flutter widgets? Reactive Form Widgets are the answer.
 
 Let's see an example:
 
@@ -939,19 +938,19 @@ Widget build(BuildContext context) {
 
 > The example above ignores the _emailConfirmation_ and _passwordConfirmation_ fields previously seen for simplicity.
 
-## How to customize error messages?
+## How to Customize Error Messages?
 
 Validation messages can be defined at two different levels:
 
 1. Reactive Widget level.
 2. Global/Application level.
 
-### 1. Reactive Widget level.
+### 1. Reactive Widget Level.
 
-Each reactive widget like `ReactiveTextField`, `ReactiveDropdownField`, and all others have the
-property `validationMessages` as an argument of their constructors. In order to define custom
-validation messages at widget level, just provide the property `validationMessages` with the
-corresponding text values for each error as shown below:
+Each reactive widget, like `ReactiveTextField`, `ReactiveDropdownField`, and all others, has the
+`validationMessages` property as an argument of their constructors. To define custom
+validation messages at the widget level, just provide the `validationMessages` property with the
+corresponding text values for each error, as shown below:
 
 ```dart
 @override
@@ -987,8 +986,8 @@ Widget build(BuildContext context) {
 }
 ```
 
-> **Reactive Forms** have an utility class called **ValidationMessage** that brings access to
-> common _validation messages_: _required_, _email_, _pattern_ and so on. So instead of write 'required' you
+> **Reactive Forms** has a utility class called **ValidationMessage** that provides access to
+> common _validation messages_: _required_, _email_, _pattern_, and so on. So instead of writing 'required', you
 > could use _ValidationMessage.required_ as the key of validation messages:
 >
 > ```dart
@@ -998,27 +997,27 @@ Widget build(BuildContext context) {
 >      ValidationMessage.required: (error) => 'The email must not be empty',
 >      ValidationMessage.email: (error) => 'The email value must be a valid email',
 >    },
-> ),
+> );
 > ```
 >
-> nice isn't it? ;)
+> Nice, isn't it? ;)
 
-### 2. Global/Application level.
+### 2. Global/Application Level.
 
 You can also define custom validation messages at a higher level, for example, at the application
-level. When a reactive widget looks for an error message text, it first looks at widget level
-definition, if it doesn't find any config at widget level then it looks at the global config
+level. When a reactive widget looks for an error message text, it first looks at the widget-level
+definition. If it doesn't find any config at the widget level, then it looks at the global config
 definition.
 
 The global definition of validation messages allows you to define error messages in a centralized
-way and relieves you to define validation messages on each reactive widget of your application.
+way and relieves you from defining validation messages on each reactive widget of your application.
 
-In order to define these configs at a higher level use the widget **ReactiveFormConfig** and
+To define these configs at a higher level, use the widget **ReactiveFormConfig** and
 define the `validationMessages`.
 
 Here is an example of the global definition for custom validation messages:
 
-### Validation messages with error arguments:
+### Validation Messages with Error Arguments:
 
 ```dart
 class MyApp extends StatelessWidget {
@@ -1043,9 +1042,9 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-### Parameterized validation messages
+### Parameterized Validation Messages
 
-You can enrich the validation messages using parameters of the error instance. In the next example
+You can enrich the validation messages using parameters of the error instance. In the next example,
 we are giving a more complete validation error to the user:
 
 ```dart
@@ -1068,13 +1067,13 @@ ReactiveTextField(
 
 This will show the message: `The password must be at least 8 characters long`
 
-## When does Validation Messages begin to show up?
+## When do Validation Messages Appear?
 
-### Touching a control
+### Touching a Control
 
-Even when the **FormControl** is invalid, validation messages will begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then remove focus or completes the text edition.
+Even when the **FormControl** is invalid, validation messages will begin to show up when the **FormControl** is **touched**. That means when the user taps on the **ReactiveTextField** widget and then removes focus or completes the text editing.
 
-You can initialize a **FormControl** as **touched** to force the validation messages to show up at the very first time the widget builds.
+You can initialize a **FormControl** as **touched** to force the validation messages to show up the very first time the widget builds.
 
 ```dart
 final form = FormGroup({
@@ -1086,18 +1085,18 @@ final form = FormGroup({
 });
 ```
 
-When you set a _value_ to a **FormControl** from code and want to show up validations messages
-you must call _FormControl.markAsTouched()_ method:
+When you set a _value_ to a **FormControl** from code and want to show validation messages,
+you must call the _FormControl.markAsTouched()_ method:
 
 ```dart
 set name(String newName) {
   final formControl = this.form.control('name');
   formControl.value = newName;
-  formControl.markAsTouched();// if newName is invalid then validation messages will show up in UI
+  formControl.markAsTouched(); // If newName is invalid, then validation messages will show up in the UI
 }
 ```
 
-> To mark all children controls of a **FormGroup** and **FormArray** you must call **markAllAsTouched()**.
+> To mark all children controls of a **FormGroup** and **FormArray** as touched, you must call **markAllAsTouched()**.
 >
 > ```dart
 > final form = FormGroup({
@@ -1108,37 +1107,37 @@ set name(String newName) {
 >   ),
 > });
 >
-> // marks all children as touched
+> // Marks all children as touched
 > form.markAllAsTouched();
 > ```
 
-### Overriding Reactive Widgets show errors behavior
+### Overriding Reactive Widgets Show Errors Behavior
 
-The second way to customize when to show error messages is to override the method **showErrors** in reactive widgets.
+The second way to customize when to show error messages is to override the **showErrors** method in reactive widgets.
 
 Let's suppose you want to show validation messages not only when it is **invalid** and **touched** (default behavior), but also when it's **dirty**:
 
 ```dart
 ReactiveTextField(
   formControlName: 'email',
-  // override default behavior and show errors when: INVALID, TOUCHED and DIRTY
+  // Override default behavior and show errors when: INVALID, TOUCHED, and DIRTY
   showErrors: (control) => control.invalid && control.touched && control.dirty,
 ),
 ```
 
-> A control becomes **dirty** when its value change through the UI.  
-> The method **setErrors** of the controls can optionally mark it as dirty too.
+> A control becomes **dirty** when its value changes through the UI.
+> The **setErrors** method of the controls can optionally mark it as dirty too.
 
-## Enable/Disable Submit button
+## Enable/Disable Submit Button
 
-For a better User Experience some times we want to enable/disable the _Submit_ button based on the validity of the _Form_. Getting this behavior, even in such a great framework as Flutter, some times can be hard and can lead to have individual implementations for each _Form_ of the same application plus boilerplate code.
+For a better User Experience, sometimes we want to enable/disable the _Submit_ button based on the validity of the _Form_. Achieving this behavior, even in a great framework like Flutter, can sometimes be hard and can lead to individual implementations for each _Form_ of the same application, plus boilerplate code.
 
 We will show you two different approaches to accomplish this very easily:
 
-1. Separating Submit Button in a different Widget.
-2. Using **ReactiveFormConsumer** widget.
+1. Separating the Submit Button into a different Widget.
+2. Using the **ReactiveFormConsumer** widget.
 
-### Separating Submit Button in a different Widget:
+### Separating Submit Button in a Separate Widget:
 
 Let's add a submit button to our _Form_:
 
@@ -1186,7 +1185,7 @@ class MySubmitButton extends StatelessWidget {
 
 > Notice the use of **_ReactiveForm.of(context)_** to get access to the nearest **FormGroup** up the widget's tree.
 
-In the previous example we have separated the implementation of the _submit_ button in a different widget. The reasons behind this is that we want to re-build the _submit_ button each time the _validity_ of the **FormGroup** changes. We don't want to rebuild the entire _Form_, but just the button.
+In the previous example, we separated the implementation of the _submit_ button into a different widget. The reason behind this is that we want to rebuild the _submit_ button each time the _validity_ of the **FormGroup** changes. We don't want to rebuild the entire _Form_, just the button.
 
 How is that possible? Well, the answer is in the expression:
 
@@ -1194,14 +1193,14 @@ How is that possible? Well, the answer is in the expression:
 final form = ReactiveForm.of(context);
 ```
 
-The expression above have two important responsibilities:
+The expression above has two important responsibilities:
 
 - Obtains the nearest **FormGroup** up the widget's tree.
-- Registers the current **context** with the changes in the **FormGroup** so that if the validity of the **FormGroup** changes then the current **context** is _rebuilt_.
+- Registers the current **context** with the changes in the **FormGroup** so that if the validity of the **FormGroup** changes, the current **context** is _rebuilt_.
 
-### Using **ReactiveFormConsumer** widget:
+### Using the **ReactiveFormConsumer** widget:
 
-**ReactiveFormConsumer** widget is a wrapped around the **ReactiveForm.of(context)** expression so that we can reimplement the previous example as follows:
+The **ReactiveFormConsumer** widget is a wrapper around the **ReactiveForm.of(context)** expression so that we can reimplement the previous example as follows:
 
 ```dart
 @override
@@ -1235,28 +1234,28 @@ void _onSubmit() {
 }
 ```
 
-> It is entirely up to you to decide which of the above two approaches to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)** the consumer widget must always be down in the tree of the **ReactiveForm** widget.
+> It is entirely up to you to decide which of the above two approaches to use, but note that to access the **FormGroup** via **ReactiveForm.of(context)**, the consumer widget must always be down in the tree of the **ReactiveForm** widget.
 
-## Focus/UnFocus a **FormControl**
+## Focus/Unfocus a **FormControl**
 
-There are some cases where we want to add or remove focus on a UI TextField without the interaction of the user. For that particular cases you can use **FormControl.focus()** or **FormControl.unfocus()** methods.
+There are some cases where we want to add or remove focus on a UI TextField without the user's interaction. For those particular cases, you can use the **FormControl.focus()** or **FormControl.unfocus()** methods.
 
 ```dart
 final form = fb.group({'name': 'John Doe'});
 
 FormControl control = form.control('name');
 
-control.focus(); // UI text field get focus and the device keyboard pop up
+control.focus(); // UI text field gets focus, and the device keyboard pops up
 
-control.unfocus(); // UI text field lose focus
+control.unfocus(); // UI text field loses focus
 ```
 
-You can also set focus directly from the Form like:
+You can also set focus directly from the Form like this:
 
 ```dart
 final form = fb.group({'name': ''});
 
-form.focus('name'); // UI text field get focus and the device keyboard pop up
+form.focus('name'); // UI text field gets focus, and the device keyboard pops up
 ```
 
 ```dart
@@ -1266,13 +1265,13 @@ final form = fb.group({
   }),
 });
 
-// set focus to a nested control
+// Set focus to a nested control
 form.focus('person.name');
 ```
 
-## Focus flow between Text Fields
+## Focus Flow Between Text Fields
 
-Another example is when you have a form with several text fields and each time the user completes edition in one field you want to request next focus field using the keyboard actions:
+Another example is when you have a form with several text fields, and each time the user completes editing in one field, you want to request the next focus field using keyboard actions:
 
 ```dart
 final form = fb.group({
@@ -1309,16 +1308,16 @@ Widget build(BuildContext context) {
 }
 ```
 
-> When you remove focus of a control, the control is marked as touched, that means that the validation error messages will show up in UI. To prevent validation messages to show up you can optionally set argument **touched** to _false_.
+> When you remove focus from a control, the control is marked as touched. This means that the validation error messages will show up in the UI. To prevent validation messages from showing up, you can optionally set the **touched** argument to _false_.
 >
 > ```dart
-> // remove the focus to the control and marks it as untouched.
+> // Remove the focus from the control and mark it as untouched.
 > this.form.unfocus(touched: false);
 > ```
 
-## How Enable/Disable a widget
+## How to Enable/Disable a Widget
 
-To disabled a widget like **ReactiveTextField** all you need to do is to _mark_ the _control_ as disabled:
+To disable a widget like **ReactiveTextField**, all you need to do is _mark_ the _control_ as disabled:
 
 ```dart
 final form = FormGroup({
@@ -1327,21 +1326,21 @@ final form = FormGroup({
 
 FormControl control = form.control('name');
 
-// the control is disabled and also the widget in UI is disabled.
+// The control is disabled, and the widget in the UI is also disabled.
 control.markAsDisabled();
 ```
 
-> When a control is disabled it is exempt from validation checks and excluded from the aggregate
+> When a control is disabled, it is exempt from validation checks and excluded from the aggregate
 > value of any parent. Its status is **DISABLED**.
 >
-> To retrieves all values of a FormGroup or FormArray regardless of disabled status in children use
-> **FormControl.rawValue** or **FormArray.rawValue** respectively.
+> To retrieve all values of a FormGroup or FormArray regardless of the disabled status of children, use
+> **FormControl.rawValue** or **FormArray.rawValue**, respectively.
 
-## How does **ReactiveTextField** differs from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
+## How does **ReactiveTextField** differ from native [TextFormField](https://api.flutter.dev/flutter/material/TextFormField-class.html) or [TextField](https://api.flutter.dev/flutter/material/TextField-class.html)?
 
-**ReactiveTextField** has more in common with _TextFormField_ that with _TextField_. As we all know _TextFormField_ is a wrapper around the _TextField_ widget that brings some extra capabilities such as _Form validations_ with properties like _autovalidate_ and _validator_. In the same way **ReactiveTextField** is a wrapper around _TextField_ that handle the features of validations in a own different way.
+**ReactiveTextField** has more in common with _TextFormField_ than with _TextField_. As we all know, _TextFormField_ is a wrapper around the _TextField_ widget that brings some extra capabilities, such as _Form validations_ with properties like _autovalidate_ and _validator_. In the same way, **ReactiveTextField** is a wrapper around _TextField_ that handles the features of validations in its own different way.
 
-**ReactiveTextField** has all the properties that you can find in a common _TextField_, it can be customizable as much as you want just as a simple _TextField_ or a _TextFormField_. In fact must of the code was taken from the original TextFormField and ported to have a reactive behavior that binds itself to a **FormControl** in a **two-way** binding.
+**ReactiveTextField** has all the properties that you can find in a common _TextField_. It can be customized as much as you want, just like a simple _TextField_ or a _TextFormField_. In fact, most of the code was taken from the original TextFormField and ported to have a reactive behavior that binds itself to a **FormControl** in a **two-way** binding.
 
 Below is an example of how to create some **ReactiveTextField** with some common properties:
 
@@ -1381,12 +1380,12 @@ Widget build(BuildContext context) {
 }
 ```
 
-> Because of the **two-binding** capability of the **ReactiveTextField** with a **FormControl**
-> the widget **don't** include properties as _controller_, _validator_, _autovalidate_, _onSaved_,
-> the **FormControl** is responsible for handling validation as well as changes
+> Because of the **two-way binding** capability of the **ReactiveTextField** with a **FormControl**,
+> the widget **does not** include properties like _controller_, _validator_, _autovalidate_, or _onSaved_.
+> The **FormControl** is responsible for handling validation as well as change
 > notifications.
 >
-> It does include some events like **onChanged**, **onTab**, **onEditingComplete**,
+> It does include some events like **onChanged**, **onTap**, **onEditingComplete**,
 > and **onSubmitted**.
 
 ## Supported Reactive Form Field Widgets
@@ -1417,9 +1416,9 @@ Widget build(BuildContext context) {
 
 ## Advanced Reactive Field Widgets
 
-We are trying to keep `reactive_forms` from bloating with third party dependencies this is why there is
-a separate library [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets) which is under construction yet that provides
-a variety of more advanced field widgets. To know more about how to install it please visit the library repo and read the documentation about the widgets it contains.
+We are trying to keep `reactive_forms` from bloating with third-party dependencies. This is why there is
+a separate library, [`reactive_forms_widgets`](https://pub.dev/packages/reactive_forms_widgets), which is still under construction, that provides
+a variety of more advanced field widgets. To know more about how to install it, please visit the library repo and read the documentation about the widgets it contains.
 
 - **[ReactiveAdvancedSwitch](https://pub.dev/packages/reactive_advanced_switch)** - wrapper around [`flutter_advanced_switch`](https://pub.dev/packages/flutter_advanced_switch)
 - **[ReactiveDateRangePicker](https://pub.dev/packages/reactive_date_range_picker)** - wrapper around [showDateRangePicker](https://api.flutter.dev/flutter/material/showDateRangePicker.html)
@@ -1455,11 +1454,11 @@ a variety of more advanced field widgets. To know more about how to install it p
 
 ### ReactiveTextField
 
-We have explain the common usage of a **ReactiveTextField** along this documentation.
+We have explained the common usage of a **ReactiveTextField** throughout this documentation.
 
 ### ReactiveDropdownField
 
-**ReactiveDropdownField** as all the other _reactive field widgets_ is almost the same as its native version [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html) but adding two-binding capabilities. The code is ported from the original native implementation. It have all the capability of styles and themes of the native version.
+**ReactiveDropdownField**, like all the other _reactive field widgets_, is almost the same as its native version, [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), but adds two-way binding capabilities. The code is ported from the original native implementation. It has all the capability of styles and themes of the native version.
 
 ```dart
 final form = FormGroup({
@@ -1500,13 +1499,13 @@ Widget build(BuildContext context) {
 }
 ```
 
-> As you can see from the above example the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the additional _formControlName_ and _validationMessages_ properties.
+> As you can see from the above example, the usage of **ReactiveDropdownField** is almost the same as the usage of a common [DropdownButtonFormField](https://api.flutter.dev/flutter/material/DropdownButtonFormField-class.html), except for the additional _formControlName_ and _validationMessages_ properties.
 
-## **ReactiveValueListenableBuilder** to listen when value changes in a **FormControl**
+## **ReactiveValueListenableBuilder** to Listen for Value Changes in a **FormControl**
 
-If you want to rebuild a widget each time a FormControl value changes you could use the **ReactiveValueListenableBuilder** widget.
+If you want to rebuild a widget each time a FormControl value changes, you can use the **ReactiveValueListenableBuilder** widget.
 
-In the following example we are listening for changes in _lightIntensity_. We change that value with a **ReactiveSlider** and show all the time the value in a **Text** widget:
+In the following example, we are listening for changes in _lightIntensity_. We change that value with a **ReactiveSlider** and show the value in a **Text** widget all the time:
 
 ```dart
 final form = FormGroup({
@@ -1535,12 +1534,12 @@ Widget build(BuildContext context) {
 }
 ```
 
-## **ReactiveForm** vs **ReactiveFormBuilder** which one?
+## **ReactiveForm** vs. **ReactiveFormBuilder**: Which to Choose?
 
-Both widgets are responsible for exposing the **FormGroup** to descendants widgets in the tree. Let see an example:
+Both widgets are responsible for exposing the **FormGroup** to descendant widgets in the tree. Let's see an example:
 
 ```dart
-// using ReactiveForm
+// Using ReactiveForm
 @override
 Widget build(BuildContext context) {
   return ReactiveForm(
@@ -1553,7 +1552,7 @@ Widget build(BuildContext context) {
 ```
 
 ```dart
-// using ReactiveFormBuilder
+// Using ReactiveFormBuilder
 @override
 Widget build(BuildContext context) {
   return ReactiveFormBuilder(
@@ -1567,10 +1566,10 @@ Widget build(BuildContext context) {
 }
 ```
 
-The main differences are that **ReactiveForm** is a _StatelessWidget_ so it doesn't save the instance of the **FormGroup**. You must declare the instance of the **FormGroup** in a StatefulWidget or resolve it from some Provider (state management library).
+The main differences are that **ReactiveForm** is a _StatelessWidget_, so it doesn't save the instance of the **FormGroup**. You must declare the instance of the **FormGroup** in a StatefulWidget or resolve it from some Provider (state management library).
 
 ```dart
-// Using ReactiveForm in a StatelessWidget and resolve the FormGroup from a provider
+// Using ReactiveForm in a StatelessWidget and resolving the FormGroup from a provider
 class SignInForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -1587,7 +1586,7 @@ class SignInForm extends StatelessWidget {
 ```
 
 ```dart
-// Using ReactiveForm in a StatefulWidget and declaring FormGroup in the state.
+// Using ReactiveForm in a StatefulWidget and declaring the FormGroup in the state.
 class SignInForm extends StatefulWidget {
   @override
   _SignInFormState createState() => _SignInFormState();
@@ -1610,9 +1609,9 @@ class _SignInFormState extends State<SignInForm> {
 }
 ```
 
-> If you declare a **FormGroup** in a _StatelessWidget_ the _group_ will be destroyed a created each time the instance of the _StatelessWidget_ is destroyed and created, so you must preserve the **FormGroup** in a state or in a Bloc/Provider/etc.
+> If you declare a **FormGroup** in a _StatelessWidget_, the _group_ will be destroyed and recreated each time the instance of the _StatelessWidget_ is destroyed and created. Therefore, you must preserve the **FormGroup** in a state or in a Bloc/Provider/etc.
 
-By the other hand **ReactiveFormBuilder** is implemented as a _StatefulWidget_ so it holds the created **FormGroup** in its state. That way is safe to declares the **FormGroup** in a StatelessWidget or get it from a Bloc/Provider/etc.
+On the other hand, **ReactiveFormBuilder** is implemented as a _StatefulWidget_, so it holds the created **FormGroup** in its state. That way, it's safe to declare the **FormGroup** in a StatelessWidget or get it from a Bloc/Provider/etc.
 
 ```dart
 class SignInForm extends StatelessWidget {
@@ -1634,21 +1633,21 @@ You should use **ReactiveForm** if:
 
 - The form is complex enough.
 - You need to listen for changes in some child control to execute some business logic.
-- You are using some State Management library like Provider or Bloc.
+- You are using a State Management library like Provider or Bloc.
 - Using a StatefulWidget to declare a very simple form is something that really doesn't bother you.
 
 You should use **ReactiveFormBuilder** if:
 
-- The form is quite simple enough and doesn't need a separate Provider/Bloc state.
+- The form is simple enough and doesn't need a separate Provider/Bloc state.
 - You don't want to use a StatefulWidget to declare the FormGroup.
 
-But the final decision is really up to you, you can use any of them in any situations ;)
+But the final decision is really up to you; you can use any of them in any situation.
 
-## Widget testing
+## Widget Testing
 
-**note: mark your fields with `Key`'s for easy access via widget tester**
+**Note: Mark your fields with `Key`s for easy access via the widget tester.**
 
-### example component
+### Example Component
 
 ```dart
 class LoginForm extends StatefulWidget {
@@ -1691,10 +1690,9 @@ class LoginFormState extends State<LoginForm> {
 }
 ```
 
-### example test
+### Example Test
 
 ```dart
-
 void main() {
   testWidgets('LoginForm should pass with correct values', (tester) async {
     // Build the widget.
@@ -1719,45 +1717,43 @@ void main() {
     expect(loginFormState.form.valid, true);
   });
 }
-
 ```
-
-
 
 ## Reactive Forms + [Provider](https://pub.dev/packages/provider) plugin :muscle:
 
-Although **Reactive Forms** can be used with any state management library or even without any one at all, **Reactive Forms** gets its maximum potential when is used in combination with a state management library like the [Provider](https://pub.dev/packages/provider) plugin.
+Although **Reactive Forms** can be used with any state management library or even without one at all, **Reactive Forms** reaches its maximum potential when used in combination with a state management library like the [Provider](https://pub.dev/packages/provider) plugin.
 
-This way you can separate UI logic from business logic and you can define the **FormGroup** inside a business logic class and then exposes that class to widgets with mechanism like the one [Provider](https://pub.dev/packages/provider) plugin brings.
+This way, you can separate UI logic from business logic, and you can define the **FormGroup** inside a business logic class and then expose that class to widgets with a mechanism like the one the [Provider](https://pub.dev/packages/provider) plugin provides.
 
-## Reactive Forms + [code generation](https://pub.dev/packages/reactive_forms_generator) 🤖
+## Reactive Forms + [Code Generation](https://pub.dev/packages/reactive_forms_generator) 🤖
 
-[ReactiveFormsGenerator](https://pub.dev/packages/reactive_forms_generator) is the code generator for reactive_forms which will save you tons of time and make your forms type safe.
+[ReactiveFormsGenerator](https://pub.dev/packages/reactive_forms_generator) is the code generator for reactive_forms that will save you tons of time and make your forms type-safe.
 
-There is no reason write code manually! Let the code generation work for you.
+There is no reason to write code manually! Let the code generation work for you.
 
-## How create a custom Reactive Widget?
+## How to Create a Custom Reactive Widget?
 
-**Reactive Forms** is not limited just to common widgets in _Forms_ like text, dropdowns, sliders switch fields and etc, you can easily create **custom widgets** that **two-way** binds to **FormControls** and create your own set of _Reactive Widgets_ ;)
+**Reactive Forms** is not limited to just common widgets in _Forms_ like text, dropdowns, sliders, switch fields, etc. You can easily create **custom widgets** that **two-way** bind to **FormControls** and create your own set of _Reactive Widgets_.
 
-In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-Widgets) you can find a tutorial of how to create your custom Reactive Widget.
+In our [Wiki](https://github.com/joanpablo/reactive_forms/wiki/Custom-Reactive-Widgets), you can find a tutorial on how to create your custom Reactive Widget.
 
-You can also check [Star Rating with Flutter Reactive Forms](https://dev.to/joanpablo/star-rating-with-flutter-reactive-forms-2d52) post as another example of a custom reactive widget.
+You can also check the [Star Rating with Flutter Reactive Forms](https://dev.to/joanpablo/star-rating-with-flutter-reactive-forms-2d52) post as another example of a custom reactive widget.
 
-## What is not **Reactive Forms**
+## What **Reactive Forms** is Not
 
-- **Reactive Forms** is not a fancy widgets package. It is not a library that brings some new Widgets with new shapes, colors or animations. It lets you to decide the shapes, colors, and animations you want for your widgets, but frees you from the responsibility of gathering and validating the data. And keeps the data in sync between your model and your widgets.
+- **Reactive Forms** is not a fancy widgets package. It is not a library that brings new Widgets with new shapes, colors, or animations. It lets you decide the shapes, colors, and animations you want for your widgets but frees you from the responsibility of gathering and validating the data. It also keeps the data in sync between your model and your widgets.
 
-- **Reactive Forms** does not pretend to replace the native widgets that you commonly use in your Flutter projects like _TextFormField_, _DropdownButtonFormField_ or _CheckboxListTile_. Instead of that it brings new two-way binding capabilities and much more features to those same widgets.
+- **Reactive Forms** does not pretend to replace the native widgets that you commonly use in your Flutter projects, like _TextFormField_, _DropdownButtonFormField_, or _CheckboxListTile_. Instead, it brings new two-way binding capabilities and many more features to those same widgets.
 
-## What is **Reactive Forms**
+## What **Reactive Forms** Is
 
-- **Reactive Forms** provides a model-driven approach to handling form inputs whose values change over time. It's heavily inspired in Angular Reactive Form.
-- It lets you focus on business logic and save you time from collect, validate and mantain synchronization between your models and widgets.
-- Remove boilerplate code and brings you the posibility to write clean code defining a separation between model and UI with minimal efforts.
-- And it integrates perfectly well with common state management libraries like [Provider](https://pub.dev/packages/provider), [Bloc](https://pub.dev/packages/bloc) and many others good libraries the community has created.
+- **Reactive Forms** provides a model-driven approach to handling form inputs whose values change over time. It's heavily inspired by Angular Reactive Forms.
+- It lets you focus on business logic and saves you time from collecting, validating, and maintaining synchronization between your models and widgets.
+- It removes boilerplate code and gives you the possibility to write clean code by defining a separation between model and UI with minimal effort.
+- It integrates perfectly well with common state management libraries like [Provider](https://pub.dev/packages/provider), [Bloc](https://pub.dev/packages/bloc), and many other good libraries the community has created.
 
-## Migrate versions
+## Migration Versions
 
-Visit [Migration Guide](https://github.com/joanpablo/reactive_forms/wiki/Migration-Guide) to see
+Visit the [Migration Guide](https://github.com/joanpablo/reactive_forms/wiki/Migration-Guide) to see
 more details about different version breaking changes.
+''
