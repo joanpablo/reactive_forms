@@ -4,6 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import 'reactive_status_listenable_builder_testing_widget.dart';
 
+// ignore_for_file: deprecated_member_use_from_same_package
 void main() {
   group('ReactiveStatusListenableBuilder Tests', () {
     testWidgets('Text widget display invalid if control init invalid', (
