@@ -122,6 +122,43 @@ class ReactiveFormFieldState<ModelDataType, ViewDataType>
     return null;
   }
 
+  /// Gets a list of error messages associated with the [FormControl] bound to this widget.
+  ///
+  /// If the control has errors and the `_showErrors` flag is true, this getter will return a list of error messages.
+  /// The error messages are determined based on the keys in the `control.errors` map.
+  ///
+  /// If the 'required' error is present, it will return a list containing only the 'required' error message.
+  /// The error message is either a custom validation message for 'required' error, if provided, or the string 'required'.
+  ///
+  /// If the 'required' error is not present, it will return a list of all other error messages.
+  /// For each error key, it will try to find a custom validation message. If a custom validation message is found,
+  /// it will be used as the error message. Otherwise, the error key itself will be used as the error message.
+  ///
+  /// If the control has no errors or the `_showErrors` flag is false, it will return an empty list.
+  List<String> get errorMessages {
+    if (control.hasErrors && _showErrors) {
+      // Check if 'required' error is present
+      if (control.errors.containsKey('required')) {
+        final validationMessage = _findValidationMessage('required');
+        return [
+          validationMessage != null
+              ? validationMessage(control.getError('required')!)
+              : 'required',
+        ];
+      }
+
+      // If 'required' error is not present, return all other error messages
+      return control.errors.keys.map((errorKey) {
+        final validationMessage = _findValidationMessage(errorKey);
+        return validationMessage != null
+            ? validationMessage(control.getError(errorKey)!)
+            : errorKey;
+      }).toList();
+    }
+
+    return [];
+  }
+
   bool get _showErrors {
     if (widget.showErrors != null) {
       return widget.showErrors!(control);
