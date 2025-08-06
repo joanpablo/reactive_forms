@@ -74,11 +74,11 @@ class NumberValidator extends Validator<dynamic> {
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     // Skip validation if null value is allowed
-    if (allowNull && control.value == null) {
+    if (allowNull && _isControlNullOrEmptyString(control)) {
       return null;
     }
 
-    if (control.value == null) {
+    if (_isControlNullOrEmptyString(control)) {
       return <String, dynamic>{
         ValidationMessage.number: NumberValidatorError.nullValue,
       };
@@ -141,4 +141,8 @@ class NumberValidator extends Validator<dynamic> {
     // Check if the decimal part length is within the allowed limit
     return parts[1].length <= allowedDecimals;
   }
+
+  static bool _isControlNullOrEmptyString(AbstractControl<dynamic> control) =>
+      control.value == null ||
+      (control.value is String && (control.value as String).isEmpty);
 }
