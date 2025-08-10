@@ -43,7 +43,7 @@ import 'package:reactive_forms/src/validators/number_validator_error.dart';
 /// ```
 class NumberValidator extends Validator<dynamic> {
   /// The regex expression of a numeric string value.
-  static final RegExp notNumbersRegex = RegExp(r'[^0-9.]');
+  static final RegExp notNumbersRegex = RegExp(r'[^0-9.,]');
 
   /// The allowed number of decimal places in the validated string.
   ///
@@ -125,10 +125,11 @@ class NumberValidator extends Validator<dynamic> {
   }
 
   bool _validateNumberDecimals(int allowedDecimals, String numberString) {
+    final deLocalizedNumberString = numberString.replaceAll(',', '.');
     // Split the number string at the decimal point
-    final parts = numberString.split('.');
+    final parts = deLocalizedNumberString.split('.');
 
-    if (parts.length > 2 || numberString == '.' || numberString.endsWith('.')) {
+    if (parts.length > 2 || deLocalizedNumberString == '.' || deLocalizedNumberString.endsWith('.')) {
       // More than one decimal point, invalid format
       return false;
     }
