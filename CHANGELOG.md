@@ -1,3 +1,8 @@
+# 18.1.2
+
+## Fixes
+- Fixed an issue where enabling or disabling a `FormGroup` and `FormArray` did not correctly propagate the enabled/disabled state to all of its child controls.
+
 # 18.1.1
 
 ## Fixes
