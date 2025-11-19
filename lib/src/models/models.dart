@@ -410,8 +410,7 @@ abstract class AbstractControl<T> {
       return;
     }
     _status = ControlStatus.valid;
-    updateValueAndValidity(updateParent: true, emitEvent: emitEvent);
-    _updateAncestors(updateParent);
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Disables the control.
@@ -1162,6 +1161,53 @@ abstract class FormControlCollection<T> extends AbstractControl<T> {
 
     return result;
   }
+
+  /// Enables the control.
+  ///
+  /// This means the control is included in validation checks and the aggregate
+  /// value of its parent. Its status recalculates based on its value and its
+  /// validators.
+  ///
+  /// When [updateParent] is false, mark only this control.
+  /// When true or not supplied (the default), marks all direct ancestors.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), [valueChanges]
+  /// and [statusChanged] events are emitted if value or status change.
+  /// Otherwise the control update this values but none of this events are
+  /// emitted.
+  @override
+  void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
+    forEachChild((control) {
+      control.markAsEnabled(updateParent: false, emitEvent: emitEvent);
+    });
+
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+  }
+
+  /// Disables the control.
+  ///
+  /// This means the control is exempt from validation checks and excluded
+  /// from the aggregate value of any parent. Its status is `DISABLED`.
+  ///
+  /// If the control has children, all children are also disabled.
+  ///
+  /// When [updateParent] is false, mark only this control.
+  /// When true or not supplied (the default), marks all direct ancestors.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), [valueChanges]
+  /// and [statusChanged] events are emitted if value or status change.
+  /// Otherwise the control update this values but none of this events are
+  /// emitted.
+  @override
+  void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
+    forEachChild((control) {
+      control.markAsDisabled(updateParent: false, emitEvent: emitEvent);
+    });
+
+    _errors.clear();
+
+    updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+  }
 }
 
 /// Tracks the value and validity state of a group of FormControl instances.
@@ -1348,49 +1394,6 @@ class FormGroup extends FormControlCollection<Map<String, Object?>> {
   @override
   set value(Map<String, Object?>? value) {
     updateValue(value);
-  }
-
-  /// Disables the control.
-  ///
-  /// This means the control is exempt from validation checks and excluded
-  /// from the aggregate value of any parent. Its status is `DISABLED`.
-  ///
-  /// If the control has children, all children are also disabled.
-  ///
-  /// When [updateParent] is false, mark only this control.
-  /// When true or not supplied (the default), marks all direct ancestors.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), [valueChanges]
-  /// and [statusChanged] events are emitted if value or status change.
-  /// Otherwise the control update this values but none of this events are
-  /// emitted.
-  @override
-  void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
-    _controls.forEach((_, control) {
-      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
-    });
-    super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
-  }
-
-  /// Enables the control.
-  ///
-  /// This means the control is included in validation checks and the aggregate
-  /// value of its parent. Its status recalculates based on its value and its
-  /// validators.
-  ///
-  /// When [updateParent] is false, mark only this control.
-  /// When true or not supplied (the default), marks all direct ancestors.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), [valueChanges]
-  /// and [statusChanged] events are emitted if value or status change.
-  /// Otherwise the control update this values but none of this events are
-  /// emitted.
-  @override
-  void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
-    _controls.forEach((_, control) {
-      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
-    });
-    super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
   }
 
   /// Appends all [controls] to the group.
@@ -1787,29 +1790,23 @@ class FormArray<T> extends FormControlCollection<List<T?>> {
   /// and value when the control is reset. When false, no events are emitted.
   @override
   void markAsDisabled({bool updateParent = true, bool emitEvent = true}) {
-    for (final control in _controls) {
-      control.markAsDisabled(updateParent: true, emitEvent: emitEvent);
+    if (disabled) {
+      return;
     }
-    super.markAsDisabled(updateParent: updateParent, emitEvent: emitEvent);
-  }
 
-  /// Enables the control. This means the control is included in validation
-  /// checks and the aggregate value of its parent. Its status recalculates
-  /// based on its value and its validators.
-  ///
-  /// When [updateParent] is true or not supplied (the default) each change
-  /// affects this control and its parent, otherwise only affects to this
-  /// control.
-  ///
-  /// When [emitEvent] is true or not supplied (the default), both the
-  /// *statusChanges* and *valueChanges* emit events with the latest status
-  /// and value when the control is reset. When false, no events are emitted.
-  @override
-  void markAsEnabled({bool updateParent = true, bool emitEvent = true}) {
-    forEachChild((control) {
-      control.markAsEnabled(updateParent: true, emitEvent: emitEvent);
-    });
-    super.markAsEnabled(updateParent: updateParent, emitEvent: emitEvent);
+    for (final control in _controls) {
+      control.markAsDisabled(updateParent: false, emitEvent: emitEvent);
+    }
+
+    _status = ControlStatus.disabled;
+    _updateValue();
+
+    if (emitEvent) {
+      _valueChanges.add(value);
+      _statusChanges.add(_status);
+    }
+
+    _updateAncestors(updateParent);
   }
 
   /// Insert a [control] at the given [index] position.
