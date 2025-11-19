@@ -288,10 +288,20 @@ void main() {
       });
 
       // When: enable form
+      print("form.enabled: ${form.enabled}");
+
       form.markAsEnabled();
 
+      form.controls.forEach((name, control) {
+        print("control[$name].enabled: ${control.enabled}");
+      });
+
       // Then: all controls are enabled
-      expect(form.controls.values.every((control) => control.enabled), true);
+      expect(
+        form.controls.values.every((control) => control.enabled),
+        true,
+        reason: "Not all controls are enabled",
+      );
     });
 
     test('Group valid when invalid control is disable', () {
