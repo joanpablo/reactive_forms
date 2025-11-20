@@ -839,7 +839,7 @@ abstract class AbstractControl<T> {
 
 /// Tracks the value and validation status of an individual form control.
 class FormControl<T> extends AbstractControl<T> {
-  final T? _defaultValue;
+  T? _defaultValue;
   final _focusChanges = StreamController<bool>.broadcast();
   FocusController? _focusController;
   bool _hasFocus = false;
@@ -1040,6 +1040,9 @@ class FormControl<T> extends AbstractControl<T> {
   ///   initial value provided in the constructor.
   /// - If [nonNullable] is `false`, the control resets to `null`.
   ///
+  /// If [overwriteDefaultValue] is true, then the value used to reset the
+  /// control becomes the new default value of the control.
+  ///
   /// The argument [disabled] is optional and resets the disabled status of the
   /// control. If value is `true` then it will disable the control, if value is
   /// `false` then it will enable the control, and if the value is `null` or
@@ -1101,11 +1104,16 @@ class FormControl<T> extends AbstractControl<T> {
   @override
   void reset({
     T? value,
+    bool overwriteDefaultValue = false,
     bool updateParent = true,
     bool emitEvent = true,
     bool removeFocus = false,
     bool? disabled,
   }) {
+    if (overwriteDefaultValue) {
+      _defaultValue = value;
+    }
+
     super.reset(
       value: value ?? _defaultValue,
       updateParent: updateParent,
