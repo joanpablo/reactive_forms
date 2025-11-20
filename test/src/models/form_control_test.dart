@@ -415,7 +415,7 @@ void main() {
       'resets to initial value (null) if no argument is provided and initial value was null',
       () {
         // Arrange
-        final control = FormControl<String?>(value: null);
+        final control = FormControl<String>(value: null);
         control.updateValue('changed');
 
         // Act
@@ -430,7 +430,7 @@ void main() {
       'resets to initial value (null) if no argument is provided and no initial value was specified (implicitly null)',
       () {
         // Arrange
-        final control = FormControl<String?>();
+        final control = FormControl<String>();
         control.updateValue('changed');
 
         // Act
@@ -460,7 +460,7 @@ void main() {
       'resets to initial value when value argument is null and initial value was not null',
       () {
         // Arrange
-        final control = FormControl<String?>(value: 'initial');
+        final control = FormControl<String>(value: 'initial');
         control.updateValue('changed');
 
         // Act
@@ -470,25 +470,37 @@ void main() {
         expect(
           control.value,
           'initial',
-        ); // Because (value ?? _initialValue) => (null ?? "initial") => "initial"
+        ); // Because nonNullable is true by default
       },
     );
 
+    test('resets to null is nonNullable is false', () {
+      // Arrange
+      final control = FormControl<String>(
+        value: 'initialValue',
+        nonNullable: false,
+      );
+      control.value = 'changed value';
+
+      // Act
+      control.reset();
+
+      // Assert
+      expect(control.value, null); // Because nonNullable is false
+    });
+
     test(
-      'resets to null when value argument is null and initial value was also null',
+      'resets control to null if no value provided and nonNullable is false',
       () {
         // Arrange
-        final control = FormControl<String?>(value: null);
-        control.updateValue('changed');
+        final control = FormControl<String>(nonNullable: false);
+        control.value = 'changed value';
 
         // Act
-        control.reset(value: null);
+        control.reset();
 
         // Assert
-        expect(
-          control.value,
-          null,
-        ); // Because (value ?? _initialValue) => (null ?? null) => null
+        expect(control.value, null); // Because no value provided
       },
     );
   });

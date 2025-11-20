@@ -848,6 +848,13 @@ class FormControl<T> extends AbstractControl<T> {
   ///
   /// The control can optionally be initialized with a [value].
   ///
+  /// The [nonNullable] argument is used to determine the state of the control
+  /// when the [reset] method is called without a value. If [nonNullable] is
+  /// true (the default), the [reset] method will reset the control to the
+  /// initial [value] provided in the constructor. If [nonNullable] is false,
+  /// the [reset] method will reset the control to `null` unless a value is
+  /// provided.
+  ///
   /// The control can optionally have [validators] that validates
   /// the control each time the value changes.
   ///
@@ -858,10 +865,6 @@ class FormControl<T> extends AbstractControl<T> {
   /// forms to avoid potentially expensive async validation processes
   /// (such as an HTTP request) if the more basic validation methods have
   /// already found invalid input.
-  ///
-  /// You can set an [asyncValidatorsDebounceTime] in millisecond to set
-  /// a delay time before trigger async validators. This is useful for
-  /// minimizing request to a server. The default value is 250 milliseconds.
   ///
   /// You can set [touched] as true to force the validation messages
   /// to show up at the very first time the widget that is bound to this
@@ -875,11 +878,8 @@ class FormControl<T> extends AbstractControl<T> {
   /// ```
   ///
   FormControl({
-    @Deprecated(
-      "Use [defaultValue] to specify the initial default value for the form control.",
-    )
     T? value,
-    T? defaultValue,
+    bool nonNullable = true,
     super.validators,
     super.asyncValidators,
     @Deprecated(
@@ -891,7 +891,7 @@ class FormControl<T> extends AbstractControl<T> {
     super.asyncValidatorsDebounceTime,
     super.touched,
     super.disabled,
-  }) : _defaultValue = defaultValue ?? value {
+  }) : _defaultValue = nonNullable ? value : null {
     if (value != null) {
       this.value = value;
     } else {
@@ -900,6 +900,13 @@ class FormControl<T> extends AbstractControl<T> {
   }
 
   /// Gets the default value of the control.
+  ///
+  /// This value is determined by the [value] and [nonNullable] arguments
+  /// passed to the constructor:
+  /// - If [nonNullable] is `true` (the default), this holds the initial [value].
+  /// - If [nonNullable] is `false`, this is `null`.
+  ///
+  /// When [reset] is called without a value, the control resets to this value.
   T? get defaultValue => _defaultValue;
 
   /// True if the control is marked as focused.
@@ -1023,6 +1030,74 @@ class FormControl<T> extends AbstractControl<T> {
     }
   }
 
+  /// Resets the form control, marking it as untouched and pristine.
+  ///
+  /// If [value] is provided, the control is reset to that value.
+  ///
+  /// If [value] is not provided (null), the behavior depends on the [nonNullable]
+  /// argument passed to the constructor:
+  /// - If [nonNullable] is `true` (the default), the control resets to the
+  ///   initial value provided in the constructor.
+  /// - If [nonNullable] is `false`, the control resets to `null`.
+  ///
+  /// The argument [disabled] is optional and resets the disabled status of the
+  /// control. If value is `true` then it will disable the control, if value is
+  /// `false` then it will enable the control, and if the value is `null` or
+  /// not set (the default) then the control will state in the same state that
+  /// it previously was.
+  ///
+  /// The argument [removeFocus] is optional and remove the UI focus from the
+  /// control.
+  ///
+  /// When [updateParent] is true or not supplied (the default) each change
+  /// affects this control and its parent, otherwise only affects to this
+  /// control.
+  ///
+  /// When [emitEvent] is true or not supplied (the default), both the
+  /// *statusChanges* and *valueChanges* events notify listeners with the
+  /// latest status and value when the control is reset. When false, no events
+  /// are emitted.
+  ///
+  /// ### Examples
+  ///
+  /// **Reset to a specific value**
+  /// ```dart
+  /// final control = FormControl<String>();
+  ///
+  /// control.reset(value: 'John Doe');
+  ///
+  /// print(control.value); // output: 'John Doe'
+  /// ```
+  ///
+  /// **Reset to initial value (nonNullable: true)**
+  /// ```dart
+  /// // nonNullable is true by default
+  /// final control = FormControl<String>(value: 'Initial Value');
+  ///
+  /// control.value = 'New Value';
+  ///
+  /// // Resets to 'Initial Value' because no value was provided
+  /// // and nonNullable is true.
+  /// control.reset();
+  ///
+  /// print(control.value); // output: 'Initial Value'
+  /// ```
+  ///
+  /// **Reset to null (nonNullable: false)**
+  /// ```dart
+  /// final control = FormControl<String>(
+  ///   value: 'Initial Value',
+  ///   nonNullable: false,
+  /// );
+  ///
+  /// control.value = 'New Value';
+  ///
+  /// // Resets to null because no value was provided
+  /// // and nonNullable is false.
+  /// control.reset();
+  ///
+  /// print(control.value); // output: null
+  ///
   @override
   void reset({
     T? value,
