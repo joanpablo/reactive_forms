@@ -415,7 +415,7 @@ void main() {
       'resets to initial value (null) if no argument is provided and initial value was null',
       () {
         // Arrange
-        final control = FormControl<String?>(value: null);
+        final control = FormControl<String>(value: null);
         control.updateValue('changed');
 
         // Act
@@ -430,7 +430,7 @@ void main() {
       'resets to initial value (null) if no argument is provided and no initial value was specified (implicitly null)',
       () {
         // Arrange
-        final control = FormControl<String?>();
+        final control = FormControl<String>();
         control.updateValue('changed');
 
         // Act
@@ -460,7 +460,7 @@ void main() {
       'resets to initial value when value argument is null and initial value was not null',
       () {
         // Arrange
-        final control = FormControl<String?>(value: 'initial');
+        final control = FormControl<String>(value: 'initial');
         control.updateValue('changed');
 
         // Act
@@ -470,25 +470,104 @@ void main() {
         expect(
           control.value,
           'initial',
-        ); // Because (value ?? _initialValue) => (null ?? "initial") => "initial"
+        ); // Because nonNullable is true by default
+      },
+    );
+
+    test('resets to null if nonNullable is false', () {
+      // Given: a control with an initial value and nonNullable as false
+      final control = FormControl<String>(
+        value: 'initialValue',
+        nonNullable: false,
+      );
+
+      // When: set a new value
+      control.value = 'changed value';
+
+      // And: reset the control
+      control.reset();
+
+      // Then: control value is null
+      expect(control.value, null);
+    });
+
+    test(
+      'resets control to null if no value provided and nonNullable is false',
+      () {
+        // Arrange
+        final control = FormControl<String>(nonNullable: false);
+        control.value = 'changed value';
+
+        // Act
+        control.reset();
+
+        // Assert
+        expect(control.value, null); // Because no value provided
+      },
+    );
+  });
+
+  group('FormControl reset with overwriteDefaultValue', () {
+    test('updates default value when overwriteDefaultValue is true', () {
+      // Given: a control with an initial value
+      final control = FormControl<String>(value: 'initial');
+
+      // When: reset to a new value and ask to overwrite the default
+      control.reset(value: 'newDefault', overwriteDefaultValue: true);
+
+      // Then: current value is the new value
+      expect(control.value, 'newDefault');
+      // And: the default value property is updated
+      expect(control.defaultValue, 'newDefault');
+
+      // When: we make the control dirty again
+      control.value = 'dirty value';
+
+      // And: we reset without arguments
+      control.reset();
+
+      // Then: it resets to the NEW default value
+      expect(control.value, 'newDefault');
+    });
+
+    test(
+      'does not update default value when overwriteDefaultValue is false',
+      () {
+        // Given: a control with an initial value
+        final control = FormControl<String>(value: 'initial');
+
+        // When: reset with a specific value but do NOT overwrite default
+        control.reset(value: 'tempValue', overwriteDefaultValue: false);
+
+        // Then: value is the temporary value
+        expect(control.value, 'tempValue');
+        // And: default value remains the original one
+        expect(control.defaultValue, 'initial');
+
+        // When: we make the control dirty again
+        control.value = 'dirty value';
+
+        // And: we reset without arguments
+        control.reset();
+
+        // Then: it resets to the ORIGINAL default value
+        expect(control.value, 'initial');
       },
     );
 
     test(
-      'resets to null when value argument is null and initial value was also null',
+      'updates default value to null when value is null and overwriteDefaultValue is true',
       () {
-        // Arrange
-        final control = FormControl<String?>(value: null);
-        control.updateValue('changed');
+        // Given: a control with an initial value
+        final control = FormControl<String>(value: 'initial');
 
-        // Act
-        control.reset(value: null);
+        // When: reset to null and overwrite default
+        control.reset(value: null, overwriteDefaultValue: true);
 
-        // Assert
-        expect(
-          control.value,
-          null,
-        ); // Because (value ?? _initialValue) => (null ?? null) => null
+        // Then: value is null
+        expect(control.value, null);
+        // And: default value is null
+        expect(control.defaultValue, null);
       },
     );
   });

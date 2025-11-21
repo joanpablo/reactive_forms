@@ -288,13 +288,7 @@ void main() {
       });
 
       // When: enable form
-      print("form.enabled: ${form.enabled}");
-
       form.markAsEnabled();
-
-      form.controls.forEach((name, control) {
-        print("control[$name].enabled: ${control.enabled}");
-      });
 
       // Then: all controls are enabled
       expect(
