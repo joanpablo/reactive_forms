@@ -1,3 +1,16 @@
+# 18.2.0
+
+## Features
+
+- Allowed overwriting default value on reset. Added an `overwriteDefaultValue` parameter to the 
+  `FormControl.reset()` method. When `overwriteDefaultValue` is `true`, the value passed to 
+  `reset()` becomes the new default value for the control.
+- Enhanced `FormControl` reset method. Introduced a `nonNullable` property to the `FormControl` 
+  constructor to control the behavior of the `reset()` method. When `nonNullable` is `true` 
+  (the default), calling `reset()` without a value will reset the control to its initial value. When
+  `nonNullable` is `false`, calling `reset()` without a value will reset the control to `null`.
+- Exposed `defaultValue` of the `FormControl`.
+
 # 18.1.2
 
 ## Fixes
