@@ -1,3 +1,10 @@
+# 18.2.1
+
+## Enhances
+
+- Added optional parameters to the `clearValidators` method to support automatic validation after 
+  clearing validators.
+
 # 18.2.0
 
 ## Features

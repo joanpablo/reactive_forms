@@ -142,12 +142,16 @@ abstract class AbstractControl<T> {
   }
 
   /// Empties out the sync validator list.
-  ///
-  /// When you add or remove a validator at run time, you must call
-  /// **updateValueAndValidity()**, or assign a new value to the control for
-  /// the new validation to take effect.
-  void clearValidators() {
+  void clearValidators({
+    bool autoValidate = false,
+    bool updateParent = true,
+    bool emitEvent = true,
+  }) {
     _validators.clear();
+
+    if (autoValidate) {
+      updateValueAndValidity(updateParent: updateParent, emitEvent: emitEvent);
+    }
   }
 
   /// The list of async functions that determines the validity of this control.
