@@ -411,6 +411,35 @@ void main() {
       );
     });
 
+
+    test('Build a group with default datetime value and a validator as array', () {
+      // Given: a form group builder creation
+      final requiredValidator = Validators.required;
+      final value = DateTime.now();
+      final form = fb.group({
+        'control': [value, requiredValidator],
+      });
+
+      // Expect a form group created
+      expect(
+        form.control('control'),
+        isA<FormControl<DateTime>>(),
+        reason:
+        '${form.control('control').runtimeType} is not instance of FormControl<DateTime>',
+      );
+      expect(
+        form.control('control').value,
+        value,
+        reason: 'control default value not set',
+      );
+      expect(
+        form.control('control').validators,
+        [requiredValidator],
+        reason: 'not set required validator'
+      );
+    });
+
+
     test('Build a group with default TimeOfDay value as array', () {
       // Given: a form group builder creation
       final value = TimeOfDay.now();
@@ -429,6 +458,34 @@ void main() {
         form.control('control').value,
         value,
         reason: 'control default value not set',
+      );
+    });
+
+
+    test('Build a group with default TimeOfDay value and a validator as array', () {
+      // Given: a form group builder creation
+      final requiredValidator = Validators.required;
+      final value = TimeOfDay.now();
+      final form = fb.group({
+        'control': [value, requiredValidator],
+      });
+
+      // Expect a form group created
+      expect(
+        form.control('control'),
+        isA<FormControl<TimeOfDay>>(),
+        reason:
+        '${form.control('control').runtimeType} is not instance of FormControl<TimeOfDay>',
+      );
+      expect(
+        form.control('control').value,
+        value,
+        reason: 'control default value not set',
+      );
+      expect(
+          form.control('control').validators,
+          [requiredValidator],
+          reason: 'not set required validator'
       );
     });
 

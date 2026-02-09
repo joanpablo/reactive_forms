@@ -244,9 +244,9 @@ class FormBuilder {
     } else if (value is double) {
       return FormControl<double>(value: value, validators: validators);
     } else if (value is DateTime) {
-      return FormControl<DateTime>(value: value);
+      return FormControl<DateTime>(value: value, validators: validators);
     } else if (value is TimeOfDay) {
-      return FormControl<TimeOfDay>(value: value);
+      return FormControl<TimeOfDay>(value: value, validators: validators);
     }
 
     return FormControl<dynamic>(value: value, validators: validators);
