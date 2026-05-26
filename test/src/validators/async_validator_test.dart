@@ -315,5 +315,238 @@ void main() {
         );
       },
     );
+
+    // Regression tests for https://github.com/joanpablo/reactive_forms/issues/504
+    //
+    // When a control is disposed while an async validator is still in flight,
+    // the validator's `onDone` callback used to fire after `_statusChanges`
+    // was already closed, throwing
+    // `StateError: Cannot add new events after calling close`.
+    group('Dispose during in-flight async validation', () {
+      test('FormControl disposed mid-flight does not throw', () {
+        fakeAsync((async) {
+          final control = FormControl<String>(
+            asyncValidators: [
+              Validators.delegateAsync(
+                (control) =>
+                    Future.delayed(const Duration(milliseconds: 100), () => null),
+              ),
+            ],
+          );
+
+          control.value = 'some value';
+          expect(control.pending, true);
+
+          // Dispose part-way through the debounce window so the timer
+          // outlives the subscription's cancellation.
+          async.elapse(const Duration(milliseconds: 100));
+          control.dispose();
+
+          // Advance past the global debounce (250ms) plus the validator's
+          // delay so the orphaned future resolves and the stream completes.
+          async.elapse(const Duration(milliseconds: 500));
+        });
+      });
+
+      test(
+        'FormControl disposed mid-flight does not throw when validator returns errors',
+        () {
+          fakeAsync((async) {
+            final control = FormControl<String>(
+              asyncValidators: [
+                Validators.delegateAsync(
+                  (control) => Future.delayed(
+                    const Duration(milliseconds: 100),
+                    () => {'unique': true},
+                  ),
+                ),
+              ],
+            );
+
+            control.value = 'some value';
+            async.elapse(const Duration(milliseconds: 100));
+            control.dispose();
+
+            // Without the guard, onDone would call setErrors → _statusChanges.add
+            // on a closed controller and throw StateError.
+            async.elapse(const Duration(milliseconds: 500));
+          });
+        },
+      );
+
+      test('FormControl disposed during debounce window does not throw', () {
+        fakeAsync((async) {
+          final control = FormControl<String>(
+            asyncValidators: [
+              Validators.delegateAsync(
+                (control) =>
+                    Future.delayed(const Duration(milliseconds: 100), () => null),
+                debounceTime: 500,
+              ),
+            ],
+          );
+
+          control.value = 'some value';
+
+          // Dispose while still inside the debounce window — the timer is
+          // armed but the validator hasn't started yet.
+          async.elapse(const Duration(milliseconds: 100));
+          control.dispose();
+
+          // Advance well past debounce + validator delay.
+          async.elapse(const Duration(milliseconds: 1000));
+        });
+      });
+
+      test(
+        'FormGroup disposed while a child async validator is in flight does not throw',
+        () {
+          fakeAsync((async) {
+            final form = FormGroup({
+              'name': FormControl<String>(
+                asyncValidators: [
+                  Validators.delegateAsync(
+                    (control) => Future.delayed(
+                      const Duration(milliseconds: 100),
+                      () => {'taken': true},
+                    ),
+                  ),
+                ],
+              ),
+            });
+
+            form.control('name').value = 'some value';
+            expect(form.pending, true);
+
+            // Disposing the parent cascades dispose() to children.
+            async.elapse(const Duration(milliseconds: 100));
+            form.dispose();
+
+            async.elapse(const Duration(milliseconds: 500));
+          });
+        },
+      );
+
+      test(
+        'FormControl disposed with multiple in-flight async validators does not throw',
+        () {
+          fakeAsync((async) {
+            final control = FormControl<String>(
+              asyncValidators: [
+                Validators.delegateAsync(
+                  (control) => Future.delayed(
+                    const Duration(milliseconds: 100),
+                    () => null,
+                  ),
+                ),
+                Validators.delegateAsync(
+                  (control) => Future.delayed(
+                    const Duration(milliseconds: 200),
+                    () => {'other': true},
+                  ),
+                ),
+                Validators.debounced(
+                  Validators.delegateAsync(
+                    (control) => Future.delayed(
+                      const Duration(milliseconds: 150),
+                      () => null,
+                    ),
+                  ),
+                  300,
+                ),
+              ],
+            );
+
+            control.value = 'some value';
+            async.elapse(const Duration(milliseconds: 100));
+            control.dispose();
+
+            async.elapse(const Duration(milliseconds: 1000));
+          });
+        },
+      );
+
+      test('Dispose cancels the pending debounce timer', () {
+        fakeAsync((async) {
+          final control = FormControl<String>(
+            asyncValidators: [
+              Validators.delegateAsync(
+                (control) =>
+                    Future.delayed(const Duration(milliseconds: 100), () => null),
+              ),
+            ],
+          );
+
+          control.value = 'x';
+          expect(
+            async.pendingTimers,
+            isNotEmpty,
+            reason:
+                'A debounce timer should be scheduled after a value change',
+          );
+
+          control.dispose();
+
+          expect(
+            async.pendingTimers,
+            isEmpty,
+            reason:
+                'Dispose should cancel the pending debounce timer so it cannot '
+                'fire the validator after the streams have been closed',
+          );
+        });
+      });
+    });
+
+    // Regression test for the underlying race that caused the use-after-free
+    // crash in issue #504. The bug: `_cancelExistingSubscription` was async and
+    // awaited `subscription.cancel()`; the suspension point allowed
+    // `_runAsyncValidators` to assign a fresh subscription before the
+    // continuation set `_asyncValidationSubscription = null`, orphaning it.
+    // Because the orphan was never cancelled on a subsequent value change, its
+    // stale result could overwrite the latest validator's result.
+    group('Async validator subscription cancellation', () {
+      test('Stale async validator result does not overwrite latest', () {
+        fakeAsync((async) {
+          // Validator behaviour is value-dependent. The captured value is
+          // fixed at validator-invocation time so the closure stays
+          // consistent even if the control's value changes afterwards.
+          //   'bad'  → slow (200ms), returns {'invalid': true}
+          //   'good' → fast (50ms),  returns no error
+          //
+          // If the 'bad' subscription is correctly cancelled when the value
+          // becomes 'good', the stale error never reaches the control. With
+          // the orphan race, the 'bad' subscription survives, fires onDone
+          // after 'good' has already settled, and re-injects the stale error
+          // into the control's error map.
+          final control = FormControl<String>(
+            // ignore: deprecated_member_use_from_same_package
+            asyncValidatorsDebounceTime: 0,
+            asyncValidators: [
+              Validators.delegateAsync((c) {
+                final captured = c.value;
+                return Future.delayed(
+                  Duration(milliseconds: captured == 'bad' ? 200 : 50),
+                  () => captured == 'bad' ? {'invalid': true} : null,
+                );
+              }),
+            ],
+          );
+
+          control.value = 'bad';
+          async.elapse(const Duration(milliseconds: 50));
+          control.value = 'good';
+          async.elapse(const Duration(milliseconds: 300));
+
+          expect(
+            control.hasError('invalid'),
+            false,
+            reason:
+                'A stale validator result for "bad" must not survive after '
+                'the value has been changed to "good"',
+          );
+        });
+      });
+    });
   });
 }

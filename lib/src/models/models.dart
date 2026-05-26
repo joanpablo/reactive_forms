@@ -471,6 +471,7 @@ abstract class AbstractControl<T> {
     _statusChanges.close();
     _valueChanges.close();
     _asyncValidationSubscription?.cancel();
+    _debounceTimer?.cancel();
   }
 
   /// Sets the value of the control.
@@ -706,8 +707,8 @@ abstract class AbstractControl<T> {
     _updateAncestors(updateParent);
   }
 
-  Future<void> _cancelExistingSubscription() async {
-    await _asyncValidationSubscription?.cancel();
+  void _cancelExistingSubscription() {
+    _asyncValidationSubscription?.cancel();
     _asyncValidationSubscription = null;
   }
 
