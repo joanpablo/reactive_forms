@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 abstract class InheritedStreamer<T> extends InheritedWidget {
   const InheritedStreamer(this.stream, Widget child, {super.key})
