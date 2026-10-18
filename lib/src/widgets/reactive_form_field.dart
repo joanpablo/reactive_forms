@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 /// Signature for building the widget representing the form field.
